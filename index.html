@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; }
+        body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; overflow-x: hidden; }
         .card { background-color: #111827; border: 1px solid #1f2937; transition: transform 0.2s; }
         .card:hover { transform: translateY(-2px); }
         .carousel-container { display: flex; overflow-x: auto; scroll-behavior: smooth; gap: 1rem; padding-bottom: 1rem; }
@@ -15,24 +15,47 @@
         .carousel-container::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
         .state-btn { background-color: #1f2937; border: 1px solid #374151; transition: all 0.2s; cursor: pointer; }
         .state-btn:hover { background-color: #2563eb; border-color: #3b82f6; }
+        
+        /* Animação do Letreiro de Notícias */
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .ticker-wrap { width: 100%; overflow: hidden; background-color: #060911; border-bottom: 1px solid #1e293b; padding: 10px 0; }
+        .ticker { display: inline-flex; white-space: nowrap; padding-left: 100%; animation: ticker 45s linear infinite; }
+        .ticker:hover { animation-play-state: paused; }
+        .ticker-item { padding: 0 2.5rem; font-size: 0.825rem; font-weight: 500; display: flex; items-center: center; gap: 0.5rem; color: #94a3b8; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <header class="max-w-7xl mx-auto mb-8 border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-            <h1 class="text-2xl font-bold text-blue-500 flex items-center gap-1">
-                ADVBR<span class="text-white">.info</span>
-            </h1>
-            <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> <strong class="text-amber-400">TJPR:</strong> eproc passará por manutenção programada neste sábado das 08h às 14h.</div>
+            <div class="ticker-item"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> <strong class="text-blue-400">TRF3:</strong> Nova versão do PJe implantada com correção para assinaturas locais.</div>
+            <div class="ticker-item"><span class="w-2 h-2 bg-red-500 rounded-full"></span> <strong class="text-red-400">TJSP:</strong> Sistema e-SAJ operando com lentidão parcial na comarca da Capital.</div>
+            <div class="ticker-item"><span class="w-2 h-2 bg-green-500 rounded-full"></span> <strong class="text-green-400">CNJ:</strong> Plataforma de Editais Nacionais unificada está online sem instabilidades.</div>
+            <div class="ticker-item"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> <strong class="text-amber-400">TJPR:</strong> eproc passará por manutenção programada neste sábado das 08h às 14h.</div>
+            <div class="ticker-item"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> <strong class="text-blue-400">TRF3:</strong> Nova versão do PJe implantada com correção para assinaturas locais.</div>
+            <div class="ticker-item"><span class="w-2 h-2 bg-red-500 rounded-full"></span> <strong class="text-red-400">TJSP:</strong> Sistema e-SAJ operando com lentidão parcial na comarca da Capital.</div>
+            <div class="ticker-item"><span class="w-2 h-2 bg-green-500 rounded-full"></span> <strong class="text-green-400">CNJ:</strong> Plataforma de Editais Nacionais unificada está online sem instabilidades.</div>
         </div>
-        
-        <button onclick="abrirReportar()" class="bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 active:scale-95 shadow-sm">
-            <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
-        </button>
-    </header>
+    </div>
 
-    <main class="max-w-7xl mx-auto space-y-12">
+    <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
+        
+        <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-blue-500 flex items-center gap-1">
+                    ADVBR<span class="text-white">.info</span>
+                </h1>
+                <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
+            </div>
+            
+            <button onclick="abrirReportar()" class="bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 active:scale-95 shadow-sm">
+                <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
+            </button>
+        </header>
 
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
@@ -100,15 +123,15 @@
         </section>
 
         <section class="p-6 card rounded-2xl border border-red-900/40 bg-gradient-to-br from-red-950/10 via-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
-            <div class="space-y-2 text-center lg:text-left flex-1">
+            <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-red-400 flex items-center justify-center lg:justify-start gap-2">
                     <i class="fa-solid fa-file-pdf"></i> Otimizador de Arquivos Inteligente
                 </h2>
-                <p class="text-sm text-gray-400 leading-relaxed">
+                <p class="text-sm text-gray-400 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                     Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.
                 </p>
             </div>
-            <button class="w-full lg:w-auto flex-none bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-red-950/50 active:scale-95 text-center tracking-wide max-w-xl">
+            <button class="w-full lg:w-auto flex-none bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-red-950/50 active:scale-95 text-center tracking-wide lg:max-w-md">
                 Edite seu PDF automaticamente de acordo com o portal que deseja anexar
             </button>
         </section>
@@ -118,7 +141,7 @@
                 <div class="w-12 h-12 bg-blue-950 text-blue-400 rounded-xl flex items-center justify-center mx-auto text-lg border border-blue-800/30">
                     <i class="fa-solid fa-microchip"></i>
                 </div>
-                <h2 class="text-xl font-bold">Diagnóstico de Hardware & Certificado</h2>
+                <h2 class="text-xl font-bold">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
                 <p class="text-sm text-gray-400">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
@@ -181,58 +204,28 @@
                 </div>
             </div>
         </section>
-    </main>
+    </div>
 
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
             <div class="text-center">
                 <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-square-poll-vertical text-blue-500"></i> Status de Infraestrutura - <span id="estadoNome">PR</span>
+                    <i class="fa-solid fa-square-poll-vertical text-blue-500"></i> Infraestrutura - <span id="estadoNome">PR</span>
                 </h3>
-                <p class="text-xs text-gray-400 mt-1">Resultados automáticos da última varredura nos servidores.</p>
+                <p class="text-xs text-gray-400 mt-1">Varreduras técnicas e alertas enviados por usuários.</p>
             </div>
-            <div id="linksTribunais" class="space-y-2.5 pt-2">
-                </div>
-        </div>
-    </div>
-
-    <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
-            <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center">
-                <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-blue-500"></i> Relatar Instabilidade
-                </h3>
-                <p class="text-xs text-amber-400 bg-amber-950/30 border border-amber-900/40 px-3 py-2 rounded-xl mt-2 font-medium">
-                    <i class="fa-solid fa-circle-info"></i> Ajude-nos a monitorar os sites! Seu relato calibra nosso painel e ajuda outros advogados.
-                </p>
+            
+            <div class="space-y-3">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Status Atual (Robôs)</h4>
+                <div id="linksTribunais" class="space-y-2">
+                    </div>
             </div>
 
-            <div id="passo1" class="space-y-2">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">1. Escolha o Estado:</label>
-                <select id="reportUF" onchange="irParaPasso2()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
-                    <option value="">Selecione...</option>
-                    <option value="PR">Paraná (PR)</option>
-                    <option value="SP">São Paulo (SP)</option>
-                </select>
-            </div>
-
-            <div id="passo2" class="space-y-2 hidden">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">2. Escolha o Tribunal/Portal:</label>
-                <select id="reportTribunal" onchange="irParaPasso3()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
-                    </select>
-            </div>
-
-            <div id="passo3" class="space-y-3 hidden">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">3. Qual é o problema atual?</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="salvarRelatorio('Site Offline')" class="bg-red-950/40 hover:bg-red-900/60 border border-red-900/60 text-red-400 text-sm font-bold p-4 rounded-xl transition active:scale-95 flex flex-col items-center justify-center gap-1">
-                        <i class="fa-solid fa-power-off text-lg"></i> Site Offline
-                    </button>
-                    <button onclick="salvarRelatorio('Lentidão / Instabilidade')" class="bg-amber-950/40 hover:bg-amber-900/60 border border-amber-900/60 text-amber-400 text-sm font-bold p-4 rounded-xl transition active:scale-95 flex flex-col items-center justify-center gap-1">
-                        <i class="fa-solid fa-gauge-simple text-lg"
+            <div class="space-y-3 border-t border-gray-800 pt-4">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-users text-blue-400"></i> Relatos Recentes de Colegas
+                </h4>
+              
