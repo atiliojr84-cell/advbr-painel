@@ -179,14 +179,14 @@
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-12 h-12 bg-blue-950 text-blue-400 rounded-xl flex items-center justify-center mx-auto text-lg border border-blue-800/30">
-                    <i class="fa-solid fa-microchip"></i>
+                    <i class="fa-solid fa-key-skeleton fa-rotate-270 text-xl"></i>
                 </div>
                 <h2 class="text-xl font-bold">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
                 <p class="text-sm text-gray-400">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
                 
                 <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
                     <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg shadow-blue-900/20 active:scale-95 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-key"></i> Iniciar Teste de Token/Certificado
+                        <i class="fa-solid fa-usb"></i> Iniciar Teste de Token/Certificado
                     </button>
                     <button class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-semibold text-sm px-5 py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-laptop-code text-blue-400"></i> Testar PJe Office Pro
@@ -244,12 +244,12 @@
                 </div>
                 <div class="flex-none w-64 card p-4 rounded-xl space-y-3 flex flex-col justify-between">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-network-wired"></i></div>
-                    <div><h4 class="text-sm font-bold truncate">Roteador Wi-Fi 6 Mesh</h4><p class="text-xs text-gray-400 line-clamp-2">Rede unificada de alta performance eliminando pontos cegos do escritório.</p></div>
+                    <div><h4 class="text-sm font-bold truncate">Roteador Wi-Fi 6 Mesh</h4><p class="text-xs text-gray-400 line-clamp-2">Rede unificada de alta performance eliminando pontos cegos.</p></div>
                     <span class="text-xs text-center block w-full bg-gray-800 text-gray-400 py-1.5 rounded-md font-medium border border-gray-700">[ Imagem do Roteador Mesh ]</span>
                 </div>
                 <div class="flex-none w-64 card p-4 rounded-xl space-y-3 flex flex-col justify-between">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-chair"></i></div>
-                    <div><h4 class="text-sm font-bold truncate">Cadeira Ergonômica Pro</h4><p class="text-xs text-gray-400 line-clamp-2">Suporte lombar regulável aprovado por especialistas em ergonomia corporativa.</p></div>
+                    <div><h4 class="text-sm font-bold truncate">Cadeira Ergonômica Pro</h4><p class="text-xs text-gray-400 line-clamp-2">Suporte lombar regulável aprovado por especialistas.</p></div>
                     <span class="text-xs text-center block w-full bg-gray-800 text-gray-400 py-1.5 rounded-md font-medium border border-gray-700">[ Imagem da Cadeira Pro ]</span>
                 </div>
             </div>
@@ -395,7 +395,7 @@
         function salvarRelatorio(tipoErro) {
             const uf = document.getElementById('reportUF').value;
             const tribunal = document.getElementById('reportTribunal').value;
-            console.log("Banco de Dados:", { estado: uf, portal: tribunal, समस्या: tipoErro, dataHora: new Date() });
+            console.log("Banco de Dados:", { estado: uf, portal: tribunal, problema: tipoErro, dataHora: new Date() });
             alert(`Relatório recebido com sucesso! Obrigado por colaborar.`);
             fecharModal('modalReportar');
         }
