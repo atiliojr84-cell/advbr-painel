@@ -11,10 +11,16 @@
         .card { background-color: #111827; border: 1px solid #1f2937; transition: transform 0.2s; }
         .card:hover { transform: translateY(-2px); }
         
-        /* Containers de Carrossel Independentes Identicos e Alinhados */
-        .portal-carousel, .products-carousel { display: flex; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; gap: 1rem; padding-bottom: 1rem; width: 100%; -webkit-overflow-scrolling: touch; }
+        /* Containers de Carrossel Independentes com scroll ativo e travamento de linha horizontal */
+        .portal-carousel { display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; gap: 1rem; padding-bottom: 1rem; width: 100%; -webkit-overflow-scrolling: touch; }
+        
+        .products-carousel { display: block; overflow-x: auto; overflow-y: hidden; white-space: nowrap; scroll-behavior: smooth; width: 100%; -webkit-overflow-scrolling: touch; padding-bottom: 1rem; }
+        
         .portal-carousel::-webkit-scrollbar, .products-carousel::-webkit-scrollbar { height: 6px; }
         .portal-carousel::-webkit-scrollbar-thumb, .products-carousel::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        
+        /* Forçar os cards de produto a respeitarem a linha horizontal sem esmagar o texto interno */
+        .product-item { display: inline-block; vertical-align: top; white-space: normal; }
         
         .state-btn { background-color: #1f2937; border: 1px solid #374151; transition: all 0.2s; cursor: pointer; }
         .state-btn:hover { background-color: #2563eb; border-color: #3b82f6; }
@@ -59,6 +65,7 @@
             <div class="ticker-item flex items-center">
                 <span class="relative flex h-2.5 w-2.5 mr-2">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-full w-full rounded-full bg-red-400 opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                 </span>
                 <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde.
@@ -220,15 +227,11 @@
             </div>
             
             <div class="products-carousel">
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                <a href="https://www.amazon.com.br" target="_blank" class="product-item w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200 mr-3">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-mouse"></i></div>
                     <div><h4 class="text-sm font-bold text-gray-200 truncate">1. Mouse Ergonômico</h4><p class="text-xs text-gray-400 leading-relaxed">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p></div>
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                <a href="https://www.amazon.com.br" target="_blank" class="product-item w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200 mr-3">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-keyboard"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">2. Teclado Silent</h4><p class="text-xs text-gray-400 leading-relaxed">Digitação macia e extremamente silenciosa para escritórios.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">2. Teclado Silent</h4><p class="text-xs text-gray-400 leading-relaxed">Di
