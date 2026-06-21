@@ -21,24 +21,66 @@
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-50%, 0, 0); }
         }
-        .ticker-wrap { width: 100%; overflow: hidden; background-color: #060911; border-bottom: 1px solid #1e293b; padding: 10px 0; }
-        .ticker { display: inline-flex; white-space: nowrap; padding-left: 100%; animation: ticker 45s linear infinite; }
+        .ticker-wrap { width: 100%; overflow: hidden; background-color: #060911; border-bottom: 1px solid #1e293b; padding: 12px 0; }
+        .ticker { display: inline-flex; white-space: nowrap; padding-left: 100%; animation: ticker 50s linear infinite; }
         .ticker:hover { animation-play-state: paused; }
-        .ticker-item { padding: 0 2.5rem; font-size: 0.825rem; font-weight: 500; display: flex; items-center: center; gap: 0.5rem; color: #94a3b8; }
+        .ticker-item { padding: 0 3rem; font-size: 0.85rem; font-weight: 500; display: flex; items-center: center; gap: 0.6rem; color: #94a3b8; border-right: 1px solid #1e293b; }
     </style>
 </head>
 <body>
 
     <div class="ticker-wrap">
         <div class="ticker">
-            <div class="ticker-item"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> <strong class="text-amber-400">TJPR:</strong> eproc passará por manutenção programada neste sábado das 08h às 14h.</div>
-            <div class="ticker-item"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> <strong class="text-blue-400">TRF3:</strong> Nova versão do PJe implantada com correção para assinaturas locais.</div>
-            <div class="ticker-item"><span class="w-2 h-2 bg-red-500 rounded-full"></span> <strong class="text-red-400">TJSP:</strong> Sistema e-SAJ operando com lentidão parcial na comarca da Capital.</div>
-            <div class="ticker-item"><span class="w-2 h-2 bg-green-500 rounded-full"></span> <strong class="text-green-400">CNJ:</strong> Plataforma de Editais Nacionais unificada está online sem instabilidades.</div>
-            <div class="ticker-item"><span class="w-2 h-2 bg-amber-500 rounded-full"></span> <strong class="text-amber-400">TJPR:</strong> eproc passará por manutenção programada neste sábado das 08h às 14h.</div>
-            <div class="ticker-item"><span class="w-2 h-2 bg-blue-500 rounded-full"></span> <strong class="text-blue-400">TRF3:</strong> Nova versão do PJe implantada com correção para assinaturas locais.</div>
-            <div class="ticker-item"><span class="w-2 h-2 bg-red-500 rounded-full"></span> <strong class="text-red-400">TJSP:</strong> Sistema e-SAJ operando com lentidão parcial na comarca da Capital.</div>
-            <div class="ticker-item"><span class="w-2 h-2 bg-green-500 rounded-full"></span> <strong class="text-green-400">CNJ:</strong> Plataforma de Editais Nacionais unificada está online sem instabilidades.</div>
+            <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item flex items-center">
+                <span class="relative flex h-2.5 w-2.5 mr-1">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde.
+            </div>
+            
+            <div class="ticker-item flex items-center">
+                <span class="h-2.5 w-2.5 rounded-full bg-amber-500 mr-1"></span>
+                <strong class="text-amber-400 mr-1">TJPR:</strong> Sistema eproc passará por manutenção programada neste sábado das 08h às 14h.
+            </div>
+            
+            <div class="ticker-item flex items-center">
+                <span class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-1"></span>
+                <strong class="text-blue-400 mr-1">TRF3:</strong> Nova versão do assinador PJe corrigiu falhas com certificados A3 no navegador Chrome.
+            </div>
+
+            <div class="ticker-item flex items-center">
+                <span class="relative flex h-2.5 w-2.5 mr-1">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
+            </div>
+
+            <div class="ticker-item flex items-center">
+                <span class="relative flex h-2.5 w-2.5 mr-1">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde.
+            </div>
+            <div class="ticker-item flex items-center">
+                <span class="h-2.5 w-2.5 rounded-full bg-amber-500 mr-1"></span>
+                <strong class="text-amber-400 mr-1">TJPR:</strong> Sistema eproc passará por manutenção programada neste sábado das 08h às 14h.
+            </div>
+            <div class="ticker-item flex items-center">
+                <span class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-1"></span>
+                <strong class="text-blue-400 mr-1">TRF3:</strong> Nova versão do assinador PJe corrigiu falhas com certificados A3 no navegador Chrome.
+            </div>
+            <div class="ticker-item flex items-center">
+                <span class="relative flex h-2.5 w-2.5 mr-1">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                </span>
+                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
+            </div>
         </div>
     </div>
 
@@ -199,33 +241,4 @@
                 </div>
                 <div class="flex-none w-64 card p-4 rounded-xl space-y-3 flex flex-col justify-between">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-hard-drive"></i></div>
-                    <div><h4 class="text-sm font-bold truncate">SSD Externo Criptografado</h4><p class="text-xs text-gray-400 line-clamp-2">Backup físico seguro de todas as pastas de clientes.</p></div>
-                    <span class="text-xs text-center block w-full bg-gray-800 text-gray-400 py-1.5 rounded-md font-medium border border-gray-700">[ Imagem do SSD ]</span>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
-            <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center">
-                <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-square-poll-vertical text-blue-500"></i> Infraestrutura - <span id="estadoNome">PR</span>
-                </h3>
-                <p class="text-xs text-gray-400 mt-1">Varreduras técnicas e alertas enviados por usuários.</p>
-            </div>
-            
-            <div class="space-y-3">
-                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Status Atual (Robôs)</h4>
-                <div id="linksTribunais" class="space-y-2">
-                    </div>
-            </div>
-
-            <div class="space-y-3 border-t border-gray-800 pt-4">
-                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <i class="fa-solid fa-users text-blue-400"></i> Relatos Recentes de Colegas
-                </h4>
-              
+                    <div><h4 class="text-sm
