@@ -11,8 +11,8 @@
         .card { background-color: #111827; border: 1px solid #1f2937; transition: transform 0.2s; }
         .card:hover { transform: translateY(-2px); }
         
-        /* Containers de Carrossel Independentes com scroll ativo */
-        .portal-carousel, .products-carousel { display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; gap: 1rem; padding-bottom: 1rem; width: 100%; -webkit-overflow-scrolling: touch; }
+        /* Containers de Carrossel Independentes Identicos e Alinhados */
+        .portal-carousel, .products-carousel { display: flex; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; gap: 1rem; padding-bottom: 1rem; width: 100%; -webkit-overflow-scrolling: touch; }
         .portal-carousel::-webkit-scrollbar, .products-carousel::-webkit-scrollbar { height: 6px; }
         .portal-carousel::-webkit-scrollbar-thumb, .products-carousel::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
         
@@ -206,28 +206,29 @@
             </div>
         </section>
 
-        <section>
-            <h2 class="text-lg font-semibold mb-1 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-cart-shopping text-blue-500"></i> Equipamentos Homologados para Advocacia
-            </h2>
-            
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                <p class="text-xs text-gray-500">Evite travamentos no dia a dia juridico utilizando hardware testado por especialistas.</p>
-                <div class="flex items-center gap-1.5 text-xs text-gray-300">
-                    <i class="fa-solid fa-shield-check text-green-500 text-sm"></i> 
-                    <span>Links testados, seguros e direcionados apenas para lojas oficiais.</span>
+        <section class="space-y-4">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2 mb-1">
+                    <i class="fa-solid fa-cart-shopping text-blue-500"></i> Equipamentos Homologados para Advocacia
+                </h2>
+                <div class="flex flex-col space-y-1">
+                    <p class="text-xs text-gray-500">Evite travamentos no dia a dia juridico utilizando hardware testado por especialistas.</p>
+                    <p class="text-xs text-gray-500 flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved text-green-500"></i> Links testados, seguros e direcionados apenas para lojas oficiais.
+                    </p>
                 </div>
             </div>
             
             <div class="products-carousel">
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-64 min-w-[16rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-mouse"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">1. Mouse Ergonômico</h4><p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">1. Mouse Ergonômico</h4><p class="text-xs text-gray-400 leading-relaxed">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p></div>
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-64 min-w-[16rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-keyboard"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">2. Teclado Silent</h4><p class="text-xs text-gray-400 line-clamp-2">Digitação macia e extremamente silenciosa para escritórios.</p></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">2. Teclado Silent</h4><p class="text-xs text-gray-400 leading-relaxed">Digitação macia e extremamente silenciosa para escritórios.</p></div>
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-64 min-w-[16rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition dura
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg
