@@ -27,8 +27,8 @@
             <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
         </div>
         
-        <button onclick="abrirReportar()" class="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl transition shadow-lg shadow-red-900/30 flex items-center gap-2 active:scale-95">
-            <i class="fa-solid fa-triangle-exclamation"></i> Estou com problema!
+        <button onclick="abrirReportar()" class="bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 active:scale-95 shadow-sm">
+            <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
         </button>
     </header>
 
@@ -73,9 +73,9 @@
 
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado (Robôs)
+                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado
             </h2>
-            <p class="text-xs text-gray-500 mb-4">Selecione o estado para ver a telemetria em tempo real dos robôs de monitoramento.</p>
+            <p class="text-xs text-gray-500 mb-4">Selecione o estado para ver a telemetria em tempo real das varreduras de infraestrutura.</p>
             
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3">
                 <div onclick="abrirEstado('PR')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PR</div>
@@ -87,71 +87,42 @@
                 <div onclick="abrirEstado('MS')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MS</div>
                 <div onclick="abrirEstado('MT')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MT</div>
                 <div onclick="abrirEstado('GO')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">GO</div>
+                <div onclick="abrirEstado('DF')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">DF</div>
+                <div onclick="abrirEstado('BA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">BA</div>
+                <div onclick="abrirEstado('PE')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PE</div>
+                <div onclick="abrirEstado('CE')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">CE</div>
+                <div onclick="abrirEstado('MA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MA</div>
+                <div onclick="abrirEstado('PA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PA</div>
+                <div onclick="abrirEstado('AM')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">AM</div>
+                <div onclick="abrirEstado('ES')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">ES</div>
+                <div onclick="abrirEstado('TO')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">TO</div>
             </div>
         </section>
 
-        <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-            <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
-                <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-                <div class="text-center">
-                    <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-robot text-blue-500"></i> Diagnóstico dos Robôs - <span id="estadoNome">PR</span>
-                    </h3>
-                    <p class="text-xs text-gray-400 mt-1">Resultados automáticos da última varredura de infraestrutura.</p>
-                </div>
-                <div id="linksTribunais" class="space-y-2.5 pt-2">
-                    </div>
+        <section class="p-6 card rounded-2xl border border-red-900/40 bg-gradient-to-r from-red-950/20 via-gray-900 to-gray-950 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="space-y-2 text-center md:text-left">
+                <h2 class="text-lg font-bold text-red-400 flex items-center justify-center md:justify-start gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> Otimizador de Arquivos Inteligente
+                </h2>
+                <p class="text-sm text-gray-400 max-w-xl">Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.</p>
             </div>
-        </div>
+            <button class="w-full md:w-auto flex-none bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-extrabold text-sm px-8 py-4 rounded-xl transition shadow-lg shadow-red-950/50 active:scale-95 flex items-center justify-center gap-3 tracking-wide">
+                <i class="fa-solid fa-wand-magic-sparkles text-base"></i> Edite seu PDF automaticamente de acordo com o portal que deseja anexar
+            </button>
+        </section>
 
-        <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-            <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
-                <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
+            <div class="max-w-xl mx-auto text-center space-y-4 py-4">
+                <div class="w-12 h-12 bg-blue-950 text-blue-400 rounded-xl flex items-center justify-center mx-auto text-lg border border-blue-800/30">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <h2 class="text-xl font-bold">Diagnóstico de Hardware & Certificado</h2>
+                <p class="text-sm text-gray-400">O módulo local está pronto para ser acoplado. Inicie a checagem do seu Token OAB e componentes do sistema para evitar travamentos no meio do peticionamento.</p>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-6 py-2.5 rounded-xl transition shadow-lg shadow-blue-900/20 active:scale-95">
+                    Iniciar Teste de Token/Certificado
                 </button>
-                
-                <div class="text-center">
-                    <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-comment-slash text-red-500"></i> Relatar Instabilidade
-                    </h3>
-                    <p class="text-xs text-amber-400 bg-amber-950/30 border border-amber-900/40 px-3 py-2 rounded-xl mt-2 font-medium">
-                        <i class="fa-solid fa-circle-info"></i> Ajude-nos a monitorar os sites! Seu relato calibra nosso painel e ajuda outros advogados.
-                    </p>
-                </div>
-
-                <div id="passo1" class="space-y-2">
-                    <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">1. Escolha o Estado:</label>
-                    <select id="reportUF" onchange="irParaPasso2()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
-                        <option value="">Selecione...</option>
-                        <option value="PR">Paraná (PR)</option>
-                        <option value="SP">São Paulo (SP)</option>
-                    </select>
-                </div>
-
-                <div id="passo2" class="space-y-2 hidden">
-                    <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">2. Escolha o Tribunal/Portal:</label>
-                    <select id="reportTribunal" onchange="irParaPasso3()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
-                        </select>
-                </div>
-
-                <div id="passo3" class="space-y-3 hidden">
-                    <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">3. Qual é o problema atual?</label>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="salvarRelatorio('Site Offline')" class="bg-red-950/60 hover:bg-red-900 border border-red-800 text-red-400 text-sm font-bold p-4 rounded-xl transition active:scale-95">
-                            <i class="fa-solid fa-plug-circle-xmark block text-xl mb-1"></i> Site Offline
-                        </button>
-                        <button onclick="salvarRelatorio('Lentidão / Instabilidade')" class="bg-amber-950/60 hover:bg-amber-900 border border-amber-800 text-amber-400 text-sm font-bold p-4 rounded-xl transition active:scale-95">
-                            <i class="fa-solid fa-gauge-high block text-xl mb-1"></i> Lentidão
-                        </button>
-                    </div>
-                    <p class="text-[11px] text-gray-500 text-center italic mt-2">
-                        *Atenção: Este painel computa instabilidades gerais de rede. Ele não altera nem corrige o sistema interno do tribunal selecionado.
-                    </p>
-                </div>
             </div>
-        </div>
+        </section>
 
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
@@ -163,9 +134,76 @@
                     <div><h4 class="text-sm font-bold truncate">Notebook Advogado Pro</h4><p class="text-xs text-gray-400 line-clamp-2">Intel i5, 16GB RAM, SSD 512GB.</p></div>
                     <span class="text-xs text-center block w-full bg-gray-800 text-gray-400 py-1.5 rounded-md font-medium border border-gray-700">[ Imagem do Notebook ]</span>
                 </div>
+                <div class="flex-none w-64 card p-4 rounded-xl space-y-3 flex flex-col justify-between">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-key"></i></div>
+                    <div><h4 class="text-sm font-bold truncate">Leitora Certificado A3</h4><p class="text-xs text-gray-400 line-clamp-2">Compatível com todos os tokens OAB.</p></div>
+                    <span class="text-xs text-center block w-full bg-gray-800 text-gray-400 py-1.5 rounded-md font-medium border border-gray-700">[ Imagem do Certificado A3 ]</span>
+                </div>
             </div>
         </section>
     </main>
+
+    <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
+            <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-square-poll-vertical text-blue-500"></i> Status de Infraestrutura - <span id="estadoNome">PR</span>
+                </h3>
+                <p class="text-xs text-gray-400 mt-1">Resultados automáticos da última varredura nos servidores.</p>
+            </div>
+            <div id="linksTribunais" class="space-y-2.5 pt-2">
+                </div>
+        </div>
+    </div>
+
+    <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
+            <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="text-center">
+                <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-blue-500"></i> Relatar Instabilidade
+                </h3>
+                <p class="text-xs text-amber-400 bg-amber-950/30 border border-amber-900/40 px-3 py-2 rounded-xl mt-2 font-medium">
+                    <i class="fa-solid fa-circle-info"></i> Ajude-nos a monitorar os sites! Seu relato calibra nosso painel e ajuda outros advogados.
+                </p>
+            </div>
+
+            <div id="passo1" class="space-y-2">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">1. Escolha o Estado:</label>
+                <select id="reportUF" onchange="irParaPasso2()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
+                    <option value="">Selecione...</option>
+                    <option value="PR">Paraná (PR)</option>
+                    <option value="SP">São Paulo (SP)</option>
+                </select>
+            </div>
+
+            <div id="passo2" class="space-y-2 hidden">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">2. Escolha o Tribunal/Portal:</label>
+                <select id="reportTribunal" onchange="irParaPasso3()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
+                    </select>
+            </div>
+
+            <div id="passo3" class="space-y-3 hidden">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">3. Qual é o problema atual?</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="salvarRelatorio('Site Offline')" class="bg-red-950/40 hover:bg-red-900/60 border border-red-900/60 text-red-400 text-sm font-bold p-4 rounded-xl transition active:scale-95 flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-power-off text-lg"></i> Site Offline
+                    </button>
+                    <button onclick="salvarRelatorio('Lentidão / Instabilidade')" class="bg-amber-950/40 hover:bg-amber-900/60 border border-amber-900/60 text-amber-400 text-sm font-bold p-4 rounded-xl transition active:scale-95 flex flex-col items-center justify-center gap-1">
+                        <i class="fa-solid fa-gauge-simple text-lg"></i> Lentidão
+                    </button>
+                </div>
+                <p class="text-[11px] text-gray-500 text-center italic mt-2">
+                    *Atenção: Este painel computa instabilidades gerais de rede. Ele não altera nem corrige o sistema interno do tribunal selecionado.
+                </p>
+            </div>
+        </div>
+    </div>
 
     <footer class="max-w-7xl mx-auto mt-16 pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
         &copy; 2026 ADVBR.info. Todos os direitos reservados.
@@ -211,7 +249,7 @@
             if (!uf) return;
             const selectTribunal = document.getElementById('reportTribunal');
             selectTribunal.innerHTML = '<option value="">Selecione...</option>';
-            const tribunais = dadosRobos[uf] || [{ nome: 'TJ' + uf }, { nome: 'PJe' + uf }];
+            const tribunais = dadosRobos[uf] || [{ nome: 'TJ - ' + uf }, { nome: 'PJe - ' + uf }];
             tribunais.forEach(t => { selectTribunal.innerHTML += `<option value="${t.nome}">${t.nome}</option>`; });
             document.getElementById('passo2').classList.remove('hidden');
             document.getElementById('passo3').classList.add('hidden');
@@ -226,10 +264,8 @@
         function salvarRelatorio(tipoErro) {
             const uf = document.getElementById('reportUF').value;
             const tribunal = document.getElementById('reportTribunal').value;
-            const dadosDoProblema = { estado: uf, portal: tribunal, problema: tipoErro, dataHora: new Date().toISOString() };
-            
-            console.log("Computando no Banco de Dados:", dadosDoProblema);
-            alert(`Relatório Computado! Obrigado por ajudar a comunidade.`);
+            console.log("Banco de Dados:", { estado: uf, portal: tribunal, problema: tipoErro, dataHora: new Date() });
+            alert(`Relatório recebido com sucesso! Obrigado por colaborar.`);
             fecharModal('modalReportar');
         }
 
