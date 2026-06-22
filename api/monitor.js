@@ -1,16 +1,19 @@
-// api/monitor.js - Motor Inteligente de Varredura por Lotes (ADVBR.info)
-const tribunais = require('./alvos');
+// api/monitor.js - Motor Avançado por Lotes Alinhado (ADVBR.info)
+import tribunais from './alvos';
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');
     res.setHeader('Content-Type', 'application/json');
 
-    // Captura o lote pela URL (Ex: /api/monitor?lote=1). Se não passar nenhum, padroniza lote 1.
+    // Captura o lote pela URL (Ex: /api/monitor?lote=1). Se não passar, padroniza lote 1.
     const loteDefinido = req.query.lote ? parseInt(req.query.lote) : 1;
 
+    // Garante que a lista de tribunais seja lida corretamente independente da exportação
+    const listaTribunais = tribunais.default || tribunais;
+
     // Filtra na base de dados para testar APENAS os tribunais do lote escolhido
-    const alvosDoLote = tribunais.filter(t => t.lote === loteDefinido);
+    const alvosDoLote = listaTribunais.filter(t => t.lote === loteDefinido);
 
     const resultados = [];
 
