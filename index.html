@@ -3,216 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADVBR.info - Monitoramento e Diagnóstico</title>
+    <title>ADVBR.info - Monitoramento de Tribunais</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; overflow-x: hidden; }
-        .card { background-color: #111827; border: 1px solid #1f2937; transition: transform 0.2s; }
-        .card:hover { transform: translateY(-2px); }
-        
-        /* Containers de Carrossel Independentes com scroll ativo */
-        .portal-carousel, .products-carousel { display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; gap: 1rem; padding-bottom: 1rem; width: 100%; -webkit-overflow-scrolling: touch; }
-        .portal-carousel::-webkit-scrollbar, .products-carousel::-webkit-scrollbar { height: 6px; }
-        .portal-carousel::-webkit-scrollbar-thumb, .products-carousel::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        
-        .state-btn { background-color: #1f2937; border: 1px solid #374151; transition: all 0.2s; cursor: pointer; }
-        .state-btn:hover { background-color: #2563eb; border-color: #3b82f6; }
-        
-        /* Animação do Letreiro de Notícias */
-        @keyframes ticker {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-50%, 0, 0); }
+        body {
+            background-color: #030712;
         }
-        .ticker-wrap { width: 100%; overflow: hidden; background-color: #060911; border-bottom: 1px solid #1e293b; padding: 12px 0; }
-        .ticker { display: inline-flex; white-space: nowrap; padding-left: 100%; animation: ticker 50s linear infinite; }
-        .ticker:hover { animation-play-state: paused; }
-        .ticker-item { padding: 0 3rem; font-size: 0.85rem; font-weight: 500; display: flex; items-center: center; gap: 0.6rem; color: #94a3b8; border-right: 1px solid #1e293b; }
+        .card {
+            background-color: #0b0f19;
+            border: 1px solid #1e293b;
+        }
+        .products-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+        }
+        .products-carousel::-webkit-scrollbar {
+            height: 4px;
+        }
+        .products-carousel::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
+        }
     </style>
 </head>
-<body>
+<body class="text-gray-100 font-sans antialiased">
 
-    <div class="ticker-wrap">
-        <div class="ticker">
-            <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-amber-500 mr-2"></span>
-                <strong class="text-amber-400 mr-1">TJPR:</strong> Sistema eproc passará por manutenção programada neste sábado das 08h às 14h.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2"></span>
-                <strong class="text-blue-400 mr-1">TRF3:</strong> Nova versão do assinador PJe corrigiu falhas com certificados A3 no navegador Chrome.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-amber-500 mr-2"></span>
-                <strong class="text-amber-400 mr-1">TJPR:</strong> Sistema eproc passará por manutenção programada neste sábado das 08h às 14h.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2"></span>
-                <strong class="text-blue-400 mr-1">TRF3:</strong> Nova versão do assinador PJe corrigiu falhas com certificados A3 no navegador Chrome.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
-            </div>
-        </div>
-    </div>
-
-    <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
+    <div class="max-w-6xl mx-auto p-4 space-y-6">
         
-        <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-                <h1 class="text-2xl font-bold text-blue-500 flex items-center gap-1">
-                    ADVBR<span class="text-white">.info</span>
-                </h1>
-                <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
+        <header class="flex justify-between items-center py-2 border-b border-gray-800">
+            <div class="flex items-center gap-2">
+                <div class="h-3 w-3 bg-blue-500 rounded-full shadow-[0_0_10px_#3b82f6]"></div>
+                <h1 class="text-xl font-bold tracking-tight text-white">ADV<span class="text-blue-500">BR</span><span class="text-xs text-gray-500 font-normal ml-1">.info</span></h1>
             </div>
-            <button onclick="abrirReportar()" class="bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2 active:scale-95 shadow-sm">
-                <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
-            </button>
+            <div class="text-xs text-gray-400 flex items-center gap-1.5 bg-gray-950 px-3 py-1.5 rounded-lg border border-gray-800">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                Monitoramento Ativo
+            </div>
         </header>
 
-        <section>
-            <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-star text-amber-500"></i> Principais Portais
-            </h2>
-            <p class="text-xs text-gray-500 mb-4">Sistemas de âmbito nacional e regionais de altíssimo fluxo, ordenados do mais acessado para o menos acessado.</p>
-            
-            <div class="portal-carousel">
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">1. PJe - Nacional</p><p class="text-xs text-gray-500">Conselho Nacional de Justiça</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">2. eproc - Geral</p><p class="text-xs text-gray-500">Justiça Estadual e Federal</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">3. e-SAJ - Geral</p><p class="text-xs text-gray-500">Tribunais de Justiça Estaduais</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">4. STJ - Processos</p><p class="text-xs text-gray-500">Superior Tribunal de Justiça</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">5. STF - Eletrônico</p><p class="text-xs text-gray-500">Supremo Tribunal Federal</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">6. TST - PJe</p><p class="text-xs text-gray-500">Tribunal Superior do Trabalho</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">7. TRF1 - PJe</p><p class="text-xs text-gray-500">Justiça Federal da 1ª Região</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">8. TRF3 - PJe</p><p class="text-xs text-gray-500">Justiça Federal de SP e MS</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">9. TRT2 - PJe</p><p class="text-xs text-gray-500">Tribunal Trabalhista de SP</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-                <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                    <div><p class="text-sm font-bold text-gray-200">10. Projudi - Geral</p><p class="text-xs text-gray-500">Juizados Especiais Cíveis</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado
-            </h2>
-            <p class="text-xs text-gray-500 mb-4">Selecione o estado para ver as varreduras de disponibilidade em tempo real.</p>
-            
-            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3">
-                <div onclick="abrirEstado('PR')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PR</div>
-                <div onclick="abrirEstado('SP')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">SP</div>
-                <div onclick="abrirEstado('SC')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">SC</div>
-                <div onclick="abrirEstado('RS')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">RS</div>
-                <div onclick="abrirEstado('RJ')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">RJ</div>
-                <div onclick="abrirEstado('MG')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MG</div>
-                <div onclick="abrirEstado('MS')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MS</div>
-                <div onclick="abrirEstado('MT')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MT</div>
-                <div onclick="abrirEstado('GO')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">GO</div>
-                <div onclick="abrirEstado('DF')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">DF</div>
-                <div onclick="abrirEstado('BA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">BA</div>
-                <div onclick="abrirEstado('PE')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PE</div>
-                <div onclick="abrirEstado('CE')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">CE</div>
-                <div onclick="abrirEstado('MA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MA</div>
-                <div onclick="abrirEstado('PA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PA</div>
-                <div onclick="abrirEstado('AM')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">AM</div>
-                <div onclick="abrirEstado('ES')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">ES</div>
-                <div onclick="abrirEstado('TO')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">TO</div>
-            </div>
-        </section>
-
-        <section class="p-6 card rounded-2xl border border-gray-850 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
-            <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
-                <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
-                    <i class="fa-solid fa-file-pdf text-3xl" style="color: #d9381e;"></i> Otimizador PDF inteligente
+        <section class="space-y-3">
+            <div>
+                <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-blue-500"></i> Status por Região
                 </h2>
-                <p class="text-sm text-gray-400 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                    Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.
-                </p>
+                <p class="text-xs text-gray-500 mt-0.5">Clique no seu estado para ver detalhes dos tribunais.</p>
             </div>
-            <button class="w-full lg:w-auto flex-none bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-blue-950/40 active:scale-95 text-center tracking-wide lg:max-w-md">
-                Edite seu PDF automaticamente de acordo com o portal que deseja anexar
-            </button>
-        </section>
 
-        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
-            <div class="max-w-xl mx-auto text-center space-y-5 py-4">
-                <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
-                    <i class="fa-solid fa-key fa-rotate-270"></i>
-                </div>
-                <h2 class="text-xl font-bold">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
-                <p class="text-sm text-gray-400">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
                 
-                <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg shadow-blue-900/20 active:scale-95 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-usb"></i> Iniciar Teste de Token/Certificado
-                    </button>
-                    <button class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-semibold text-sm px-5 py-3 rounded-xl transition active:scale-95 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-laptop-code text-blue-400"></i> Testar PJe Office Pro
-                    </button>
-                </div>
+                <button onclick="abrirModalEstado('PR')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Paraná (PR)</span>
+                    <div id="dot-PR" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('SP')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">São Paulo (SP)</span>
+                    <div id="dot-SP" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('SC')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Santa Catarina (SC)</span>
+                    <div id="dot-SC" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('RS')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Rio G. do Sul (RS)</span>
+                    <div id="dot-RS" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('RJ')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Rio de Janeiro (RJ)</span>
+                    <div id="dot-RJ" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('MG')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Minas Gerais (MG)</span>
+                    <div id="dot-MG" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('MS')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">M. G. do Sul (MS)</span>
+                    <div id="dot-MS" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('MT')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Mato Grosso (MT)</span>
+                    <div id="dot-MT" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('GO')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Goiás (GO)</span>
+                    <div id="dot-GO" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('DF')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Distrito Federal (DF)</span>
+                    <div id="dot-DF" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('BA')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Bahia (BA)</span>
+                    <div id="dot-BA" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('PE')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Pernambuco (PE)</span>
+                    <div id="dot-PE" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('CE')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Ceará (CE)</span>
+                    <div id="dot-CE" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('MA')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Maranhão (MA)</span>
+                    <div id="dot-MA" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('PA')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Pará (PA)</span>
+                    <div id="dot-PA" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('AM')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Amazonas (AM)</span>
+                    <div id="dot-AM" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('ES')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Espírito Santo (ES)</span>
+                    <div id="dot-ES" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
+                <button onclick="abrirModalEstado('TO')" class="card p-3 rounded-xl flex items-center justify-between hover:border-gray-700 transition text-left group">
+                    <span class="text-sm font-medium text-gray-300 group-hover:text-white">Tocantins (TO)</span>
+                    <div id="dot-TO" class="h-2 w-2 rounded-full bg-gray-700 transition-all duration-300"></div>
+                </button>
+
             </div>
         </section>
 
-        <section class="space-y-4">
+        <section class="space-y-4 pt-4 border-t border-gray-800">
             <div>
                 <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2 mb-1">
                     <i class="fa-solid fa-cart-shopping text-blue-500"></i> Equipamentos Homologados para Advocacia
                 </h2>
                 <div class="flex flex-col space-y-1">
-                    <p class="text-xs text-gray-500">Evite travamentos no dia a dia juridico utilizando hardware testado por especialistas.</p>
+                    <p class="text-xs text-gray-500">Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.</p>
                     <p class="text-xs text-gray-500 flex items-center gap-1.5">
                         <i class="fa-solid fa-shield-halved text-green-500"></i> Links testados, seguros e direcionados apenas para lojas oficiais.
                     </p>
@@ -225,9 +169,147 @@
                     <div><h4 class="text-sm font-bold text-gray-200 truncate">1. Mouse Ergonômico</h4><p class="text-xs text-gray-400 leading-relaxed">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p></div>
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
+                
                 <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-keyboard"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">2. Teclado Silent</h4><p class="text-xs text-gray-400 leading-relaxed">Digitação macia e extremamente silenciosa para escritórios.</p></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">2. Teclado Silent</h4><p class="text-xs text-gray-400 leading-relaxed">Digitação macia e extremamente silenciosa, ideal para escritórios focados.</p></div>
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
+
                 <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-laptop text-blue-500"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">3. Laptop Corporativo</h4><p class="text-xs text-gray-400 leading-relaxed">Alta performance para carregar múltiplos sistemas PJe sem gargalos.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <div id="modalEstado" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-map-pin text-blue-400"></i> Tribunais - Estado
+                </h3>
+                <button onclick="fecharModalEstado()" class="text-gray-400 hover:text-white text-xl font-bold">&times;</button>
+            </div>
+            <div id="modalContent" class="p-6 space-y-4">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        let statusGerais = {};
+
+        async function carregarLoteSilencioso(numLote) {
+            try {
+                const resposta = await fetch(`/api/monitor?lote=${numLote}`);
+                if (!resposta.ok) return;
+                const dados = await resposta.json();
+                
+                dados.forEach(alvo => {
+                    statusGerais[alvo.id] = alvo;
+                });
+
+                atualizarBolinhasEstados();
+
+                // Atualiza o modal em tempo real se ele estiver aberto no estado atualizado
+                const modalAberto = !document.getElementById('modalEstado').classList.contains('hidden');
+                if (modalAberto) {
+                    const tituloTexto = document.getElementById('modalTitle').innerText;
+                    const ufAtual = tituloTexto.split('- ')[1];
+                    if (ufAtual) renderizarConteudoModal(ufAtual);
+                }
+            } catch (erro) {
+                console.error(`Falha no lote ${numLote}:`, erro);
+            }
+        }
+
+        function atualizarBolinhasEstados() {
+            const estados = ['PR','SP','SC','RS','RJ','MG','MS','MT','GO','DF','BA','PE','CE','MA','PA','AM','ES','TO'];
+            
+            estados.forEach(uf => {
+                const dot = document.getElementById(`dot-${uf}`);
+                if (!dot) return;
+
+                const tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
+                if (tribunaisDaUf.length === 0) return;
+
+                const totalTribunais = tribunaisDaUf.length;
+                const qtdOnline = tribunaisDaUf.filter(t => t.status === "Online").length;
+                const qtdFora = tribunaisDaUf.filter(t => t.status === "Fora do Ar").length;
+
+                // Reseta classes do indicador visual
+                dot.className = "h-2 w-2 rounded-full transition-all duration-300 ";
+
+                // EXECUÇÃO DA SUA DIRETRIZ DE CORES ESTÁTICAS CLARAS:
+                if (qtdOnline === totalTribunais) {
+                    // Verde Claro Estático
+                    dot.className += "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
+                } else if (qtdFora === totalTribunais) {
+                    // Vermelho Claro Estático (Apagão Total)
+                    dot.className += "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
+                } else {
+                    // Amarelo Claro Estático (Queda parcial ou Lentidão interna)
+                    dot.className += "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
+                }
+            });
+        }
+
+        function abrirModalEstado(uf) {
+            document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-map-pin text-blue-400"></i> Tribunais - ${uf}`;
+            renderizarConteudoModal(uf);
+            document.getElementById('modalEstado').classList.remove('hidden');
+        }
+
+        function fecharModalEstado() {
+            document.getElementById('modalEstado').classList.add('hidden');
+        }
+
+        function renderizarConteudoModal(uf) {
+            const container = document.getElementById('modalContent');
+            const tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
+            
+            if (tribunaisDaUf.length === 0) {
+                container.innerHTML = `<p class="text-sm text-gray-400 text-center py-4">Aguardando leitura dos sensores para este estado...</p>`;
+                return;
+            }
+            
+            let html = `<div class="space-y-3">`;
+            tribunaisDaUf.forEach(t => {
+                let badgeClass = "bg-green-950 text-green-400 border-green-800/40";
+                if (t.status === "Lentidão") badgeClass = "bg-amber-950 text-amber-400 border-amber-800/40";
+                if (t.status === "Fora do Ar") badgeClass = "bg-red-950 text-red-400 border-red-800/40";
+                
+                html += `
+                    <div class="flex justify-between items-center bg-gray-950 border border-gray-800 p-3 rounded-xl">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-200">${t.nome}</p>
+                            <p class="text-[11px] text-gray-500">${t.latenciaMs ? `Resposta em ${t.latenciaMs}ms` : 'Verificado'}</p>
+                        </div>
+                        <span class="px-2.5 py-0.5 text-xs font-bold rounded border ${badgeClass}">${t.status}</span>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        function iniciarEsteiraInvisivel() {
+            // Varredura imediata na abertura do site para alimentar a interface
+            carregarLoteSilencioso(1);
+            setTimeout(() => carregarLoteSilencioso(2), 1500);
+            setTimeout(() => carregarLoteSilencioso(3), 3000);
+            
+            // Loop de atualização em background a cada 2 minutos (alternando lotes)
+            let proximoLote = 1;
+            setInterval(() => {
+                proximoLote = proximoLote === 3 ? 1 : proximoLote + 1;
+                carregarLoteSilencioso(proximoLote);
+            }, 120000);
+        }
+
+        window.onload = iniciarEsteiraInvisivel;
+    </script>
+</body>
+</html>
