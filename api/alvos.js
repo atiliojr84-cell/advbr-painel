@@ -1,4 +1,4 @@
-// api/alvos.js - Base de Dados Completa com Todos os TJs e TRTs (1G e 2G) por Lotes
+// api/alvos.js - Base de Dados Completa por Lotes (ADVBR.info)
 const tribunais = [
     // === SISTEMAS NACIONAIS (Lote 1) ===
     { id: "pje_cnj", nome: "PJe Nacional (CNJ)", url: "https://www.pje.jus.br/navegador/", grupo: "nacionais", lote: 1 },
@@ -110,4 +110,4 @@ const tribunais = [
     { id: "trt24_2g", nome: "TRT24 (MS) - 2º Grau", url: "https://pje.trt24.jus.br/pje2g/pje-presente.html", grupo: "MS", lote: 3 }
 ];
 
-module.exports = tribunais;
+export default tribunais;
