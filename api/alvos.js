@@ -88,4 +88,26 @@ const tribunais = [
     { id: "trt17_1g", nome: "TRT17 (ES) - 1º Grau", url: "https://pje.trt17.jus.br/pje/pje-presente.html", grupo: "ES", lote: 3 },
     { id: "trt17_2g", nome: "TRT17 (ES) - 2º Grau", url: "https://pje.trt17.jus.br/pje2g/pje-presente.html", grupo: "ES", lote: 3 },
     // TRT18 (GO)
-    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "
+    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/pje-presente.html", grupo: "GO", lote: 3 },
+    { id: "trt18_2g", nome: "TRT18 (GO) - 2º Grau", url: "https://pje.trt18.jus.br/pje2g/pje-presente.html", grupo: "GO", lote: 3 },
+    // TRT19 (AL)
+    { id: "trt19_1g", nome: "TRT19 (AL) - 1º Grau", url: "https://pje.trt19.jus.br/pje/pje-presente.html", grupo: "AL", lote: 3 },
+    { id: "trt19_2g", nome: "TRT19 (AL) - 2º Grau", url: "https://pje.trt19.jus.br/pje2g/pje-presente.html", grupo: "AL", lote: 3 },
+    // TRT20 (SE)
+    { id: "trt20_1g", nome: "TRT20 (SE) - 1º Grau", url: "https://pje.trt20.jus.br/pje/pje-presente.html", grupo: "SE", lote: 3 },
+    { id: "trt20_2g", nome: "TRT20 (SE) - 2º Grau", url: "https://pje.trt20.jus.br/pje2g/pje-presente.html", grupo: "SE", lote: 3 },
+    // TRT21 (RN)
+    { id: "trt21_1g", nome: "TRT21 (RN) - 1º Grau", url: "https://pje.trt21.jus.br/pje/pje-presente.html", grupo: "RN", lote: 3 },
+    { id: "trt21_2g", nome: "TRT21 (RN) - 2º Grau", url: "https://pje.trt21.jus.br/pje2g/pje-presente.html", grupo: "RN", lote: 3 },
+    // TRT22 (PI)
+    { id: "trt22_1g", nome: "TRT22 (PI) - 1º Grau", url: "https://pje.trt22.jus.br/pje/pje-presente.html", grupo: "PI", lote: 3 },
+    { id: "trt22_2g", nome: "TRT22 (PI) - 2º Grau", url: "https://pje.trt22.jus.br/pje2g/pje-presente.html", grupo: "PI", lote: 3 },
+    // TRT23 (MT)
+    { id: "trt23_1g", nome: "TRT23 (MT) - 1º Grau", url: "https://pje.trt23.jus.br/pje/pje-presente.html", grupo: "MT", lote: 3 },
+    { id: "trt23_2g", nome: "TRT23 (MT) - 2º Grau", url: "https://pje.trt23.jus.br/pje2g/pje-presente.html", grupo: "MT", lote: 3 },
+    // TRT24 (MS)
+    { id: "trt24_1g", nome: "TRT24 (MS) - 1º Grau", url: "https://pje.trt24.jus.br/pje/pje-presente.html", grupo: "MS", lote: 3 },
+    { id: "trt24_2g", nome: "TRT24 (MS) - 2º Grau", url: "https://pje.trt24.jus.br/pje2g/pje-presente.html", grupo: "MS", lote: 3 }
+];
+
+module.exports = tribunais;
