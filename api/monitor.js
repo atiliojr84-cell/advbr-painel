@@ -1,79 +1,57 @@
-// api/monitor.js - Motor Avançado por Lotes Alinhado (ADVBR.info)
-import tribunais from './alvos';
+// api/monitor.js - Sistema Unificado por Lotes (ADVBR.info)
 
-export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Content-Type', 'application/json');
+const tribunais = [
+    // === SISTEMAS NACIONAIS (Lote 1) ===
+    { id: "pje_cnj", nome: "PJe Nacional (CNJ)", url: "https://www.pje.jus.br/navegador/", grupo: "nacionais", lote: 1 },
+    { id: "stj", nome: "STJ - Processos", url: "https://www.stj.jus.br/sites/portalp/inicio", grupo: "nacionais", lote: 1 },
+    { id: "stf", nome: "STF - Eletrônico", url: "https://portal.stf.jus.br/", grupo: "nacionais", lote: 1 },
+    
+    // === ESTADOS - TJs ESTADUAIS ===
+    { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/", grupo: "AC", lote: 1 },
+    { id: "tjal_paj", nome: "TJAL - SAJ", url: "https://esaj.tjal.jus.br/", grupo: "AL", lote: 1 },
+    { id: "tjap_tucujuris", nome: "TJAP - Tucujuris", url: "https://tucujuris.tjap.jus.br/", grupo: "AM", lote: 1 },
+    { id: "tjam_pje", nome: "TJAM - PJe", url: "https://pje.tjam.jus.br/", grupo: "AM", lote: 1 },
+    { id: "tjba_pje", nome: "TJBA - PJe", url: "https://pje.tjba.jus.br/", grupo: "BA", lote: 1 },
+    { id: "tjce_saj", nome: "TJCE - SAJ", url: "https://esaj.tjce.jus.br/", grupo: "CE", lote: 1 },
+    { id: "tjdft_pje", nome: "TJDFT - PJe", url: "https://pje.tjdft.jus.br/", grupo: "DF", lote: 1 },
+    { id: "tjes_pje", nome: "TJES - PJe", url: "https://pje.tjes.jus.br/", grupo: "ES", lote: 1 },
+    { id: "tjgo_pje", nome: "TJGO - PJe", url: "https://pje.tjgo.jus.br/", grupo: "GO", lote: 2 },
+    { id: "tjma_pje", nome: "TJMA - PJe", url: "https://pje.tjma.jus.br/", grupo: "MA", lote: 2 },
+    { id: "tjmt_pje", nome: "TJMT - PJe", url: "https://pje.tjmt.jus.br/", grupo: "MT", lote: 2 },
+    { id: "tjms_saj", nome: "TJMS - SAJ", url: "https://esaj.tjms.jus.br/", grupo: "MS", lote: 2 },
+    { id: "tjmg_pje", nome: "TJMG - PJe", url: "https://pje.tjmg.jus.br/", grupo: "MG", lote: 2 },
+    { id: "tjpa_pje", nome: "TJPA - PJe", url: "https://pje.tjpa.jus.br/", grupo: "PA", lote: 2 },
+    { id: "tjpb_pje", nome: "TJPB - PJe", url: "https://pje.tjpb.jus.br/", grupo: "PB", lote: 2 },
+    { id: "tjpr_eproc", nome: "TJPR - eproc", url: "https://eproc.tjpr.jus.br/eproc_2g/", grupo: "PR", lote: 1 },
+    { id: "tjpr_projudi", nome: "TJPR - Projudi", url: "https://projudi.tjpr.jus.br/projudi/", grupo: "PR", lote: 1 },
+    { id: "tjpe_pje", nome: "TJPE - PJe", url: "https://pje.tjpe.jus.br/", grupo: "PE", lote: 3 },
+    { id: "tjpi_pje", nome: "TJPI - PJe", url: "https://pje.tjpi.jus.br/", grupo: "PI", lote: 3 },
+    { id: "tjrj_eproc", nome: "TJRJ - eproc", url: "https://eproc.tjrj.jus.br/", grupo: "RJ", lote: 3 },
+    { id: "tjrn_pje", nome: "TJRN - PJe", url: "https://pje.tjrn.jus.br/", grupo: "RN", lote: 3 },
+    { id: "tjrs_eproc", nome: "TJRS - eproc", url: "https://eproc.tjrs.jus.br/", grupo: "RS", lote: 3 },
+    { id: "tjro_pje", nome: "TJRO - PJe", url: "https://pje.tjro.jus.br/", grupo: "RO", lote: 3 },
+    { id: "tjrr_projudi", nome: "TJRR - Projudi", url: "https://projudi.tjrr.jus.br/", grupo: "RR", lote: 3 },
+    { id: "tjsc_eproc", nome: "TJSC - eproc", url: "https://eproc2g.tjsc.jus.br/", grupo: "SC", lote: 3 },
+    { id: "tjsp_saj", nome: "TJSP - SAJ", url: "https://esaj.tjsp.jus.br/", grupo: "SP", lote: 3 },
+    { id: "tjse_portal", nome: "TJSE - Processos", url: "https://www.tjse.jus.br/", grupo: "SE", lote: 3 },
+    { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/", grupo: "TO", lote: 3 },
 
-    // Captura o lote pela URL (Ex: /api/monitor?lote=1). Se não passar, padroniza lote 1.
-    const loteDefinido = req.query.lote ? parseInt(req.query.lote) : 1;
-
-    // Garante que a lista de tribunais seja lida corretamente independente da exportação
-    const listaTribunais = tribunais.default || tribunais;
-
-    // Filtra na base de dados para testar APENAS os tribunais do lote escolhido
-    const alvosDoLote = listaTribunais.filter(t => t.lote === loteDefinido);
-
-    const resultados = [];
-
-    for (const t of alvosDoLote) {
-        let somasLatencia = 0;
-        let tentativasSucesso = 0;
-        let ultimoCodigoHttp = null;
-        let mensagemErro = null;
-
-        // Executa 3 pings rápidos para garantir a precisão
-        for (let i = 0; i < 3; i++) {
-            const inicio = Date.now();
-            try {
-                const resposta = await fetch(t.url, { 
-                    method: 'GET',
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
-                    },
-                    signal: AbortSignal.timeout(3000) // Timeout de 3 segundos por tentativa
-                });
-
-                const latenciaTentativa = Date.now() - inicio;
-                somasLatencia += latenciaTentativa;
-                tentativasSucesso++;
-                ultimoCodigoHttp = resposta.status;
-
-            } catch (erro) {
-                mensagemErro = erro.message;
-                continue;
-            }
-        }
-
-        if (tentativasSucesso > 0) {
-            const latenciaMedia = Math.round(somasLatencia / tentativasSucesso);
-            let status = "Online";
-            if (latenciaMedia > 1500) status = "Lentidão";
-
-            resultados.push({
-                id: t.id,
-                nome: t.nome,
-                grupo: t.grupo,
-                status: status,
-                latenciaMs: latenciaMedia,
-                codigoHttp: ultimoCodigoHttp,
-                lote: t.lote
-            });
-        } else {
-            resultados.push({
-                id: t.id,
-                nome: t.nome,
-                grupo: t.grupo,
-                status: "Fora do Ar",
-                latenciaMs: null,
-                erro: mensagemErro || "Timeout nas 3 tentativas",
-                lote: t.lote
-            });
-        }
-    }
-
-    return res.status(200).json(resultados);
-}
+    // === JUSTIÇA DO TRABALHO (TRTs 1G e 2G) ===
+    { id: "trt1_1g", nome: "TRT1 (RJ) - 1º Grau", url: "https://pje.trt1.jus.br/pje/pje-presente.html", grupo: "RJ", lote: 1 },
+    { id: "trt1_2g", nome: "TRT1 (RJ) - 2º Grau", url: "https://pje.trt1.jus.br/pje2g/pje-presente.html", grupo: "RJ", lote: 1 },
+    { id: "trt2_1g", nome: "TRT2 (SP) - 1º Grau", url: "https://pje.trtsp.jus.br/pje/pje-presente.html", grupo: "SP", lote: 1 },
+    { id: "trt2_2g", nome: "TRT2 (SP) - 2º Grau", url: "https://pje.trtsp.jus.br/pje2g/pje-presente.html", grupo: "SP", lote: 1 },
+    { id: "trt3_1g", nome: "TRT3 (MG) - 1º Grau", url: "https://pje.trt3.jus.br/pje/pje-presente.html", grupo: "MG", lote: 1 },
+    { id: "trt3_2g", nome: "TRT3 (MG) - 2º Grau", url: "https://pje.trt3.jus.br/pje2g/pje-presente.html", grupo: "MG", lote: 1 },
+    { id: "trt4_1g", nome: "TRT4 (RS) - 1º Grau", url: "https://pje.trt4.jus.br/pje/pje-presente.html", grupo: "RS", lote: 1 },
+    { id: "trt4_2g", nome: "TRT4 (RS) - 2º Grau", url: "https://pje.trt4.jus.br/pje2g/pje-presente.html", grupo: "RS", lote: 1 },
+    { id: "trt5_1g", nome: "TRT5 (BA) - 1º Grau", url: "https://pje.trt5.jus.br/pje/pje-presente.html", grupo: "BA", lote: 1 },
+    { id: "trt5_2g", nome: "TRT5 (BA) - 2º Grau", url: "https://pje.trt5.jus.br/pje2g/pje-presente.html", grupo: "BA", lote: 1 },
+    { id: "trt6_1g", nome: "TRT6 (PE) - 1º Grau", url: "https://pje.trt6.jus.br/pje/pje-presente.html", grupo: "PE", lote: 1 },
+    { id: "trt6_2g", nome: "TRT6 (PE) - 2º Grau", url: "https://pje.trt6.jus.br/pje2g/pje-presente.html", grupo: "PE", lote: 1 },
+    { id: "trt7_1g", nome: "TRT7 (CE) - 1º Grau", url: "https://pje.trt7.jus.br/pje/pje-presente.html", grupo: "CE", lote: 2 },
+    { id: "trt7_2g", nome: "TRT7 (CE) - 2º Grau", url: "https://pje.trt7.jus.br/pje2g/pje-presente.html", grupo: "CE", lote: 2 },
+    { id: "trt8_1g", nome: "TRT8 (PA/AP) - 1º Grau", url: "https://pje.trt8.jus.br/pje/pje-presente.html", grupo: "PA", lote: 2 },
+    { id: "trt8_2g", nome: "TRT8 (PA/AP) - 2º Grau", url: "https://pje.trt8.jus.br/pje2g/pje-presente.html", grupo: "PA", lote: 2 },
+    { id: "trt9_1g", nome: "TRT9 (PR) - 1º Grau", url: "https://pje.trt9.jus.br/pje/pje-presente.html", grupo: "PR", lote: 1 },
+    { id: "trt9_2g", nome: "TRT9 (PR) - 2º Grau", url: "https://pje.trt9.jus
