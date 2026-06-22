@@ -16,7 +16,7 @@
         .portal-carousel::-webkit-scrollbar, .products-carousel::-webkit-scrollbar { height: 6px; }
         .portal-carousel::-webkit-scrollbar-thumb, .products-carousel::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
         
-        .state-btn { background-color: #1f2937; border: 1px solid #374151; transition: all 0.2s; cursor: pointer; }
+        .state-btn { background-color: #1f2937; border: 1px solid #374151; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
         .state-btn:hover { background-color: #2563eb; border-color: #3b82f6; }
         
         /* Animação do Letreiro de Notícias */
@@ -43,7 +43,7 @@
             </div>
             <div class="ticker-item flex items-center">
                 <span class="h-2.5 w-2.5 rounded-full bg-amber-500 mr-2"></span>
-                <strong class="text-amber-400 mr-1">TJPR:</strong> Sistema eproc passará por manutenção programada neste sábado das 08h às 14h.
+                <strong class="text-amber-400 mr-1">TJPR:</strong> System eproc passará por manutenção programada neste sábado das 08h às 14h.
             </div>
             <div class="ticker-item flex items-center">
                 <span class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2"></span>
@@ -109,43 +109,43 @@
             <div class="portal-carousel">
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">1. PJe - Nacional</p><p class="text-xs text-gray-500">Conselho Nacional de Justiça</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-pje_cnj" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">2. eproc - Geral</p><p class="text-xs text-gray-500">Justiça Estadual e Federal</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-eproc_geral" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">3. e-SAJ - Geral</p><p class="text-xs text-gray-500">Tribunais de Justiça Estaduais</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-esaj_geral" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">4. STJ - Processos</p><p class="text-xs text-gray-500">Superior Tribunal de Justiça</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-stj" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">5. STF - Eletrônico</p><p class="text-xs text-gray-500">Supremo Tribunal Federal</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-stf" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">6. TST - PJe</p><p class="text-xs text-gray-500">Tribunal Superior do Trabalho</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-tst" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">7. TRF1 - PJe</p><p class="text-xs text-gray-500">Justiça Federal da 1ª Região</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-trf1" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">8. TRF3 - PJe</p><p class="text-xs text-gray-500">Justiça Federal de SP e MS</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-trf3" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">9. TRT2 - PJe</p><p class="text-xs text-gray-500">Tribunal Trabalhista de SP</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-trt2" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                     <div><p class="text-sm font-bold text-gray-200">10. Projudi - Geral</p><p class="text-xs text-gray-500">Juizados Especiais Cíveis</p></div>
-                    <span class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
+                    <span id="badge-projudi_geral" class="px-2 py-0.5 text-xs font-bold rounded bg-green-950 text-green-400 border border-green-800/40">Online</span>
                 </div>
             </div>
         </section>
@@ -154,208 +154,18 @@
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado
             </h2>
-            <p class="text-xs text-gray-500 mb-4">Selecione o estado para ver as varreduras de disponibilidade em tempo real.</p>
+            <p class="text-xs text-gray-500 mb-4">Clique no seu estado para mais detalhes.</p>
             
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3">
-                <div onclick="abrirEstado('PR')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PR</div>
-                <div onclick="abrirEstado('SP')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">SP</div>
-                <div onclick="abrirEstado('SC')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">SC</div>
-                <div onclick="abrirEstado('RS')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">RS</div>
-                <div onclick="abrirEstado('RJ')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">RJ</div>
-                <div onclick="abrirEstado('MG')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MG</div>
-                <div onclick="abrirEstado('MS')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MS</div>
-                <div onclick="abrirEstado('MT')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MT</div>
-                <div onclick="abrirEstado('GO')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">GO</div>
-                <div onclick="abrirEstado('DF')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">DF</div>
-                <div onclick="abrirEstado('BA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">BA</div>
-                <div onclick="abrirEstado('PE')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PE</div>
-                <div onclick="abrirEstado('CE')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">CE</div>
-                <div onclick="abrirEstado('MA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">MA</div>
-                <div onclick="abrirEstado('PA')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">PA</div>
-                <div onclick="abrirEstado('AM')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">AM</div>
-                <div onclick="abrirEstado('ES')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">ES</div>
-                <div onclick="abrirEstado('TO')" class="state-btn p-3 rounded-lg text-center font-bold text-sm block shadow-sm">TO</div>
-            </div>
-        </section>
-
-        <section class="p-6 card rounded-2xl border border-gray-850 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
-            <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
-                <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
-                    <i class="fa-solid fa-file-pdf text-3xl" style="color: #d9381e;"></i> Otimizador PDF inteligente
-                </h2>
-                <p class="text-sm text-gray-400 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                    Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.
-                </p>
-            </div>
-            <button class="w-full lg:w-auto flex-none bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-blue-950/40 active:scale-95 text-center tracking-wide lg:max-w-md">
-                Clique aqui e edite seu PDF automaticamente de acordo com o portal que deseja anexar
-            </button>
-        </section>
-
-        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
-            <div class="max-w-xl mx-auto text-center space-y-5 py-4">
-                <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
-                    <i class="fa-solid fa-key fa-rotate-270"></i>
-                </div>
-                <h2 class="text-xl font-bold">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
-                <p class="text-sm text-gray-400">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
-                
-                <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2 max-w-md mx-auto">
-                    <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg shadow-blue-900/20 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap">
-                        <i class="fa-brands fa-usb text-base"></i> Iniciar Teste de Token
-                    </button>
-                    <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg shadow-blue-900/20 active:scale-95 flex items-center justify-center gap-2 whitespace-nowrap">
-                        <i class="fa-solid fa-laptop-code text-base"></i> Iniciar Teste PJe Office Pro
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section class="space-y-4">
-            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                <div class="max-w-2xl">
-                    <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2 mb-1">
-                        <i class="fa-solid fa-cart-shopping text-blue-500"></i> Equipamentos Homologados para Advocacia
-                    </h2>
-                    <p class="text-xs text-gray-500 leading-relaxed">
-                        Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.
-                    </p>
-                </div>
-                <div class="flex items-center gap-2.5 text-base font-bold text-green-400 bg-green-950/20 border border-green-900/40 p-3 rounded-xl lg:self-center">
-                    <i class="fa-solid fa-shield-halved text-xl"></i>
-                    <span>Links testados e seguros, somente lojas oficiais.</span>
-                </div>
-            </div>
-            
-            <div class="products-carousel">
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-mouse"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">1. Mouse Ergonômico</h4><p class="text-xs text-gray-400 leading-relaxed">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-keyboard"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">2. Teclado Silent</h4><p class="text-xs text-gray-400 leading-relaxed">Digitação macia e extremamente silenciosa para escritórios.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-server"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">3. CPU Office Slim</h4><p class="text-xs text-gray-400 leading-relaxed">Processamento de alta velocidade para múltiplos portais abertos.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-laptop"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">4. Notebook Advogado</h4><p class="text-xs text-gray-400 leading-relaxed">Portabilidade e desempenho em SSD para audiências e prazos.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-volume-high"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">5. Caixa de Som USB</h4><p class="text-xs text-gray-400 leading-relaxed">Áudio limpo otimizado para frequências de voz em sessões.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-video"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">6. Webcam Full HD</h4><p class="text-xs text-gray-400 leading-relaxed">Nitidez com foco automático para videoconferências e reuniões.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-microphone"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">7. Microfone Digital</h4><p class="text-xs text-gray-400 leading-relaxed">Isolamento acústico integrado para uma fala limpa e sem eco.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-wifi"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">8. Roteador Wi-Fi 6</h4><p class="text-xs text-gray-400 leading-relaxed">Sinal ultraestável para transferências pesadas de arquivos de rede.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-print"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">9. Scanner de Mesa</h4><p class="text-xs text-gray-400 leading-relaxed">Conversão rápida de pilhas de documentos em PDFs otimizados.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-battery-three-quarters"></i></div>
-                    <div><h4 class="text-sm font-bold text-gray-200 truncate">10. Nobreak Senoidal</h4><p class="text-xs text-gray-400 leading-relaxed">Proteção extra de energia para você nunca perder um prazo.</p></div>
-                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-lg font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
-                </a>
-            </div>
-        </section>
-    </div>
-
-    <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
-            <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center">
-                <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-square-poll-vertical text-blue-500"></i> Disponibilidade - <span id="estadoNome">PR</span>
-                </h3>
-                <p class="text-xs text-gray-400 mt-1">Varreduras técnicas e alertas enviados por usuários.</p>
-            </div>
-            <div class="space-y-3">
-                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Status Atual (Robôs)</h4>
-                <div id="linksTribunais" class="space-y-2"></div>
-            </div>
-            <div class="space-y-3 border-t border-gray-800 pt-4">
-                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                    <i class="fa-solid fa-users text-blue-400"></i> Relatos Recentes de Colegas
-                </h4>
-                <div id="relatosComunidadeEstado" class="space-y-2 text-xs">
-                    <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40 text-gray-400">
-                        <span class="text-red-400 font-semibold">TJPR - eproc</span>: "Não carrega a tela de login desde as 15h" - <span class="text-gray-600">há 8 min</span>
-                    </div>
-                    <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40 text-gray-400">
-                        <span class="text-amber-400 font-semibold">TJPR - Projudi</span>: "Assinatura do token dando timeout" - <span class="text-gray-600">há 22 min</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
-            <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="text-center">
-                <h3 class="text-xl font-bold text-white flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-bullhorn text-blue-500"></i> Relatar Instabilidade
-                </h3>
-                <p class="text-xs text-amber-400 bg-amber-950/30 border border-amber-900/40 px-3 py-2 rounded-xl mt-2 font-medium">
-                    <i class="fa-solid fa-circle-info"></i> Ajude-nos a monitorar os sites! Seu relato calibra nosso painel e ajuda outros advogados.
-                </p>
-            </div>
-            <div id="passo1" class="space-y-2">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">1. Escolha o Estado:</label>
-                <select id="reportUF" onchange="irParaPasso2()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
-                    <option value="">Selecione...</option>
-                    <option value="PR">Paraná (PR)</option>
-                    <option value="SP">São Paulo (SP)</option>
-                </select>
-            </div>
-            <div id="passo2" class="space-y-2 hidden">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">2. Escolha o Tribunal/Portal:</label>
-                <select id="reportTribunal" onchange="irParaPasso3()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm focus:outline-none focus:border-blue-500 text-gray-200">
-                    </select>
-            </div>
-            <div id="passo3" class="space-y-3 hidden">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block">3. Qual é o problema atual?</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="salvarRelatorio('Site Offline')" class="bg-red-950/40 hover:bg-red-900/60 border border-red-900/60 text-red-400 text-sm font-bold p-4 rounded-xl transition active:scale-95 flex flex-col items-center justify-center gap-1">
-                        <i class="fa-solid fa-power-off text-lg"></i> Site Offline
-                    </button>
-                    <button onclick="salvarRelatorio('Lentidão / Instabilidade')" class="bg-amber-950/40 hover:bg-amber-900/60 border border-amber-900/60 text-amber-400 text-sm font-bold p-4 rounded-xl transition active:scale-95 flex flex-col items-center justify-center gap-1">
-                        <i class="fa-solid fa-gauge-simple text-lg"></i> Lentidão
-                    </button>
-                </div>
-                <p class="text-[11px] text-gray-500 text-center italic mt-2">
-                    *Atenção: Este painel computa instabilidades gerais de rede. Ele não altera nem corrige o sistema interno do tribunal selecionado.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <footer class="max-w-7xl mx-auto mt-16 pt-6 border-t border-gray-800 text-center text-xs text-gray-500">
-        &copy; 2026 ADVBR.info. Todos os direitos reservados.
-    </footer>
+                <div onclick="abrirEstado('PR')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">PR <span id="dot-PR" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('SP')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">SP <span id="dot-SP" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('SC')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">SC <span id="dot-SC" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('RS')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">RS <span id="dot-RS" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('RJ')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">RJ <span id="dot-RJ" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('MG')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">MG <span id="dot-MG" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('MS')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">MS <span id="dot-MS" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('MT')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">MT <span id="dot-MT" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('GO')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">GO <span id="dot-GO" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('DF')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">DF <span id="dot-DF" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('BA')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">BA <span id="dot-BA" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]"></span></div>
+                <div onclick="abrirEstado('PE')" class="state-btn p-3 rounded-lg text-left font-bold text-sm block shadow-sm">PE <span id="dot-PE" class="h-2 w-2 rounded-full bg-green
