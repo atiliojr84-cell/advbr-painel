@@ -64,7 +64,7 @@
                 <h1 class="text-2xl font-bold text-blue-500 flex items-center gap-1">
                     ADVBR<span class="text-white">.info</span>
                 </h1>
-                <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
+                <p class="text-sm text-gray-400">Monitoramento de portais e diagnosticó para advogados</p>
             </div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
                 <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problema.</p>
@@ -74,7 +74,7 @@
             </div>
         </header>
 
-        <!-- CARROSSEL DO TOPO CORRIGIDO PARA SERVIDORES DE TRABALHO -->
+        <!-- CARROSSEL DO TOPO COM OS 10 PRINCIPAIS SERVIDORES DE LOGIN -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Servidores de Login
@@ -125,6 +125,7 @@
             </div>
         </section>
 
+        <!-- SEÇÃO DOS ESTADOS -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento Nacional de Regiões
@@ -132,13 +133,11 @@
             <p class="text-xs text-gray-500 mb-4">Selecione os Tribunais Superiores ou escolha o estado para ver o status individual de cada sistema local.</p>
             
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                <!-- Botão Mestre -->
                 <div onclick="abrirEstado('nacionais')" class="col-span-2 state-btn p-3 rounded-lg text-left font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border-blue-800/60 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
                     <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
 
-                <!-- 27 Unidades Federativas Completas -->
                 <div onclick="abrirEstado('AC')" class="state-btn p-3 rounded-lg text-center font-bold text-sm shadow-sm">AC <span id="dot-AC" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('AL')" class="state-btn p-3 rounded-lg text-center font-bold text-sm shadow-sm">AL <span id="dot-AL" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('AM')" class="state-btn p-3 rounded-lg text-center font-bold text-sm shadow-sm">AM <span id="dot-AM" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
@@ -203,7 +202,7 @@
             </div>
         </section>
 
-        <!-- Produtos OAB -->
+        <!-- CARROSSEL DE PRODUTOS COMPLETO COM TODOS OS 10 SLOTS RECOMPILADOS -->
         <section class="space-y-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="max-w-2xl">
@@ -231,6 +230,41 @@
                 <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
                     <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-server"></i></div>
                     <div><h4 class="text-sm font-bold text-gray-200 truncate">3. CPU Office Slim</h4><p class="text-xs text-gray-400 leading-relaxed">Processamento de alta velocidade para múltiplos portais abertos.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-laptop"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">4. Laptop Advogado Pro</h4><p class="text-xs text-gray-400 leading-relaxed">Tela antirreflexo de alta definição e bateria de longa duração para audiências.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-print"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">5. Impressora Laser Duplex</h4><p class="text-xs text-gray-400 leading-relaxed">Impressão frente e verso automática rápida e de baixíssimo custo por página.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-scanner-gun"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">6. Scanner de Mesa Rápido</h4><p class="text-xs text-gray-400 leading-relaxed">Digitalização direta para PDF pesquisável (OCR) com alimentador automático.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-display"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">7. Monitor UltraWide 29"</h4><p class="text-xs text-gray-400 leading-relaxed">Espaço ideal para abrir duas janelas lado a lado: processo e petição.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-bolt"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">8. NoBreak Senoidal</h4><p class="text-xs text-gray-400 leading-relaxed">Proteção absoluta contra queda de energia no meio da assinatura de prazos.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-headset"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">9. Headset Noise Cancelling</h4><p class="text-xs text-gray-400 leading-relaxed">Isolamento acústico e microfone limpo para sustentação oral e audiências virtuais.</p></div>
+                    <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-box-archive"></i></div>
+                    <div><h4 class="text-sm font-bold text-gray-200 truncate">10. HD Externo Criptografado</h4><p class="text-xs text-gray-400 leading-relaxed">Backup físico totalmente seguro para o acervo de processos do escritório.</p></div>
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
             </div>
@@ -312,7 +346,7 @@
         function atualizarBolinhasEstados() {
             const gruposParaAtualizar = ['nacionais','AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'];
             
-            groupsParaAtualizar.forEach(grupoId => {
+            gruposParaAtualizar.forEach(grupoId => {
                 const dot = document.getElementById(`dot-${grupoId}`);
                 if (!dot) return;
 
