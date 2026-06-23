@@ -16,7 +16,7 @@ const tribunais = [
     { id: "trt9_2g", nome: "TRT9 (PR) - 2º Grau", url: "https://pje.trt9.jus.br/pje2g/pje-presente.html", grupo: "PR", lote: 1 },
     { id: "tjsp_saj", nome: "TJSP - SAJ", url: "https://esaj.tjsp.jus.br/", grupo: "SP", lote: 1 },
     { id: "trt2_1g", nome: "TRT2 (SP) - 1º Grau", url: "https://pje.trtsp.jus.br/pje/pje-presente.html", grupo: "SP", lote: 1 },
-    { id: "trt2_2g", nome: "TRT2 (SP) - 2º Grau", url: "https://pje.trtsp.jus.br/pje2g/pje-presente.html", grupo: "SP", lote: 1 },
+    { id: "trt2_2g", nome: "TRT2 (SP) - 2º Grau", url: "https://pje.trtsp.jus.br/pje2g/pje-presente.html", group: "SP", lote: 1 },
     { id: "tjsc_eproc", nome: "TJSC - eproc", url: "https://eproc2g.tjsc.jus.br/", grupo: "SC", lote: 1 },
     { id: "trt12_1g", nome: "TRT12 (SC) - 1º Grau", url: "https://pje.trt12.jus.br/pje/pje-presente.html", grupo: "SC", lote: 1 },
     { id: "trt12_2g", nome: "TRT12 (SC) - 2º Grau", url: "https://pje.trt12.jus.br/pje2g/pje-presente.html", grupo: "SC", lote: 1 },
@@ -65,24 +65,45 @@ const tribunais = [
 
 async function testarAlvo(alvo) {
     const controlador = new AbortController();
-    const idTimeout = setTimeout(() => controlador.abort(), 6000); // Subimos para 6s para dar tempo do proxy responder
+    const idTimeout = setTimeout(() => controlador.abort(), 7000); 
     const inicio = Date.now();
 
-    // Filtro estratégico: Se o tribunal for crítico (STF ou TRF3), mascara o IP usando um gateway livre de proxy CORS
-    let urlDestino = alvo.url;
+    // Filtro estratégico: Se o tribunal for crítico (STF ou TRF3), desvia a rota pelo túnel oficial da Webshare
     if (alvo.id === "stf" || alvo.id === "trf3") {
-        urlDestino = `https://api.allorigins.win/get?url=${encodeURIComponent(alvo.url)}`;
+        try {
+            const authBase64 = Buffer.from('zsziyqhe:v0vw6thr1y27').toString('base64');
+            const respostaProxy = await fetch(`https://proxy.webshare.io/api/v2/proxy/test?url=${encodeURIComponent(alvo.url)}`, {
+                method: 'GET',
+                signal: controlador.signal,
+                headers: {
+                    'Authorization': `Basic ${authBase64}`
+                }
+            });
+            clearTimeout(idTimeout);
+            
+            // O endpoint do Webshare responde 200 se conseguir se conectar ao alvo através do IP deles
+            if (respostaProxy.status === 200) {
+                return {
+                    id: alvo.id,
+                    nome: alvo.nome,
+                    grupo: alvo.grupo,
+                    status: "Online",
+                    latenciaMs: Date.now() - inicio
+                };
+            }
+        } catch (errProxy) {
+            console.error(`Erro no tunel do Webshare para ${alvo.nome}:`, errProxy.message);
+        }
     }
 
+    // Requisição padrão Direta (Usada para os outros 48 tribunais que funcionam sem bloqueio)
     try {
-        await fetch(urlDestino, {
+        await fetch(alvo.url, {
             method: 'GET',
             mode: 'no-cors',
             signal: controlador.signal,
             headers: { 
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
         });
         clearTimeout(idTimeout);
@@ -91,12 +112,11 @@ async function testarAlvo(alvo) {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latencia > 4000 ? "Lentidão" : "Online",
+            status: latencia > 3000 ? "Lentidão" : "Online",
             latenciaMs: latencia
         };
     } catch (erro) {
         clearTimeout(idTimeout);
-        console.error(`[FALHA DE REDE] ${alvo.nome} (${alvo.id}) - erro:`, erro.message || erro);
         return {
             id: alvo.id,
             nome: alvo.nome,
@@ -132,11 +152,11 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado no Redis com sucesso.`,
+            mensagem: `Lote ${numLote} sincronizado no Redis com sucesso através de roteamento inteligente.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
-        console.error("Erro interno crítico no handler do motor:", erro);
+        console.error("Erro interno crítico no handler:", erro);
         return res.status(500).json({ erro: "Falha na persistência de dados.", detalhe: erro.message });
     }
 }
