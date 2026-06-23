@@ -56,28 +56,6 @@
                 </span>
                 <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
             </div>
-            <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-amber-500 mr-2"></span>
-                <strong class="text-amber-400 mr-1">TJPR:</strong> Sistema eproc passará por manutenção programada neste sábado das 08h às 14h.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2"></span>
-                <strong class="text-blue-400 mr-1">TRF3:</strong> Nova versão do assinador PJe corrigiu falhas com certificados A3 no navegador Chrome.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
-            </div>
         </div>
     </div>
 
@@ -91,11 +69,9 @@
                 <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
             </div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <p class="text-[11px] text-gray-500 leading-tight">
-                    Nos ajude a monitorar os portais comunicando o seu problem.
-                </p>
+                <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problem.</p>
                 <button onclick="abrirReportar()" class="w-full sm:w-auto bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm whitespace-nowrap">
-                    <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
+                    <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problem!
                 </button>
             </div>
         </header>
@@ -184,7 +160,7 @@
                     <i class="fa-solid fa-file-pdf text-3xl" style="color: #d9381e;"></i> Otimizador PDF inteligente
                 </h2>
                 <p class="text-sm text-gray-400 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                    Evite rejection de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.
+                    Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.
                 </p>
             </div>
             <button class="w-full lg:w-auto flex-none bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-blue-950/40 active:scale-95 text-center tracking-wide lg:max-w-md">
@@ -282,6 +258,7 @@
         </section>
     </div>
 
+    <!-- MODAL DE DETALHES DO ESTADO -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -306,6 +283,7 @@
         </div>
     </div>
 
+    <!-- MODAL REPORTAR INSTABILIDADE -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -337,23 +315,20 @@
     <script>
         let statusGerais = {};
 
-        // MOTOR INTEGRADO: Lê o cache do Upstash em vez de disparar testes no browser
         async function carregarStatusDoCache() {
             try {
                 const resposta = await fetch('/api/status-atual');
                 if (!resposta.ok) return;
                 statusGerais = await resposta.json();
                 
-                // Alimenta os 10 badges do topo dinamicamente
-                Object.values(statusGerais).forEach(alvo => {
-                    const badge = document.getElementById(`badge-${alvo.id}`);
-                    if (badge) atualizarVisualBadge(badge, alvo.status);
+                // Mapeia dinamicamente os 10 badges do topo
+                Object.keys(statusGerais).forEach(id => {
+                    const badge = document.getElementById(`badge-${id}`);
+                    if (badge) atualizarVisualBadge(badge, statusGerais[id].status);
                 });
 
-                // Alimenta as cores macros das bolinhas dos botões de estado
                 atualizarBolinhasEstados();
 
-                // Mantém o modal vivo e atualizado se o usuário estiver com ele aberto
                 const modalAberto = !document.getElementById('modalEstado').classList.contains('hidden');
                 if (modalAberto) {
                     const ufAtual = document.getElementById('estadoNome').innerText;
@@ -384,7 +359,11 @@
                 if (!dot) return;
 
                 const tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
-                if (tribunaisDaUf.length === 0) return;
+                if (tribunaisDaUf.length === 0) {
+                    // Estado sem robô mapeado volta ao cinza original estável
+                    dot.className = "h-2 w-2 rounded-full bg-gray-600 inline-block ml-1";
+                    return;
+                }
 
                 const totalTribunais = tribunaisDaUf.length;
                 const qtdOnline = tribunaisDaUf.filter(t => t.status === "Online").length;
@@ -408,13 +387,8 @@
             document.getElementById('modalEstado').classList.remove('hidden');
         }
 
-        function fecharModal(idModal) {
-            document.getElementById(idModal).classList.add('hidden');
-        }
-
-        function abrirReportar() {
-            document.getElementById('modalReportar').classList.remove('hidden');
-        }
+        function fecharModal(idModal) { document.getElementById(idModal).classList.add('hidden'); }
+        function abrirReportar() { document.getElementById('modalReportar').classList.remove('hidden'); }
 
         function renderizarConteudoModal(uf) {
             const container = document.getElementById('linksTribunais');
@@ -432,7 +406,7 @@
             }
 
             if (tribunaisDaUf.length === 0) {
-                container.innerHTML = `<p class="text-sm text-gray-400 text-center py-2">Nenhum dado em cache para esta região.</p>`;
+                container.innerHTML = `<p class="text-sm text-gray-400 text-center py-2 italic text-gray-500">Mapeamento de sensores agendado para a fase 2.</p>`;
                 return;
             }
             
@@ -460,7 +434,7 @@
 
         window.onload = function() {
             carregarStatusDoCache();
-            setInterval(carregarStatusDoCache, 30000); // Polling leve a cada 30 segundos
+            setInterval(carregarStatusDoCache, 30000);
         }
     </script>
 </body>
