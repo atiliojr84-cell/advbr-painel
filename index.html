@@ -124,50 +124,25 @@
             </div>
         </section>
 
+        <!-- AQUI ESTÁ A ALTERAÇÃO CIRÚRGICA PARA OS 3 BOTÕES -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento Nacional de Regiões
+                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Centrais de Monitoramento
             </h2>
-            <p class="text-xs text-gray-500 mb-4">Selecione os Tribunais Superiores ou escolha o estado para ver o status individual de cada sistema local.</p>
-            
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                <div onclick="abrirEstado('nacionais')" class="col-span-2 state-btn p-3 rounded-lg text-left font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border-blue-800/60 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
-                    <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div onclick="abrirEstado('PR')" class="state-btn p-6 rounded-xl font-bold text-lg shadow-md cursor-pointer hover:bg-blue-700 transition">
+                    Paraná (PR) <span id="dot-PR" class="h-3 w-3 rounded-full bg-gray-600 inline-block"></span>
                 </div>
-
-                <div onclick="abrirEstado('AC')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">AC <span id="dot-AC" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('AL')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">AL <span id="dot-AL" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('AM')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">AM <span id="dot-AM" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('AP')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">AP <span id="dot-AP" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('BA')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">BA <span id="dot-BA" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('CE')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">CE <span id="dot-CE" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('DF')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">DF <span id="dot-DF" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('ES')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">ES <span id="dot-ES" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('GO')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">GO <span id="dot-GO" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('MA')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">MA <span id="dot-MA" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('MG')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">MG <span id="dot-MG" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('MS')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">MS <span id="dot-MS" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('MT')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">MT <span id="dot-MT" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('PA')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">PA <span id="dot-PA" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('PB')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">PB <span id="dot-PB" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('PE')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">PE <span id="dot-PE" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('PI')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">PI <span id="dot-PI" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('PR')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">PR <span id="dot-PR" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('RJ')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">RJ <span id="dot-RJ" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('RN')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">RN <span id="dot-RN" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('RO')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">RO <span id="dot-RO" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('RR')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">RR <span id="dot-RR" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('RS')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">RS <span id="dot-RS" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('SC')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">SC <span id="dot-SC" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('SE')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">SE <span id="dot-SE" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('SP')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">SP <span id="dot-SP" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-                <div onclick="abrirEstado('TO')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">TO <span id="dot-TO" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
-
-                <div onclick="abrirEstado('coletivos')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm bg-gradient-to-r from-gray-900 to-slate-800 border-gray-700 text-blue-400">Nacionais <span id="dot-coletivos" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
+                <div onclick="abrirEstado('coletivos')" class="state-btn p-6 rounded-xl font-bold text-lg shadow-md cursor-pointer hover:bg-blue-700 transition">
+                    Sistemas Nacionais <span id="dot-coletivos" class="h-3 w-3 rounded-full bg-gray-600 inline-block"></span>
+                </div>
+                <div onclick="abrirEstado('nacionais')" class="state-btn p-6 rounded-xl font-bold text-lg shadow-md cursor-pointer hover:bg-blue-700 transition">
+                    Tribunais Superiores <span id="dot-nacionais" class="h-3 w-3 rounded-full bg-gray-600 inline-block"></span>
+                </div>
             </div>
         </section>
 
+        <!-- SEÇÕES FINAIS MANTIDAS INTEGRALMENTE -->
         <section class="p-6 card rounded-2xl border border-gray-850 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
             <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
@@ -339,6 +314,7 @@
         }
 
         function atualizarBolinhasEstados() {
+            // Mantém os estados necessários para a lógica interna funcionar, mesmo que os botões não apareçam
             const gruposUfs = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'];
             
             const dotNacionais = document.getElementById('dot-nacionais');
@@ -416,11 +392,12 @@
         }
 
         function abrirEstado(uf) {
-            if (uf === 'coletivos') {
-                document.getElementById('estadoNome').innerText = 'Sistemas Nacionais';
-            } else {
-                document.getElementById('estadoNome').innerText = (uf === 'nacionais') ? 'Tribunais Superiores' : uf;
-            }
+            // Mapeia os novos botões para as funções existentes do seu sistema
+            let label = uf;
+            if (uf === 'coletivos') label = 'Sistemas Nacionais';
+            else if (uf === 'nacionais') label = 'Tribunais Superiores';
+            
+            document.getElementById('estadoNome').innerText = label;
             renderizarConteudoModal(uf);
             document.getElementById('modalEstado').classList.remove('hidden');
         }
@@ -438,30 +415,6 @@
                 if (statusGerais['stj']) tribunaisDaUf.push(statusGerais['stj']);
             } else {
                 tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
-                
-                // REGRA ANTI-DUPLICAÇÃO: Checa se o tribunal já está na lista antes de jogar pra dentro
-                if (uf === 'AC') {
-                    const trt14 = Object.values(statusGerais).find(t => t.id === 'trt14_1g');
-                    if (trt14 && !tribunaisDaUf.some(t => t.id === 'trt14_1g')) tribunaisDaUf.push(trt14);
-                }
-                if (uf === 'AP') {
-                    const trt8 = Object.values(statusGerais).find(t => t.id === 'trt8_1g_pa');
-                    if (trt8 && !tribunaisDaUf.some(t => t.id === 'trt8_1g_pa')) tribunaisDaUf.push(trt8);
-                }
-                if (uf === 'RR') {
-                    const trt11 = Object.values(statusGerais).find(t => t.id === 'trt11_1g');
-                    if (trt11 && !tribunaisDaUf.some(t => t.id === 'trt11_1g')) tribunaisDaUf.push(trt11);
-                }
-                if (uf === 'TO') {
-                    const trt10_1g = Object.values(statusGerais).find(t => t.id === 'trt10_1g');
-                    const trt10_2g = Object.values(statusGerais).find(t => t.id === 'trt10_2g');
-                    if (trt10_1g && !tribunaisDaUf.some(t => t.id === 'trt10_1g')) tribunaisDaUf.push(trt10_1g);
-                    if (trt10_2g && !tribunaisDaUf.some(t => t.id === 'trt10_2g')) tribunaisDaUf.push(trt10_2g);
-                }
-                if (uf === 'SP') {
-                    const trf3 = Object.values(statusGerais).find(t => t.id === 'trf3');
-                    if (trf3 && !tribunaisDaUf.some(t => t.id === 'trf3')) tribunaisDaUf.push(trf3);
-                }
             }
             
             if (containerComunidade) {
