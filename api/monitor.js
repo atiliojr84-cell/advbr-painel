@@ -60,15 +60,15 @@ const tribunais = [
     { id: "trt7_2g", nome: "TRT7 (CE) - 2º Grau", url: "https://pje.trt7.jus.br/pje2g/login.seam", grupo: "CE", lote: 3 },
     { id: "tjma_pje", nome: "TJMA - PJe", url: "https://pje.tjma.jus.br/pje/login.seam", grupo: "MA", lote: 3 },
 
-    // LOTE 4 (16 Tribunais) - Restante do Nordeste e Região Norte Completa (Totalizando os 64)
+    // LOTE 4 (17 Tribunais) - Restante do Nordeste e Região Norte Completa + SAJ Acre
     { id: "trt16_1g", nome: "TRT16 (MA) - 1º Grau", url: "https://pje.trt16.jus.br/pje/login.seam", grupo: "MA", lote: 4 },
     { id: "tjpa_pje", nome: "TJPA - PJe", url: "https://pje.tjpa.jus.br/pje/login.seam", grupo: "PA", lote: 4 },
     { id: "trt8_1g_pa", nome: "TRT8 (PA/AP) - 1º Grau", url: "https://pje.trt8.jus.br/pje/login.seam", grupo: "PA", lote: 4 },
     { id: "tjam_pje", nome: "TJAM - PJe", url: "https://pje.tjam.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "trt11_1g", nome: "TRT11 (AM/RR) - 1º Grau", url: "https://pje.trt11.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 4 },
-    // CORRIGIDO: URL do TJAC atualizada para a rota limpa de autenticação
     { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/pje/Autenticacao/login.seam", grupo: "AC", lote: 4 },
+    { id: "tjac_saj", nome: "TJAC - e-SAJ", url: "https://esaj.tjac.jus.br/sajps/login.do", grupo: "AC", lote: 4 },
     { id: "trt14_1g", nome: "TRT14 (RO/AC) - 1º Grau", url: "https://pje.trt14.jus.br/pje/login.seam", grupo: "AC", lote: 4 },
     { id: "tjal_pje", nome: "TJAL - PJe", url: "https://pje.tjal.jus.br/pje/login.seam", grupo: "AL", lote: 4 },
     { id: "trt19_1g", nome: "TRT19 (AL) - 1º Grau", url: "https://pje.trt19.jus.br/pje/login.seam", grupo: "AL", lote: 4 },
@@ -82,12 +82,12 @@ const tribunais = [
 
 async function executarPingEstrito(alvo) {
     const controlador = new AbortController();
-    // Timeout cirúrgico de 3.2 segundos. Evita travar o lote por 12 segundos.
     const idTimeout = setTimeout(() => controlador.abort(), 3200); 
     const inicio = Date.now();
 
-    // Força GET para SP e TRF3 e HEAD otimizado para os demais
-    const metodoUnificado = (alvo.id === "trf3" || alvo.id === "tjsp_saj") ? 'GET' : 'HEAD';
+    // REGRA INTELIGENTE: Se o ID terminar com "saj", for do TRF3 ou for o TJAC_PJe, usa GET.
+    const usarGet = alvo.id === "trf3" || alvo.id.includes("saj") || alvo.id === "tjac_pje";
+    const metodoUnificado = usarGet ? 'GET' : 'HEAD';
 
     try {
         await fetch(alvo.url, {
@@ -116,9 +116,6 @@ async function executarPingEstrito(alvo) {
         clearTimeout(idTimeout);
         const tempoDecorrido = Date.now() - inicio;
 
-        // REGRA DE OURO DA LOGICA REVERSA: 
-        // Se deu erro de rede comum (ex: preflight, block de CORS ou reset), mas respondeu em menos de 3s,
-        // significa que o servidor barrou o IP, mas a máquina física está viva e ONLINE!
         if (erro.name !== 'AbortError' && tempoDecorrido < 3000) {
             return {
                 id: alvo.id,
@@ -129,12 +126,11 @@ async function executarPingEstrito(alvo) {
             };
         }
 
-        // Se realmente estourou o timeout completo (Abort), aí sim consideramos fora do ar ou lentidão extrema
         return {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: erro.name === 'AbortError' ? "Fora do Ar" : "Fora do Ar",
+            status: "Fora do Ar",
             latenciaMs: null
         };
     }
@@ -154,7 +150,6 @@ export default async function handler(req, res) {
     try {
         let estadoGlobal = (await kv.get('advbr_status_global')) || {};
         
-        // Disparo assíncrono paralelo real de alta velocidade
         const promessas = alvosDoLote.map(alvo => executarPingEstrito(alvo));
         const resultados = await Promise.all(promessas);
 
@@ -166,7 +161,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado via Turbo Engine com tratamento de borda ativo.`,
+            mensagem: `Lote ${numLote} sincronizado via Turbo Engine.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
