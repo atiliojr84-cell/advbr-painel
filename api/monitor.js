@@ -34,7 +34,7 @@ const tribunais = [
     { id: "trt3_2g", nome: "TRT3 (MG) - 2º Grau", url: "https://pje.trt3.jus.br/pje2g/login.seam", grupo: "MG", lote: 2 },
     { id: "tjes_pje", nome: "TJES - PJe", url: "https://pje.tjes.jus.br/pje/login.seam", grupo: "ES", lote: 2 },
     { id: "trt17_1g", nome: "TRT17 (ES) - 1º Grau", url: "https://pje.trt17.jus.br/pje/login.seam", grupo: "ES", lote: 2 },
-    { id: "trt17_2g", nome: "TRT17 (ES) - 2º Grau", url: "https://pje.trt17.jus.br/pje2g/login.seam", grupo: "ES", lote: 2 },
+    { id: "trt17_2g", nome: "TRT17 (ES) - 2º Grau", url: "https://pje.trt17.jus.br/pki/login.seam", grupo: "ES", lote: 2 },
     { id: "tjms_saj", nome: "TJMS - SAJ", url: "https://esaj.tjms.jus.br/sajps/login.do", grupo: "MS", lote: 2 },
     { id: "trt24_1g", nome: "TRT24 (MS) - 1º Grau", url: "https://pje.trt24.jus.br/pje/login.seam", grupo: "MS", lote: 2 },
     { id: "trt24_2g", nome: "TRT24 (MS) - 2º Grau", url: "https://pje.trt24.jus.br/pje2g/login.seam", grupo: "MS", lote: 2 },
@@ -45,7 +45,8 @@ const tribunais = [
     { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
 
     // LOTE 3 (16 Tribunais) - Nordeste (Continuação), Norte e Restante do Brasil
-    { id: "trf3", nome: "TRF3 - PJe", url: "https://pje1g.trf3.jus.br/pje/login.seam", grupo: "nacionais", lote: 3 },
+    // AJUSTADO: Rota do TRF3 alterada para a tela de listagem pública estável
+    { id: "trf3", nome: "TRF3 - PJe", url: "https://pje1g.trf3.jus.br/pje/ConsultaPublica/listView.seam", grupo: "nacionais", lote: 3 },
     { id: "trt18_2g", nome: "TRT18 (GO) - 2º Grau", url: "https://pje.trt18.jus.br/pje2g/login.seam", grupo: "GO", lote: 3 },
     { id: "trt10_1g", nome: "TRT10 (DF/TO) - 1º Grau", url: "https://pje.trt10.jus.br/pje/login.seam", grupo: "DF", lote: 3 },
     { id: "trt10_2g", nome: "TRT10 (DF/TO) - 2º Grau", url: "https://pje.trt10.jus.br/pje2g/login.seam", grupo: "DF", lote: 3 },
@@ -72,12 +73,11 @@ async function executarPingEstrito(alvo) {
 
     for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
         const controlador = new AbortController();
-        const idTimeout = setTimeout(() => controlador.abort(), 5000); // 5 segundos de limite real
+        const idTimeout = setTimeout(() => controlador.abort(), 5000); 
         const inicio = Date.now();
 
         try {
-            // Método HEAD estratégico: testa se o barramento responde sem forçar download de sessão
-            const resposta = await fetch(alvo.url, {
+            await fetch(alvo.url, {
                 method: 'HEAD',
                 mode: 'no-cors',
                 signal: controlador.signal,
@@ -95,8 +95,6 @@ async function executarPingEstrito(alvo) {
         } catch (erro) {
             clearTimeout(idTimeout);
 
-            // Engenharia Reversa de Proteção: Se deu erro de Abort ou Network, mas retornou em menos de 1 segundo,
-            // significa que o servidor barrou o IP ativamente (ou seja, a máquina física está ONLINE e respondendo)
             const tempoDecorrido = Date.now() - inicio;
             if (erro.name !== 'AbortError' && tempoDecorrido < 1200) {
                 latencias.push(tempoDecorrido);
