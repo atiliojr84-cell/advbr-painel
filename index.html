@@ -99,7 +99,6 @@
     </div>
 
     <script type="module">
-        // Importação corrigida com caminho relativo direto para evitar falha de carregamento de módulo da Vercel
         import tribunais from './api/alvos.js';
 
         let statusServidores = {};
@@ -127,7 +126,8 @@
             grid.innerHTML = '';
             
             listagem.forEach(uf => {
-                const nomeExibido = (uf === 'PR') ? 'Paraná' : uf;
+                // Força a exibição exata de "Paraná" quando o grupo for PR
+                const nomeExibido = (uf.trim().toUpperCase() === 'PR') ? 'Paraná' : uf;
                 grid.innerHTML += `<div onclick="abrirEstado('${uf}')" class="state-btn">${nomeExibido}</div>`;
             });
         }
@@ -135,13 +135,15 @@
         function renderizarCarrosselCritico() {
             const container = document.getElementById('carrosselPrincipais');
             container.innerHTML = '';
-            const principais = tribunais.filter(t => t.grupo === 'nacionais' || t.id.includes('tjpr') || t.id === 'tjsp_saj');
+            
+            //IDs corrigidos do topo para casar perfeitamente com a lista nova e destravar os cards
+            const principais = tribunais.filter(t => t.grupo === 'nacionais' || t.id.includes('tjpr') || t.id === 'tjsp_saj' || t.id === 'trf3_1g');
 
             principais.forEach(p => {
                 const info = statusServidores[p.id] || { status: 'Online', latenciaMs: 110 };
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 
-                // Força a remoção de qualquer "(PR)" residual no texto dinâmico dos cards principais
+                // Remove qualquer string residual de (PR) para limpar os textos do carrossel
                 const nomeLimpoCard = p.nome.replace('(PR)', '').replace('()', '').trim();
 
                 container.innerHTML += `
@@ -157,7 +159,8 @@
         }
 
         window.abrirEstado = function(uf) {
-            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Nacionais & Superiores' : 'Estado: ' + (uf === 'PR' ? 'Paraná' : uf);
+            // Força o título interno do modal a usar Paraná com acento sem a sigla
+            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Nacionais & Superiores' : 'Estado: ' + (uf.trim().toUpperCase() === 'PR' ? 'Paraná' : uf);
             const target = document.getElementById('linksTribunais');
             target.innerHTML = '';
 
@@ -166,7 +169,6 @@
                 const info = statusServidores[alvo.id] || { status: 'Online', latenciaMs: 85 };
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 
-                // Filtro via código que garante a remoção total de (PR) ou parênteses vazios
                 const nomeLimpoLista = alvo.nome.replace('(PR)', '').replace('()', '').trim();
 
                 target.innerHTML += `
@@ -186,7 +188,7 @@
             const select = document.getElementById('reportUF');
             const listaUfs = [...new Set(tribunais.map(t => t.grupo))].sort();
             listaUfs.forEach(uf => {
-                const labelExibido = uf === 'nacionais' ? 'Âmbito Nacional' : (uf === 'PR' ? 'Paraná' : uf);
+                const labelExibido = uf === 'nacionais' ? 'Âmbito Nacional' : (uf.trim().toUpperCase() === 'PR' ? 'Paraná' : uf);
                 select.innerHTML += `<option value="${uf}">${labelExibido}</option>`;
             });
         }
