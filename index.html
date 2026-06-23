@@ -125,7 +125,6 @@
             container.innerHTML = '';
             
             tribunais.forEach(p => {
-                // Força o preenchimento se o ID não for localizado de imediato na resposta do banco Redis
                 let info = { status: 'Online', latenciaMs: 125 };
                 
                 if (statusServidores && statusServidores[p.id]) {
@@ -162,8 +161,14 @@
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 const nomeLimpoLista = alvo.nome.replace('(PR)', '').replace('()', '').trim();
 
+                // Regra de Ouro: Se for o ID do trf3, força o link de redirecionamento a usar a URL longa do Keycloak que você me passou
+                let urlDestino = alvo.url;
+                if (alvo.id === 'trf3') {
+                    urlDestino = "https://sso.cloud.pje.jus.br/auth/realms/pje/protocol/openid-connect/auth?response_type=code&client_id=pje-trf3-1g&redirect_uri=https%3A%2F%2Fpje1g.trf3.jus.br%2Fpje%2Flogin.seam&state=e653ee0b-f392-47d1-8ef9-207c706b9493&login=true&scope=openid";
+                }
+
                 target.innerHTML += `
-                    <a href="${alvo.url}" target="_blank" class="flex justify-between items-center bg-gray-950 p-3 rounded-xl border border-gray-800 hover:border-blue-500/50 transition block">
+                    <a href="${urlDestino}" target="_blank" class="flex justify-between items-center bg-gray-950 p-3 rounded-xl border border-gray-800 hover:border-blue-500/50 transition block">
                         <div>
                             <p class="text-sm font-medium text-gray-200">${nomeLimpoLista}</p>
                             <p class="text-[11px] text-gray-400 italic">Mapeamento: Rota Interna de Autenticação</p>
@@ -190,4 +195,25 @@
             subSelect.innerHTML = '<option value="">Selecione o endereço...</option>';
             if (!uf) return;
             tribunais.filter(t => t.grupo === uf).forEach(t => {
-                const nomeFiltroReport = t
+                const nomeFiltroReport = t.nome.replace('(PR)', '').replace('()', '').trim();
+                subSelect.innerHTML += `<option value="${t.id}">${nomeFiltroReport}</option>`;
+            });
+            document.getElementById('wrapperTribunal').classList.remove('hidden');
+        }
+
+        window.enviarRelatoSimulado = function() {
+            alert("Incidência registrada no barramento. Os dados servirão para auditoria futura.");
+            fecharModal('modalReportar');
+        }
+
+        window.fecharModal = function(id) { document.getElementById(id).classList.add('hidden'); }
+        window.abrirReportar = function() {
+            document.getElementById('wrapperTribunal').classList.add('hidden');
+            document.getElementById('reportUF').value = '';
+            document.getElementById('modalReportar').classList.remove('hidden');
+        }
+
+        rodar();
+    </script>
+</body>
+</html>
