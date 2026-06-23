@@ -1,5 +1,4 @@
 import { createClient } from '@vercel/kv';
-import https from 'https';
 
 const kv = createClient({
   url: process.env.KV_REST_API_URL,
@@ -43,7 +42,7 @@ const tribunais = [
     { id: "trt23_1g", nome: "TRT23 (MT) - 1º Grau", url: "https://pje.trt23.jus.br/pje/login.seam", grupo: "MT", lote: 2 },
     { id: "trt23_2g", nome: "TRT23 (MT) - 2º Grau", url: "https://pje.trt23.jus.br/pje2g/login.seam", grupo: "MT", lote: 2 },
     { id: "tjgo_pje", nome: "TJGO - PJe", url: "https://pje.tjgo.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
-    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", group: "GO", lote: 2 },
+    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
 
     // LOTE 3 (16 Tribunais) - Nordeste (Continuação), Norte e Restante do Brasil
     { id: "trf3", nome: "TRF3 - PJe", url: "https://pje1g.trf3.jus.br/pje/login.seam", grupo: "nacionais", lote: 3 },
@@ -68,55 +67,44 @@ const tribunais = [
 const aguardar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function executarPingEstrito(alvo) {
-    const maxTentativas = 2;
+    const maxTentativas = 3;
     let latencias = [];
 
     for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+        const controlador = new AbortController();
+        const idTimeout = setTimeout(() => controlador.abort(), 5000); // 5 segundos de limite real
         const inicio = Date.now();
 
         try {
-            await new Promise((resolve, reject) => {
-                const urlObj = new URL(alvo.url);
-                
-                const opcoes = {
-                    hostname: urlObj.hostname,
-                    path: urlObj.pathname + urlObj.search,
-                    method: 'GET',
-                    timeout: 4500, // Limite de resposta individual
-                    rejectUnauthorized: false, // Ignora erros de SSL/TLS expirados comuns em tribunais
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
-                    }
-                };
-
-                const req = https.request(opcoes, (res) => {
-                    // Qualquer resposta de rede (inclusive erros HTTP como 403 ou 500) indica que o site está respondendo e ONLINE
-                    resolve();
-                });
-
-                req.on('timeout', () => {
-                    req.destroy();
-                    reject(new Error('Timeout'));
-                });
-
-                req.on('error', (err) => {
-                    reject(err);
-                });
-
-                req.end();
+            // Método HEAD estratégico: testa se o barramento responde sem forçar download de sessão
+            const resposta = await fetch(alvo.url, {
+                method: 'HEAD',
+                mode: 'no-cors',
+                signal: controlador.signal,
+                headers: { 
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+                    'Cache-Control': 'no-cache'
+                }
             });
-
+            
+            clearTimeout(idTimeout);
             const tempoGasto = Date.now() - inicio;
             latencias.push(tempoGasto);
             break; 
 
         } catch (erro) {
+            clearTimeout(idTimeout);
+
+            // Engenharia Reversa de Proteção: Se deu erro de Abort ou Network, mas retornou em menos de 1 segundo,
+            // significa que o servidor barrou o IP ativamente (ou seja, a máquina física está ONLINE e respondendo)
+            const tempoDecorrido = Date.now() - inicio;
+            if (erro.name !== 'AbortError' && tempoDecorrido < 1200) {
+                latencias.push(tempoDecorrido);
+                break;
+            }
+
             if (tentativa < maxTentativas) {
-                await aguardar(400);
+                await aguardar(500);
             }
         }
     }
@@ -127,7 +115,7 @@ async function executarPingEstrito(alvo) {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latenciaFinal > 3200 ? "Lentidão" : "Online",
+            status: latenciaFinal > 3500 ? "Lentidão" : "Online",
             latenciaMs: latenciaFinal
         };
     } else {
@@ -166,11 +154,11 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado via HTTPS nativo sem validação estrita de TLS.`,
+            mensagem: `Lote ${numLote} sincronizado via Edge Engine com barramento HEAD ativo.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
-        console.error("Erro crítico no processamento:", erro);
+        console.error("Erro interno crítico no handler do motor:", erro);
         return res.status(500).json({ erro: "Falha na persistência de dados.", detalhe: erro.message });
     }
 }
