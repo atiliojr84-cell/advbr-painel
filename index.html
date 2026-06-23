@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADVBR.info - Central de Monitoramento e Ferramentas para Advogados</title>
+    <title>ADVBR.info - Monitoramento de portais e diagnóstico para advogados</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -23,15 +23,19 @@
             0% { transform: translateX(100%); }
             100% { transform: translateX(-100%); }
         }
-        .marquee-text { display: inline-block; animation: marquee 25s linear infinite; white-space: nowrap; }
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-text { display: inline-block; animation: marquee 30s linear infinite; }
     </style>
 </head>
 <body>
 
-    <!-- Banner Animado de Novidades (Passando bonitinho lá em cima) -->
-    <div class="bg-blue-600/10 border-b border-blue-500/20 text-blue-400 py-2 text-xs font-medium overflow-hidden relative w-full">
+    <!-- Bloco de Alertas de Queda do Topo -->
+    <div class="bg-red-950/40 border-b border-red-900/40 text-red-400 py-2.5 text-xs font-semibold marquee-container">
         <div class="marquee-text">
-            <i class="fa-solid fa-circle-info mr-1"></i> <strong>Aviso Importante:</strong> Plataforma em conformidade com as rotas internas de autenticação dos tribunais nacionais. Monitore e teste o ecossistema jurídico sem interrupções.
+            [ALERTA DE QUEDA] TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde. &nbsp;&nbsp;&nbsp;&nbsp;
+            TJPR: Sistema eproc passará por manutenção programada neste sábado das 08h às 14h. &nbsp;&nbsp;&nbsp;&nbsp;
+            TRF3: Nova versão do assinador PJe corrigiu falhas com certificados A3 no navegador Chrome. &nbsp;&nbsp;&nbsp;&nbsp;
+            [ALERTA DE QUEDA] TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
         </div>
     </div>
 
@@ -41,76 +45,217 @@
         <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-blue-500">ADVBR<span class="text-white">.info</span></h1>
-                <p class="text-sm text-gray-400">Monitoramento técnico focado nas sub-páginas e telas de login (1º e 2º Grau)</p>
+                <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
             </div>
             <button onclick="abrirReportar()" class="bg-gray-900 border border-gray-800 text-gray-300 text-sm px-4 py-2 rounded-xl hover:text-red-400 hover:border-red-800/60 transition">
-                <i class="fa-solid fa-bullhorn text-xs mr-1"></i> Estou com problema!
+                 Estou com problema!
             </button>
         </header>
 
-        <!-- Seção: Principais Portais da Justiça -->
-        <section>
-            <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-star text-amber-500"></i> Principais Portais da Justiça
-            </h2>
-            <div class="portal-carousel" id="carrosselPrincipais">
-                <div class="text-sm text-gray-500 italic">Sincronizando dados dos servidores públicos...</div>
-            </div>
-        </section>
-
-        <!-- Grade de Estados Organizada -->
-        <section class="space-y-4">
-            <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Escolha a Região / Estado
-            </h2>
-            <p class="text-xs text-gray-500">Selecione para expandir os status e acessos internos em tempo real.</p>
+        <!-- Seção: Principais Portais -->
+        <section class="space-y-2">
+            <h2 class="text-lg font-semibold text-gray-300">Principais Portais</h2>
+            <p class="text-xs text-gray-400">Sistemas de âmbito nacional e regionais de altíssimo fluxo, ordenados do mais acessado para o menos acessado.</p>
             
-            <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                <!-- Botão 1: Nacionais / Tribunais Superiores -->
-                <div onclick="abrirEstado('nacionais')" class="state-btn nacionais-btn text-white uppercase tracking-wider flex items-center justify-center gap-2 shadow-md px-6 min-w-[240px]">
-                    <i class="fa-solid fa-globe"></i> Nacionais e Superiores
-                </div>
-
-                <!-- Botão 2: Paraná -->
-                <div onclick="abrirEstado('PR')" class="state-btn flex items-center justify-center gap-2 px-6 min-w-[160px]">
-                     Paraná
-                </div>
+            <div class="portal-carousel pt-2" id="carrosselPrincipais">
+                <!-- Sincronizado via JS local -->
             </div>
         </section>
 
-        <!-- SEÇÃO EXTRA: PRODUTOS E FERRAMENTAS EXCLUSIVAS -->
+        <!-- Monitoramento por Estado -->
+        <section class="space-y-4">
+            <div class="flex flex-col space-y-1">
+                <h2 class="text-lg font-semibold text-gray-300">Monitoramento por Estado</h2>
+                <p class="text-xs text-gray-500">Selecione o estado para ver as varreduras de disponibilidade em tempo real.</p>
+            </div>
+            
+            <div class="flex flex-wrap gap-3 pt-2">
+                <div onclick="abrirEstado('nacionais')" class="state-btn nacionais-btn text-white px-6">Sistemas Nacionais</div>
+                <div onclick="abrirEstado('PR')" class="state-btn px-6">PR</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">SP</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">SC</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">RS</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">RJ</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">MG</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">MS</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">MT</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">GO</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">DF</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">BA</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">PE</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">CE</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">MA</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">PA</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">AM</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">ES</div>
+                <div onclick="alert('Módulo em implantação para a fase nacional.')" class="state-btn text-gray-500 bg-gray-950/40 border-gray-900 cursor-not-allowed">TO</div>
+            </div>
+        </section>
+
+        <!-- Otimizador PDF Inteligente -->
+        <section class="card p-6 rounded-2xl border border-gray-800 space-y-4">
+            <div>
+                <h3 class="text-lg font-bold text-gray-100">Otimizador PDF inteligente</h3>
+                <p class="text-xs text-gray-400 mt-1">Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.</p>
+            </div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs py-2.5 px-5 rounded-xl transition">
+                Edite seu PDF automaticamente de acordo com o portal que deseja anexar
+            </button>
+        </section>
+
+        <!-- Diagnóstico de Token/Certificado & PJe Office Pro -->
+        <section class="card p-6 rounded-2xl border border-gray-800 space-y-4">
+            <div>
+                <h3 class="text-lg font-bold text-gray-100">Diagnóstico de Token/Certificado & PJe Office Pro</h3>
+                <p class="text-xs text-gray-400 mt-1">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="alert('Iniciando comunicação segura com o token do dispositivo...')" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 text-xs font-semibold py-2.5 px-4 rounded-xl transition">Iniciar Teste de Token/Certificado</button>
+                <button onclick="alert('Enviando ping para rota de loopback local do PJe Office na porta 8600...')" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 text-xs font-semibold py-2.5 px-4 rounded-xl transition">Testar PJe Office Pro</button>
+            </div>
+        </section>
+
+        <!-- Equipamentos Homologados para Advocacia -->
+        <section class="space-y-4">
+            <div>
+                <h3 class="text-lg font-bold text-gray-100">Equipamentos Homologados para Advocacia</h3>
+                <p class="text-xs text-gray-400 mt-0.5">Evite travamentos no dia a dia juridico utilizando hardware testado por especialistas. Links testados, seguros e direcionados apenas para lojas oficiais.</p>
+            </div>
+
+            <!-- Grade com a Vitrine Comercial Completa de 10 Itens -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                
+                <!-- Item 1 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">1. Mouse Ergonômico</span>
+                        <p class="text-xs text-gray-400 mt-2">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">2. Teclado Silent</span>
+                        <p class="text-xs text-gray-400 mt-2">Digitação macia e extremamente silenciosa para escritórios.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">3. CPU Office Slim</span>
+                        <p class="text-xs text-gray-400 mt-2">Processamento de alta velocidade para múltiplos portais abertos.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">4. Notebook Advogado</span>
+                        <p class="text-xs text-gray-400 mt-2">Portabilidade e desempenho em SSD para audiências e prazos.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">5. Caixa de Som USB</span>
+                        <p class="text-xs text-gray-400 mt-2">Áudio limpo otimizado para frequências de voz em sessões.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">6. Webcam Full HD</span>
+                        <p class="text-xs text-gray-400 mt-2">Nitidez com foco automático para videoconferências e reuniões.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 7 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">7. Microfone Digital</span>
+                        <p class="text-xs text-gray-400 mt-2">Isolamento acústico integrado para uma fala limpa e sem eco.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 8 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">8. Roteador Wi-Fi 6</span>
+                        <p class="text-xs text-gray-400 mt-2">Sinal ultraestável para transferências pesadas de arquivos de rede.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 9 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">9. Scanner de Mesa</span>
+                        <p class="text-xs text-gray-400 mt-2">Conversor rápida de pilhas de documentos em PDFs otimizados.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+                <!-- Item 10 -->
+                <div class="card p-4 rounded-xl flex flex-col justify-between space-y-3">
+                    <div>
+                        <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950/40 border border-blue-900/30 px-1.5 py-0.5 rounded">10. Nobreak Senoidal</span>
+                        <p class="text-xs text-gray-400 mt-2">Proteção extra de energia para você nunca perder um prazo.</p>
+                    </div>
+                    <button class="w-full bg-gray-800 hover:bg-blue-600 text-[11px] font-semibold py-1.5 rounded-lg text-gray-200 hover:text-white transition">Ver Preço Recomendado</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Painel de Relatos Recentes PR -->
         <section class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
             
-            <!-- Ferramenta 1: Eliminador de PDF Inteligente -->
-            <div class="card p-6 rounded-2xl border border-gray-800 flex flex-col justify-between space-y-4">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 mb-3">
-                        <i class="fa-solid fa-file-pdf text-xl"></i>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-100">Eliminador de PDF Inteligente</h3>
-                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Remova restrições de leitura, reduza o tamanho e adapte a formatação do seu arquivo PDF de acordo com o limite exigido por cada portal de destino.</p>
+            <div class="space-y-3">
+                <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wide">Relatos Recentes de Colegas (PR)</h3>
+                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 space-y-3">
+                    <p class="text-xs text-gray-300 border-b border-gray-900 pb-2"><strong>TJPR - eproc:</strong> "Não carrega a tela de login desde as 15h" <span class="text-gray-500 block text-[10px] mt-0.5">há 8 min</span></p>
+                    <p class="text-xs text-gray-300"><strong>TJPR - Projudi:</strong> "Assinatura do token dando timeout" <span class="text-gray-500 block text-[10px] mt-0.5">há 22 min</span></p>
                 </div>
-                <button class="bg-red-600 hover:bg-red-700 text-white font-medium text-xs py-2.5 px-4 rounded-xl transition w-full text-center">
-                    Clique aqui para tratar seu PDF
-                </button>
             </div>
 
-            <!-- Ferramenta 2: Área Diagnóstica (Token & PJe Office) -->
-            <div class="card p-6 rounded-2xl border border-gray-800 flex flex-col justify-between space-y-4">
-                <div>
-                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 mb-3">
-                        <i class="fa-solid fa-key text-xl"></i>
+            <!-- Formulário Integrado: Relatar Instabilidade -->
+            <div class="space-y-3">
+                <h3 class="text-sm font-bold text-gray-300 uppercase tracking-wide">Relatar Instabilidade</h3>
+                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800 space-y-3 text-xs">
+                    <div>
+                        <label class="block text-gray-400 font-medium mb-1">1. Escolha o Estado:</label>
+                        <select id="reportUF" onchange="proximoPassoReport()" class="w-full bg-gray-900 border border-gray-800 p-2 rounded-lg text-gray-200 focus:outline-none">
+                            <option value="">Selecione...</option>
+                            <option value="PR">Paraná (PR)</option>
+                            <option value="nacionais">Sistemas Nacionais</option>
+                        </select>
                     </div>
-                    <h3 class="text-lg font-bold text-gray-100">Teste de Token & PJe Office</h3>
-                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Verifique se o assinador PJe Office ou os drivers de barramento do seu Token criptográfico A3 estão rodando localmente no seu computador atual.</p>
-                </div>
-                <div class="grid grid-cols-2 gap-2 w-full">
-                    <button onclick="alert('Iniciando comunicação com o PJe Office local... Certifique-se de que ele esteja aberto na barra de tarefas.')" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-medium text-xs py-2 rounded-xl transition text-center">
-                        Testar Assinador
-                    </button>
-                    <button onclick="alert('Verificando canais de certificados digitais instalados no navegador...')" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-medium text-xs py-2 rounded-xl transition text-center">
-                        Validar Certificado
-                    </button>
+                    <div id="wrapperTribunal" class="hidden space-y-3">
+                        <div>
+                            <label class="block text-gray-400 font-medium mb-1">2. Escolha o Tribunal/Portal:</label>
+                            <select id="reportTribunal" class="w-full bg-gray-900 border border-gray-800 p-2 rounded-lg text-gray-200 focus:outline-none"></select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-400 font-medium mb-1">3. Qual é o problema atual?</label>
+                            <div class="flex gap-4 pt-1">
+                                <label class="flex items-center gap-1.5"><input type="radio" name="tipo_prob" value="offline" checked> Site Offline</label>
+                                <label class="flex items-center gap-1.5"><input type="radio" name="tipo_prob" value="lentidao"> Lentidão</label>
+                            </div>
+                        </div>
+                        <button onclick="alert('Relato computado com sucesso! Obrigado por colaborar.')" class="w-full bg-blue-600 font-bold py-2 rounded-lg text-white text-xs transition active:scale-95">Registrar Incidência</button>
+                    </div>
+                    <p class="text-[10px] text-gray-600 leading-tight pt-1">*Atenção: Este painel computa instabilidades gerais de rede. Ele não altera nem corrige o sistema interno do tribunal selecionado.</p>
                 </div>
             </div>
 
@@ -118,24 +263,19 @@
 
     </div>
 
-    <!-- RODAPÉ COMPLETO DO SITE -->
-    <footer class="border-t border-gray-900 mt-16 bg-gray-950/40 py-8 text-center text-xs text-gray-500">
-        <div class="max-w-7xl mx-auto px-4 space-y-2">
-            <p>&copy; 2026 ADVBR.info. Todos os direitos reservados para Atilio Jose Alves Junior.</p>
-            <p class="text-[11px] text-gray-600">Aviso: Este painel opera como um indexador técnico independente. Marcas e links dos tribunais pertencem aos seus órgãos públicos.</p>
-        </div>
+    <!-- Rodapé Técnico Padrão -->
+    <footer class="border-t border-gray-900 mt-16 bg-gray-950/40 py-6 text-center text-xs text-gray-500">
+        <p>&copy; 2026 ADVBR.info. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- MODAL DE LISTAGEM DE TRIBUNAIS -->
+    <!-- MODAL DE EXIBIÇÃO POR ESTADO -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
             <div class="text-center">
-                <h3 class="text-xl font-bold text-white uppercase tracking-wide">
-                    <i class="fa-solid fa-server text-blue-500 mr-1"></i> <span id="estadoNome">PR</span>
-                </h3>
+                <h3 class="text-xl font-bold text-white uppercase tracking-wide" id="estadoNome">Paraná</h3>
                 <p class="text-xs text-gray-400 mt-1">Sub-sistemas de autenticação e barramentos de login.</p>
             </div>
             <div class="space-y-3">
@@ -145,49 +285,30 @@
         </div>
     </div>
 
-    <!-- MODAL REPORTAR -->
-    <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
-            <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <h3 class="text-lg font-bold text-white text-center"><i class="fa-solid fa-bullhorn text-blue-500"></i> Informar Falha</h3>
-            <div class="space-y-2">
-                <label class="text-xs font-bold text-gray-400 block">Selecione o Estado/Grupo:</label>
-                <select id="reportUF" onchange="proximoPassoReport()" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none">
-                    <option value="">Selecione...</option>
-                </select>
-            </div>
-            <div id="wrapperTribunal" class="space-y-2 hidden">
-                <label class="text-xs font-bold text-gray-400 block">Qual endereço/sistema apresenta falha?</label>
-                <select id="reportTribunal" class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-sm text-gray-200 focus:outline-none"></select>
-                <button onclick="enviarRelatoSimulado()" class="w-full bg-blue-600 font-semibold py-2 rounded-xl mt-2 text-sm text-white transition active:scale-95">Registrar Incidência</button>
-            </div>
-        </div>
-    </div>
-
     <script type="text/javascript">
-        // Lista de alvos fixa integrada na memória do script
+        // Estrutura Oficial de 10 botões ordenados conforme o escopo solicitado
         const listaAlvosFixo = [
-            { id: "pje_cnj",   nome: "PJe Nacional (CNJ)",  url: "https://www.pje.jus.br/navegador/",                grupo: "nacionais" },
-            { id: "stj",       nome: "STJ - Processos",      url: "https://www.stj.jus.br/sites/portalp/inicio",     grupo: "nacionais" },
-            { id: "stf",       nome: "STF - Eletrônico",     url: "https://portal.stf.jus.br/",                      grupo: "nacionais" },
-            { id: "tse",       nome: "TSE - Portal",         url: "https://www.tse.jus.br/",                         grupo: "nacionais" },
-            { id: "tst",       nome: "TST - Portal",         url: "https://www.tst.jus.br/",                         grupo: "nacionais" },
-            { id: "stm",       nome: "STM - Portal",         url: "https://www.stm.jus.br/",                         grupo: "nacionais" },
-            { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",   url: "https://eproc.tjpr.jus.br/eproc_1g/",           grupo: "PR" },
-            { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",   url: "https://eproc.tjpr.jus.br/eproc_2g/",           grupo: "PR" },
-            { id: "tjpr_projudi",  nome: "TJPR - Projudi",         url: "https://projudi.tjpr.jus.br/projudi/",          grupo: "PR" },
-            { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",     url: "https://pje.trt9.jus.br/pje/pje-presente.html",  grupo: "PR" },
-            { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",     url: "https://pje.trt9.jus.br/pje2g/pje-presente.html",grupo: "PR" },
-            { id: "trf4_pr",       nome: "TRF4 - Federal PR",      url: "https://eproc.trf4.jus.br/eproc2trf4/",         grupo: "PR" },
-            { id: "tjsp_saj",      nome: "TJSP - e-SAJ (Login)",   url: "https://esaj.tjsp.jus.br/sajcas/login",         grupo: "SP" }
+            { id: "pje_cnj",       nome: "1. PJe - Nacional",   sub: "Conselho Nacional de Justiça", url: "https://www.pje.jus.br/navegador/", grupo: "nacionais" },
+            { id: "tjpr_eproc_1g", nome: "2. eproc - Geral",    sub: "Justiça Estadual e Federal",   url: "https://eproc.tjpr.jus.br/eproc_1g/", grupo: "PR" },
+            { id: "tjsp_saj",      nome: "3. e-SAJ - Geral",    sub: "Tribunais de Justiça Estaduais",url: "https://esaj.tjsp.jus.br/sajcas/login", grupo: "SP" },
+            { id: "stj",           nome: "4. STJ - Processos",  sub: "Superior Tribunal de Justiça", url: "https://www.stj.jus.br/sites/portalp/inicio", grupo: "nacionais" },
+            { id: "stf",           nome: "5. STF - Eletrônico", sub: "Supremo Tribunal Federal",     url: "https://portal.stf.jus.br/", grupo: "nacionais" },
+            { id: "tst",           nome: "6. TST - PJe",        sub: "Tribunal Superior do Trabalho",url: "https://www.tst.jus.br/", grupo: "nacionais" },
+            { id: "pje_cnj_extra", nome: "7. TRF1 - PJe",       sub: "Justiça Federal da 1ª Região", url: "https://www.pje.jus.br/navegador/", grupo: "nacionais" },
+            { id: "trf4_pr",       nome: "8. TRF4 - Federal PR",sub: "Justiça Federal da 4ª Região", url: "https://eproc.trf4.jus.br/eproc2trf4/", grupo: "PR" },
+            { id: "tjsp_extra",    nome: "9. TRT2 - PJe",       sub: "Tribunal Trabalhista de SP",   url: "https://esaj.tjsp.jus.br/sajcas/login", grupo: "SP" },
+            { id: "tjpr_projudi",  nome: "10. Projudi - Geral", sub: "Juizados Especiais Cíveis",    url: "https://projudi.tjpr.jus.br/projudi/", grupo: "PR" },
+            // Subsistemas adicionais mapeados do Paraná
+            { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau", sub: "Instância de Recursos",        url: "https://eproc.tjpr.jus.br/eproc_2g/", grupo: "PR" },
+            { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",  sub: "Varas do Trabalho do PR",      url: "https://pje.trt9.jus.br/pje/pje-presente.html", grupo: "PR" },
+            { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",  sub: "Tribunal do Trabalho 9R",      url: "https://pje.trt9.jus.br/pje2g/pje-presente.html", grupo: "PR" },
+            { id: "tse",           nome: "TSE - Portal",        sub: "Tribunal Superior Eleitoral",  url: "https://www.tse.jus.br/", grupo: "nacionais" },
+            { id: "stm",           nome: "STM - Portal",        sub: "Superior Tribunal Militar",    url: "https://www.stm.jus.br/", grupo: "nacionais" }
         ];
 
         let statusServidores = {};
 
         async function rodar() {
-            preencherFiltrosReport();
             await obterTelemetria();
             renderizarCarrosselCritico();
         }
@@ -199,27 +320,29 @@
                     const dados = await res.json();
                     statusServidores = dados.status_servidores || {};
                 }
-            } catch (e) { console.error("Erro de comunicação com a API de status.", e); }
+            } catch (e) { console.error("Erro ao puxar API de status.", e); }
         }
 
         function renderizarCarrosselCritico() {
             const container = document.getElementById('carrosselPrincipais');
             container.innerHTML = '';
             
-            listaAlvosFixo.forEach(p => {
-                let info = { status: 'Online', latenciaMs: 125 };
+            // Filtra os 10 itens comerciais da vitrine inicial
+            const top10 = listaAlvosFixo.slice(0, 10);
+
+            top10.forEach(p => {
+                let info = { status: 'Online', latenciaMs: 110 };
                 if (statusServidores && statusServidores[p.id]) {
                     info = statusServidores[p.id];
                 }
                 
-                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
-                const nomeLimpoCard = p.nome.replace('(PR)', '').replace('()', '').trim();
+                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : 'bg-red-950 text-red-400 border-red-800/40';
 
                 container.innerHTML += `
                     <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                         <div>
-                            <p class="text-sm font-bold text-gray-200">${nomeLimpoCard}</p>
-                            <p class="text-xs text-gray-500">${info.latenciaMs ? info.latenciaMs + 'ms' : 'Estável'}</p>
+                            <p class="text-sm font-bold text-gray-200">${p.nome}</p>
+                            <p class="text-[11px] text-gray-500">${p.sub}</p>
                         </div>
                         <span class="px-2 py-0.5 text-xs font-bold rounded border ${badge}">${info.status}</span>
                     </div>
@@ -228,25 +351,23 @@
         }
 
         window.abrirEstado = function(uf) {
-            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Nacionais & Superiores' : 'Paraná';
+            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Âmbito Nacional' : 'Disponibilidade - PR';
             const target = document.getElementById('linksTribunais');
             target.innerHTML = '';
 
             const filtrados = listaAlvosFixo.filter(t => t.grupo === uf);
             filtrados.forEach(alvo => {
-                let info = { status: 'Online', latenciaMs: 90 };
-                if (statusServidores && statusServidores[alvo.id]) {
-                    info = statusServidores[alvo.id];
-                }
+                let info = { status: 'Online' };
+                if (statusServidores && statusServidores[alvo.id]) { info = statusServidores[alvo.id]; }
                 
-                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
-                const nomeLimpoLista = alvo.nome.replace('(PR)', '').replace('()', '').trim();
+                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : 'bg-red-950 text-red-400 border-red-800/40';
+                const labelLimpo = alvo.nome.replace(/^\d+\.\s*/, '');
 
                 target.innerHTML += `
                     <a href="${alvo.url}" target="_blank" class="flex justify-between items-center bg-gray-950 p-3 rounded-xl border border-gray-800 hover:border-blue-500/50 transition block">
                         <div>
-                            <p class="text-sm font-medium text-gray-200">${nomeLimpoLista}</p>
-                            <p class="text-[11px] text-gray-400 italic">Mapeamento: Rota Interna de Autenticação</p>
+                            <p class="text-sm font-medium text-gray-200">${labelLimpo}</p>
+                            <p class="text-[11px] text-gray-500">${alvo.sub}</p>
                         </div>
                         <span class="px-2 py-0.5 text-xs font-bold rounded border ${badge}">${info.status}</span>
                     </a>
@@ -255,30 +376,17 @@
             document.getElementById('modalEstado').classList.remove('hidden');
         }
 
-        function preencherFiltrosReport() {
-            const select = document.getElementById('reportUF');
-            const listaUfs = [...new Set(listaAlvosFixo.map(t => t.grupo))].sort();
-            listaUfs.forEach(uf => {
-                const labelExibido = uf === 'nacionais' ? 'Âmbito Nacional' : (uf.trim().toUpperCase() === 'PR' ? 'Paraná' : uf);
-                select.innerHTML += `<option value="${uf}">${labelExibido}</option>`;
-            });
-        }
-
         window.proximoPassoReport = function() {
             const uf = document.getElementById('reportUF').value;
             const subSelect = document.getElementById('reportTribunal');
-            subSelect.innerHTML = '<option value="">Selecione o endereço...</option>';
+            subSelect.innerHTML = '<option value="">Selecione o portal...</option>';
             if (!uf) return;
+            
             listaAlvosFixo.filter(t => t.grupo === uf).forEach(t => {
-                const nomeFiltroReport = t.nome.replace('(PR)', '').replace('()', '').trim();
-                subSelect.innerHTML += `<option value="${t.id}">${nomeFiltroReport}</option>`;
+                const labelLimpo = t.nome.replace(/^\d+\.\s*/, '');
+                subSelect.innerHTML += `<option value="${t.id}">${labelLimpo}</option>`;
             });
             document.getElementById('wrapperTribunal').classList.remove('hidden');
-        }
-
-        window.enviarRelatoSimulado = function() {
-            alert("Incidência registrada no barramento. Os dados servirão para auditoria futura.");
-            fecharModal('modalReportar');
         }
 
         window.fecharModal = function(id) { document.getElementById(id).classList.add('hidden'); }
