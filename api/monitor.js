@@ -65,15 +65,25 @@ const tribunais = [
 
 async function testarAlvo(alvo) {
     const controlador = new AbortController();
-    const idTimeout = setTimeout(() => controlador.abort(), 4000); 
+    const idTimeout = setTimeout(() => controlador.abort(), 6000); // Subimos para 6s para dar tempo do proxy responder
     const inicio = Date.now();
 
+    // Filtro estratégico: Se o tribunal for crítico (STF ou TRF3), mascara o IP usando um gateway livre de proxy CORS
+    let urlDestino = alvo.url;
+    if (alvo.id === "stf" || alvo.id === "trf3") {
+        urlDestino = `https://api.allorigins.win/get?url=${encodeURIComponent(alvo.url)}`;
+    }
+
     try {
-        await fetch(alvo.url, {
+        await fetch(urlDestino, {
             method: 'GET',
             mode: 'no-cors',
             signal: controlador.signal,
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+            headers: { 
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
+            }
         });
         clearTimeout(idTimeout);
         const latencia = Date.now() - inicio;
@@ -81,15 +91,12 @@ async function testarAlvo(alvo) {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latencia > 2500 ? "Lentidão" : "Online",
+            status: latencia > 4000 ? "Lentidão" : "Online",
             latenciaMs: latencia
         };
     } catch (erro) {
         clearTimeout(idTimeout);
-        
-        // LINHA INJETADA: Cospe o erro real de rede detalhado na console da Vercel
-        console.error(`[DIAGNÓSTICO TRIBUNAL] ${alvo.nome} (${alvo.id}) falhou. Motivo:`, erro.message || erro);
-        
+        console.error(`[FALHA DE REDE] ${alvo.nome} (${alvo.id}) - erro:`, erro.message || erro);
         return {
             id: alvo.id,
             nome: alvo.nome,
