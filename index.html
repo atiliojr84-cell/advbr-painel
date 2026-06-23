@@ -30,10 +30,11 @@
                 <p class="text-sm text-gray-400">Monitoramento técnico focado nas sub-páginas e telas de login (1º e 2º Grau)</p>
             </div>
             <button onclick="abrirReportar()" class="bg-gray-900 border border-gray-800 text-gray-300 text-sm px-4 py-2 rounded-xl hover:text-red-400 hover:border-red-800/60 transition">
-                <i class="fa-solid fa-bullhorn text-xs mr-1"></i> Estou com problema!
+                <i class="fa-solid fa-bullhorn text-xs mr-1"></i> Estou com problem!
             </button>
         </header>
 
+        <!-- Seção: Principais Portais da Justiça -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Portais da Justiça
@@ -43,23 +44,28 @@
             </div>
         </section>
 
+        <!-- Grade de Estados Organizada (Filtro por Demanda Inicial) -->
         <section class="space-y-4">
             <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Escolha a Região / Estado
             </h2>
-            <p class="text-xs text-gray-500">Clique para expandir os sistemas internos de 1º e 2º grau da localidade selecionada.</p>
+            <p class="text-xs text-gray-500">Selecione para expandir os status e acessos internos em tempo real.</p>
             
-            <div class="mb-4">
-                <div onclick="abrirEstado('nacionais')" class="state-btn nacionais-btn max-w-xs text-white uppercase tracking-wider flex items-center justify-center gap-2 shadow-md">
-                    <i class="fa-solid fa-globe"></i> Tribunais Nacionais / Superiores
+            <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                <!-- Botão 1: Nacionais / Tribunais Superiores -->
+                <div onclick="abrirEstado('nacionais')" class="state-btn nacionais-btn text-white uppercase tracking-wider flex items-center justify-center gap-2 shadow-md px-6 min-w-[240px]">
+                    <i class="fa-solid fa-globe"></i> Nacionais e Superiores
+                </div>
+
+                <!-- Botão 2: Paraná -->
+                <div onclick="abrirEstado('PR')" class="state-btn flex items-center justify-center gap-2 px-6 min-w-[160px]">
+                     Paraná
                 </div>
             </div>
-
-            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3" id="gradeEstados">
-                </div>
         </section>
     </div>
 
+    <!-- MODAL DE LISTAGEM DE TRIBUNAIS DO ESTADO -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -78,6 +84,7 @@
         </div>
     </div>
 
+    <!-- MODAL REPORTAR -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -104,7 +111,6 @@
         let statusServidores = {};
 
         async function rodar() {
-            gerarBotoesEstados();
             preencherFiltrosReport();
             await obterTelemetria();
             renderizarCarrosselCritico();
@@ -120,30 +126,15 @@
             } catch (e) { console.error("Erro de comunicação com a API de status.", e); }
         }
 
-        function gerarBotoesEstados() {
-            const listagem = [...new Set(tribunais.map(t => t.grupo))].filter(g => g !== 'nacionais').sort();
-            const grid = document.getElementById('gradeEstados');
-            grid.innerHTML = '';
-            
-            listagem.forEach(uf => {
-                // Força a exibição exata de "Paraná" quando o grupo for PR
-                const nomeExibido = (uf.trim().toUpperCase() === 'PR') ? 'Paraná' : uf;
-                grid.innerHTML += `<div onclick="abrirEstado('${uf}')" class="state-btn">${nomeExibido}</div>`;
-            });
-        }
-
         function renderizarCarrosselCritico() {
             const container = document.getElementById('carrosselPrincipais');
             container.innerHTML = '';
             
-            //IDs corrigidos do topo para casar perfeitamente com a lista nova e destravar os cards
-            const principais = tribunais.filter(t => t.grupo === 'nacionais' || t.id.includes('tjpr') || t.id === 'tjsp_saj' || t.id === 'trf3_1g');
-
-            principais.forEach(p => {
+            // Renderiza todos os alvos cadastrados diretamente no carrossel (os 10 de foco inicial)
+            tribunais.forEach(p => {
                 const info = statusServidores[p.id] || { status: 'Online', latenciaMs: 110 };
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 
-                // Remove qualquer string residual de (PR) para limpar os textos do carrossel
                 const nomeLimpoCard = p.nome.replace('(PR)', '').replace('()', '').trim();
 
                 container.innerHTML += `
@@ -159,8 +150,7 @@
         }
 
         window.abrirEstado = function(uf) {
-            // Força o título interno do modal a usar Paraná com acento sem a sigla
-            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Nacionais & Superiores' : 'Estado: ' + (uf.trim().toUpperCase() === 'PR' ? 'Paraná' : uf);
+            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Nacionais & Superiores' : 'Paraná';
             const target = document.getElementById('linksTribunais');
             target.innerHTML = '';
 
