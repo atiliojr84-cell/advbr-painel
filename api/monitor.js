@@ -64,8 +64,8 @@ const tribunais = [
     { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 3 }
 ];
 
-// Função auxiliar para criar uma pequena pausa entre as retentativas (pings)
-const aguardar = (ms) => new Promise(resolve => setTimeout(ms, resolve));
+// CORREÇÃO DA SINTAXE: resolve (função) vem antes de ms (tempo)
+const aguardar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function executarPingComRetentativas(alvo) {
     const maxTentativas = 3;
@@ -73,11 +73,10 @@ async function executarPingComRetentativas(alvo) {
 
     for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
         const controlador = new AbortController();
-        const idTimeout = setTimeout(() => controlador.abort(), 4000); // 4 segundos de limite por tentativa individual
+        const idTimeout = setTimeout(() => controlador.abort(), 4000); 
         const inicio = Date.now();
 
         try {
-            // Dispara o fetch fingindo ser um navegador real atualizado
             await fetch(alvo.url, {
                 method: 'GET',
                 mode: 'no-cors',
@@ -89,24 +88,19 @@ async function executarPingComRetentativas(alvo) {
             });
             
             clearTimeout(idTimeout);
-            const tempoGastor = Date.now() - inicio;
-            latencias.push(tempoGastor);
-            
-            // Se o ping deu certo de primeira ou de segunda, interrompe o laço e assume sucesso!
+            const tempoGasto = Date.now() - inicio;
+            latencias.push(tempoGasto);
             break; 
 
         } catch (erro) {
             clearTimeout(idTimeout);
-            // Se falhou e ainda temos tentativas sobrando, espera 500ms e dá o próximo ping
             if (tentativa < maxTentativas) {
                 await aguardar(500);
             }
         }
     }
 
-    // Processamento do Veredito após as 3 tentativas
     if (latencias.length > 0) {
-        // Pega a última latência capturada no sucesso
         const latenciaFinal = latencias[latencias.length - 1];
         return {
             id: alvo.id,
@@ -116,7 +110,6 @@ async function executarPingComRetentativas(alvo) {
             latenciaMs: latenciaFinal
         };
     } else {
-        // Se esgotou as 3 tentativas e todas caíram no catch, o servidor está inacessível de verdade
         return {
             id: alvo.id,
             nome: alvo.nome,
@@ -141,8 +134,6 @@ export default async function handler(req, res) {
     try {
         let estadoGlobal = (await kv.get('advbr_status_global')) || {};
         
-        // Em vez de rodar tudo de forma síncrona linear pura (que daria timeout na Vercel),
-        // executamos nossa função com a inteligência interna de até 3 pings por alvo
         const promessas = alvosDoLote.map(alvo => executarPingComRetentativas(alvo));
         const resultados = await Promise.all(promessas);
 
