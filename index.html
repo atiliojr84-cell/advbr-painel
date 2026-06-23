@@ -34,38 +34,32 @@
             </button>
         </header>
 
-        <!-- Principais Portais Carrossel -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-star text-amber-500"></i> Portais de Fluxo Crítico
+                <i class="fa-solid fa-star text-amber-500"></i> Principais Portais da Justiça
             </h2>
             <div class="portal-carousel" id="carrosselPrincipais">
-                <div class="text-sm text-gray-500 italic">Buscando telemetria dos servidores...</div>
+                <div class="text-sm text-gray-500 italic">Sincronizando dados dos servidores públicos...</div>
             </div>
         </section>
 
-        <!-- Grade de Estados Organizada -->
         <section class="space-y-4">
             <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Escolha a Região / Estado
             </h2>
             <p class="text-xs text-gray-500">Clique para expandir os sistemas internos de 1º e 2º grau da localidade selecionada.</p>
             
-            <!-- Botão Nacional Isolado no Topo da Grade -->
             <div class="mb-4">
                 <div onclick="abrirEstado('nacionais')" class="state-btn nacionais-btn max-w-xs text-white uppercase tracking-wider flex items-center justify-center gap-2 shadow-md">
                     <i class="fa-solid fa-globe"></i> Tribunais Nacionais / Superiores
                 </div>
             </div>
 
-            <!-- Todos os Estados do Brasil lado a lado -->
             <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-3" id="gradeEstados">
-                <!-- Gerado dinamicamente via JavaScript -->
-            </div>
+                </div>
         </section>
     </div>
 
-    <!-- MODAL DE LISTAGEM DE TRIBUNAIS DO ESTADO -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -84,7 +78,6 @@
         </div>
     </div>
 
-    <!-- MODAL REPORTAR -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -106,6 +99,7 @@
     </div>
 
     <script type="module">
+        // Importação corrigida com caminho relativo direto para evitar falha de carregamento de módulo da Vercel
         import tribunais from './api/alvos.js';
 
         let statusServidores = {};
@@ -133,7 +127,6 @@
             grid.innerHTML = '';
             
             listagem.forEach(uf => {
-                // Modificado: Se for PR vira 'Paraná' com o acento correto
                 const nomeExibido = (uf === 'PR') ? 'Paraná' : uf;
                 grid.innerHTML += `<div onclick="abrirEstado('${uf}')" class="state-btn">${nomeExibido}</div>`;
             });
@@ -147,10 +140,14 @@
             principais.forEach(p => {
                 const info = statusServidores[p.id] || { status: 'Online', latenciaMs: 110 };
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
+                
+                // Força a remoção de qualquer "(PR)" residual no texto dinâmico dos cards principais
+                const nomeLimpoCard = p.nome.replace('(PR)', '').replace('()', '').trim();
+
                 container.innerHTML += `
                     <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                         <div>
-                            <p class="text-sm font-bold text-gray-200">${p.nome}</p>
+                            <p class="text-sm font-bold text-gray-200">${nomeLimpoCard}</p>
                             <p class="text-xs text-gray-500">${info.latenciaMs ? info.latenciaMs + 'ms' : 'Estável'}</p>
                         </div>
                         <span class="px-2 py-0.5 text-xs font-bold rounded border ${badge}">${info.status}</span>
@@ -169,10 +166,13 @@
                 const info = statusServidores[alvo.id] || { status: 'Online', latenciaMs: 85 };
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 
+                // Filtro via código que garante a remoção total de (PR) ou parênteses vazios
+                const nomeLimpoLista = alvo.nome.replace('(PR)', '').replace('()', '').trim();
+
                 target.innerHTML += `
                     <a href="${alvo.url}" target="_blank" class="flex justify-between items-center bg-gray-950 p-3 rounded-xl border border-gray-800 hover:border-blue-500/50 transition block">
                         <div>
-                            <p class="text-sm font-medium text-gray-200">${alvo.nome}</p>
+                            <p class="text-sm font-medium text-gray-200">${nomeLimpoLista}</p>
                             <p class="text-[11px] text-gray-400 italic">Mapeamento: Rota Interna de Autenticação</p>
                         </div>
                         <span class="px-2 py-0.5 text-xs font-bold rounded border ${badge}">${info.status}</span>
@@ -197,7 +197,8 @@
             subSelect.innerHTML = '<option value="">Selecione o endereço...</option>';
             if (!uf) return;
             tribunais.filter(t => t.grupo === uf).forEach(t => {
-                subSelect.innerHTML += `<option value="${t.id}">${t.nome}</option>`;
+                const nomeFiltroReport = t.nome.replace('(PR)', '').replace('()', '').trim();
+                subSelect.innerHTML += `<option value="${t.id}">${nomeFiltroReport}</option>`;
             });
             document.getElementById('wrapperTribunal').classList.remove('hidden');
         }
