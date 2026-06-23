@@ -21,10 +21,9 @@ const tribunais = [
     { id: "trf4_pr",       nome: "TRF4 - Federal PR",      url: "https://eproc.trf4.jus.br/eproc2trf4/",         grupo: "PR", lote: 1 },
 
     // ==========================================
-    // EXTRA SÃO PAULO (Domínio do SSO simplificado para o teste do robô)
+    // EXTRA SÃO PAULO 
     // ==========================================
-    { id: "tjsp_saj",      nome: "TJSP - e-SAJ (Login)",   url: "https://esaj.tjsp.jus.br/sajcas/login",         grupo: "SP", lote: 1 },
-    { id: "trf3",          nome: "TRF3 - Federal SP/MS",    url: "https://sso.cloud.pje.jus.br/auth/",             grupo: "SP", lote: 1 }
+    { id: "tjsp_saj",      nome: "TJSP - e-SAJ (Login)",   url: "https://esaj.tjsp.jus.br/sajcas/login",         grupo: "SP", lote: 1 }
 ];
 
 export default tribunais;
