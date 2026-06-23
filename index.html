@@ -67,14 +67,13 @@
                 <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
             </div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problema.</p>
+                <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problem.</p>
                 <button onclick="abrirReportar()" class="w-full sm:w-auto bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm whitespace-nowrap">
                     <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
                 </button>
             </div>
         </header>
 
-        <!-- CARROSSEL DO TOPO -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Servidores de Login
@@ -125,7 +124,6 @@
             </div>
         </section>
 
-        <!-- SEÇÃO DOS ESTADOS -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento Nacional de Regiões
@@ -166,12 +164,10 @@
                 <div onclick="abrirEstado('SP')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">SP <span id="dot-SP" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('TO')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">TO <span id="dot-TO" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
 
-                <!-- CORREÇÃO: O 28º BOTÃO AGORA CHAMA SISTEMAS COLETIVOS EM VEZ DE ID INEXISTENTE -->
-                <div onclick="abrirEstado('coletivos')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm bg-gradient-to-r from-gray-900 to-slate-800 border-gray-700 text-blue-400">Nacionais <span id="dot-coletivos" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)] inline-block ml-1"></span></div>
+                <div onclick="abrirEstado('coletivos')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm bg-gradient-to-r from-gray-900 to-slate-800 border-gray-700 text-blue-400">Nacionais <span id="dot-coletivos" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
             </div>
         </section>
 
-        <!-- Otimizador PDF -->
         <section class="p-6 card rounded-2xl border border-gray-850 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
             <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
@@ -186,7 +182,6 @@
             </button>
         </section>
 
-        <!-- Assinador Digital -->
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
@@ -205,7 +200,6 @@
             </div>
         </section>
 
-        <!-- CARROSSEL DE PRODUTOS COMPLETO -->
         <section class="space-y-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="max-w-2xl">
@@ -274,7 +268,6 @@
         </section>
     </div>
 
-    <!-- MODAL PRINCIPAL PARALELO (EM DUAS COLUNAS) -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-2xl w-full p-6 space-y-5 relative shadow-2xl max-h-[90vh] overflow-y-auto">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -293,7 +286,6 @@
         </div>
     </div>
 
-    <!-- REPORTAR MODAL -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -347,46 +339,83 @@
         }
 
         function atualizarBolinhasEstados() {
-            const gruposParaAtualizar = ['nacionais','AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'];
+            const gruposUfs = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'];
             
-            gruposParaAtualizar.forEach(grupoId => {
-                const dot = document.getElementById(`dot-${grupoId}`);
-                if (!dot) return;
+            // Sincroniza dinamicamente as bolinhas dos blocos mestre
+            const dotNacionais = document.getElementById('dot-nacionais');
+            if (dotNacionais) {
+                const tribsSuperiores = Object.values(statusGerais).filter(t => t.grupo === 'nacionais' && t.id !== 'trf3');
+                mapearStatusGrupo(tribsSuperiores, dotNacionais);
+            }
 
-                const tribunaisDoGrupo = Object.values(statusGerais).filter(t => t.grupo === grupoId);
-                if (tribunaisDoGrupo.length === 0) {
-                    dot.className = "h-2 w-2 rounded-full bg-gray-600 inline-block ml-1";
-                    return;
-                }
-
-                const totalTribunais = tribunaisDoGrupo.length;
-                const qtdOnline = tribunaisDoGrupo.filter(t => t.status === "Online").length;
-                const qtdFora = tribunaisDoGrupo.filter(t => t.status === "Fora do Ar").length;
-
-                dot.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block ml-1";
-
-                if (qtdOnline === totalTribunais) {
-                    dot.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
-                } else if (qtdFora === totalTribunais) {
-                    dot.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
-                } else {
-                    dot.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
-                }
-            });
-            
-            // Atualiza dinamicamente a bolinha do 28º botão mestre
-            const dotColetivo = document.getElementById('dot-coletivos');
-            if (dotColetivo && statusGerais['pje_cnj'] && statusGerais['stj']) {
+            const dotColetivos = document.getElementById('dot-coletivos');
+            if (dotColetivos && statusGerais['pje_cnj'] && statusGerais['stj']) {
                 const cnjStatus = statusGerais['pje_cnj'].status;
                 const stjStatus = statusGerais['stj'].status;
-                dotColetivo.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block ml-1";
+                dotColetivos.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block ml-1";
                 if (cnjStatus === "Online" && stjStatus === "Online") {
-                    dotColetivo.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
+                    dotColetivos.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
                 } else if (cnjStatus === "Fora do Ar" && stjStatus === "Fora do Ar") {
-                    dotColetivo.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
+                    dotColetivos.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
                 } else {
-                    dotColetivo.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
+                    dotColetivos.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
                 }
+            }
+
+            // Sincronização inteligente baseada no mapeamento completo de 64 canais
+            gruposUfs.forEach(uf => {
+                const dot = document.getElementById(`dot-${uf}`);
+                if (!dot) return;
+
+                // Agrupa todos os servidores do back-end associados a essa UF
+                let tribunaisDoGrupo = Object.values(statusGerais).filter(t => t.grupo === uf);
+                
+                // Casos especiais de fronteiras e jurisdições cruzadas no back-end
+                if (uf === 'PA' || uf === 'AP') {
+                    const trt8 = Object.values(statusGerais).find(t => t.id === 'trt8_1g_pa');
+                    if (trt8) tribunaisDoGrupo.push(trt8);
+                }
+                if (uf === 'AM' || uf === 'RR') {
+                    const trt11 = Object.values(statusGerais).find(t => t.id === 'trt11_1g');
+                    if (trt11) tribunaisDoGrupo.push(trt11);
+                }
+                if (uf === 'RO' || uf === 'AC') {
+                    const trt14 = Object.values(statusGerais).find(t => t.id === 'trt14_1g');
+                    if (trt14) tribunaisDoGrupo.push(trt14);
+                }
+                if (uf === 'DF' || uf === 'TO') {
+                    const trt10_1g = Object.values(statusGerais).find(t => t.id === 'trt10_1g');
+                    const trt10_2g = Object.values(statusGerais).find(t => t.id === 'trt10_2g');
+                    if (trt10_1g) tribunaisDoGrupo.push(trt10_1g);
+                    if (trt10_2g) tribunaisDoGrupo.push(trt10_2g);
+                }
+                if (uf === 'SP') {
+                    const trf3 = Object.values(statusGerais).find(t => t.id === 'trf3');
+                    if (trf3) tribunaisDoGrupo.push(trf3);
+                }
+
+                mapearStatusGrupo(tribunaisDoGrupo, dot);
+            });
+        }
+
+        function mapearStatusGrupo(listaTribunais, elementoDot) {
+            if (listaTribunais.length === 0) {
+                elementoDot.className = "h-2 w-2 rounded-full bg-gray-600 inline-block ml-1";
+                return;
+            }
+
+            const total = listaTribunais.length;
+            const qtdOnline = listaTribunais.filter(t => t.status === "Online").length;
+            const qtdFora = listaTribunais.filter(t => t.status === "Fora do Ar").length;
+
+            elementoDot.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block ml-1";
+
+            if (qtdOnline === total) {
+                elementoDot.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
+            } else if (qtdFora === total) {
+                elementoDot.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
+            } else {
+                elementoDot.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
             }
         }
 
@@ -407,13 +436,36 @@
             const containerComunidade = document.getElementById('relatosComunidadeEstado');
             if (!container) return;
 
-            // Filtro especial: se o clique for no 28º botão, junta os dois barramentos nacionais dentro dele
             let tribunaisDaUf = [];
             if (uf === 'coletivos') {
                 if (statusGerais['pje_cnj']) tribunaisDaUf.push(statusGerais['pje_cnj']);
                 if (statusGerais['stj']) tribunaisDaUf.push(statusGerais['stj']);
             } else {
                 tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
+                
+                // Injeta os sub-tribunais compartilhados dentro das janelas regionais certas
+                if (uf === 'AC') {
+                    const trt14 = Object.values(statusGerais).find(t => t.id === 'trt14_1g');
+                    if (trt14) tribunaisDaUf.push(trt14);
+                }
+                if (uf === 'AP') {
+                    const trt8 = Object.values(statusGerais).find(t => t.id === 'trt8_1g_pa');
+                    if (trt8) tribunaisDaUf.push(trt8);
+                }
+                if (uf === 'RR') {
+                    const trt11 = Object.values(statusGerais).find(t => t.id === 'trt11_1g');
+                    if (trt11) tribunaisDaUf.push(trt11);
+                }
+                if (uf === 'TO') {
+                    const trt10_1g = Object.values(statusGerais).find(t => t.id === 'trt10_1g');
+                    const trt10_2g = Object.values(statusGerais).find(t => t.id === 'trt10_2g');
+                    if (trt10_1g) tribunaisDaUf.push(trt10_1g);
+                    if (trt10_2g) tribunaisDaUf.push(trt10_2g);
+                }
+                if (uf === 'SP') {
+                    const trf3 = Object.values(statusGerais).find(t => t.id === 'trf3');
+                    if (trf3) tribunaisDaUf.push(trf3);
+                }
             }
             
             if (containerComunidade) {
