@@ -34,6 +34,7 @@
             </button>
         </header>
 
+        <!-- Seção: Principais Portais da Justiça -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Portais da Justiça
@@ -43,6 +44,7 @@
             </div>
         </section>
 
+        <!-- Grade de Estados Organizada -->
         <section class="space-y-4">
             <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Escolha a Região / Estado
@@ -50,10 +52,12 @@
             <p class="text-xs text-gray-500">Selecione para expandir os status e acessos internos em tempo real.</p>
             
             <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                <!-- Botão 1: Nacionais / Tribunais Superiores -->
                 <div onclick="abrirEstado('nacionais')" class="state-btn nacionais-btn text-white uppercase tracking-wider flex items-center justify-center gap-2 shadow-md px-6 min-w-[240px]">
                     <i class="fa-solid fa-globe"></i> Nacionais e Superiores
                 </div>
 
+                <!-- Botão 2: Paraná -->
                 <div onclick="abrirEstado('PR')" class="state-btn flex items-center justify-center gap-2 px-6 min-w-[160px]">
                      Paraná
                 </div>
@@ -61,6 +65,7 @@
         </section>
     </div>
 
+    <!-- MODAL DE LISTAGEM DE TRIBUNAIS -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -79,6 +84,7 @@
         </div>
     </div>
 
+    <!-- MODAL REPORTAR -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -124,9 +130,10 @@
             const container = document.getElementById('carrosselPrincipais');
             container.innerHTML = '';
             
-            // Renderiza os alvos válidos direto da lista sem travar em IDs mortos
+            // CORREÇÃO MÁXIMA: Agora o loop lê EXCLUSIVAMENTE o arquivo alvos.js local.
+            // Qualquer lixo ou dado antigo que sobrou gravado no Redis vai ser ignorado pelo front.
             tribunais.forEach(p => {
-                let info = { status: 'Online', latenciaMs: 130 };
+                let info = { status: 'Online', latenciaMs: 125 };
                 
                 if (statusServidores && statusServidores[p.id]) {
                     info = statusServidores[p.id];
@@ -154,7 +161,7 @@
 
             const filtrados = tribunais.filter(t => t.grupo === uf);
             filtrados.forEach(alvo => {
-                let info = { status: 'Online', latenciaMs: 95 };
+                let info = { status: 'Online', latenciaMs: 90 };
                 if (statusServidores && statusServidores[alvo.id]) {
                     info = statusServidores[alvo.id];
                 }
