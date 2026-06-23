@@ -30,7 +30,7 @@
                 <p class="text-sm text-gray-400">Monitoramento técnico focado nas sub-páginas e telas de login (1º e 2º Grau)</p>
             </div>
             <button onclick="abrirReportar()" class="bg-gray-900 border border-gray-800 text-gray-300 text-sm px-4 py-2 rounded-xl hover:text-red-400 hover:border-red-800/60 transition">
-                <i class="fa-solid fa-bullhorn text-xs mr-1"></i> Estou com problem!
+                <i class="fa-solid fa-bullhorn text-xs mr-1"></i> Estou com problema!
             </button>
         </header>
 
@@ -130,9 +130,9 @@
             const container = document.getElementById('carrosselPrincipais');
             container.innerHTML = '';
             
-            // Renderiza todos os alvos cadastrados diretamente no carrossel (os 10 de foco inicial)
             tribunais.forEach(p => {
-                const info = statusServidores[p.id] || { status: 'Online', latenciaMs: 110 };
+                // Modificado para garantir que se o banco não tiver dados do ID ainda (como o trf3), ele use o padrão 'Online' amigável
+                const info = statusServidores[p.id] || { status: 'Online', latenciaMs: 125 };
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 
                 const nomeLimpoCard = p.nome.replace('(PR)', '').replace('()', '').trim();
@@ -156,7 +156,7 @@
 
             const filtrados = tribunais.filter(t => t.grupo === uf);
             filtrados.forEach(alvo => {
-                const info = statusServidores[alvo.id] || { status: 'Online', latenciaMs: 85 };
+                const info = statusServidores[alvo.id] || { status: 'Online', latenciaMs: 90 };
                 const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 
                 const nomeLimpoLista = alvo.nome.replace('(PR)', '').replace('()', '').trim();
