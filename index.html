@@ -18,6 +18,12 @@
         .state-btn { background-color: #1f2937; border: 1px solid #374151; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
         .state-btn:hover { background-color: #2563eb; border-color: #3b82f6; }
         
+        /* Centraliza os botões que sobrarem na última linha em telas grandes */
+        .state-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; justify-content: center; }
+        @media (min-width: 640px) { .state-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+        @media (min-width: 768px) { .state-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        @media (min-width: 1024px) { .state-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+        
         @keyframes ticker {
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-50%, 0, 0); }
@@ -74,7 +80,6 @@
             </div>
         </header>
 
-        <!-- CARROSSEL DO TOPO COM OS 10 PRINCIPAIS SERVIDORES DE LOGIN -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Servidores de Login
@@ -125,14 +130,13 @@
             </div>
         </section>
 
-        <!-- SEÇÃO DOS ESTADOS -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento Nacional de Regiões
             </h2>
             <p class="text-xs text-gray-500 mb-4">Selecione os Tribunais Superiores ou escolha o estado para ver o status individual de cada sistema local.</p>
             
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            <div class="state-grid">
                 <div onclick="abrirEstado('nacionais')" class="col-span-2 state-btn p-3 rounded-lg text-left font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border-blue-800/60 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
                     <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
@@ -168,7 +172,6 @@
             </div>
         </section>
 
-        <!-- Otimizador PDF -->
         <section class="p-6 card rounded-2xl border border-gray-850 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
             <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
@@ -183,7 +186,6 @@
             </button>
         </section>
 
-        <!-- Assinador Digital -->
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
@@ -202,7 +204,6 @@
             </div>
         </section>
 
-        <!-- CARROSSEL DE PRODUTOS COMPLETO COM TODOS OS 10 SLOTS RECOMPILADOS -->
         <section class="space-y-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="max-w-2xl">
@@ -271,7 +272,6 @@
         </section>
     </div>
 
-    <!-- MODAL PRINCIPAL -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -290,7 +290,6 @@
         </div>
     </div>
 
-    <!-- REPORTAR MODAL -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
