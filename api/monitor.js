@@ -67,7 +67,8 @@ const tribunais = [
     { id: "tjam_pje", nome: "TJAM - PJe", url: "https://pje.tjam.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "trt11_1g", nome: "TRT11 (AM/RR) - 1º Grau", url: "https://pje.trt11.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 4 },
-    { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/pje/Autenticacao/login.seam", grupo: "AC", lote: 4 },
+    // CORREÇÃO FINAL AC: Apontando o PJe do Acre para a Consulta Pública mais estável
+    { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/pje/ConsultaPublica/listView.seam", grupo: "AC", lote: 4 },
     { id: "tjac_saj", nome: "TJAC - e-SAJ", url: "https://esaj.tjac.jus.br/sajps/login.do", grupo: "AC", lote: 4 },
     { id: "trt14_1g", nome: "TRT14 (RO/AC) - 1º Grau", url: "https://pje.trt14.jus.br/pje/login.seam", grupo: "AC", lote: 4 },
     { id: "tjal_pje", nome: "TJAL - PJe", url: "https://pje.tjal.jus.br/pje/login.seam", grupo: "AL", lote: 4 },
@@ -85,7 +86,6 @@ async function executarPingEstrito(alvo) {
     const idTimeout = setTimeout(() => controlador.abort(), 3200); 
     const inicio = Date.now();
 
-    // REGRA INTELIGENTE: Se o ID terminar com "saj", for do TRF3 ou for o TJAC_PJe, usa GET.
     const usarGet = alvo.id === "trf3" || alvo.id.includes("saj") || alvo.id === "tjac_pje";
     const metodoUnificado = usarGet ? 'GET' : 'HEAD';
 
