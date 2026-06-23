@@ -34,7 +34,6 @@
             </button>
         </header>
 
-        <!-- Seção: Principais Portais da Justiça -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Portais da Justiça
@@ -44,7 +43,6 @@
             </div>
         </section>
 
-        <!-- Grade de Estados Organizada (Filtro por Demanda Inicial) -->
         <section class="space-y-4">
             <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Escolha a Região / Estado
@@ -52,12 +50,10 @@
             <p class="text-xs text-gray-500">Selecione para expandir os status e acessos internos em tempo real.</p>
             
             <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                <!-- Botão 1: Nacionais / Tribunais Superiores -->
                 <div onclick="abrirEstado('nacionais')" class="state-btn nacionais-btn text-white uppercase tracking-wider flex items-center justify-center gap-2 shadow-md px-6 min-w-[240px]">
                     <i class="fa-solid fa-globe"></i> Nacionais e Superiores
                 </div>
 
-                <!-- Botão 2: Paraná -->
                 <div onclick="abrirEstado('PR')" class="state-btn flex items-center justify-center gap-2 px-6 min-w-[160px]">
                      Paraná
                 </div>
@@ -65,7 +61,6 @@
         </section>
     </div>
 
-    <!-- MODAL DE LISTAGEM DE TRIBUNAIS DO ESTADO -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -84,7 +79,6 @@
         </div>
     </div>
 
-    <!-- MODAL REPORTAR -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -131,10 +125,14 @@
             container.innerHTML = '';
             
             tribunais.forEach(p => {
-                // Modificado para garantir que se o banco não tiver dados do ID ainda (como o trf3), ele use o padrão 'Online' amigável
-                const info = statusServidores[p.id] || { status: 'Online', latenciaMs: 125 };
-                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
+                // Força o preenchimento se o ID não for localizado de imediato na resposta do banco Redis
+                let info = { status: 'Online', latenciaMs: 125 };
                 
+                if (statusServidores && statusServidores[p.id]) {
+                    info = statusServidores[p.id];
+                }
+                
+                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 const nomeLimpoCard = p.nome.replace('(PR)', '').replace('()', '').trim();
 
                 container.innerHTML += `
@@ -156,9 +154,12 @@
 
             const filtrados = tribunais.filter(t => t.grupo === uf);
             filtrados.forEach(alvo => {
-                const info = statusServidores[alvo.id] || { status: 'Online', latenciaMs: 90 };
-                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
+                let info = { status: 'Online', latenciaMs: 90 };
+                if (statusServidores && statusServidores[alvo.id]) {
+                    info = statusServidores[alvo.id];
+                }
                 
+                const badge = info.status === 'Online' ? 'bg-green-950 text-green-400 border-green-800/40' : (info.status === 'Lentidão' ? 'bg-amber-950 text-amber-400 border-amber-800/40' : 'bg-red-950 text-red-400 border-red-800/40');
                 const nomeLimpoLista = alvo.nome.replace('(PR)', '').replace('()', '').trim();
 
                 target.innerHTML += `
@@ -189,25 +190,4 @@
             subSelect.innerHTML = '<option value="">Selecione o endereço...</option>';
             if (!uf) return;
             tribunais.filter(t => t.grupo === uf).forEach(t => {
-                const nomeFiltroReport = t.nome.replace('(PR)', '').replace('()', '').trim();
-                subSelect.innerHTML += `<option value="${t.id}">${nomeFiltroReport}</option>`;
-            });
-            document.getElementById('wrapperTribunal').classList.remove('hidden');
-        }
-
-        window.enviarRelatoSimulado = function() {
-            alert("Incidência registrada no barramento. Os dados servirão para auditoria futura.");
-            fecharModal('modalReportar');
-        }
-
-        window.fecharModal = function(id) { document.getElementById(id).classList.add('hidden'); }
-        window.abrirReportar = function() {
-            document.getElementById('wrapperTribunal').classList.add('hidden');
-            document.getElementById('reportUF').value = '';
-            document.getElementById('modalReportar').classList.remove('hidden');
-        }
-
-        rodar();
-    </script>
-</body>
-</html>
+                const nomeFiltroReport = t
