@@ -2,6 +2,8 @@
   "name": "advbr-painel",
   "version": "1.0.0",
   "dependencies": {
-    "@vercel/kv": "^1.0.1"
+    "@vercel/kv": "^1.0.1",
+    "https-proxy-agent": "^7.0.2",
+    "node-fetch": "^3.3.2"
   }
 }
