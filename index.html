@@ -125,7 +125,7 @@
             </div>
         </section>
 
-        <!-- SEÇÃO DOS ESTADOS RESTAURADA COM COLUNAS IDÊNTICAS (GRID) -->
+        <!-- SEÇÃO DOS ESTADOS -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento Nacional de Regiões
@@ -133,13 +133,11 @@
             <p class="text-xs text-gray-500 mb-4">Selecione os Tribunais Superiores ou escolha o estado para ver o status individual de cada sistema local.</p>
             
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                <!-- Botão Mestre ocupando exatamente 2 espaços -->
                 <div onclick="abrirEstado('nacionais')" class="col-span-2 state-btn p-3 rounded-lg text-left font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border-blue-800/60 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
                     <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
 
-                <!-- 27 Estados com Tamanhos 100% Padronizados -->
                 <div onclick="abrirEstado('AC')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">AC <span id="dot-AC" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('AL')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">AL <span id="dot-AL" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('AM')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">AM <span id="dot-AM" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
@@ -168,8 +166,8 @@
                 <div onclick="abrirEstado('SP')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">SP <span id="dot-SP" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('TO')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm">TO <span id="dot-TO" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
 
-                <!-- O 28º BOTÃO INTEGRADOR (Completa a simetria perfeita da grade) -->
-                <div onclick="abrirEstado('pje_cnj')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm bg-gradient-to-r from-gray-900 to-slate-800 border-gray-700 text-blue-400">Nacionais <span id="dot-pje_cnj" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)] inline-block ml-1"></span></div>
+                <!-- CORREÇÃO: O 28º BOTÃO AGORA CHAMA SISTEMAS COLETIVOS EM VEZ DE ID INEXISTENTE -->
+                <div onclick="abrirEstado('coletivos')" class="state-btn p-3 rounded-lg font-bold text-sm shadow-sm bg-gradient-to-r from-gray-900 to-slate-800 border-gray-700 text-blue-400">Nacionais <span id="dot-coletivos" class="h-2 w-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)] inline-block ml-1"></span></div>
             </div>
         </section>
 
@@ -329,7 +327,7 @@
                 const modalAberto = !document.getElementById('modalEstado').classList.contains('hidden');
                 if (modalAberto) {
                     const ufAtual = document.getElementById('estadoNome').innerText;
-                    if (ufAtual) renderizarConteudoModal(ufAtual === 'Tribunais Superiores' ? 'nacionais' : ufAtual);
+                    if (ufAtual) renderizarConteudoModal(ufAtual === 'Tribunais Superiores' || ufAtual === 'Sistemas Nacionais' ? (ufAtual === 'Sistemas Nacionais' ? 'coletivos' : 'nacionais') : ufAtual);
                 }
             } catch (erro) {
                 console.error("Erro na leitura do Redis:", erro);
@@ -375,10 +373,29 @@
                     dot.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
                 }
             });
+            
+            // Atualiza dinamicamente a bolinha do 28º botão mestre
+            const dotColetivo = document.getElementById('dot-coletivos');
+            if (dotColetivo && statusGerais['pje_cnj'] && statusGerais['stj']) {
+                const cnjStatus = statusGerais['pje_cnj'].status;
+                const stjStatus = statusGerais['stj'].status;
+                dotColetivo.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block ml-1";
+                if (cnjStatus === "Online" && stjStatus === "Online") {
+                    dotColetivo.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
+                } else if (cnjStatus === "Fora do Ar" && stjStatus === "Fora do Ar") {
+                    dotColetivo.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
+                } else {
+                    dotColetivo.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
+                }
+            }
         }
 
         function abrirEstado(uf) {
-            document.getElementById('estadoNome').innerText = (uf === 'nacionais') ? 'Tribunais Superiores' : uf;
+            if (uf === 'coletivos') {
+                document.getElementById('estadoNome').innerText = 'Sistemas Nacionais';
+            } else {
+                document.getElementById('estadoNome').innerText = (uf === 'nacionais') ? 'Tribunais Superiores' : uf;
+            }
             renderizarConteudoModal(uf);
             document.getElementById('modalEstado').classList.remove('hidden');
         }
@@ -390,7 +407,14 @@
             const containerComunidade = document.getElementById('relatosComunidadeEstado');
             if (!container) return;
 
-            const tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
+            // Filtro especial: se o clique for no 28º botão, junta os dois barramentos nacionais dentro dele
+            let tribunaisDaUf = [];
+            if (uf === 'coletivos') {
+                if (statusGerais['pje_cnj']) tribunaisDaUf.push(statusGerais['pje_cnj']);
+                if (statusGerais['stj']) tribunaisDaUf.push(statusGerais['stj']);
+            } else {
+                tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
+            }
             
             if (containerComunidade) {
                 containerComunidade.innerHTML = `<div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40 text-gray-500 text-center italic">Nenhum alerta crítico reportado por advogados nas últimas horas.</div>`;
