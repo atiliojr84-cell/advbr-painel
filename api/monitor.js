@@ -67,7 +67,8 @@ const tribunais = [
     { id: "tjam_pje", nome: "TJAM - PJe", url: "https://pje.tjam.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "trt11_1g", nome: "TRT11 (AM/RR) - 1º Grau", url: "https://pje.trt11.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 4 },
-    { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/pje/login.seam", grupo: "AC", lote: 4 },
+    // CORRIGIDO: URL do TJAC atualizada para a rota limpa de autenticação
+    { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/pje/Autenticacao/login.seam", grupo: "AC", lote: 4 },
     { id: "trt14_1g", nome: "TRT14 (RO/AC) - 1º Grau", url: "https://pje.trt14.jus.br/pje/login.seam", grupo: "AC", lote: 4 },
     { id: "tjal_pje", nome: "TJAL - PJe", url: "https://pje.tjal.jus.br/pje/login.seam", grupo: "AL", lote: 4 },
     { id: "trt19_1g", nome: "TRT19 (AL) - 1º Grau", url: "https://pje.trt19.jus.br/pje/login.seam", grupo: "AL", lote: 4 },
