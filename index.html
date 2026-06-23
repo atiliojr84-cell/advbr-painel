@@ -133,7 +133,7 @@
             grid.innerHTML = '';
             
             listagem.forEach(uf => {
-                // Modificado aqui: Se for PR vira 'Paraná', caso contrário mantém a sigla
+                // Modificado: Se for PR vira 'Paraná' com o acento correto
                 const nomeExibido = (uf === 'PR') ? 'Paraná' : uf;
                 grid.innerHTML += `<div onclick="abrirEstado('${uf}')" class="state-btn">${nomeExibido}</div>`;
             });
