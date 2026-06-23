@@ -44,7 +44,7 @@
             </div>
         </section>
 
-        <!-- Grade de Estados Organizada conforme solicitado -->
+        <!-- Grade de Estados Organizada -->
         <section class="space-y-4">
             <h2 class="text-lg font-semibold text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Escolha a Região / Estado
@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <!-- MODAL REPORTAR (SEGUNDO PLANO - ESTRUTURA PRONTA) -->
+    <!-- MODAL REPORTAR -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -131,8 +131,11 @@
             const listagem = [...new Set(tribunais.map(t => t.grupo))].filter(g => g !== 'nacionais').sort();
             const grid = document.getElementById('gradeEstados');
             grid.innerHTML = '';
+            
             listagem.forEach(uf => {
-                grid.innerHTML += `<div onclick="abrirEstado('${uf}')" class="state-btn">${uf}</div>`;
+                // Modificado aqui: Se for PR vira 'Paraná', caso contrário mantém a sigla
+                const nomeExibido = (uf === 'PR') ? 'Paraná' : uf;
+                grid.innerHTML += `<div onclick="abrirEstado('${uf}')" class="state-btn">${nomeExibido}</div>`;
             });
         }
 
@@ -157,7 +160,7 @@
         }
 
         window.abrirEstado = function(uf) {
-            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Nacionais & Superiores' : 'Estado: ' + uf;
+            document.getElementById('estadoNome').innerText = uf === 'nacionais' ? 'Nacionais & Superiores' : 'Estado: ' + (uf === 'PR' ? 'Paraná' : uf);
             const target = document.getElementById('linksTribunais');
             target.innerHTML = '';
 
@@ -183,7 +186,8 @@
             const select = document.getElementById('reportUF');
             const listaUfs = [...new Set(tribunais.map(t => t.grupo))].sort();
             listaUfs.forEach(uf => {
-                select.innerHTML += `<option value="${uf}">${uf === 'nacionais' ? 'Âmbito Nacional' : uf}</option>`;
+                const labelExibido = uf === 'nacionais' ? 'Âmbito Nacional' : (uf === 'PR' ? 'Paraná' : uf);
+                select.innerHTML += `<option value="${uf}">${labelExibido}</option>`;
             });
         }
 
