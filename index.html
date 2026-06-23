@@ -439,27 +439,28 @@
             } else {
                 tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
                 
+                // REGRA ANTI-DUPLICAÇÃO: Checa se o tribunal já está na lista antes de jogar pra dentro
                 if (uf === 'AC') {
                     const trt14 = Object.values(statusGerais).find(t => t.id === 'trt14_1g');
-                    if (trt14) tribunaisDaUf.push(trt14);
+                    if (trt14 && !tribunaisDaUf.some(t => t.id === 'trt14_1g')) tribunaisDaUf.push(trt14);
                 }
                 if (uf === 'AP') {
                     const trt8 = Object.values(statusGerais).find(t => t.id === 'trt8_1g_pa');
-                    if (trt8) tribunaisDaUf.push(trt8);
+                    if (trt8 && !tribunaisDaUf.some(t => t.id === 'trt8_1g_pa')) tribunaisDaUf.push(trt8);
                 }
                 if (uf === 'RR') {
                     const trt11 = Object.values(statusGerais).find(t => t.id === 'trt11_1g');
-                    if (trt11) tribunaisDaUf.push(trt11);
+                    if (trt11 && !tribunaisDaUf.some(t => t.id === 'trt11_1g')) tribunaisDaUf.push(trt11);
                 }
                 if (uf === 'TO') {
                     const trt10_1g = Object.values(statusGerais).find(t => t.id === 'trt10_1g');
                     const trt10_2g = Object.values(statusGerais).find(t => t.id === 'trt10_2g');
-                    if (trt10_1g) tribunaisDaUf.push(trt10_1g);
-                    if (trt10_2g) tribunaisDaUf.push(trt10_2g);
+                    if (trt10_1g && !tribunaisDaUf.some(t => t.id === 'trt10_1g')) tribunaisDaUf.push(trt10_1g);
+                    if (trt10_2g && !tribunaisDaUf.some(t => t.id === 'trt10_2g')) tribunaisDaUf.push(trt10_2g);
                 }
                 if (uf === 'SP') {
                     const trf3 = Object.values(statusGerais).find(t => t.id === 'trf3');
-                    if (trf3) tribunaisDaUf.push(trf3);
+                    if (trf3 && !tribunaisDaUf.some(t => t.id === 'trf3')) tribunaisDaUf.push(trf3);
                 }
             }
             
