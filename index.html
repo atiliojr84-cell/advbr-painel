@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADVBR.info - Monitoramento Nacional de Telas de Login</title>
+    <title>ADVBR.info - Central de Monitoramento e Ferramentas para Advogados</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -18,12 +18,26 @@
         .state-btn { background-color: #1f2937; border: 1px solid #374151; transition: all 0.2s; cursor: pointer; font-weight: bold; text-align: center; border-radius: 0.5rem; padding: 0.75rem; }
         .state-btn:hover { background-color: #2563eb; border-color: #3b82f6; }
         .nacionais-btn { background-color: #1d4ed8; border: 1px solid #3b82f6; }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .marquee-text { display: inline-block; animation: marquee 25s linear infinite; white-space: nowrap; }
     </style>
 </head>
 <body>
 
+    <!-- Banner Animado de Novidades (Passando bonitinho lá em cima) -->
+    <div class="bg-blue-600/10 border-b border-blue-500/20 text-blue-400 py-2 text-xs font-medium overflow-hidden relative w-full">
+        <div class="marquee-text">
+            <i class="fa-solid fa-circle-info mr-1"></i> <strong>Aviso Importante:</strong> Plataforma em conformidade com as rotas internas de autenticação dos tribunais nacionais. Monitore e teste o ecossistema jurídico sem interrupções.
+        </div>
+    </div>
+
     <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-10">
         
+        <!-- Cabeçalho Principal -->
         <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-blue-500">ADVBR<span class="text-white">.info</span></h1>
@@ -63,7 +77,54 @@
                 </div>
             </div>
         </section>
+
+        <!-- SEÇÃO EXTRA: PRODUTOS E FERRAMENTAS EXCLUSIVAS -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+            
+            <!-- Ferramenta 1: Eliminador de PDF Inteligente -->
+            <div class="card p-6 rounded-2xl border border-gray-800 flex flex-col justify-between space-y-4">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center text-red-500 mb-3">
+                        <i class="fa-solid fa-file-pdf text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-100">Eliminador de PDF Inteligente</h3>
+                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Remova restrições de leitura, reduza o tamanho e adapte a formatação do seu arquivo PDF de acordo com o limite exigido por cada portal de destino.</p>
+                </div>
+                <button class="bg-red-600 hover:bg-red-700 text-white font-medium text-xs py-2.5 px-4 rounded-xl transition w-full text-center">
+                    Clique aqui para tratar seu PDF
+                </button>
+            </div>
+
+            <!-- Ferramenta 2: Área Diagnóstica (Token & PJe Office) -->
+            <div class="card p-6 rounded-2xl border border-gray-800 flex flex-col justify-between space-y-4">
+                <div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500 mb-3">
+                        <i class="fa-solid fa-key text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-100">Teste de Token & PJe Office</h3>
+                    <p class="text-xs text-gray-400 mt-1 leading-relaxed">Verifique se o assinador PJe Office ou os drivers de barramento do seu Token criptográfico A3 estão rodando localmente no seu computador atual.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-2 w-full">
+                    <button onclick="alert('Iniciando comunicação com o PJe Office local... Certifique-se de que ele esteja aberto na barra de tarefas.')" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-medium text-xs py-2 rounded-xl transition text-center">
+                        Testar Assinador
+                    </button>
+                    <button onclick="alert('Verificando canais de certificados digitais instalados no navegador...')" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200 font-medium text-xs py-2 rounded-xl transition text-center">
+                        Validar Certificado
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
     </div>
+
+    <!-- RODAPÉ COMPLETO DO SITE -->
+    <footer class="border-t border-gray-900 mt-16 bg-gray-950/40 py-8 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>&copy; 2026 ADVBR.info. Todos os direitos reservados para Atilio Jose Alves Junior.</p>
+            <p class="text-[11px] text-gray-600">Aviso: Este painel opera como um indexador técnico independente. Marcas e links dos tribunais pertencem aos seus órgãos públicos.</p>
+        </div>
+    </footer>
 
     <!-- MODAL DE LISTAGEM DE TRIBUNAIS -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
@@ -106,7 +167,7 @@
     </div>
 
     <script type="text/javascript">
-        // Lista de alvos fixa na memória do script para evitar imports locais que quebram o compilador da Vercel
+        // Lista de alvos fixa integrada na memória do script
         const listaAlvosFixo = [
             { id: "pje_cnj",   nome: "PJe Nacional (CNJ)",  url: "https://www.pje.jus.br/navegador/",                grupo: "nacionais" },
             { id: "stj",       nome: "STJ - Processos",      url: "https://www.stj.jus.br/sites/portalp/inicio",     grupo: "nacionais" },
