@@ -6,7 +6,7 @@ const kv = createClient({
 });
 
 const tribunais = [
-    // LOTE 1 (17 Tribunais) - Nacionais, Sul, Sudeste e Centro-Oeste (Parte 1)
+    // LOTE 1 (16 Tribunais) - Nacionais e Região Sul/Sudeste Principal
     { id: "pje_cnj", nome: "PJe Nacional (CNJ)", url: "https://pje.jus.br/pje/login.seam", grupo: "nacionais", lote: 1 },
     { id: "stj", nome: "STJ - Processos", url: "https://www.stj.jus.br/sites/portalp/inicio", grupo: "nacionais", lote: 1 },
     { id: "stf", nome: "STF - Eletrônico", url: "https://autenticacao.stf.jus.br/pki/login", grupo: "nacionais", lote: 1 },
@@ -23,9 +23,9 @@ const tribunais = [
     { id: "tjrs_eproc", nome: "TJRS - eproc", url: "https://eproc.tjrs.jus.br/eproc/externo_controlador.php", grupo: "RS", lote: 1 },
     { id: "trt4_1g", nome: "TRT4 (RS) - 1º Grau", url: "https://pje.trt4.jus.br/pje/login.seam", grupo: "RS", lote: 1 },
     { id: "trt4_2g", nome: "TRT4 (RS) - 2º Grau", url: "https://pje.trt4.jus.br/pje2g/login.seam", grupo: "RS", lote: 1 },
-    { id: "tjdft_pje", nome: "TJDFT - PJe", url: "https://pje.tjdft.jus.br/pje/login.seam", grupo: "DF", lote: 1 },
 
-    // LOTE 2 (17 Tribunais) - Sudeste (Continuação), Centro-Oeste e Nordeste (Parte 1)
+    // LOTE 2 (16 Tribunais) - Região Sudeste (Continuação) e Centro-Oeste
+    { id: "tjdft_pje", nome: "TJDFT - PJe", url: "https://pje.tjdft.jus.br/pje/login.seam", grupo: "DF", lote: 2 },
     { id: "tjrj_eproc", nome: "TJRJ - eproc", url: "https://eproc.tjrj.jus.br/eproc/externo_controlador.php", grupo: "RJ", lote: 2 },
     { id: "trt1_1g", nome: "TRT1 (RJ) - 1º Grau", url: "https://pje.trt1.jus.br/pje/login.seam", grupo: "RJ", lote: 2 },
     { id: "trt1_2g", nome: "TRT1 (RJ) - 2º Grau", url: "https://pje.trt1.jus.br/pje2g/login.seam", grupo: "RJ", lote: 2 },
@@ -41,12 +41,11 @@ const tribunais = [
     { id: "tjmt_pje", nome: "TJMT - PJe", url: "https://pje.tjmt.jus.br/pje/login.seam", grupo: "MT", lote: 2 },
     { id: "trt23_1g", nome: "TRT23 (MT) - 1º Grau", url: "https://pje.trt23.jus.br/pje/login.seam", grupo: "MT", lote: 2 },
     { id: "trt23_2g", nome: "TRT23 (MT) - 2º Grau", url: "https://pje.trt23.jus.br/pje2g/login.seam", grupo: "MT", lote: 2 },
-    { id: "tjgo_pje", nome: "TJGO - PJe", url: "https://pje.tjgo.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
-    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
 
-    // LOTE 3 (16 Tribunais) - Nordeste (Continuação), Norte e Restante do Brasil
-    // Mantemos a rota pública que aceita melhor o tráfego simulado
+    // LOTE 3 (16 Tribunais) - Centro-Oeste (Continuação) e Nordeste Principal
     { id: "trf3", nome: "TRF3 - PJe", url: "https://pje1g.trf3.jus.br/pje/ConsultaPublica/listView.seam", grupo: "nacionais", lote: 3 },
+    { id: "tjgo_pje", nome: "TJGO - PJe", url: "https://pje.tjgo.jus.br/pje/login.seam", grupo: "GO", lote: 3 },
+    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", grupo: "GO", lote: 3 },
     { id: "trt18_2g", nome: "TRT18 (GO) - 2º Grau", url: "https://pje.trt18.jus.br/pje2g/login.seam", grupo: "GO", lote: 3 },
     { id: "trt10_1g", nome: "TRT10 (DF/TO) - 1º Grau", url: "https://pje.trt10.jus.br/pje/login.seam", grupo: "DF", lote: 3 },
     { id: "trt10_2g", nome: "TRT10 (DF/TO) - 2º Grau", url: "https://pje.trt10.jus.br/pje2g/login.seam", grupo: "DF", lote: 3 },
@@ -60,9 +59,24 @@ const tribunais = [
     { id: "trt7_1g", nome: "TRT7 (CE) - 1º Grau", url: "https://pje.trt7.jus.br/pje/login.seam", grupo: "CE", lote: 3 },
     { id: "trt7_2g", nome: "TRT7 (CE) - 2º Grau", url: "https://pje.trt7.jus.br/pje2g/login.seam", grupo: "CE", lote: 3 },
     { id: "tjma_pje", nome: "TJMA - PJe", url: "https://pje.tjma.jus.br/pje/login.seam", grupo: "MA", lote: 3 },
-    { id: "tjpa_pje", nome: "TJPA - PJe", url: "https://pje.tjpa.jus.br/pje/login.seam", grupo: "PA", lote: 3 },
-    { id: "tjam_pje", nome: "TJAM - PJe", url: "https://pje.tjam.jus.br/pje/login.seam", grupo: "AM", lote: 3 },
-    { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 3 }
+
+    // LOTE 4 (16 Tribunais) - Restante do Nordeste e Região Norte Completa (Totalizando os 64)
+    { id: "trt16_1g", nome: "TRT16 (MA) - 1º Grau", url: "https://pje.trt16.jus.br/pje/login.seam", grupo: "MA", lote: 4 },
+    { id: "tjpa_pje", nome: "TJPA - PJe", url: "https://pje.tjpa.jus.br/pje/login.seam", grupo: "PA", lote: 4 },
+    { id: "trt8_1g_pa", nome: "TRT8 (PA/AP) - 1º Grau", url: "https://pje.trt8.jus.br/pje/login.seam", grupo: "PA", lote: 4 },
+    { id: "tjam_pje", nome: "TJAM - PJe", url: "https://pje.tjam.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
+    { id: "trt11_1g", nome: "TRT11 (AM/RR) - 1º Grau", url: "https://pje.trt11.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
+    { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 4 },
+    { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/pje/login.seam", grupo: "AC", lote: 4 },
+    { id: "trt14_1g", nome: "TRT14 (RO/AC) - 1º Grau", url: "https://pje.trt14.jus.br/pje/login.seam", grupo: "AC", lote: 4 },
+    { id: "tjal_pje", nome: "TJAL - PJe", url: "https://pje.tjal.jus.br/pje/login.seam", grupo: "AL", lote: 4 },
+    { id: "trt19_1g", nome: "TRT19 (AL) - 1º Grau", url: "https://pje.trt19.jus.br/pje/login.seam", grupo: "AL", lote: 4 },
+    { id: "tjap_pje", nome: "TJAP - PJe", url: "https://pje.tjap.jus.br/pje/login.seam", grupo: "AP", lote: 4 },
+    { id: "tjpb_pje", nome: "TJPB - PJe", url: "https://pje.tjpb.jus.br/pje/login.seam", grupo: "PB", lote: 4 },
+    { id: "trt13_1g", nome: "TRT13 (PB) - 1º Grau", url: "https://pje.trt13.jus.br/pje/login.seam", grupo: "PB", lote: 4 },
+    { id: "tjpi_pje", nome: "TJPI - PJe", url: "https://pje.tjpi.jus.br/pje/login.seam", grupo: "PI", lote: 4 },
+    { id: "trt22_1g", nome: "TRT22 (PI) - 1º Grau", url: "https://pje.trt22.jus.br/pje/login.seam", grupo: "PI", lote: 4 },
+    { id: "tjrn_pje", nome: "TJRN - PJe", url: "https://pje.tjrn.jus.br/pje/login.seam", grupo: "RN", lote: 4 }
 ];
 
 const aguardar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -73,24 +87,21 @@ async function executarPingEstrito(alvo) {
 
     for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
         const controlador = new AbortController();
-        // Aumentamos o tempo limite para 6 segundos para forçar o Lote 1 a segurar a conexão
-        const idTimeout = setTimeout(() => controlador.abort(), 6000); 
+        const idTimeout = setTimeout(() => controlador.abort(), 5000); 
         const inicio = Date.now();
 
-        // Para o TRF3 ou falhas críticas do Lote 1, forçamos o GET completo com cabeçalhos simulados profundos
-        const metodoUnificado = (alvo.id === "trf3" || alvo.lote === 1) ? 'GET' : 'HEAD';
+        // AJUSTE CIRÚRGICO: Força o método GET completo para o TJSP e TRF3 para derrubar o block de rede
+        const metodoUnificado = (alvo.id === "trf3" || alvo.id === "tjsp_saj") ? 'GET' : 'HEAD';
 
         try {
-            const resposta = await fetch(alvo.url, {
+            await fetch(alvo.url, {
                 method: metodoUnificado,
                 mode: 'no-cors',
                 signal: controlador.signal,
                 headers: { 
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-                    'Accept-Language': 'pt-BR,pt;q=0.9',
                     'Cache-Control': 'no-cache',
-                    'Cookie': 'PJe_session_test=1; eproc_session_test=1' // Injeta cookies falsos para o firewall achar que é um humano navegando
+                    'Accept': '*/*'
                 }
             });
             
@@ -103,15 +114,13 @@ async function executarPingEstrito(alvo) {
             clearTimeout(idTimeout);
 
             const tempoDecorrido = Date.now() - inicio;
-            // Se o servidor rejeitou o IP da Vercel ativamente em menos de 1.5 segundos,
-            // isso prova por lógica reversa de redes que a máquina do tribunal está LIGADA e ativa!
             if (erro.name !== 'AbortError' && tempoDecorrido < 1500) {
                 latencias.push(tempoDecorrido);
                 break;
             }
 
             if (tentativa < maxTentativas) {
-                await aguardar(600); // Dá uma pausa maior para limpar o barramento
+                await aguardar(500);
             }
         }
     }
@@ -122,7 +131,7 @@ async function executarPingEstrito(alvo) {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latenciaFinal > 3800 ? "Lentidão" : "Online",
+            status: latenciaFinal > 3500 ? "Lentidão" : "Online",
             latenciaMs: latenciaFinal
         };
     } else {
@@ -161,7 +170,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado via Edge Engine com barramento profundo HEAD/GET ativo.`,
+            mensagem: `Lote ${numLote} sincronizado via Edge Engine com barramento total ativo.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
