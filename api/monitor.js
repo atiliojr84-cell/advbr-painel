@@ -79,67 +79,61 @@ const tribunais = [
     { id: "tjrn_pje", nome: "TJRN - PJe", url: "https://pje.tjrn.jus.br/pje/login.seam", grupo: "RN", lote: 4 }
 ];
 
-const aguardar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
 async function executarPingEstrito(alvo) {
-    const maxTentativas = 3;
-    let latencias = [];
+    const controlador = new AbortController();
+    // Timeout cirúrgico de 3.2 segundos. Evita travar o lote por 12 segundos.
+    const idTimeout = setTimeout(() => controlador.abort(), 3200); 
+    const inicio = Date.now();
 
-    for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
-        const controlador = new AbortController();
-        const idTimeout = setTimeout(() => controlador.abort(), 5000); 
-        const inicio = Date.now();
+    // Força GET para SP e TRF3 e HEAD otimizado para os demais
+    const metodoUnificado = (alvo.id === "trf3" || alvo.id === "tjsp_saj") ? 'GET' : 'HEAD';
 
-        // AJUSTE CIRÚRGICO: Força o método GET completo para o TJSP e TRF3 para derrubar o block de rede
-        const metodoUnificado = (alvo.id === "trf3" || alvo.id === "tjsp_saj") ? 'GET' : 'HEAD';
-
-        try {
-            await fetch(alvo.url, {
-                method: metodoUnificado,
-                mode: 'no-cors',
-                signal: controlador.signal,
-                headers: { 
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-                    'Cache-Control': 'no-cache',
-                    'Accept': '*/*'
-                }
-            });
-            
-            clearTimeout(idTimeout);
-            const tempoGasto = Date.now() - inicio;
-            latencias.push(tempoGasto);
-            break; 
-
-        } catch (erro) {
-            clearTimeout(idTimeout);
-
-            const tempoDecorrido = Date.now() - inicio;
-            if (erro.name !== 'AbortError' && tempoDecorrido < 1500) {
-                latencias.push(tempoDecorrido);
-                break;
+    try {
+        await fetch(alvo.url, {
+            method: metodoUnificado,
+            mode: 'no-cors',
+            signal: controlador.signal,
+            headers: { 
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+                'Cache-Control': 'no-cache',
+                'Accept': '*/*'
             }
+        });
+        
+        clearTimeout(idTimeout);
+        const tempoGasto = Date.now() - inicio;
 
-            if (tentativa < maxTentativas) {
-                await aguardar(500);
-            }
-        }
-    }
-
-    if (latencias.length > 0) {
-        const latenciaFinal = latencias[latencias.length - 1];
         return {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latenciaFinal > 3500 ? "Lentidão" : "Online",
-            latenciaMs: latenciaFinal
+            status: tempoGasto > 2400 ? "Lentidão" : "Online",
+            latenciaMs: tempoGasto
         };
-    } else {
+
+    } catch (erro) {
+        clearTimeout(idTimeout);
+        const tempoDecorrido = Date.now() - inicio;
+
+        // REGRA DE OURO DA LOGICA REVERSA: 
+        // Se deu erro de rede comum (ex: preflight, block de CORS ou reset), mas respondeu em menos de 3s,
+        // significa que o servidor barrou o IP, mas a máquina física está viva e ONLINE!
+        if (erro.name !== 'AbortError' && tempoDecorrido < 3000) {
+            return {
+                id: alvo.id,
+                nome: alvo.nome,
+                grupo: alvo.grupo,
+                status: "Online",
+                latenciaMs: tempoDecorrido
+            };
+        }
+
+        // Se realmente estourou o timeout completo (Abort), aí sim consideramos fora do ar ou lentidão extrema
         return {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: "Fora do Ar",
+            status: erro.name === 'AbortError' ? "Fora do Ar" : "Fora do Ar",
             latenciaMs: null
         };
     }
@@ -159,6 +153,7 @@ export default async function handler(req, res) {
     try {
         let estadoGlobal = (await kv.get('advbr_status_global')) || {};
         
+        // Disparo assíncrono paralelo real de alta velocidade
         const promessas = alvosDoLote.map(alvo => executarPingEstrito(alvo));
         const resultados = await Promise.all(promessas);
 
@@ -170,7 +165,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado via Edge Engine com barramento total ativo.`,
+            mensagem: `Lote ${numLote} sincronizado via Turbo Engine com tratamento de borda ativo.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
