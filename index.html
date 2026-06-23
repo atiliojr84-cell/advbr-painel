@@ -105,8 +105,23 @@
         </div>
     </div>
 
-    <script type="module">
-        import tribunais from './api/alvos.js';
+    <script type="text/javascript">
+        // Lista de alvos movida diretamente para o corpo do script para evitar imports locais que quebram o compilador da Vercel
+        const listaAlvosFixo = [
+            { id: "pje_cnj",   nome: "PJe Nacional (CNJ)",  url: "https://www.pje.jus.br/navegador/",                grupo: "nacionais" },
+            { id: "stj",       nome: "STJ - Processos",      url: "https://www.stj.jus.br/sites/portalp/inicio",     grupo: "nacionais" },
+            { id: "stf",       nome: "STF - Eletrônico",     url: "https://portal.stf.jus.br/",                      grupo: "nacionais" },
+            { id: "tse",       nome: "TSE - Portal",         url: "https://www.tse.jus.br/",                         grupo: "nacionais" },
+            { id: "tst",       nome: "TST - Portal",         url: "https://www.tst.jus.br/",                         grupo: "nacionais" },
+            { id: "stm",       nome: "STM - Portal",         url: "https://www.stm.jus.br/",                         grupo: "nacionais" },
+            { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",   url: "https://eproc.tjpr.jus.br/eproc_1g/",           grupo: "PR" },
+            { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",   url: "https://eproc.tjpr.jus.br/eproc_2g/",           grupo: "PR" },
+            { id: "tjpr_projudi",  nome: "TJPR - Projudi",         url: "https://projudi.tjpr.jus.br/projudi/",          grupo: "PR" },
+            { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",     url: "https://pje.trt9.jus.br/pje/pje-presente.html",  grupo: "PR" },
+            { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",     url: "https://pje.trt9.jus.br/pje2g/pje-presente.html",grupo: "PR" },
+            { id: "trf4_pr",       nome: "TRF4 - Federal PR",      url: "https://eproc.trf4.jus.br/eproc2trf4/",         grupo: "PR" },
+            { id: "tjsp_saj",      nome: "TJSP - e-SAJ (Login)",   url: "https://esaj.tjsp.jus.br/sajcas/login",         grupo: "SP" }
+        ];
 
         let statusServidores = {};
 
@@ -130,11 +145,8 @@
             const container = document.getElementById('carrosselPrincipais');
             container.innerHTML = '';
             
-            // CORREÇÃO MÁXIMA: Agora o loop lê EXCLUSIVAMENTE o arquivo alvos.js local.
-            // Qualquer lixo ou dado antigo que sobrou gravado no Redis vai ser ignorado pelo front.
-            tribunais.forEach(p => {
+            listaAlvosFixo.forEach(p => {
                 let info = { status: 'Online', latenciaMs: 125 };
-                
                 if (statusServidores && statusServidores[p.id]) {
                     info = statusServidores[p.id];
                 }
@@ -159,7 +171,7 @@
             const target = document.getElementById('linksTribunais');
             target.innerHTML = '';
 
-            const filtrados = tribunais.filter(t => t.grupo === uf);
+            const filtrados = listaAlvosFixo.filter(t => t.grupo === uf);
             filtrados.forEach(alvo => {
                 let info = { status: 'Online', latenciaMs: 90 };
                 if (statusServidores && statusServidores[alvo.id]) {
@@ -184,7 +196,7 @@
 
         function preencherFiltrosReport() {
             const select = document.getElementById('reportUF');
-            const listaUfs = [...new Set(tribunais.map(t => t.grupo))].sort();
+            const listaUfs = [...new Set(listaAlvosFixo.map(t => t.grupo))].sort();
             listaUfs.forEach(uf => {
                 const labelExibido = uf === 'nacionais' ? 'Âmbito Nacional' : (uf.trim().toUpperCase() === 'PR' ? 'Paraná' : uf);
                 select.innerHTML += `<option value="${uf}">${labelExibido}</option>`;
@@ -196,7 +208,7 @@
             const subSelect = document.getElementById('reportTribunal');
             subSelect.innerHTML = '<option value="">Selecione o endereço...</option>';
             if (!uf) return;
-            tribunais.filter(t => t.grupo === uf).forEach(t => {
+            listaAlvosFixo.filter(t => t.grupo === uf).forEach(t => {
                 const nomeFiltroReport = t.nome.replace('(PR)', '').replace('()', '').trim();
                 subSelect.innerHTML += `<option value="${t.id}">${nomeFiltroReport}</option>`;
             });
