@@ -71,34 +71,62 @@ const tribunais = [
 
 async function testarAlvo(alvo) {
     const controlador = new AbortController();
-    const idTimeout = setTimeout(() => controlador.abort(), 4000); 
+    const idTimeout = setTimeout(() => controlador.abort(), 5000); // 5 segundos max por link
     const inicio = Date.now();
 
     try {
-        await fetch(alvo.url, {
-            method: 'GET',
+        // Mudado para HEAD e injetado User-Agent completo de navegador real para camuflagem
+        const resposta = await fetch(alvo.url, {
+            method: 'HEAD',
             mode: 'no-cors',
             signal: controlador.signal,
-            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+            headers: { 
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
         });
+        
         clearTimeout(idTimeout);
         const latencia = Date.now() - inicio;
+
         return {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latencia > 2500 ? "Lentidão" : "Online",
+            status: latencia > 3000 ? "Lentidão" : "Online",
             latenciaMs: latencia
         };
     } catch (erro) {
-        clearTimeout(idTimeout);
-        return {
-            id: alvo.id,
-            nome: alvo.nome,
-            grupo: alvo.grupo,
-            status: "Fora do Ar",
-            latenciaMs: null
-        };
+        // Tenta um fallback leve com GET caso o servidor rejeite requisição HEAD pura
+        try {
+            const respostaFallback = await fetch(alvo.url, {
+                method: 'GET',
+                mode: 'no-cors',
+                signal: controlador.signal,
+                headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36' }
+            });
+            clearTimeout(idTimeout);
+            const latencia = Date.now() - inicio;
+            return {
+                id: alvo.id,
+                nome: alvo.nome,
+                grupo: alvo.grupo,
+                status: latencia > 3000 ? "Lentidão" : "Online",
+                latenciaMs: latencia
+            };
+        } catch (erroFallback) {
+            clearTimeout(idTimeout);
+            return {
+                id: alvo.id,
+                nome: alvo.nome,
+                grupo: alvo.grupo,
+                status: "Fora do Ar",
+                latenciaMs: null
+            };
+        }
     }
 }
 
@@ -132,6 +160,6 @@ export default async function handler(req, res) {
         });
     } catch (erro) {
         console.error("Erro interno no motor:", erro);
-        return res.status(500).json({ erro: "Falha na persistence de dados.", detalhe: erro.message });
+        return res.status(500).json({ erro: "Falha na persistência de dados.", detalhe: erro.message });
     }
 }
