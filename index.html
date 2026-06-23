@@ -131,13 +131,11 @@
             <p class="text-xs text-gray-500 mb-4">Selecione os Tribunais Superiores ou escolha o estado para ver o status individual de cada sistema local.</p>
             
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                <!-- Botão Mestre -->
-                <div onclick="abrirEstado('nacionais')" class="col-span-2 state-btn p-3 rounded-lg text-left font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border-blue-800/60 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
-                    <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
+                <div onclick="abrirEstado('nacionais')" class="col-span-2 sm:col-span-3 md:col-span-2 lg:col-span-3 state-btn p-3 rounded-lg text-left font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/80 via-blue-900/40 to-gray-800 border-blue-700/50 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-sm"></i> Tribunais Superiores (Âmbito Nacional)</span>
+                    <span id="dot-nacionais" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
 
-                <!-- 27 Unidades Federativas Completas -->
                 <div onclick="abrirEstado('AC')" class="state-btn p-3 rounded-lg text-center font-bold text-sm shadow-sm">AC <span id="dot-AC" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('AL')" class="state-btn p-3 rounded-lg text-center font-bold text-sm shadow-sm">AL <span id="dot-AL" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
                 <div onclick="abrirEstado('AM')" class="state-btn p-3 rounded-lg text-center font-bold text-sm shadow-sm">AM <span id="dot-AM" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block ml-1"></span></div>
@@ -168,7 +166,6 @@
             </div>
         </section>
 
-        <!-- Otimizador PDF -->
         <section class="p-6 card rounded-2xl border border-gray-850 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
             <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
@@ -183,7 +180,6 @@
             </button>
         </section>
 
-        <!-- Assinador Digital -->
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
@@ -202,7 +198,6 @@
             </div>
         </section>
 
-        <!-- Produtos OAB -->
         <section class="space-y-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="max-w-2xl">
@@ -236,7 +231,6 @@
         </section>
     </div>
 
-    <!-- MODAL PRINCIPAL -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -255,7 +249,6 @@
         </div>
     </div>
 
-    <!-- REPORTAR MODAL -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
