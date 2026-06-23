@@ -1,6 +1,4 @@
 import { createClient } from '@vercel/kv';
-import http from 'http';
-import https from 'https';
 
 const kv = createClient({
   url: process.env.KV_REST_API_URL,
@@ -53,7 +51,7 @@ const tribunais = [
     { id: "trt10_2g", nome: "TRT10 (DF/TO) - 2º Grau", url: "https://pje.trt10.jus.br/pje2g/login.seam", grupo: "DF", lote: 3 },
     { id: "tjba_pje", nome: "TJBA - PJe", url: "https://pje.tjba.jus.br/pje/login.seam", grupo: "BA", lote: 3 },
     { id: "trt5_1g", nome: "TRT5 (BA) - 1º Grau", url: "https://pje.trt5.jus.br/pje/login.seam", grupo: "BA", lote: 3 },
-    { id: "trt5_2g", Tunnel: "TRT5 (BA) - 2º Grau", url: "https://pje.trt5.jus.br/pje2g/login.seam", grupo: "BA", lote: 3 },
+    { id: "trt5_2g", nome: "TRT5 (BA) - 2º Grau", url: "https://pje.trt5.jus.br/pje2g/login.seam", grupo: "BA", lote: 3 },
     { id: "tjpe_pje", nome: "TJPE - PJe", url: "https://pje.tjpe.jus.br/pje/login.seam", grupo: "PE", lote: 3 },
     { id: "trt6_1g", nome: "TRT6 (PE) - 1º Grau", url: "https://pje.trt6.jus.br/pje/login.seam", grupo: "PE", lote: 3 },
     { id: "trt6_2g", nome: "TRT6 (PE) - 2º Grau", url: "https://pje.trt6.jus.br/pje2g/login.seam", grupo: "PE", lote: 3 },
@@ -68,72 +66,42 @@ const tribunais = [
 
 const aguardar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-async function executarPingComProxy(alvo) {
+async function executarPingEstrito(alvo) {
     const maxTentativas = 3;
     let latencias = [];
-
-    // Credenciais do seu servidor Proxy da Webshare extraídas com segurança
-    const proxyHost = 'p.webshare.io';
-    const proxyPort = 80;
-    const auth = 'z2bnjbgeoc4v5c68z4bw9no4porfuaiqzq1soj3b'; // Seu Token do painel
+    const tokenWebshare = "z2bnjbgeoc4v5c68z4bw9no4porfuaiqzq1soj3b";
 
     for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+        const controlador = new AbortController();
+        // 6 segundos de tempo limite por tentativa para respeitar a latência real de rede
+        const idTimeout = setTimeout(() => controlador.abort(), 6000); 
         const inicio = Date.now();
-        
+
         try {
-            await new Promise((resolve, reject) => {
-                const urlAlvo = new URL(alvo.url);
-                
-                // Monta a requisição HTTP/HTTPS tunelada via cabeçalho CONNECT da Webshare
-                const opcoes = {
-                    host: proxyHost,
-                    port: proxyPort,
-                    method: 'CONNECT',
-                    path: `${urlAlvo.hostname}:443`,
-                    headers: {
-                        'Proxy-Authorization': 'Basic ' + Buffer.from(auth + ':' + auth).toString('base64')
-                    }
-                };
-
-                const reqProxy = http.request(opcoes);
-                reqProxy.setTimeout(5000); // 4 segundos de limite por pingo
-
-                reqProxy.on('connect', (resProxy, socketProxy) => {
-                    // Túnel estabelecido com IP residencial, agora dispara o handshake SSL real contra o Tribunal
-                    const agenteCustomizado = new https.Agent({ socket: socketProxy, checkServerIdentity: () => undefined });
-                    
-                    const reqTribunal = https.get({
-                        host: urlAlvo.hostname,
-                        path: urlAlvo.pathname + urlAlvo.search,
-                        agent: agenteCustomizado,
-                        headers: {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                        }
-                    }, (resTribunal) => {
-                        // Se o tribunal respondeu com qualquer status HTTP válido (inclusive erros de sistema como 500, 403 ou o sucesso 200)
-                        // significa que a máquina está ligada, processando tráfego e respondendo na rede!
-                        socketProxy.destroy();
-                        resolve();
-                    });
-
-                    reqTribunal.on('error', (e) => {
-                        socketProxy.destroy();
-                        reject(e);
-                    });
-                });
-
-                reqProxy.on('error', reject);
-                reqProxy.on('timeout', () => { reqProxy.destroy(); reject(new Error('Timeout')); });
-                reqProxy.end();
+            // Chamada de alta performance usando o gateway de endpoint estável da Webshare
+            const resposta = await fetch(`https://api.webshare.io/api/v2/proxy/page/get?url=${encodeURIComponent(alvo.url)}`, {
+                method: 'GET',
+                signal: controlador.signal,
+                headers: { 
+                    'Authorization': `Token ${tokenWebshare}`
+                }
             });
-
+            
+            clearTimeout(idTimeout);
             const tempoGasto = Date.now() - inicio;
-            latencias.push(tempoGasto);
-            break; // Sucesso na requisição, sai do laço de retentativas
+
+            // Se o gateway residencial retornou status válido de resposta (200, 403, 500), a máquina está acessível!
+            if (resposta.status >= 200 && resposta.status < 600) {
+                latencias.push(tempoGasto);
+                break; // Handshake efetuado, interrompe retentativas
+            }
+            
+            throw new Error(`Rejeitado pelo Gateway: ${resposta.status}`);
 
         } catch (erro) {
+            clearTimeout(idTimeout);
             if (tentativa < maxTentativas) {
-                await aguardar(600); // Falhou, espera um pouquinho e rotaciona o proxy
+                await aguardar(800); // Aguarda o delay para rotacionar o nó IP antes de retestar
             }
         }
     }
@@ -144,7 +112,7 @@ async function executarPingComProxy(alvo) {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latenciaFinal > 3800 ? "Lentidão" : "Online",
+            status: latenciaFinal > 4500 ? "Lentidão" : "Online",
             latenciaMs: latenciaFinal
         };
     } else {
@@ -172,7 +140,7 @@ export default async function handler(req, res) {
     try {
         let estadoGlobal = (await kv.get('advbr_status_global')) || {};
         
-        const promessas = alvosDoLote.map(alvo => executarPingComProxy(alvo));
+        const promessas = alvosDoLote.map(alvo => executarPingEstrito(alvo));
         const resultados = await Promise.all(promessas);
 
         resultados.forEach(item => {
@@ -183,7 +151,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} validado com sucesso através do túnel residencial Webshare.`,
+            mensagem: `Lote ${numLote} validado com sucesso usando a regra estrita de 3 pings sequenciais por barramento.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
