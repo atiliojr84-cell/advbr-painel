@@ -1,4 +1,5 @@
 import { createClient } from '@vercel/kv';
+import https from 'https';
 
 const kv = createClient({
   url: process.env.KV_REST_API_URL,
@@ -42,7 +43,7 @@ const tribunais = [
     { id: "trt23_1g", nome: "TRT23 (MT) - 1º Grau", url: "https://pje.trt23.jus.br/pje/login.seam", grupo: "MT", lote: 2 },
     { id: "trt23_2g", nome: "TRT23 (MT) - 2º Grau", url: "https://pje.trt23.jus.br/pje2g/login.seam", grupo: "MT", lote: 2 },
     { id: "tjgo_pje", nome: "TJGO - PJe", url: "https://pje.tjgo.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
-    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
+    { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", group: "GO", lote: 2 },
 
     // LOTE 3 (16 Tribunais) - Nordeste (Continuação), Norte e Restante do Brasil
     { id: "trf3", nome: "TRF3 - PJe", url: "https://pje1g.trf3.jus.br/pje/login.seam", grupo: "nacionais", lote: 3 },
@@ -67,41 +68,55 @@ const tribunais = [
 const aguardar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function executarPingEstrito(alvo) {
-    const maxTentativas = 3;
+    const maxTentativas = 2;
     let latencias = [];
-    const tokenWebshare = "z2bnjbgeoc4v5c68z4bw9no4porfuaiqzq1soj3b";
 
     for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
-        const controlador = new AbortController();
-        // 6 segundos de tempo limite por tentativa para respeitar a latência real de rede
-        const idTimeout = setTimeout(() => controlador.abort(), 6000); 
         const inicio = Date.now();
 
         try {
-            // Chamada de alta performance usando o gateway de endpoint estável da Webshare
-            const resposta = await fetch(`https://api.webshare.io/api/v2/proxy/page/get?url=${encodeURIComponent(alvo.url)}`, {
-                method: 'GET',
-                signal: controlador.signal,
-                headers: { 
-                    'Authorization': `Token ${tokenWebshare}`
-                }
-            });
-            
-            clearTimeout(idTimeout);
-            const tempoGasto = Date.now() - inicio;
+            await new Promise((resolve, reject) => {
+                const urlObj = new URL(alvo.url);
+                
+                const opcoes = {
+                    hostname: urlObj.hostname,
+                    path: urlObj.pathname + urlObj.search,
+                    method: 'GET',
+                    timeout: 4500, // Limite de resposta individual
+                    rejectUnauthorized: false, // Ignora erros de SSL/TLS expirados comuns em tribunais
+                    headers: {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                        'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                };
 
-            // Se o gateway residencial retornou status válido de resposta (200, 403, 500), a máquina está acessível!
-            if (resposta.status >= 200 && resposta.status < 600) {
-                latencias.push(tempoGasto);
-                break; // Handshake efetuado, interrompe retentativas
-            }
-            
-            throw new Error(`Rejeitado pelo Gateway: ${resposta.status}`);
+                const req = https.request(opcoes, (res) => {
+                    // Qualquer resposta de rede (inclusive erros HTTP como 403 ou 500) indica que o site está respondendo e ONLINE
+                    resolve();
+                });
+
+                req.on('timeout', () => {
+                    req.destroy();
+                    reject(new Error('Timeout'));
+                });
+
+                req.on('error', (err) => {
+                    reject(err);
+                });
+
+                req.end();
+            });
+
+            const tempoGasto = Date.now() - inicio;
+            latencias.push(tempoGasto);
+            break; 
 
         } catch (erro) {
-            clearTimeout(idTimeout);
             if (tentativa < maxTentativas) {
-                await aguardar(800); // Aguarda o delay para rotacionar o nó IP antes de retestar
+                await aguardar(400);
             }
         }
     }
@@ -112,7 +127,7 @@ async function executarPingEstrito(alvo) {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latenciaFinal > 4500 ? "Lentidão" : "Online",
+            status: latenciaFinal > 3200 ? "Lentidão" : "Online",
             latenciaMs: latenciaFinal
         };
     } else {
@@ -151,11 +166,11 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} validado com sucesso usando a regra estrita de 3 pings sequenciais por barramento.`,
+            mensagem: `Lote ${numLote} sincronizado via HTTPS nativo sem validação estrita de TLS.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
-        console.error("Erro interno crítico no handler do motor:", erro);
+        console.error("Erro crítico no processamento:", erro);
         return res.status(500).json({ erro: "Falha na persistência de dados.", detalhe: erro.message });
     }
 }
