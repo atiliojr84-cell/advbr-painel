@@ -67,7 +67,7 @@
                 <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
             </div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problem.</p>
+                <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problema.</p>
                 <button onclick="abrirReportar()" class="w-full sm:w-auto bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm whitespace-nowrap">
                     <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
                 </button>
@@ -341,7 +341,6 @@
         function atualizarBolinhasEstados() {
             const gruposUfs = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'];
             
-            // Sincroniza dinamicamente as bolinhas dos blocos mestre
             const dotNacionais = document.getElementById('dot-nacionais');
             if (dotNacionais) {
                 const tribsSuperiores = Object.values(statusGerais).filter(t => t.grupo === 'nacionais' && t.id !== 'trf3');
@@ -362,15 +361,12 @@
                 }
             }
 
-            // Sincronização inteligente baseada no mapeamento completo de 64 canais
             gruposUfs.forEach(uf => {
                 const dot = document.getElementById(`dot-${uf}`);
                 if (!dot) return;
 
-                // Agrupa todos os servidores do back-end associados a essa UF
                 let tribunaisDoGrupo = Object.values(statusGerais).filter(t => t.grupo === uf);
                 
-                // Casos especiais de fronteiras e jurisdições cruzadas no back-end
                 if (uf === 'PA' || uf === 'AP') {
                     const trt8 = Object.values(statusGerais).find(t => t.id === 'trt8_1g_pa');
                     if (trt8) tribunaisDoGrupo.push(trt8);
@@ -443,7 +439,6 @@
             } else {
                 tribunaisDaUf = Object.values(statusGerais).filter(t => t.grupo === uf);
                 
-                // Injeta os sub-tribunais compartilhados dentro das janelas regionais certas
                 if (uf === 'AC') {
                     const trt14 = Object.values(statusGerais).find(t => t.id === 'trt14_1g');
                     if (trt14) tribunaisDaUf.push(trt14);
@@ -483,11 +478,13 @@
                 if (t.status === "Lentidão") corBolinha = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]";
                 if (t.status === "Fora do Ar") corBolinha = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
                 
+                const textoSubtitulo = t.latenciaMs ? `${t.status} - Resposta em ${t.latenciaMs}ms` : t.status;
+                
                 html += `
                     <div class="flex justify-between items-center bg-gray-950 border border-gray-800/60 p-3 rounded-xl">
                         <div>
                             <p class="text-sm font-semibold text-gray-200">${t.nome}</p>
-                            <p class="text-[11px] text-gray-500">${t.latenciaMs ? `Resposta em ${t.latenciaMs}ms` : 'Verificado'}</p>
+                            <p class="text-[11px] text-gray-400 mt-0.5">${textoSubtitulo}</p>
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-xs text-gray-400 font-medium">${t.status}</span>
