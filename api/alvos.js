@@ -11,13 +11,13 @@ const tribunais = [
     { id: "stm",       nome: "STM - Portal",         url: "https://www.stm.jus.br/",                         grupo: "nacionais", lote: 1 },
 
     // ==========================================
-    // PARANÁ — PR (Foco Principal)
+    // PARANÁ — PR (Foco Principal - Sem os parênteses no nome)
     // ==========================================
     { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",   url: "https://eproc.tjpr.jus.br/eproc_1g/",           grupo: "PR", lote: 1 },
     { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",   url: "https://eproc.tjpr.jus.br/eproc_2g/",           grupo: "PR", lote: 1 },
     { id: "tjpr_projudi",  nome: "TJPR - Projudi",         url: "https://projudi.tjpr.jus.br/projudi/",          grupo: "PR", lote: 1 },
-    { id: "trt9_1g",       nome: "TRT9 (PR) - PJe 1º Grau",url: "https://pje.trt9.jus.br/pje/pje-presente.html",  grupo: "PR", lote: 1 },
-    { id: "trt9_2g",       nome: "TRT9 (PR) - PJe 2º Grau",url: "https://pje.trt9.jus.br/pje2g/pje-presente.html",grupo: "PR", lote: 1 },
+    { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",     url: "https://pje.trt9.jus.br/pje/pje-presente.html",  grupo: "PR", lote: 1 },
+    { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",     url: "https://pje.trt9.jus.br/pje2g/pje-presente.html",grupo: "PR", lote: 1 },
     { id: "trf4_pr",       nome: "TRF4 - Federal PR",      url: "https://eproc.trf4.jus.br/eproc2trf4/",         grupo: "PR", lote: 1 },
 
     // ==========================================
@@ -84,7 +84,7 @@ const tribunais = [
     { id: "trt6_2g",       nome: "TRT6 (PE) - PJe 2º Grau",url: "https://pje.trt6.jus.br/pje2g/pje-presente.html",grupo: "PE", lote: 3 },
 
     // ==========================================
-    // DEMAIS ESTADOS (Mapeados de forma compacta para cobertura total)
+    // DEMAIS ESTADOS
     // ==========================================
     { id: "tjac_pje",      nome: "TJAC - PJe Login",       url: "https://pje.tjac.jus.br/pje/login.seam",        grupo: "AC", lote: 3 },
     { id: "tjal_saj",      nome: "TJAL - e-SAJ Login",     url: "https://esaj.tjal.jus.br/",                     grupo: "AL", lote: 3 },
