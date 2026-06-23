@@ -52,7 +52,7 @@ const tribunais = [
     { id: "trt5_1g", nome: "TRT5 (BA) - 1º Grau", url: "https://pje.trt5.jus.br/pje/pje-presente.html", grupo: "BA", lote: 3 },
     { id: "trt5_2g", nome: "TRT5 (BA) - 2º Grau", url: "https://pje.trt5.jus.br/pje2g/pje-presente.html", grupo: "BA", lote: 3 },
     { id: "tjpe_pje", nome: "TJPE - PJe", url: "https://pje.tjpe.jus.br/", grupo: "PE", lote: 3 },
-    { id: "trt6_1g", nome: "TRT6 (PE) - 1º Grau", url: "https://pje.trt6.jus.br/pje/pje-presente.html", group: "PE", lote: 3 },
+    { id: "trt6_1g", nome: "TRT6 (PE) - 1º Grau", url: "https://pje.trt6.jus.br/pje/pje-presente.html", grupo: "PE", lote: 3 },
     { id: "trt6_2g", nome: "TRT6 (PE) - 2º Grau", url: "https://pje.trt6.jus.br/pje2g/pje-presente.html", grupo: "PE", lote: 3 },
     { id: "tjce_saj", nome: "TJCE - SAJ", url: "https://esaj.tjce.jus.br/", grupo: "CE", lote: 3 },
     { id: "trt7_1g", nome: "TRT7 (CE) - 1º Grau", url: "https://pje.trt7.jus.br/pje/pje-presente.html", grupo: "CE", lote: 3 },
@@ -65,44 +65,19 @@ const tribunais = [
 
 async function testarAlvo(alvo) {
     const controlador = new AbortController();
-    const idTimeout = setTimeout(() => controlador.abort(), 8500); // Subimos para 8.5s para acomodar o túnel de rede
+    const idTimeout = setTimeout(() => controlador.abort(), 5000); 
     const inicio = Date.now();
 
-    // Se for o STF ou TRF3, desvia a chamada pela API de Gateway dedicada do Webshare
-    if (alvo.id === "stf" || alvo.id === "trf3") {
-        try {
-            const apiKey = "z2bnjbgeoc4v5c68z4bw9no4porfuaiqzq1soj3b";
-            const respostaGateway = await fetch(`https://api.webshare.io/api/v2/proxy/page/get?url=${encodeURIComponent(alvo.url)}`, {
-                method: 'GET',
-                signal: controlador.signal,
-                headers: {
-                    'Authorization': `Token ${apiKey}`
-                }
-            });
-            clearTimeout(idTimeout);
-            
-            if (respostaGateway.ok) {
-                return {
-                    id: alvo.id,
-                    nome: alvo.nome,
-                    grupo: alvo.grupo,
-                    status: "Online",
-                    latenciaMs: Date.now() - inicio
-                };
-            }
-        } catch (errProxy) {
-            console.error(`Falha na API Webshare para ${alvo.nome}:`, errProxy.message);
-        }
-    }
+    // Engenharia de Bypass: Se for o STF ou TRF3, muda o método para HEAD (burlar firewall de página)
+    const metodoRequisicao = (alvo.id === "stf" || alvo.id === "trf3") ? 'HEAD' : 'GET';
 
-    // Fluxo Direto padrão para os outros tribunais normais
     try {
         await fetch(alvo.url, {
-            method: 'GET',
+            method: metodoRequisicao,
             mode: 'no-cors',
             signal: controlador.signal,
             headers: { 
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
             }
         });
         clearTimeout(idTimeout);
@@ -151,7 +126,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} atualizado com mascaramento residencial.`,
+            mensagem: `Lote ${numLote} sincronizado via HEAD bypass com sucesso.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
