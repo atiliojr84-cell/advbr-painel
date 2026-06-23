@@ -45,7 +45,6 @@ const tribunais = [
     { id: "trt18_1g", nome: "TRT18 (GO) - 1º Grau", url: "https://pje.trt18.jus.br/pje/login.seam", grupo: "GO", lote: 2 },
 
     // LOTE 3 (16 Tribunais) - Nordeste (Continuação), Norte e Restante do Brasil
-    // AJUSTADO: Rota do TRF3 alterada para a tela de listagem pública estável
     { id: "trf3", nome: "TRF3 - PJe", url: "https://pje1g.trf3.jus.br/pje/ConsultaPublica/listView.seam", grupo: "nacionais", lote: 3 },
     { id: "trt18_2g", nome: "TRT18 (GO) - 2º Grau", url: "https://pje.trt18.jus.br/pje2g/login.seam", grupo: "GO", lote: 3 },
     { id: "trt10_1g", nome: "TRT10 (DF/TO) - 1º Grau", url: "https://pje.trt10.jus.br/pje/login.seam", grupo: "DF", lote: 3 },
@@ -76,9 +75,12 @@ async function executarPingEstrito(alvo) {
         const idTimeout = setTimeout(() => controlador.abort(), 5000); 
         const inicio = Date.now();
 
+        // Estratégia inteligente: Força método GET exclusivo para o TRF3 para furar o bloqueio de HEAD
+        const metodoRequisicao = (alvo.id === "trf3") ? 'GET' : 'HEAD';
+
         try {
             await fetch(alvo.url, {
-                method: 'HEAD',
+                method: metodoRequisicao,
                 mode: 'no-cors',
                 signal: controlador.signal,
                 headers: { 
@@ -152,7 +154,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado via Edge Engine com barramento HEAD ativo.`,
+            mensagem: `Lote ${numLote} sincronizado via Edge Engine com barramento HEAD/GET ativo.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
