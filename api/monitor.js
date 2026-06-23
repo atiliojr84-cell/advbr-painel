@@ -64,60 +64,59 @@ const tribunais = [
     { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 3 }
 ];
 
-async function testarAlvo(alvo) {
-    const controlador = new AbortController();
-    const idTimeout = setTimeout(() => controlador.abort(), 7000); 
-    const inicio = Date.now();
+// Função auxiliar para criar uma pequena pausa entre as retentativas (pings)
+const aguardar = (ms) => new Promise(resolve => setTimeout(ms, resolve));
 
-    try {
-        // Disparo limpo com cabeçalhos reais emissores de navegadores comuns (bypassa firewalls de borda)
-        const resposta = await fetch(alvo.url, {
-            method: 'GET',
-            mode: 'no-cors',
-            signal: controlador.signal,
-            headers: { 
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-                'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
+async function executarPingComRetentativas(alvo) {
+    const maxTentativas = 3;
+    let latencias = [];
+
+    for (let tentativa = 1; tentativa <= maxTentativas; tentativa++) {
+        const controlador = new AbortController();
+        const idTimeout = setTimeout(() => controlador.abort(), 4000); // 4 segundos de limite por tentativa individual
+        const inicio = Date.now();
+
+        try {
+            // Dispara o fetch fingindo ser um navegador real atualizado
+            await fetch(alvo.url, {
+                method: 'GET',
+                mode: 'no-cors',
+                signal: controlador.signal,
+                headers: { 
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                    'Cache-Control': 'no-cache'
+                }
+            });
+            
+            clearTimeout(idTimeout);
+            const tempoGastor = Date.now() - inicio;
+            latencias.push(tempoGastor);
+            
+            // Se o ping deu certo de primeira ou de segunda, interrompe o laço e assume sucesso!
+            break; 
+
+        } catch (erro) {
+            clearTimeout(idTimeout);
+            // Se falhou e ainda temos tentativas sobrando, espera 500ms e dá o próximo ping
+            if (tentativa < maxTentativas) {
+                await aguardar(500);
             }
-        });
-        
-        clearTimeout(idTimeout);
-        const latencia = Date.now() - inicio;
+        }
+    }
 
+    // Processamento do Veredito após as 3 tentativas
+    if (latencias.length > 0) {
+        // Pega a última latência capturada no sucesso
+        const latenciaFinal = latencias[latencias.length - 1];
         return {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: latencia > 4000 ? "Lentidão" : "Online",
-            latenciaMs: latencia
+            status: latenciaFinal > 3000 ? "Lentidão" : "Online",
+            latenciaMs: latenciaFinal
         };
-
-    } catch (erro) {
-        clearTimeout(idTimeout);
-        
-        // Plano B Dinâmico: Se houver recusa severa por IP, força a verificação rápida no endpoint estável do Webshare
-        try {
-            const tokenWebshare = "z2bnjbgeoc4v5c68z4bw9no4porfuaiqzq1soj3b";
-            const respostaAlternativa = await fetch(`https://api.webshare.io/api/v2/proxy/config/`, {
-                method: 'GET',
-                headers: { 'Authorization': `Token ${tokenWebshare}` }
-            });
-            
-            if (respostaAlternativa.ok) {
-                // Se a nossa própria API de proxy está de pé e respondendo, tratamos o tribunal como Online por aproximação de rede
-                return {
-                    id: alvo.id,
-                    nome: alvo.nome,
-                    grupo: alvo.grupo,
-                    status: "Online",
-                    latenciaMs: Date.now() - inicio
-                };
-            }
-        } catch (err) {}
-
+    } else {
+        // Se esgotou as 3 tentativas e todas caíram no catch, o servidor está inacessível de verdade
         return {
             id: alvo.id,
             nome: alvo.nome,
@@ -142,7 +141,9 @@ export default async function handler(req, res) {
     try {
         let estadoGlobal = (await kv.get('advbr_status_global')) || {};
         
-        const promessas = alvosDoLote.map(alvo => testarAlvo(alvo));
+        // Em vez de rodar tudo de forma síncrona linear pura (que daria timeout na Vercel),
+        // executamos nossa função com a inteligência interna de até 3 pings por alvo
+        const promessas = alvosDoLote.map(alvo => executarPingComRetentativas(alvo));
         const resultados = await Promise.all(promessas);
 
         resultados.forEach(item => {
@@ -153,7 +154,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado via tunelamento de cabeçalhos residenciais.`,
+            mensagem: `Lote ${numLote} validado com sucesso usando a regra estrita de 3 pings sequenciais por barramento.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
