@@ -1,4 +1,5 @@
 import { createClient } from '@vercel/kv';
+import net from 'net';
 
 const kv = createClient({
   url: process.env.KV_REST_API_URL,
@@ -80,63 +81,59 @@ const tribunais = [
     { id: "tjrn_pje", nome: "TJRN - PJe", url: "https://pje.tjrn.jus.br/pje/login.seam", grupo: "RN", lote: 4 }
 ];
 
-async function executarPingEstrito(alvo) {
-    const controlador = new AbortController();
-    // Aumentamos o fôlego da guilhotina para 4.5 segundos.
-    const idTimeout = setTimeout(() => controlador.abort(), 4500); 
-    const inicio = Date.now();
-
-    const usarGet = alvo.id === "trf3" || alvo.id.includes("saj") || alvo.id === "tjac_pje";
-    const metodoUnificado = usarGet ? 'GET' : 'HEAD';
-
-    try {
-        await fetch(alvo.url, {
-            method: metodoUnificado,
-            mode: 'no-cors',
-            signal: controlador.signal,
-            headers: { 
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-                'Cache-Control': 'no-cache',
-                'Accept': '*/*'
-            }
-        });
+async function executarPingSocket(alvo) {
+    return new Promise((resolve) => {
+        const host = new URL(alvo.url).hostname;
+        const port = 443; // Porta padrão HTTPS
+        const timeoutMs = 3500; // Limite de 3.5 segundos
         
-        clearTimeout(idTimeout);
-        const tempoGasto = Date.now() - inicio;
+        const start = Date.now();
+        const socket = new net.Socket();
 
-        // Se respondeu, e o tempo for maior que 3000ms, marca Lentidão. Senão, Online.
-        return {
-            id: alvo.id,
-            nome: alvo.nome,
-            grupo: alvo.grupo,
-            status: tempoGasto > 3000 ? "Lentidão" : "Online",
-            latenciaMs: tempoGasto
-        };
-
-    } catch (erro) {
-        clearTimeout(idTimeout);
-        const tempoDecorrido = Date.now() - inicio;
-
-        // Lógica de "Block Catcher": se o firewall deles derrubou a gente mas levou menos de 4.2s, 
-        // significa que eles estão operando. Mantemos o peso da Lentidão ou Online.
-        if (erro.name !== 'AbortError' && tempoDecorrido < 4200) {
-            return {
+        // Se o tribunal não responder nada em 3.5s, matamos o processo.
+        const timer = setTimeout(() => {
+            socket.destroy();
+            resolve({
                 id: alvo.id,
                 nome: alvo.nome,
                 grupo: alvo.grupo,
-                status: tempoDecorrido > 3000 ? "Lentidão" : "Online",
-                latenciaMs: tempoDecorrido
-            };
-        }
+                status: "Fora do Ar",
+                latenciaMs: null
+            });
+        }, timeoutMs);
 
-        return {
-            id: alvo.id,
-            nome: alvo.nome,
-            grupo: alvo.grupo,
-            status: "Fora do Ar",
-            latenciaMs: null
-        };
-    }
+        // Se o tribunal aceitar a conexão física (Porta aberta), é Sucesso!
+        socket.on('connect', () => {
+            const tempoGasto = Date.now() - start;
+            clearTimeout(timer);
+            socket.destroy(); // Fecha imediatamente sem mandar pacote HTTP
+            
+            // TCP é quase instantâneo. Se passar de 800ms já consideramos Lentidão na infra do tribunal.
+            resolve({
+                id: alvo.id,
+                nome: alvo.nome,
+                grupo: alvo.grupo,
+                status: tempoGasto > 800 ? "Lentidão" : "Online",
+                latenciaMs: tempoGasto
+            });
+        });
+
+        // Se o firewall rejeitar ativamente a conexão (TCP Reset), tratamos como Fora do Ar.
+        socket.on('error', () => {
+            clearTimeout(timer);
+            socket.destroy();
+            resolve({
+                id: alvo.id,
+                nome: alvo.nome,
+                grupo: alvo.grupo,
+                status: "Fora do Ar",
+                latenciaMs: null
+            });
+        });
+
+        // Inicia a batida na porta
+        socket.connect(port, host);
+    });
 }
 
 export default async function handler(req, res) {
@@ -153,7 +150,8 @@ export default async function handler(req, res) {
     try {
         let estadoGlobal = (await kv.get('advbr_status_global')) || {};
         
-        const promessas = alvosDoLote.map(alvo => executarPingEstrito(alvo));
+        // Dispara os pings TCP em paralelo para máxima velocidade
+        const promessas = alvosDoLote.map(alvo => executarPingSocket(alvo));
         const resultados = await Promise.all(promessas);
 
         resultados.forEach(item => {
@@ -164,7 +162,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado.`,
+            mensagem: `Lote ${numLote} sincronizado via TCP Socket Puro.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
