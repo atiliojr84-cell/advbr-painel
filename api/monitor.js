@@ -67,7 +67,6 @@ const tribunais = [
     { id: "tjam_pje", nome: "TJAM - PJe", url: "https://pje.tjam.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "trt11_1g", nome: "TRT11 (AM/RR) - 1º Grau", url: "https://pje.trt11.jus.br/pje/login.seam", grupo: "AM", lote: 4 },
     { id: "tjto_eproc", nome: "TJTO - eproc", url: "https://eproc.tjto.jus.br/eproc/externo_controlador.php", grupo: "TO", lote: 4 },
-    // CORREÇÃO FINAL AC: Apontando o PJe do Acre para a Consulta Pública mais estável
     { id: "tjac_pje", nome: "TJAC - PJe", url: "https://pje.tjac.jus.br/pje/ConsultaPublica/listView.seam", grupo: "AC", lote: 4 },
     { id: "tjac_saj", nome: "TJAC - e-SAJ", url: "https://esaj.tjac.jus.br/sajps/login.do", grupo: "AC", lote: 4 },
     { id: "trt14_1g", nome: "TRT14 (RO/AC) - 1º Grau", url: "https://pje.trt14.jus.br/pje/login.seam", grupo: "AC", lote: 4 },
@@ -83,7 +82,8 @@ const tribunais = [
 
 async function executarPingEstrito(alvo) {
     const controlador = new AbortController();
-    const idTimeout = setTimeout(() => controlador.abort(), 3200); 
+    // Aumentamos o fôlego da guilhotina para 4.5 segundos.
+    const idTimeout = setTimeout(() => controlador.abort(), 4500); 
     const inicio = Date.now();
 
     const usarGet = alvo.id === "trf3" || alvo.id.includes("saj") || alvo.id === "tjac_pje";
@@ -104,11 +104,12 @@ async function executarPingEstrito(alvo) {
         clearTimeout(idTimeout);
         const tempoGasto = Date.now() - inicio;
 
+        // Se respondeu, e o tempo for maior que 3000ms, marca Lentidão. Senão, Online.
         return {
             id: alvo.id,
             nome: alvo.nome,
             grupo: alvo.grupo,
-            status: tempoGasto > 2400 ? "Lentidão" : "Online",
+            status: tempoGasto > 3000 ? "Lentidão" : "Online",
             latenciaMs: tempoGasto
         };
 
@@ -116,12 +117,14 @@ async function executarPingEstrito(alvo) {
         clearTimeout(idTimeout);
         const tempoDecorrido = Date.now() - inicio;
 
-        if (erro.name !== 'AbortError' && tempoDecorrido < 3000) {
+        // Lógica de "Block Catcher": se o firewall deles derrubou a gente mas levou menos de 4.2s, 
+        // significa que eles estão operando. Mantemos o peso da Lentidão ou Online.
+        if (erro.name !== 'AbortError' && tempoDecorrido < 4200) {
             return {
                 id: alvo.id,
                 nome: alvo.nome,
                 grupo: alvo.grupo,
-                status: "Online",
+                status: tempoDecorrido > 3000 ? "Lentidão" : "Online",
                 latenciaMs: tempoDecorrido
             };
         }
@@ -161,7 +164,7 @@ export default async function handler(req, res) {
 
         return res.status(200).json({ 
             sucesso: true, 
-            mensagem: `Lote ${numLote} sincronizado via Turbo Engine.`,
+            mensagem: `Lote ${numLote} sincronizado.`,
             itens_processados: resultados.length 
         });
     } catch (erro) {
