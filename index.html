@@ -101,19 +101,19 @@
             <p class="text-xs text-gray-500 mb-4">Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
             
             <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
-                <!-- Botão 1 -->
+                <!-- Botão 1: Tribunais Superiores -->
                 <div onclick="abrirEstado('superiores')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border border-blue-800/40 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200 min-w-[240px]">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
-                    <span id="dot-superiores" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
+                    <span id="dot-superiores" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
-                <!-- Botão 2 -->
+                <!-- Botão 2: Sistemas Nacionais -->
                 <div onclick="abrirEstado('nacionais')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500/50 transition min-w-[200px]">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-xs text-blue-500"></i> Sistemas Nacionais</span>
-                    <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
+                    <span id="dot-nacionais" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
-                <!-- Botão 3 -->
+                <!-- Botão 3: Paraná -->
                 <div onclick="abrirEstado('PR')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-200 min-w-[160px] justify-center gap-3">
-                    Paraná (PR) <span id="dot-PR" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block"></span>
+                    Paraná (PR) <span id="dot-PR" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all inline-block"></span>
                 </div>
             </div>
         </section>
@@ -356,13 +356,14 @@
                 let qtdFora = 0;
 
                 tribunaisDoGrupo.forEach(t => {
-                    const status = (statusGerais[t.id] && statusGerais[t.id].status) ? statusGerais[t.id].status : "Online";
+                    const dadosApi = statusGerais[t.id];
+                    const status = dadosApi ? dadosApi.status : "Online";
                     if (status === "Online") qtdOnline++;
                     if (status === "Fora do Ar") qtdFora++;
                 });
 
-                // CORREÇÃO: Removido o erro de digitação do 'groupId' para as bolinhas acenderem de verdade
-                dot.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block ml-1";
+                // Limpa as classes de cores antigas mantendo a estrutura base do Tailwind
+                dot.className = "h-2.5 w-2.5 rounded-full transition-all duration-300 inline-block ml-1";
 
                 if (totalTribunais === 0) {
                     dot.className += " bg-gray-600";
