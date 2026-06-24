@@ -2,43 +2,43 @@
   "crons": [
     {
       "path": "/api/monitor?lote=1",
-      "schedule": "0  */2 * * *"  // Roda às 00:00, 02:00, 04:00...
+      "schedule": "0 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=2",
-      "schedule": "5  */2 * * *"  // Roda às 00:05, 02:05, 04:05...
+      "schedule": "5 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=3",
-      "schedule": "10 */2 * * *"  // Roda às 00:10, 02:10, 04:10...
+      "schedule": "10 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=4",
-      "schedule": "15 */2 * * *"  // Roda às 00:15, 02:15, 04:15...
+      "schedule": "15 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=5",
-      "schedule": "20 */2 * * *"  // Roda às 00:20, 02:20, 04:20...
+      "schedule": "20 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=6",
-      "schedule": "25 */2 * * *"  // Roda às 00:25, 02:25, 04:25...
+      "schedule": "25 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=7",
-      "schedule": "30 */2 * * *"  // Roda às 00:30, 02:30, 04:30...
+      "schedule": "30 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=8",
-      "schedule": "35 */2 * * *"  // Roda às 00:35, 02:35, 04:35...
+      "schedule": "35 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=9",
-      "schedule": "40 */2 * * *"  // Roda às 00:40, 02:40, 04:40...
+      "schedule": "40 */2 * * *"
     },
     {
       "path": "/api/monitor?lote=10",
-      "schedule": "45 */2 * * *" // Roda às 00:45, 02:45, 04:45...
+      "schedule": "45 */2 * * *"
     }
   ]
 }
