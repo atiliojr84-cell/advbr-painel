@@ -1,4 +1,4 @@
-// api/noticias.js - Código corrigido para capturar as notícias reais de cada item
+// api/noticias.js - Código corrigido para capturar tags com maiúsculas/minúsculas e namespaces
 const FEEDS_RSS = [
   { fonte: "TJPR", encoding: "utf-8", url: "https://www.tjpr.jus.br/noticias/-/asset_publisher/M7vW/rss?p_p_cacheability=cacheLevelPage" },
   { fonte: "TRT9", encoding: "iso-8859-1", url: "https://www.trt9.jus.br/internet/rss/noticias.cron" },
@@ -13,19 +13,19 @@ const FEEDS_RSS = [
 function extrairTitulosDoXml(xmlTexto, fonteNome) {
   const titulos = [];
   
-  // CORREÇÃO CIRÚRGICA: Captura primeiro os blocos de notícias (<item> ou <entry>) para ignorar o título principal do site
-  const regexBlocos = /<(?:item|entry)>([\s\S]*?)<\/(?:item|entry)>/g;
-  const regexTitulo = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/;
+  // CORREÇÃO MÁSTER: Aceita prefixos opcionais (ex: atom:item ou item) e ignora maiúsculas/minúsculas (/i)
+  const regexBlocos = /<(?:\w+:)?(item|entry)[^>]*>([\s\S]*?)<\/(?:\w+:)?\1>/gi;
+  const regexTitulo = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i;
   
   let blocoMatch;
   while ((blocoMatch = regexBlocos.exec(xmlTexto)) !== null) {
-    const blocoConteudo = blocoMatch[1];
+    const blocoConteudo = blocoMatch[2];
     const tituloMatch = regexTitulo.exec(blocoConteudo);
     
     if (tituloMatch) {
       let titulo = tituloMatch[1].trim();
       
-      // Decodifica acentuações em formato HTML entidade
+      // Decodifica entidades HTML
       titulo = titulo
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
@@ -33,14 +33,12 @@ function extrairTitulosDoXml(xmlTexto, fonteNome) {
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
 
-      // Limpa espaços duplos e valida o tamanho da notícia por extenso
       if (titulo && titulo.length > 15) {
         titulo = titulo.replace(/\s+/g, ' ');
         titulos.push(`[${fonteNome}] ${titulo}`);
       }
     }
     
-    // Pega as 3 principais notícias de cada tribunal para o letreiro rodar com conteúdo variado
     if (titulos.length >= 3) break;
   }
   return titulos;
@@ -80,10 +78,11 @@ export default async function handler(req, res) {
     const resultadosAgrupados = await Promise.all(promessas);
     const todasAsNoticias = resultadosAgrupados.flat();
 
+    // Mensagens de fallback limpas caso os servidores federais estejam fora do ar simultaneamente
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
-        "[INFORMAÇÃO] Painel ADVBR ativo: Monitorando canais de autenticação jurídica.",
-        "[SUCESSO] Sincronização e barramento de cache Redis operando em tempo real."
+        "[SINAL] Servidor de monitoramento ADVBR ativo e aguardando barramento.",
+        "[INFO] Painel operacional: Verificando integridade de rotas dos portais jurídicos."
       );
     }
 
