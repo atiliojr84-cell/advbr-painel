@@ -14,36 +14,29 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const { tribunal, tipoProblema } = req.body;
-
   if (!tribunal || !tipoProblema) {
-    return res.status(400).json({ erro: 'Dados incompletos para o relato.' });
+    return res.status(400).json({ erro: 'Tribunal e tipoProblema são obrigatórios.' });
   }
 
   const novoRelato = {
     tribunal,
     tipoProblema,
-    data: new Date().toISOString(), // Usar ISO string para padronizar e facilitar ordenação
-    timestamp: Date.now() // Adicionar timestamp para ordenação e TTL
+    data: new Date().toLocaleString('pt-BR', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' })
   };
 
   try {
     // Busca os relatos atuais no Redis
-    // A chave 'advbr_relatos' vai guardar uma lista de todos os relatos brutos
-    let relatosAtuais = await kv.get('advbr_relatos') || [];
+    let relatos = await kv.get('advbr_relatos') || [];
+    relatos.unshift(novoRelato); // Adiciona o novo relato no início
 
-    // Adiciona o novo relato no início da lista
-    relatosAtuais.unshift(novoRelato);
+    // Opcional: Limitar o número de relatos brutos para não sobrecarregar o KV
+    // Por exemplo, manter apenas os últimos 100 relatos
+    relatos = relatos.slice(0, 100);
 
-    // Limita a lista para não crescer indefinidamente (ex: últimos 100 relatos)
-    relatosAtuais = relatosAtuais.slice(0, 100);
-
-    // Salva a lista atualizada no Redis com um TTL (ex: 24 horas = 86400 segundos)
-    // Isso garante que relatos muito antigos sejam automaticamente removidos
-    await kv.set('advbr_relatos', relatosAtuais, { ex: 86400 });
-
+    await kv.set('advbr_relatos', relatos);
     return res.status(200).json({ sucesso: true, mensagem: 'Relato gravado com sucesso.' });
   } catch (erro) {
-    console.error('Erro ao gravar relato no Redis:', erro);
+    console.error('Erro ao gravar relato no Redis (registrar-relato.js):', erro);
     return res.status(500).json({ erro: 'Falha ao gravar relato.' });
   }
 }
