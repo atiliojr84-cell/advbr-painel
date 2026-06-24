@@ -416,27 +416,22 @@
     </footer>
 
     <script>
-        // DADOS FIXOS DOS TRIBUNAIS (usado pelo carrossel e modais)
-// Garantir que TODOS os IDs do alvos.js estejam aqui.
-const dadosTribunaisFixo = [
-    // --- Tribunais Superiores ---
-    { id: "stf", url: "https://portal.stf.jus.br/", nome: "STF", grupo: "superiores", sub: "Supremo Tribunal Federal" },
-    { id: "stj", url: "https://www.stj.jus.br/", nome: "STJ", grupo: "superiores", sub: "Superior Tribunal de Justiça" },
-    { id: "tse", url: "https://www.tse.jus.br/", nome: "TSE", grupo: "superiores", sub: "Tribunal Superior Eleitoral" },
-    { id: "tst", url: "https://www.tst.jus.br/", nome: "TST", grupo: "superiores", sub: "Tribunal Superior do Trabalho" },
-
-    // --- Sistemas Nacionais ---
-    { id: "cnj", url: "https://www.cnj.jus.br/", nome: "CNJ", grupo: "nacionais", sub: "Conselho Nacional de Justiça" },
-    { id: "pje_cnj", url: "https://pje.cnj.jus.br/primeirograu/login.seam", nome: "PJe - Nacional", grupo: "nacionais", sub: "Processo Judicial Eletrônico (CNJ)" },
-    { id: "domicilio_cnj", url: "https://www.cnj.jus.br/servicos/consulta-processual/", nome: "Domicílio Judicial", grupo: "nacionais", sub: "Consulta de Domicílio (CNJ)" },
-
-    // --- Paraná (PR) ---
-    { id: "tjpr_eproc_1g", url: "https://eproc1g.tjpr.jus.br/eproc/externo_controlador.php?acao=principal", nome: "TJPR - eproc 1º Grau", grupo: "PR", sub: "Tribunal de Justiça do Paraná" },
-    { id: "tjpr_projudi", url: "https://projudi.tjpr.jus.br/projudi/", nome: "TJPR - Projudi", grupo: "PR", sub: "Tribunal de Justiça do Paraná" },
-    { id: "trt9_1g", url: "https://pje.trt9.jus.br/primeirograu/login.seam", nome: "TRT9 - PJe 1º Grau", grupo: "PR", sub: "Tribunal Regional do Trabalho 9" },
-    { id: "trt9_2g", url: "https://pje.trt9.jus.br/segundograu/login.seam", nome: "TRT9 - PJe 2º Grau", grupo: "PR", sub: "Tribunal Regional do Trabalho 9" },
-    { id: "trf4_pr", url: "https://www.trf4.jus.br/trf4/controlador.php?acao=pagina_inicial", nome: "TRF4 - Federal PR", grupo: "PR", sub: "Tribunal Regional Federal 4" }
-];
+        const dadosTribunaisFixo = [
+            { id: "pje_cnj",       nome: "PJe Nacional (CNJ)",    sub: "Servidor de Login CNJ",         grupo: "nacionais",  url: "https://www.pje.jus.br/navegador/" },
+            { id: "domicilio_cnj", nome: "Domicílio Judicial",    sub: "Domicílio Judicial Eletrônico", grupo: "nacionais",  url: "https://domicilio-eletronico.pdpj.jus.br/" },
+            { id: "pdpj_cnj",      nome: "PDPJ - Hub CNJ",        sub: "Plataforma Digital Unificada",  grupo: "nacionais",  url: "https://www.cnj.jus.br/pdpj-br/" },
+            { id: "stj",           nome: "STJ - Processos",       sub: "Superior Tribunal de Justiça",  grupo: "superiores", url: "https://www.stj.jus.br/sites/portalp/inicio" },
+            { id: "stf",           nome: "STF - Eletrônico",      sub: "Autenticação PKI Login",        grupo: "superiores", url: "https://portal.stf.jus.br/" },
+            { id: "tse",           nome: "TSE - Portal",          sub: "Tribunal Superior Eleitoral",   grupo: "superiores", url: "https://www.tse.jus.br/" },
+            { id: "tst",           nome: "TST - PJe",             sub: "Tribunal Superior do Trabalho", grupo: "superiores", url: "https://www.tst.jus.br/" },
+            { id: "stm",           nome: "STM - Portal",          sub: "Superior Tribunal Militar",     grupo: "superiores", url: "https://www.stm.jus.br/" },
+            { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau", sub: "Servidor eproc 1º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_1g/" },
+            { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau", sub: "Servidor eproc 2º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_2g/" },
+            { id: "tjpr_projudi",  nome: "TJPR - Projudi",        sub: "Servidor Projudi Login",        grupo: "PR",         url: "https://projudi.tjpr.jus.br/projudi/" },
+            { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",   sub: "Servidor PJe PR (Varas)",       grupo: "PR",         url: "https://pje.trt9.jus.br/pje/pje-presente.html" },
+            { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",   sub: "Servidor PJe PR (Tribunal)",    grupo: "PR",         url: "https://pje.trt9.jus.br/pje2g/pje-presente.html" },
+            { id: "trf4_pr",       nome: "TRF4 - Federal PR",     sub: "Justiça Federal da 4ª Região",  grupo: "PR",         url: "https://eproc.trf4.jus.br/eproc2trf4/" },
+            { id: "tjsp_saj",      nome: "TJSP - e-SAJ",          sub: "Servidor de Login eSAJ",       grupo: "SP",         url: "https://esaj.tjsp.jus.br/sajcas/login" }
         ];
 
         let statusGerais = {};
