@@ -1,10 +1,14 @@
-// api/noticias.js - Versão PRO com link direto do Migalhas e feeds intercalados
+// api/noticias.js - Versão Turbo com 9 fontes jurídicas de alta disponibilidade
 const FEEDS_RSS = [
   { fonte: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },         
   { fonte: "OAB",    url: "https://www.oab.org.br/rss" },             
   { fonte: "STJ",    url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" }, 
   { fonte: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
-  { fonte: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" } // Link direto estável
+  { fonte: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" },
+  { fonte: "TRF1",   url: "https://portal.trf1.jus.br/portaltrf1/rss.xml" },
+  { fonte: "AMBITO", url: "https://ambitojuridico.com.br/feed/" },
+  { fonte: "JUSTIÇA", url: "https://justicaemfoco.com.br/rss" },
+  { fonte: "IBDFAM", url: "https://ibdfam.org.br/rss/noticias" }
 ];
 
 function extrairDadosDoXml(xmlTexto, fonteNome) {
@@ -23,7 +27,6 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
       let titulo = tituloMatch[1].trim();
       let link = linkMatch ? linkMatch[1].trim() : "#";
       
-      // Limpeza de caracteres especiais e tags CDATA
       titulo = titulo
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
@@ -31,8 +34,8 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
 
-      // Filtro para validar manchetes reais e remover títulos repetidos ou vazios
-      if (titulo && titulo.length > 20 && !titulo.toLowerCase().startsWith("notícias")) {
+      // Filtro de segurança para manchetes limpas
+      if (titulo && titulo.length > 20 && !titulo.toLowerCase().startsWith("notícias") && !titulo.toLowerCase().includes("vaga")) {
         titulo = titulo.replace(/\s+/g, ' ');
         itens.push({
           texto: `[${fonteNome}] ${titulo}`,
@@ -40,7 +43,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         });
       }
     }
-    if (itens.length >= 5) break; // Limite por portal para garantir bom rodízio
+    if (itens.length >= 4) break; // Pega as 4 mais frescas de cada um para girar rápido
   }
   return itens;
 }
@@ -56,7 +59,7 @@ export default async function handler(req, res) {
     const promessas = FEEDS_RSS.map(async (feed) => {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 4000); // 4 segundos max por requisição
+        const timeout = setTimeout(() => controller.abort(), 4000); 
         
         const resposta = await global.fetch(feed.url, { 
           signal: controller.signal,
@@ -78,7 +81,7 @@ export default async function handler(req, res) {
 
     const resultadosAgrupados = await Promise.all(promessas);
     
-    // Algoritmo de intercalação Round-Robin para misturar as fontes perfeitamente
+    // Mistura os 9 portais de forma alternada (Round-Robin)
     const todasAsNoticias = [];
     let maxItens = Math.max(...resultadosAgrupados.map(lista => lista.length));
     
@@ -90,12 +93,10 @@ export default async function handler(req, res) {
       });
     }
 
-    // Fallback caso todas as requisições falhem temporariamente por timeout
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
-        { texto: "[OAB-PR] Ordem dos Advogados do Brasil Seção Paraná ativa no monitoramento de prazos.", url: "https://www.oabpr.org.br" },
-        { texto: "[MIGALHAS] Informativo de direito e atualizações de jurisprudência em tempo real.", url: "https://www.migalhas.com.br" },
-        { texto: "[STJ] Superior Tribunal de Justiça mantém barramento de monitoramento ativo.", url: "https://www.stj.jus.br" }
+        { texto: "[OAB-PR] Painel de monitoramento de prazos e instabilidades operacionais ativo.", url: "https://www.oabpr.org.br" },
+        { texto: "[MIGALHAS] Atualizações de jurisprudência e rotina dos tribunais disponível.", url: "https://www.migalhas.com.br" }
       );
     }
 
