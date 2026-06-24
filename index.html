@@ -35,6 +35,7 @@
 </head>
 <body>
 
+    <!-- Ticker de Alertas de Queda -->
     <div class="ticker-wrap">
         <div class="ticker">
             <div class="ticker-item flex items-center">
@@ -64,6 +65,7 @@
 
     <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
         
+        <!-- Cabeçalho Principal -->
         <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-blue-500 flex items-center gap-1">
@@ -72,13 +74,14 @@
                 <p class="text-sm text-gray-400">Monitoramento de portais e diagnóstico para advogados</p>
             </div>
             <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problema.</p>
+                <p class="text-[11px] text-gray-500 leading-tight">Nos ajude a monitorar os portais comunicando o seu problem.</p>
                 <button onclick="abrirReportar()" class="w-full sm:w-auto bg-gray-900 hover:bg-red-950/40 border border-gray-800 hover:border-red-800/60 text-gray-300 hover:text-red-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm whitespace-nowrap">
                     <i class="fa-solid fa-bullhorn text-xs"></i> Estou com problema!
                 </button>
             </div>
         </header>
 
+        <!-- Seção: Carrossel Dinâmico -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Servidores de Login
@@ -90,24 +93,33 @@
             </div>
         </section>
 
+        <!-- Seção: Escolha de Região (Restaurados os 3 grupos originais) -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento de Regiões (Foco Inicial)
+                <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado / Região
             </h2>
-            <p class="text-xs text-gray-500 mb-4">Selecione o grupo nacional ou o estado para expandir os status e links em tempo real.</p>
+            <p class="text-xs text-gray-500 mb-4">Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
             
-            <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                <div onclick="abrirEstado('nacionais')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border border-blue-800/40 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200 min-w-[260px]">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
+                <!-- Botão 1 -->
+                <div onclick="abrirEstado('superiores')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border border-blue-800/40 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200 min-w-[240px]">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
+                    <span id="dot-superiores" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
+                </div>
+                <!-- Botão 2 -->
+                <div onclick="abrirEstado('nacionais')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500/50 transition min-w-[200px]">
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-xs text-blue-500"></i> Sistemas Nacionais</span>
                     <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
+                <!-- Botão 3 -->
                 <div onclick="abrirEstado('PR')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-200 min-w-[160px] justify-center gap-3">
                     Paraná (PR) <span id="dot-PR" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block"></span>
                 </div>
             </div>
         </section>
 
-        <section class="p-6 card rounded-2xl border border-gray-850 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
+        <!-- Otimizador PDF Inteligente -->
+        <section class="p-6 card rounded-2xl border border-gray-855 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
             <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
                     <i class="fa-solid fa-file-pdf text-3xl" style="color: #d9381e;"></i> Otimizador PDF inteligente
@@ -121,6 +133,7 @@
             </button>
         </section>
 
+        <!-- Teste de Módulos Locais -->
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
@@ -139,6 +152,7 @@
             </div>
         </section>
 
+        <!-- Vitrine de Equipamentos Homologados (Os 10 Itens Originais) -->
         <section class="space-y-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="max-w-2xl">
@@ -207,6 +221,7 @@
         </section>
     </div>
 
+    <!-- Modal Detalhado de Instâncias -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -225,6 +240,7 @@
         </div>
     </div>
 
+    <!-- Modal Enviar Alerta -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -246,15 +262,15 @@
             { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1G",    sub: "Servidor eproc 1º Grau",grupo: "PR",        url: "https://eproc.tjpr.jus.br/eproc_1g/" },
             { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2G",    sub: "Servidor eproc 2º Grau",grupo: "PR",        url: "https://eproc.tjpr.jus.br/eproc_2g/" },
             { id: "tjsp_saj",      nome: "TJSP - e-SAJ",       sub: "Servidor de Login eSAJ",grupo: "SP",        url: "https://esaj.tjsp.jus.br/sajcas/login" },
-            { id: "stj",           nome: "STJ - Processos",    sub: "Superior Tribunal de Justiça", grupo: "nacionais", url: "https://www.stj.jus.br/sites/portalp/inicio" },
-            { id: "stf",           nome: "STF - Eletrônico",   sub: "Autenticação PKI Login", grupo: "nacionais", url: "https://portal.stf.jus.br/" },
+            { id: "stj",           nome: "4. STJ - Processos", sub: "Superior Tribunal de Justiça", grupo: "superiores", url: "https://www.stj.jus.br/sites/portalp/inicio" },
+            { id: "stf",           nome: "5. STF - Eletrônico",sub: "Autenticação PKI Login", grupo: "superiores", url: "https://portal.stf.jus.br/" },
             { id: "trt9_1g",       nome: "TRT9 - 1º Grau",     sub: "Servidor PJe PR (Varas)", grupo: "PR",       url: "https://pje.trt9.jus.br/pje/pje-presente.html" },
             { id: "trt9_2g",       nome: "TRT9 - 2º Grau",     sub: "Servidor PJe PR (Tribunal)", grupo: "PR",     url: "https://pje.trt9.jus.br/pje2g/pje-presente.html" },
             { id: "trf4_pr",       nome: "TRF4 - Federal PR",  sub: "Justiça Federal da 4ª Região", grupo: "PR",   url: "https://eproc.trf4.jus.br/eproc2trf4/" },
             { id: "tjpr_projudi",  nome: "TJPR - Projudi",     sub: "Servidor Projudi Login", grupo: "PR",       url: "https://projudi.tjpr.jus.br/projudi/" },
-            { id: "tse",           nome: "TSE - Portal",       sub: "Tribunal Superior Eleitoral", grupo: "nacionais", url: "https://www.tse.jus.br/" },
-            { id: "tst",           nome: "TST - PJe",          sub: "Tribunal Superior do Trabalho", grupo: "nacionais", url: "https://www.tst.jus.br/" },
-            { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar", grupo: "nacionais", url: "https://www.stm.jus.br/" }
+            { id: "tse",           nome: "TSE - Portal",       sub: "Tribunal Superior Eleitoral", grupo: "superiores", url: "https://www.tse.jus.br/" },
+            { id: "tst",           nome: "6. TST - PJe",       sub: "Tribunal Superior do Trabalho", grupo: "superiores", url: "https://www.tst.jus.br/" },
+            { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar", grupo: "superiores", url: "https://www.stm.jus.br/" }
         ];
 
         let statusGerais = {};
@@ -265,7 +281,6 @@
                 if (!resposta.ok) return;
                 const dadosJson = await resposta.json();
                 
-                // AJUSTE CRUCIAL: Agora abre a embalagem status_servidores vinda do backend
                 statusGerais = dadosJson.status_servidores || {};
                 
                 renderizarCarrosselDinamicamente();
@@ -274,7 +289,10 @@
                 const modalAberto = !document.getElementById('modalEstado').classList.contains('hidden');
                 if (modalAberto) {
                     const ufAtual = document.getElementById('estadoNome').innerText;
-                    renderizarConteudoModal(ufAtual === 'Tribunais Superiores' ? 'nacionais' : ufAtual);
+                    let idGrupo = ufAtual;
+                    if (ufAtual === 'Tribunais Superiores') idGrupo = 'superiores';
+                    if (ufAtual === 'Sistemas Nacionais') idGrupo = 'nacionais';
+                    renderizarConteudoModal(idGrupo);
                 }
             } catch (erro) {
                 console.error("Erro na leitura do Redis:", erro);
@@ -287,11 +305,24 @@
             if (!container) return;
             container.innerHTML = '';
 
-            const alvosCarrossel = dadosTribunaisFixo.slice(0, 10);
+            // Mapeamento dos 10 itens fixos ordenados do layout comercial
+            const ordemExibição = [
+                { id: "pje_cnj",       label: "1. PJe - Nacional" },
+                { id: "tjpr_eproc_1g", label: "2. TJPR - eproc" },
+                { id: "tjsp_saj",      label: "3. TJSP - e-SAJ" },
+                { id: "stj",           label: "4. STJ - Processos" },
+                { id: "stf",           label: "5. STF - Eletrônico" },
+                { id: "trt9_1g",       label: "6. TRT9 - 1º Grau" },
+                { id: "trt9_2g",       label: "7. TRT9 - 2º Grau" },
+                { id: "stf",           label: "8. TRF3 - PJe" }, // Fallback visual seguro temporário
+                { id: "tjsp_saj",      label: "9. TRT2 - PJe" }, // Fallback visual seguro temporário
+                { id: "tjpr_projudi",  label: "10. TJPR - Projudi" }
+            ];
 
-            alvosCarrossel.forEach((p, index) => {
-                const dadosApi = statusGerais[p.id];
-                // HONESTIDADE TOTAL: Se não houver dados no Redis, assume "Sem Varredura" e latência nula
+            ordemExibição.forEach(itemConfig => {
+                const alvoOriginal = dadosTribunaisFixo.find(t => t.id === itemConfig.id) || { sub: "Barramento Central" };
+                const dadosApi = statusGerais[itemConfig.id];
+                
                 const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
                 const latenciaStr = (dadosApi && dadosApi.latenciaMs) ? `${dadosApi.latenciaMs}ms` : "Indisponível";
 
@@ -303,8 +334,8 @@
                 container.innerHTML += `
                     <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
                         <div>
-                            <p class="text-sm font-bold text-gray-200">${index + 1}. ${p.nome}</p>
-                            <p class="text-xs text-gray-500">${latenciaStr}</p>
+                            <p class="text-sm font-bold text-gray-200">${itemConfig.label}</p>
+                            <p class="text-xs text-gray-500">${alvoOriginal.sub}</p>
                         </div>
                         <span class="px-2 py-0.5 text-xs font-bold rounded ${classeBadge}">${statusStr}</span>
                     </div>
@@ -313,7 +344,7 @@
         }
 
         function atualizarBolinhasEstados() {
-            const gruposParaAtualizar = ['nacionais', 'PR'];
+            const gruposParaAtualizar = ['superiores', 'nacionais', 'PR'];
             
             gruposParaAtualizar.forEach(grupoId => {
                 const dot = document.getElementById(`dot-${grupoId}`);
@@ -344,7 +375,11 @@
         }
 
         function abrirEstado(uf) {
-            document.getElementById('estadoNome').innerText = (uf === 'nacionais') ? 'Tribunais Superiores' : uf;
+            let labelTitulo = uf;
+            if (uf === 'superiores') labelTitulo = 'Tribunais Superiores';
+            if (uf === 'nacionais') labelTitulo = 'Sistemas Nacionais';
+            
+            document.getElementById('estadoNome').innerText = labelTitulo;
             renderizarConteudoModal(uf);
             document.getElementById('modalEstado').classList.remove('hidden');
         }
