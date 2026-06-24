@@ -15,28 +15,31 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    let status = await kv.get('advbr_status_global');
-    let relatos = await kv.get('advbr_relatos');
+    const dadosStatus = await kv.get('advbr_status_global');
+    const relatosBrutos = await kv.get('advbr_relatos') || []; // Lê os relatos brutos
 
-    // Se vier string, tenta fazer parse
-    if (typeof status === 'string') {
-      try { status = JSON.parse(status); } catch { status = {}; }
-    }
-    if (!status || typeof status !== 'object') status = {};
-
-    // Relatos: garante array
-    if (!Array.isArray(relatos)) relatos = [];
+    // Processa os relatos brutos para o formato esperado pelo front-end
+    const relatosProcessados = {};
+    relatosBrutos.forEach(relato => {
+      if (!relatosProcessados[relato.tribunal]) {
+        relatosProcessados[relato.tribunal] = {
+          total: 0,
+          problemas: {},
+          ultimoRelato: ''
+        };
+      }
+      relatosProcessados[relato.tribunal].total++;
+      relatosProcessados[relato.tribunal].problemas[relato.tipoProblema] =
+        (relatosProcessados[relato.tribunal].problemas[relato.tipoProblema] || 0) + 1;
+      relatosProcessados[relato.tribunal].ultimoRelato = relato.data; // Atualiza com o mais recente
+    });
 
     return res.status(200).json({
-      status_servidores: status,
-      relatos_comunidade: relatos
+      status_servidores: dadosStatus || {},
+      relatos_comunidade: relatosProcessados
     });
   } catch (error) {
-    console.error('Erro no Redis em /api/status-atual:', error);
-    // Mesmo com erro, responder algo para o front não quebrar
-    return res.status(200).json({
-      status_servidores: {},
-      relatos_comunidade: []
-    });
+    console.error('Erro no Redis (status-atual.js):', error);
+    return res.status(500).json({ erro: 'Erro ao buscar dados do Redis.' });
   }
 }
