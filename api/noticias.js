@@ -1,5 +1,4 @@
-import fetch from 'node-fetch';
-
+// api/noticias.js - Código corrigido para capturar as notícias reais de cada item
 const FEEDS_RSS = [
   { fonte: "TJPR", encoding: "utf-8", url: "https://www.tjpr.jus.br/noticias/-/asset_publisher/M7vW/rss?p_p_cacheability=cacheLevelPage" },
   { fonte: "TRT9", encoding: "iso-8859-1", url: "https://www.trt9.jus.br/internet/rss/noticias.cron" },
@@ -13,26 +12,36 @@ const FEEDS_RSS = [
 
 function extrairTitulosDoXml(xmlTexto, fonteNome) {
   const titulos = [];
-  // Regex aprimorada para extrair o bloco de texto interno da tag <title> sem cortar caracteres
-  const regex = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/g;
-  let match;
   
-  while ((match = regex.exec(xmlTexto)) !== null) {
-    let titulo = match[1].trim();
+  // CORREÇÃO CIRÚRGICA: Captura primeiro os blocos de notícias (<item> ou <entry>) para ignorar o título principal do site
+  const regexBlocos = /<(?:item|entry)>([\s\S]*?)<\/(?:item|entry)>/g;
+  const regexTitulo = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/;
+  
+  let blocoMatch;
+  while ((blocoMatch = regexBlocos.exec(xmlTexto)) !== null) {
+    const blocoConteudo = blocoMatch[1];
+    const tituloMatch = regexTitulo.exec(blocoConteudo);
     
-    // Decodifica entidades HTML comuns (como &amp; ou &quot;) que vêm nos XMLs
-    titulo = titulo
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#039;/g, "'");
+    if (tituloMatch) {
+      let titulo = tituloMatch[1].trim();
+      
+      // Decodifica acentuações em formato HTML entidade
+      titulo = titulo
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'");
 
-    if (titulo && titulo.length > 20 && !titulo.includes("Home -") && !titulo.toLowerCase().startsWith("notícias")) {
-      titulo = titulo.replace(/\s+/g, ' ');
-      titulos.push(`[${fonteNome}] ${titulo}`);
+      // Limpa espaços duplos e valida o tamanho da notícia por extenso
+      if (titulo && titulo.length > 15) {
+        titulo = titulo.replace(/\s+/g, ' ');
+        titulos.push(`[${fonteNome}] ${titulo}`);
+      }
     }
-    if (titulos.length >= 4) break;
+    
+    // Pega as 3 principais notícias de cada tribunal para o letreiro rodar com conteúdo variado
+    if (titulos.length >= 3) break;
   }
   return titulos;
 }
@@ -50,7 +59,7 @@ export default async function handler(req, res) {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 4000);
         
-        const resposta = await fetch(feed.url, { 
+        const resposta = await global.fetch(feed.url, { 
           signal: controller.signal,
           headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
         });
@@ -58,7 +67,6 @@ export default async function handler(req, res) {
         clearTimeout(timeout);
         if (!resposta.ok) return [];
         
-        // CORREÇÃO DA ACENTUAÇÃO: Lê a resposta como ArrayBuffer e converte usando o decoder específico do tribunal
         const buffer = await resposta.arrayBuffer();
         const decoder = new TextDecoder(feed.encoding);
         const xmlTexto = decoder.decode(buffer);
@@ -74,7 +82,7 @@ export default async function handler(req, res) {
 
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
-        "[INFORMAÇÃO] Painel ADVBR ativo: Monitorando canais de autenticação.",
+        "[INFORMAÇÃO] Painel ADVBR ativo: Monitorando canais de autenticação jurídica.",
         "[SUCESSO] Sincronização e barramento de cache Redis operando em tempo real."
       );
     }
