@@ -35,6 +35,7 @@
 </head>
 <body>
 
+    <!-- Ticker de Alertas de Queda -->
     <div class="ticker-wrap">
         <div class="ticker">
             <div class="ticker-item flex items-center">
@@ -64,6 +65,7 @@
 
     <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
         
+        <!-- Cabeçalho Principal -->
         <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-blue-500 flex items-center gap-1">
@@ -79,6 +81,7 @@
             </div>
         </header>
 
+        <!-- Seção: Carrossel Dinâmico -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Servidores de Login
@@ -90,6 +93,7 @@
             </div>
         </section>
 
+        <!-- Seção: Escolha de Região -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado / Região
@@ -97,20 +101,24 @@
             <p class="text-xs text-gray-500 mb-4">Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
             
             <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
+                <!-- Botão 1 -->
                 <div onclick="abrirEstado('superiores')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border border-blue-800/40 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200 min-w-[240px]">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
                     <span id="dot-superiores" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
+                <!-- Botão 2 -->
                 <div onclick="abrirEstado('nacionais')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500/50 transition min-w-[200px]">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-xs text-blue-500"></i> Sistemas Nacionais</span>
                     <span id="dot-nacionais" class="h-2 w-2 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
+                <!-- Botão 3 -->
                 <div onclick="abrirEstado('PR')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-200 min-w-[160px] justify-center gap-3">
                     Paraná (PR) <span id="dot-PR" class="h-2 w-2 rounded-full bg-gray-600 transition-all inline-block"></span>
                 </div>
             </div>
         </section>
 
+        <!-- Otimizador PDF Inteligente -->
         <section class="p-6 card rounded-2xl border border-gray-855 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
             <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
@@ -125,6 +133,7 @@
             </button>
         </section>
 
+        <!-- Teste de Módulos Locais -->
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
@@ -143,6 +152,7 @@
             </div>
         </section>
 
+        <!-- Vitrine de Equipamentos Homologados -->
         <section class="space-y-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="max-w-2xl">
@@ -211,6 +221,7 @@
         </section>
     </div>
 
+    <!-- Modal Detalhado de Instâncias -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -229,6 +240,7 @@
         </div>
     </div>
 
+    <!-- Modal Enviar Alerta -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -337,21 +349,24 @@
                 const dot = document.getElementById(`dot-${grupoId}`);
                 if (!dot) return;
 
-                const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === groupId || t.grupo === grupoId);
-                const totalTribunais = dadosTribunaisFixo.filter(t => t.grupo === grupoId).length;
+                const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === grupoId);
+                const totalTribunais = tribunaisDoGrupo.length;
                 
                 let qtdOnline = 0;
                 let qtdFora = 0;
 
-                dadosTribunaisFixo.filter(t => t.grupo === grupoId).forEach(t => {
+                tribunaisDoGrupo.forEach(t => {
                     const status = (statusGerais[t.id] && statusGerais[t.id].status) ? statusGerais[t.id].status : "Online";
                     if (status === "Online") qtdOnline++;
                     if (status === "Fora do Ar") qtdFora++;
                 });
 
-                dot.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block";
+                // CORREÇÃO: Removido o erro de digitação do 'groupId' para as bolinhas acenderem de verdade
+                dot.className = "h-2 w-2 rounded-full transition-all duration-300 inline-block ml-1";
 
-                if (qtdOnline === totalTribunais) {
+                if (totalTribunais === 0) {
+                    dot.className += " bg-gray-600";
+                } else if (qtdOnline === totalTribunais) {
                     dot.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
                 } else if (qtdFora === totalTribunais) {
                     dot.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
