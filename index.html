@@ -193,16 +193,16 @@
             <div id="reportarPasso2" class="hidden">
                 <p class="text-gray-400 mb-4">Qual tipo de problema você está enfrentando?</p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                    <button onclick="selecionarProblema('Fora do Ar')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
+                    <button onclick="selecionarProblema('Fora do Ar', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
                         <i class="fa-solid fa-circle-xmark text-red-400"></i> Fora do Ar
                     </button>
-                    <button onclick="selecionarProblema('Lentidão')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
+                    <button onclick="selecionarProblema('Lentidão', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
                         <i class="fa-solid fa-hourglass-half text-amber-400"></i> Lentidão
                     </button>
-                    <button onclick="selecionarProblema('Falha no Login')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
+                    <button onclick="selecionarProblema('Falha no Login', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
                         <i class="fa-solid fa-lock text-blue-400"></i> Falha no Login
                     </button>
-                    <button onclick="selecionarProblema('Outro')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
+                    <button onclick="selecionarProblema('Outro', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 border border-gray-700">
                         <i class="fa-solid fa-circle-info text-gray-400"></i> Outro
                     </button>
                 </div>
@@ -245,6 +245,10 @@
             <h4 class="text-lg font-semibold text-gray-300 mb-3">Relatos Recentes de Colegas</h4>
             <div id="relatosComunidadeEstado" class="max-h-40 overflow-y-auto pr-2">
                 <!-- Relatos da comunidade carregados via JS -->
+            </div>
+            <!-- NOVO: Div para exibir relatos individuais de cada tribunal -->
+            <div id="relatos-tribunal-modal" class="mt-4 space-y-2">
+                <!-- Relatos serão carregados aqui dinamicamente -->
             </div>
         </div>
     </div>
@@ -366,7 +370,7 @@
                 <p id="analiseMsg"></p>
             </div>
 
-            <div id="pdfActions" class="flex flex-col sm:flex-row gap-3 mt-6">
+            <div id="pdfActions" class="flex flex-col sm:flex-row gap-3 mt-4 hidden">
                 <button id="btnOtimizar" onclick="otimizarPdf()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95" disabled>
                     Otimizar PDF
                 </button>
@@ -375,87 +379,59 @@
                 </button>
             </div>
 
-            <div id="pdfDownloadLinks" class="mt-6 space-y-2">
+            <div id="pdfDownloadLinks" class="mt-4 space-y-2">
                 <p class="text-sm text-gray-400">Arquivos gerados:</p>
-                <!-- Links de download serão inseridos aqui -->
             </div>
         </div>
     </div>
-
-    <div id="modalEstado" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
-        <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-lg border border-gray-800 relative">
-            <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-200 text-xl">
-                <i class="fa-solid fa-times"></i>
-            </button>
-            <h3 class="text-xl font-bold mb-4 text-gray-200" id="estadoNome"></h3>
-            <div class="flex justify-between items-center mb-4">
-                <h4 class="text-lg font-semibold text-gray-300">Status Atual (Robôs)</h4>
-                <span class="text-xs text-gray-500">Dados em cache de telemetria.</span>
-            </div>
-            <div id="linksTribunais" class="mb-6 max-h-60 overflow-y-auto pr-2">
-                <!-- Links dos tribunais carregados via JS -->
-            </div>
-            <h4 class="text-lg font-semibold text-gray-300 mb-3">Relatos Recentes de Colegas</h4>
-            <div id="relatosComunidadeEstado" class="max-h-40 overflow-y-auto pr-2">
-                <!-- Relatos da comunidade carregados via JS -->
-            </div>
-        </div>
-    </div>
-
-    <footer class="p-4 md:p-8 max-w-7xl mx-auto text-center text-gray-500 text-sm">
-        &copy; 2026 ADVBR.info. Todos os direitos reservados.
-    </footer>
 
     <script>
-        // ──────────────────────────────────────────────────────────────
-        // Funções de Utilidade Geral
-        // ──────────────────────────────────────────────────────────────
-
+        // Funções de utilidade para modais
         function abrirModal(id) {
             document.getElementById(id).classList.remove('hidden');
-        }
-
-        function fecharModal(id) {
-            document.getElementById(id).classList.add('hidden');
-            // Resetar modais específicos ao fechar
             if (id === 'modalReportar') {
+                carregarTribunaisReportar();
+                // Resetar para o passo 1 ao abrir
                 document.getElementById('reportarPasso1').classList.remove('hidden');
                 document.getElementById('reportarPasso2').classList.add('hidden');
                 document.getElementById('reportarSucesso').classList.add('hidden');
-                document.getElementById('selectTribunalReportar').value = '';
-                selectedTribunalReportar = null;
+                // Limpar seleção de problema
                 selectedProblemaReportar = null;
                 const buttons = document.querySelectorAll('#reportarPasso2 button');
                 buttons.forEach(btn => btn.classList.remove('border-blue-500', 'bg-blue-900/20'));
             }
-            if (id === 'modalPjeOffice') {
-                document.getElementById('pjeOfficeInitial').classList.remove('hidden');
-                document.getElementById('pjeOfficeResult').classList.add('hidden');
-                document.getElementById('pjeOfficeSuccess').classList.add('hidden');
-                document.getElementById('pjeOfficeFailure').classList.add('hidden');
-            }
             if (id === 'modalPdfOptimizer') {
-                // Resetar o otimizador de PDF
-                document.getElementById('selectPortalPdf').value = '';
-                document.getElementById('pdfFile').value = '';
-                document.getElementById('reqTamanho').innerText = 'N/A';
-                document.getElementById('reqPaginas').innerText = 'N/A';
-                document.getElementById('reqObservacoes').innerText = 'N/A';
-                document.getElementById('pdfTamanho').innerText = 'N/A';
-                document.getElementById('pdfPaginas').innerText = 'N/A';
-                document.getElementById('analiseResultado').classList.add('hidden');
-                document.getElementById('pdfActions').classList.add('hidden');
-                document.getElementById('pdfDownloadLinks').innerHTML = '<p class="text-sm text-gray-400">Arquivos gerados:</p>';
-                document.getElementById('btnOtimizar').innerText = 'Otimizar PDF';
-                document.getElementById('btnOtimizar').disabled = true;
-                document.getElementById('btnDividir').innerText = 'Dividir PDF';
-                document.getElementById('btnDividir').disabled = true;
-                loadedPdfDoc = null;
-                originalFileName = '';
-                fileSizeMb = 0;
-                pageCount = 0;
-                numPartsToSplit = 1;
+                resetPdfOptimizer();
             }
+        }
+
+        function fecharModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        function resetPdfOptimizer() {
+            const selectPortalPdf = document.getElementById('selectPortalPdf');
+            if (selectPortalPdf) selectPortalPdf.value = '';
+            const pdfFile = document.getElementById('pdfFile');
+            if (pdfFile) pdfFile.value = '';
+
+            document.getElementById('reqTamanho').innerText = 'N/A';
+            document.getElementById('reqPaginas').innerText = 'N/A';
+            document.getElementById('reqObservacoes').innerText = 'N/A';
+            document.getElementById('pdfTamanho').innerText = 'N/A';
+            document.getElementById('pdfPaginas').innerText = 'N/A';
+            document.getElementById('analiseResultado').classList.add('hidden');
+            document.getElementById('pdfActions').classList.add('hidden');
+            document.getElementById('pdfDownloadLinks').innerHTML = '<p class="text-sm text-gray-400">Arquivos gerados:</p>';
+            document.getElementById('btnOtimizar').innerText = 'Otimizar PDF';
+            document.getElementById('btnOtimizar').disabled = true;
+            document.getElementById('btnDividir').innerText = 'Dividir PDF';
+            document.getElementById('btnDividir').disabled = true;
+            loadedPdfDoc = null;
+            originalFileName = '';
+            fileSizeMb = 0;
+            pageCount = 0;
+            numPartsToSplit = 1;
         }
 
         function abrirReportar() { abrirModal('modalReportar'); }
@@ -741,6 +717,7 @@
         function carregarTribunaisReportar() {
             const select = document.getElementById('selectTribunalReportar');
             select.innerHTML = '<option value="">-- Selecione o tribunal para continuar --</option>';
+
             dadosTribunaisFixo.forEach(t => {
                 const option = document.createElement('option');
                 option.value = t.id;
@@ -751,10 +728,12 @@
 
         function proximoPassoReportar() {
             selectedTribunalReportar = document.getElementById('selectTribunalReportar').value;
+
             if (!selectedTribunalReportar) {
                 alert('Por favor, selecione um tribunal.');
                 return;
             }
+
             document.getElementById('reportarPasso1').classList.add('hidden');
             document.getElementById('reportarPasso2').classList.remove('hidden');
         }
@@ -771,22 +750,26 @@
             }
 
             try {
+                // ATENÇÃO: Verifique se o nome do seu arquivo de API é 'api/reportar-problema.js'
+                // Se for 'api/registrar-relatos.js', mude a URL abaixo para '/api/registrar-relatos'
                 const response = await fetch('/api/reportar-problema', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        tribunalId: selectedTribunalReportar,
-                        problema: selectedProblemaReportar
+                        tribunal: selectedTribunalReportar,
+                        tribunalId: selectedTribunalReportar, // Envia com os dois nomes para compatibilidade
+                        description: selectedProblemaReportar,
+                        problema: selectedProblemaReportar // Envia com os dois nomes para compatibilidade
                     })
                 });
 
                 if (response.ok) {
                     document.getElementById('reportarPasso2').classList.add('hidden');
                     document.getElementById('reportarSucesso').classList.remove('hidden');
-                    // Atualizar dados de status após o relato
-                    carregarStatusDoCache();
+                    carregarStatusDoCache(); // Atualiza os status após o relato
                 } else {
-                    alert('Erro ao enviar relato. Tente novamente.');
+                    const err = await response.json().catch(() => ({}));
+                    alert(`Erro ao enviar relato: ${err.message || 'erro desconhecido'}`);
                 }
             } catch (error) {
                 console.error('Erro ao enviar relato:', error);
@@ -794,12 +777,16 @@
             }
         }
 
-        function selecionarProblema(problema) {
+        function selecionarProblema(problema, ev) {
             selectedProblemaReportar = problema;
-            // Opcional: Adicionar algum feedback visual para o problema selecionado
+
             const buttons = document.querySelectorAll('#reportarPasso2 button');
             buttons.forEach(btn => btn.classList.remove('border-blue-500', 'bg-blue-900/20'));
-            event.currentTarget.classList.add('border-blue-500', 'bg-blue-900/20');
+
+            const alvo = ev?.currentTarget || window.event?.currentTarget; // Garante que 'ev' seja passado
+            if (alvo) {
+                alvo.classList.add('border-blue-500', 'bg-blue-900/20');
+            }
         }
 
 
@@ -889,13 +876,22 @@
             });
         }
 
-        function abrirEstado(uf) {
+        async function abrirEstado(uf) {
             let labelTitulo = uf;
             if (uf === 'superiores') labelTitulo = 'Tribunais Superiores';
             if (uf === 'nacionais')  labelTitulo = 'Sistemas Nacionais';
             document.getElementById('estadoNome').innerText = labelTitulo;
             renderizarConteudoModal(uf);
             document.getElementById('modalEstado').classList.remove('hidden');
+
+            // Carregar relatos para cada tribunal do grupo
+            const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === uf);
+            const relatosContainer = document.getElementById('relatos-tribunal-modal');
+            relatosContainer.innerHTML = ''; // Limpa relatos anteriores
+
+            for (const tribunal of tribunaisDoGrupo) {
+                await carregarRelatosTribunal(tribunal.id, relatosContainer);
+            }
         }
 
         function renderizarConteudoModal(uf) {
@@ -948,6 +944,41 @@
             container.innerHTML = html;
         }
 
+        // NOVO: Função para carregar relatos individuais de um tribunal
+        async function carregarRelatosTribunal(tribunalId, containerElement) {
+            try {
+                const resp = await fetch(`/api/listar-relatos?tribunal=${encodeURIComponent(tribunalId)}`);
+                if (!resp.ok) return;
+
+                const relatos = await resp.json();
+
+                let htmlRelatos = '';
+                if (relatos.length > 0) {
+                    htmlRelatos = `
+                        <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40">
+                            <p class="font-semibold text-gray-200 mb-1">${dadosTribunaisFixo.find(t => t.id === tribunalId)?.nome || tribunalId}:</p>
+                            <ul class="list-unstyled mb-0">
+                                ${relatos.map(r => `
+                                    <li><small>${new Date(r.createdAt).toLocaleString('pt-BR')} – ${r.description}</small></li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    htmlRelatos = `
+                        <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40 text-gray-500 text-center italic">
+                            Nenhum relato recente para ${dadosTribunaisFixo.find(t => t.id === tribunalId)?.nome || tribunalId}.
+                        </div>
+                    `;
+                }
+                containerElement.innerHTML += htmlRelatos;
+
+            } catch (e) {
+                console.error(`Erro ao carregar relatos para ${tribunalId}:`, e);
+            }
+        }
+
+
         async function carregarNoticiasRss() {
             try {
                 const res = await fetch('/api/noticias');
@@ -979,7 +1010,15 @@
                     let idGrupo = ufAtual;
                     if (ufAtual === 'Tribunais Superiores') idGrupo = 'superiores';
                     if (ufAtual === 'Sistemas Nacionais') idGrupo = 'nacionais';
+
+                    // Recarrega o conteúdo do modal de estado, incluindo os relatos
                     renderizarConteudoModal(idGrupo);
+                    const relatosContainer = document.getElementById('relatos-tribunal-modal');
+                    relatosContainer.innerHTML = ''; // Limpa relatos anteriores
+                    const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === idGrupo);
+                    for (const tribunal of tribunaisDoGrupo) {
+                        await carregarRelatosTribunal(tribunal.id, relatosContainer);
+                    }
                 }
             } catch(erro) {
                 console.error("Erro na leitura do Redis:", erro);
