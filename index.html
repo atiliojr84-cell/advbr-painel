@@ -712,7 +712,79 @@
         // ──────────────────────────────────────────────────────────────
 
         let selectedTribunalReportar = null;
-        let selectedProblemaReportar = null;
+let selectedProblemaReportar = null;
+
+function carregarTribunaisReportar() {
+    const select = document.getElementById('selectTribunalReportar');
+    select.innerHTML = '<option value="">-- Selecione o tribunal para continuar --</option>';
+
+    dadosTribunaisFixo.forEach(t => {
+        const option = document.createElement('option');
+        option.value = t.id;
+        option.textContent = t.nome;
+        select.appendChild(option);
+    });
+}
+
+function proximoPassoReportar() {
+    selectedTribunalReportar = document.getElementById('selectTribunalReportar').value;
+
+    if (!selectedTribunalReportar) {
+        alert('Por favor, selecione um tribunal.');
+        return;
+    }
+
+    document.getElementById('reportarPasso1').classList.add('hidden');
+    document.getElementById('reportarPasso2').classList.remove('hidden');
+}
+
+function voltarPassoReportar() {
+    document.getElementById('reportarPasso2').classList.add('hidden');
+    document.getElementById('reportarPasso1').classList.remove('hidden');
+}
+
+async function enviarRelato() {
+    if (!selectedTribunalReportar || !selectedProblemaReportar) {
+        alert('Por favor, selecione o tribunal e o problema.');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/reportar-problema', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                tribunal: selectedTribunalReportar,
+                description: selectedProblemaReportar
+            })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (response.ok) {
+            document.getElementById('reportarPasso2').classList.add('hidden');
+            document.getElementById('reportarSucesso').classList.remove('hidden');
+            carregarStatusDoCache();
+        } else {
+            alert(`Erro ao enviar relato: ${data.message || 'erro desconhecido'}`);
+        }
+    } catch (error) {
+        console.error('Erro ao enviar relato:', error);
+        alert('Erro de conexão ao enviar relato.');
+    }
+}
+
+function selecionarProblema(problema, ev) {
+    selectedProblemaReportar = problema;
+
+    const buttons = document.querySelectorAll('#reportarPasso2 button');
+    buttons.forEach(btn => btn.classList.remove('border-blue-500', 'bg-blue-900/20'));
+
+    const alvo = ev?.currentTarget || window.event?.currentTarget;
+    if (alvo) {
+        alvo.classList.add('border-blue-500', 'bg-blue-900/20');
+    }
+}
 
         function carregarTribunaisReportar() {
             const select = document.getElementById('selectTribunalReportar');
