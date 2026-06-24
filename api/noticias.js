@@ -1,4 +1,4 @@
-// api/noticias.js - Versão Otimizada com Maior Tolerância de Timeout para o Plano PRO
+// api/noticias.js - Versão PRO com Extrator Universal Insensível a Maiúsculas/Minúsculas
 const FEEDS_RSS = [
   { fonte: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },         
   { fonte: "OAB",    url: "https://www.oab.org.br/rss" },             
@@ -13,29 +13,35 @@ const FEEDS_RSS = [
 
 function extrairDadosDoXml(xmlTexto, fonteNome) {
   const itens = [];
-  const regexBlocos = /<item[^>]*>([\s\S]*?)<\/item>/gi;
-  const regexTitulo = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i;
-  const regexLink = /<link[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/link>/i;
+  
+  // Regex universal que aceita <item> ou <ITEM>, <title> ou <TITLE>, etc.
+  const regexBlocos = /<(item|ITEM)[^>]*>([\s\S]*?)<\/(item|ITEM)>/g;
+  const regexTitulo = /<(title|TITLE)>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/(title|TITLE)>/i;
+  const regexLink = /<(link|LINK)[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/(link|LINK)>/i;
   
   let blocoMatch;
   while ((blocoMatch = regexBlocos.exec(xmlTexto)) !== null) {
-    const blocoConteudo = blocoMatch[1];
+    const blocoConteudo = blocoMatch[2];
     const tituloMatch = regexTitulo.exec(blocoConteudo);
     const linkMatch = regexLink.exec(blocoConteudo);
     
     if (tituloMatch) {
-      let titulo = tituloMatch[1].trim();
-      let link = linkMatch ? linkMatch[1].trim() : "#";
+      let titulo = tituloMatch[2].trim();
+      let link = linkMatch ? linkMatch[2].trim() : "#";
       
+      // Limpeza profunda de HTML e entidades de texto
       titulo = titulo
+        .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+        .replace(/<[^>]*>/g, "")
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
         .replace(/&quot;/g, '"')
-        .replace(/&#039;/g, "'");
+        .replace(/&#039;/g, "'")
+        .replace(/\s+/g, ' ')
+        .trim();
 
-      if (titulo && titulo.length > 20 && !titulo.toLowerCase().startsWith("notícias") && !titulo.toLowerCase().includes("vaga")) {
-        titulo = titulo.replace(/\s+/g, ' ');
+      if (titulo && titulo.length > 15 && !titulo.toLowerCase().startsWith("notícias")) {
         itens.push({
           texto: `[${fonteNome}] ${titulo}`,
           url: link
@@ -50,7 +56,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=150'); // Cache mais curto para atualizar rápido
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30'); // Atualização rápida para teste
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -58,14 +64,13 @@ export default async function handler(req, res) {
     const promessas = FEEDS_RSS.map(async (feed) => {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 8000); // Aumentado para 8 segundos (evita quedas por lentidão)
+        const timeout = setTimeout(() => controller.abort(), 8000); 
         
         const resposta = await global.fetch(feed.url, { 
           signal: controller.signal,
           headers: { 
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'application/rss+xml, text/xml, application/xml, */*',
-            'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Accept': '*/*'
           }
         });
         
@@ -80,7 +85,6 @@ export default async function handler(req, res) {
     });
 
     const resultadosAgrupados = await Promise.all(promessas);
-    
     const todasAsNoticias = [];
     let maxItens = Math.max(...resultadosAgrupados.map(lista => lista.length));
     
@@ -92,12 +96,10 @@ export default async function handler(req, res) {
       });
     }
 
-    // Se tudo falhar, o plano de fundo entra em ação com as principais marcas
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
-        { texto: "[OAB-PR] Ordem dos Advogados do Brasil Seção Paraná ativa no monitoramento de prazos.", url: "https://www.oabpr.org.br" },
-        { texto: "[MIGALHAS] Informativo de direito e atualizações de jurisprudência em tempo real.", url: "https://www.migalhas.com.br" },
-        { texto: "[STJ] Superior Tribunal de Justiça - Painel de monitoramento operacional ativo.", url: "https://www.stj.jus.br" }
+        { texto: "[OAB-PR] Sistema de contingência do barramento ativo.", url: "https://www.oabpr.org.br" },
+        { texto: "[MIGALHAS] Informativo jurídico online e atualizações em tempo real.", url: "https://www.migalhas.com.br" }
       );
     }
 
