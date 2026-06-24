@@ -13,50 +13,31 @@
       0%   { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-    .ticker-animate {
-      animation: ticker 90s linear infinite;
-      display: inline-block;
-    }
+    .ticker-animate { animation: ticker 90s linear infinite; display: inline-block; }
     .ticker-animate:hover { animation-play-state: paused; }
 
-    /* Scrollbar invisível nos carrosseis */
     .carrossel-scroll::-webkit-scrollbar { display: none; }
     .carrossel-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Transições globais suaves */
     a, button { transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 
-    /* Cards com hover suave */
     .card-hover {
       transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  border-color 0.35s ease,
-                  box-shadow 0.35s ease,
-                  background-color 0.35s ease;
+                  border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
     }
-    .card-hover:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-    }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
 
-    /* Pulse suave para os indicadores de status */
     @keyframes pulse-soft {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
     }
     .status-pulse { animation: pulse-soft 2.5s ease-in-out infinite; }
 
-    /* Fade-in das seções */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .fade-in { animation: fadeInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-
-    /* Modal smooth */
-    .modal-box {
-      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  opacity 0.35s ease;
-    }
   </style>
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen font-sans">
@@ -90,7 +71,7 @@
   </div>
 </header>
 
-<!-- ===================== SEÇÃO: PRINCIPAIS PORTAIS ===================== -->
+<!-- ===================== PRINCIPAIS PORTAIS ===================== -->
 <section class="px-6 pt-10 pb-8 fade-in">
   <div class="flex items-center gap-2 mb-1.5">
     <span class="text-yellow-400 text-lg">⭐</span>
@@ -104,10 +85,9 @@
   </div>
 </section>
 
-<!-- ===================== DIVISOR ===================== -->
 <div class="mx-6 border-t border-gray-800/60"></div>
 
-<!-- ===================== SEÇÃO: MONITORAMENTO ===================== -->
+<!-- ===================== MONITORAMENTO ===================== -->
 <section class="px-6 pt-10 pb-10 fade-in">
   <div class="flex items-center gap-2 mb-1.5">
     <span class="text-blue-400 text-lg">🗺️</span>
@@ -116,7 +96,6 @@
   <p class="text-xs text-gray-500 mb-6 leading-relaxed">
     Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.
   </p>
-
   <div class="flex flex-wrap gap-3 mb-8">
     <button onclick="expandirGrupo('superiores', this)"
       class="grupo-btn flex items-center gap-2 bg-gray-800 hover:bg-blue-900/60 border border-gray-700 hover:border-blue-700 text-sm font-medium px-5 py-2.5 rounded-xl">
@@ -135,14 +114,12 @@
       São Paulo (SP)
     </button>
   </div>
-
   <div id="painelMonitoramento" class="space-y-4"></div>
 </section>
 
-<!-- ===================== DIVISOR ===================== -->
 <div class="mx-6 border-t border-gray-800/60"></div>
 
-<!-- ===================== SEÇÃO: PDF ===================== -->
+<!-- ===================== PDF ===================== -->
 <section class="px-6 pt-10 pb-10 fade-in">
   <div class="bg-gray-900 border border-gray-800 hover:border-gray-700 rounded-2xl p-6 flex items-center justify-between gap-6 flex-wrap card-hover">
     <div class="flex items-center gap-5">
@@ -158,20 +135,19 @@
       </div>
     </div>
     <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg shadow-blue-900/30 whitespace-nowrap shrink-0">
-      Clique aqui e edite seu PDF automaticamente
+      Clique aqui e edite seu PDF automaticamente de acordo com o portal que deseja anexar
     </button>
   </div>
 </section>
 
-<!-- ===================== DIVISOR ===================== -->
 <div class="mx-6 border-t border-gray-800/60"></div>
 
-<!-- ===================== SEÇÃO: TOKEN ===================== -->
+<!-- ===================== TOKEN / PJE OFFICE ===================== -->
 <section class="px-6 pt-10 pb-10 fade-in">
   <div class="bg-gray-900 border border-gray-800 hover:border-gray-700 rounded-2xl p-8 text-center card-hover">
     <div class="flex justify-center mb-5">
       <div class="bg-blue-900/30 border border-blue-800/60 rounded-full w-16 h-16 flex items-center justify-center">
-        <i class="fa-solid fa-key text-blue-400 text-2xl"></i>
+        <i class="fa-brands fa-usb text-blue-400 text-2xl"></i>
       </div>
     </div>
     <h2 class="text-base font-bold text-white mb-2">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
@@ -181,7 +157,7 @@
     </p>
     <div class="flex gap-4 justify-center flex-wrap">
       <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg shadow-blue-900/30 flex items-center gap-2">
-        <i class="fa-solid fa-usb"></i> Iniciar Teste de Token
+        <i class="fa-brands fa-usb"></i> Iniciar Teste de Token
       </button>
       <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg shadow-blue-900/30 flex items-center gap-2">
         <i class="fa-solid fa-display"></i> Iniciar Teste PJe Office Pro
@@ -190,10 +166,9 @@
   </div>
 </section>
 
-<!-- ===================== DIVISOR ===================== -->
 <div class="mx-6 border-t border-gray-800/60"></div>
 
-<!-- ===================== SEÇÃO: EQUIPAMENTOS ===================== -->
+<!-- ===================== EQUIPAMENTOS ===================== -->
 <section class="px-6 pt-10 pb-14 fade-in">
   <div class="flex items-start justify-between flex-wrap gap-4 mb-6">
     <div>
@@ -201,9 +176,7 @@
         <span class="text-blue-400 text-lg">🛒</span>
         <h2 class="text-base font-bold text-white tracking-tight">Equipamentos Homologados para Advocacia</h2>
       </div>
-      <p class="text-xs text-gray-500 leading-relaxed">
-        Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.
-      </p>
+      <p class="text-xs text-gray-500 leading-relaxed">Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.</p>
     </div>
     <div class="flex items-center gap-2 bg-green-900/20 border border-green-800/50 rounded-xl px-4 py-2 shrink-0">
       <i class="fa-solid fa-shield-halved text-green-400 text-xs"></i>
@@ -213,9 +186,7 @@
 
   <div class="carrossel-scroll flex flex-row gap-4 overflow-x-auto pb-4">
 
-    <!-- Card 1 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-computer-mouse text-gray-600 text-4xl"></i>
       </div>
@@ -228,9 +199,7 @@
       </div>
     </a>
 
-    <!-- Card 2 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-keyboard text-gray-600 text-4xl"></i>
       </div>
@@ -243,9 +212,7 @@
       </div>
     </a>
 
-    <!-- Card 3 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-server text-gray-600 text-4xl"></i>
       </div>
@@ -258,9 +225,7 @@
       </div>
     </a>
 
-    <!-- Card 4 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-laptop text-gray-600 text-4xl"></i>
       </div>
@@ -273,9 +238,7 @@
       </div>
     </a>
 
-    <!-- Card 5 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-print text-gray-600 text-4xl"></i>
       </div>
@@ -288,9 +251,7 @@
       </div>
     </a>
 
-    <!-- Card 6 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-print text-gray-600 text-4xl"></i>
       </div>
@@ -303,9 +264,7 @@
       </div>
     </a>
 
-    <!-- Card 7 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-desktop text-gray-600 text-4xl"></i>
       </div>
@@ -318,9 +277,7 @@
       </div>
     </a>
 
-    <!-- Card 8 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-plug-circle-bolt text-gray-600 text-4xl"></i>
       </div>
@@ -333,9 +290,7 @@
       </div>
     </a>
 
-    <!-- Card 9 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-headset text-gray-600 text-4xl"></i>
       </div>
@@ -348,9 +303,7 @@
       </div>
     </a>
 
-    <!-- Card 10 -->
-    <a href="https://www.amazon.com.br" target="_blank"
-      class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
+    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[210px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden card-hover hover:border-blue-800 shrink-0 flex flex-col">
       <div class="bg-gray-800/80 h-36 flex items-center justify-center">
         <i class="fa-solid fa-hard-drive text-gray-600 text-4xl"></i>
       </div>
@@ -371,11 +324,9 @@
   © 2026 ADVBR.info. Todos os direitos reservados.
 </footer>
 
-<!-- ================================================== -->
-<!-- MODAL ETAPA 1 — SELECIONAR TRIBUNAL               -->
-<!-- ================================================== -->
+<!-- ===================== MODAL 1 — TRIBUNAL ===================== -->
 <div id="modalRelato1" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
-  <div class="modal-box bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
+  <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
     <div class="p-5 border-b border-gray-800 flex justify-between items-center">
       <div>
         <h3 class="text-white text-base font-bold">🔍 Em qual site está o problema?</h3>
@@ -393,11 +344,9 @@
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- MODAL ETAPA 2 — TIPO DE PROBLEMA                  -->
-<!-- ================================================== -->
+<!-- ===================== MODAL 2 — TIPO DE PROBLEMA ===================== -->
 <div id="modalRelato2" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
-  <div class="modal-box bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md shadow-2xl">
+  <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md shadow-2xl">
     <div class="p-5 border-b border-gray-800 flex justify-between items-center">
       <div>
         <h3 class="text-white text-base font-bold">⚠️ Qual é o problema?</h3>
@@ -440,11 +389,9 @@
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- MODAL CONFIRMAÇÃO                                  -->
-<!-- ================================================== -->
+<!-- ===================== MODAL 3 — CONFIRMAÇÃO ===================== -->
 <div id="modalConfirmacao" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
-  <div class="modal-box bg-gray-900 border border-green-800/60 rounded-2xl w-full max-w-sm text-center p-8 shadow-2xl">
+  <div class="bg-gray-900 border border-green-800/60 rounded-2xl w-full max-w-sm text-center p-8 shadow-2xl">
     <div class="text-5xl mb-5">✅</div>
     <h3 class="text-white text-lg font-bold mb-2">Relato enviado!</h3>
     <p class="text-gray-500 text-sm mb-7 leading-relaxed">
@@ -457,11 +404,8 @@
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- JAVASCRIPT                                         -->
-<!-- ================================================== -->
+<!-- ===================== JAVASCRIPT ===================== -->
 <script>
-// ===================== DADOS DOS TRIBUNAIS =====================
 const dadosTribunaisFixo = [
   { id: "pje_cnj",       nome: "PJe Nacional (CNJ)",    sub: "Servidor de Login CNJ",         grupo: "nacionais",  url: "https://www.pje.jus.br/navegador/" },
   { id: "domicilio_cnj", nome: "Domicílio Judicial",     sub: "Domicílio Judicial Eletrônico", grupo: "nacionais",  url: "https://domicilio-eletronico.pdpj.jus.br/" },
@@ -484,7 +428,6 @@ let statusGerais      = {};
 let relatosComunidade = {};
 let grupoAberto       = null;
 
-// ===================== TICKER =====================
 async function carregarNoticias() {
   try {
     const r = await fetch('/api/noticias');
@@ -492,14 +435,12 @@ async function carregarNoticias() {
     if (data.noticias && data.noticias.length > 0) {
       const ticker = document.getElementById('tickerConteudo');
       ticker.innerHTML = data.noticias.map(n =>
-        `<a href="${n.url}" target="_blank"
-          class="text-gray-400 hover:text-yellow-400 mx-8">${n.texto}</a>`
+        `<a href="${n.url}" target="_blank" class="text-gray-400 hover:text-yellow-400 mx-8">${n.texto}</a>`
       ).join('<span class="mx-4 text-gray-700">•</span>');
     }
   } catch(e) { console.warn('Ticker offline'); }
 }
 
-// ===================== BUSCAR STATUS + RELATOS =====================
 async function carregarStatusDoCache() {
   try {
     const r = await fetch('/api/status-atual');
@@ -514,11 +455,9 @@ async function carregarStatusDoCache() {
   } catch(e) { console.warn('Erro ao buscar status:', e); }
 }
 
-// ===================== CARROSSEL PORTAIS =====================
 function renderizarCarrossel() {
   const container = document.getElementById('carrosselPortais');
   const portais = dadosTribunaisFixo.slice(0, 10);
-
   container.innerHTML = portais.map((t, i) => {
     const s   = statusGerais[t.id];
     const cor = s ? corStatusBg(s.status) : 'bg-gray-700';
@@ -526,7 +465,7 @@ function renderizarCarrossel() {
     const ms  = s && s.latenciaMs ? `${s.latenciaMs}ms` : '';
     return `
       <a href="${t.url}" target="_blank"
-        class="min-w-[200px] bg-gray-900 border border-gray-800 hover:border-blue-800 rounded-2xl p-4 card-hover shrink-0 flex flex-col gap-3">
+        class="min-w-[200px] bg-gray-900 border border-gray-800 hover:border-blue-700 rounded-2xl p-4 card-hover shrink-0 flex flex-col gap-3">
         <div>
           <p class="text-gray-400 text-xs font-medium mb-0.5">${i + 1}. ${t.nome}</p>
           <p class="text-gray-600 text-xs">${t.sub}</p>
@@ -542,7 +481,6 @@ function renderizarCarrossel() {
   }).join('');
 }
 
-// ===================== EXPANDIR GRUPO =====================
 function expandirGrupo(grupo, btn) {
   grupoAberto = grupo;
   document.querySelectorAll('.grupo-btn').forEach(b => {
@@ -557,7 +495,6 @@ function expandirGrupo(grupo, btn) {
 function renderizarGrupo(grupo) {
   const lista  = dadosTribunaisFixo.filter(t => t.grupo === grupo);
   const painel = document.getElementById('painelMonitoramento');
-
   painel.innerHTML = lista.map(t => {
     const s       = statusGerais[t.id];
     const cor     = s ? corStatusBg(s.status) : 'bg-gray-700';
@@ -565,7 +502,6 @@ function renderizarGrupo(grupo) {
     const ms      = s && s.latenciaMs ? ` — ${s.latenciaMs}ms` : '';
     const relatos = relatosComunidade[t.id];
     const rHtml   = renderizarRelatos(relatos);
-
     return `
       <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5 card-hover fade-in">
         <div class="flex items-center justify-between mb-4">
@@ -595,7 +531,6 @@ function renderizarGrupo(grupo) {
   }).join('');
 }
 
-// ===================== RELATOS NOS CARDS =====================
 function renderizarRelatos(relatos) {
   if (!relatos || !relatos.total || relatos.total === 0) {
     return '<p class="text-gray-700 text-xs">Nenhum relato registrado.</p>';
@@ -610,7 +545,6 @@ function renderizarRelatos(relatos) {
   return html;
 }
 
-// ===================== COR DO STATUS =====================
 function corStatusBg(status) {
   if (status === 'Online')      return 'bg-green-500';
   if (status === 'Lentidão')   return 'bg-yellow-400';
@@ -618,15 +552,12 @@ function corStatusBg(status) {
   return 'bg-gray-600';
 }
 
-// ===================== MODAL — VARIÁVEIS =====================
 let tribunalSelecionadoId   = null;
 let tribunalSelecionadoNome = null;
 
-// ===================== MODAL — ABRIR =====================
 function abrirModalRelato() {
   const container = document.getElementById('listaTribunaisModal');
   container.innerHTML = '';
-
   dadosTribunaisFixo.forEach((t, i) => {
     const btn = document.createElement('button');
     btn.className = 'w-full text-left p-3 rounded-xl border border-gray-800 bg-gray-800/50 text-gray-300 text-sm hover:bg-blue-900/30 hover:border-blue-700 flex items-center gap-3';
@@ -634,32 +565,26 @@ function abrirModalRelato() {
     btn.onclick = () => selecionarTribunal(t.id, t.nome, btn);
     container.appendChild(btn);
   });
-
   document.getElementById('modalRelato1').classList.remove('hidden');
   document.getElementById('modalRelato2').classList.add('hidden');
   document.getElementById('modalConfirmacao').classList.add('hidden');
-
   const btnAvancar = document.getElementById('btnAvancarProblema');
   btnAvancar.disabled = true;
   btnAvancar.className = 'w-full py-3 rounded-xl font-semibold text-white text-sm bg-gray-700 cursor-not-allowed opacity-40';
 }
 
-// ===================== MODAL — SELECIONAR =====================
 function selecionarTribunal(id, nome, clicado) {
   tribunalSelecionadoId   = id;
   tribunalSelecionadoNome = nome;
-
   document.querySelectorAll('#listaTribunaisModal button').forEach(b => {
     b.className = 'w-full text-left p-3 rounded-xl border border-gray-800 bg-gray-800/50 text-gray-300 text-sm hover:bg-blue-900/30 hover:border-blue-700 flex items-center gap-3';
   });
   clicado.className = 'w-full text-left p-3 rounded-xl border border-blue-600 bg-blue-900/40 text-white text-sm font-semibold flex items-center gap-3';
-
   const btn = document.getElementById('btnAvancarProblema');
   btn.disabled = false;
   btn.className = 'w-full py-3 rounded-xl font-semibold text-white text-sm bg-blue-600 hover:bg-blue-500 cursor-pointer opacity-100';
 }
 
-// ===================== MODAL — AVANÇAR =====================
 function avancarParaProblema() {
   if (!tribunalSelecionadoId) return;
   document.getElementById('nomeTribunalSelecionado').textContent = tribunalSelecionadoNome;
@@ -667,13 +592,11 @@ function avancarParaProblema() {
   document.getElementById('modalRelato2').classList.remove('hidden');
 }
 
-// ===================== MODAL — VOLTAR =====================
 function voltarParaTribunal() {
   document.getElementById('modalRelato2').classList.add('hidden');
   document.getElementById('modalRelato1').classList.remove('hidden');
 }
 
-// ===================== MODAL — ENVIAR =====================
 async function enviarRelato(tipoProblema) {
   document.getElementById('modalRelato2').classList.add('hidden');
   document.getElementById('modalConfirmacao').classList.remove('hidden');
@@ -692,7 +615,6 @@ async function enviarRelato(tipoProblema) {
   }
 }
 
-// ===================== MODAL — FECHAR =====================
 function fecharModalRelato() {
   document.getElementById('modalRelato1').classList.add('hidden');
   document.getElementById('modalRelato2').classList.add('hidden');
@@ -701,7 +623,6 @@ function fecharModalRelato() {
   tribunalSelecionadoNome = null;
 }
 
-// ===================== INIT =====================
 carregarNoticias();
 carregarStatusDoCache();
 setInterval(carregarStatusDoCache, 30000);
