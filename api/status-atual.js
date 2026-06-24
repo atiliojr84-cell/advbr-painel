@@ -15,19 +15,28 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    const dados = await kv.get('advbr_status_global');
-    let relatos = await kv.get('advbr_relatos_comunidade');
+    let status = await kv.get('advbr_status_global');
+    let relatos = await kv.get('advbr_relatos');
 
-    if (!relatos || typeof relatos !== 'object' || Array.isArray(relatos)) {
-      relatos = {};
+    // Se vier string, tenta fazer parse
+    if (typeof status === 'string') {
+      try { status = JSON.parse(status); } catch { status = {}; }
     }
+    if (!status || typeof status !== 'object') status = {};
+
+    // Relatos: garante array
+    if (!Array.isArray(relatos)) relatos = [];
 
     return res.status(200).json({
-      status_servidores: dados || {},
-      relatos_comunidade: relatos,
+      status_servidores: status,
+      relatos_comunidade: relatos
     });
   } catch (error) {
-    console.error('Erro no Redis:', error);
-    return res.status(500).json({ erro: 'Erro ao buscar dados do Redis.' });
+    console.error('Erro no Redis em /api/status-atual:', error);
+    // Mesmo com erro, responder algo para o front não quebrar
+    return res.status(200).json({
+      status_servidores: {},
+      relatos_comunidade: []
+    });
   }
 }
