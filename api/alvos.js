@@ -1,9 +1,11 @@
-// api/alvos.js - Base de Dados Reduzida (Fase Inicial) ADVBR.info
+// api/alvos.js - Base de Dados Ampliada ADVBR.info
 const tribunais = [
     // ==========================================
     // SISTEMAS NACIONAIS
     // ==========================================
     { id: "pje_cnj",       nome: "PJe Nacional (CNJ)", sub: "Servidor de Login CNJ",        grupo: "nacionais", lote: 1, url: "https://www.pje.jus.br/navegador/" },
+    { id: "domicilio_cnj", nome: "Domicílio Judicial", sub: "Domicílio Judicial Eletrônico", grupo: "nacionais", lote: 1, url: "https://domicilio-eletronico.pdpj.jus.br/" },
+    { id: "pdpj_cnj",      nome: "PDPJ - Hub CNJ",     sub: "Plataforma Digital Unificada", grupo: "nacionais", lote: 1, url: "https://www.cnj.jus.br/pdpj-br/" },
 
     // ==========================================
     // TRIBUNAIS SUPERIORES
