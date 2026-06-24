@@ -5,6 +5,8 @@ const kv = createClient({
   token: process.env.KV_REST_API_TOKEN,
 });
 
+const EXPIRACAO_SEGUNDOS = 60 * 60 * 12; // 12 horas
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method !== 'POST') return res.status(405).end();
@@ -13,15 +15,17 @@ export default async function handler(req, res) {
   const agora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
 
   try {
-    // Grava agregado por tribunal — é isso que o modal lê
     let agregados = await kv.get('advbr_relatos_comunidade') || {};
+
     if (!agregados[tribunal]) {
       agregados[tribunal] = { total: 0, problemas: {}, ultimoRelato: '' };
     }
     agregados[tribunal].total++;
     agregados[tribunal].problemas[tipoProblema] = (agregados[tribunal].problemas[tipoProblema] || 0) + 1;
     agregados[tribunal].ultimoRelato = agora;
-    await kv.set('advbr_relatos_comunidade', agregados);
+
+    // Salva com expiração de 12 horas — depois desse tempo some sozinho
+    await kv.set('advbr_relatos_comunidade', agregados, { ex: EXPIRACAO_SEGUNDOS });
 
     return res.status(200).json({ sucesso: true });
   } catch (erro) {
