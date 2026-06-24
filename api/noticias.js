@@ -1,4 +1,4 @@
-// api/noticias.js - Versão Turbo com 9 fontes jurídicas de alta disponibilidade
+// api/noticias.js - Versão Otimizada com Maior Tolerância de Timeout para o Plano PRO
 const FEEDS_RSS = [
   { fonte: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },         
   { fonte: "OAB",    url: "https://www.oab.org.br/rss" },             
@@ -34,7 +34,6 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
 
-      // Filtro de segurança para manchetes limpas
       if (titulo && titulo.length > 20 && !titulo.toLowerCase().startsWith("notícias") && !titulo.toLowerCase().includes("vaga")) {
         titulo = titulo.replace(/\s+/g, ' ');
         itens.push({
@@ -43,7 +42,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         });
       }
     }
-    if (itens.length >= 4) break; // Pega as 4 mais frescas de cada um para girar rápido
+    if (itens.length >= 4) break;
   }
   return itens;
 }
@@ -51,7 +50,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
-  res.setHeader('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+  res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=150'); // Cache mais curto para atualizar rápido
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
@@ -59,13 +58,14 @@ export default async function handler(req, res) {
     const promessas = FEEDS_RSS.map(async (feed) => {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 4000); 
+        const timeout = setTimeout(() => controller.abort(), 8000); // Aumentado para 8 segundos (evita quedas por lentidão)
         
         const resposta = await global.fetch(feed.url, { 
           signal: controller.signal,
           headers: { 
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-            'Accept': 'application/rss+xml, text/xml, */*'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'application/rss+xml, text/xml, application/xml, */*',
+            'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8'
           }
         });
         
@@ -81,7 +81,6 @@ export default async function handler(req, res) {
 
     const resultadosAgrupados = await Promise.all(promessas);
     
-    // Mistura os 9 portais de forma alternada (Round-Robin)
     const todasAsNoticias = [];
     let maxItens = Math.max(...resultadosAgrupados.map(lista => lista.length));
     
@@ -93,10 +92,12 @@ export default async function handler(req, res) {
       });
     }
 
+    // Se tudo falhar, o plano de fundo entra em ação com as principais marcas
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
-        { texto: "[OAB-PR] Painel de monitoramento de prazos e instabilidades operacionais ativo.", url: "https://www.oabpr.org.br" },
-        { texto: "[MIGALHAS] Atualizações de jurisprudência e rotina dos tribunais disponível.", url: "https://www.migalhas.com.br" }
+        { texto: "[OAB-PR] Ordem dos Advogados do Brasil Seção Paraná ativa no monitoramento de prazos.", url: "https://www.oabpr.org.br" },
+        { texto: "[MIGALHAS] Informativo de direito e atualizações de jurisprudência em tempo real.", url: "https://www.migalhas.com.br" },
+        { texto: "[STJ] Superior Tribunal de Justiça - Painel de monitoramento operacional ativo.", url: "https://www.stj.jus.br" }
       );
     }
 
