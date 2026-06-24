@@ -2,43 +2,23 @@
   "crons": [
     {
       "path": "/api/monitor?lote=1",
-      "schedule": "0 */2 * * *"
+      "schedule": "0 */2 * * *"  // Roda às 00:00, 02:00, 04:00...
     },
     {
       "path": "/api/monitor?lote=2",
-      "schedule": "5 */2 * * *"
+      "schedule": "10 */2 * * *" // Roda às 00:10, 02:10, 04:10...
     },
     {
       "path": "/api/monitor?lote=3",
-      "schedule": "10 */2 * * *"
+      "schedule": "20 */2 * * *" // Roda às 00:20, 02:20, 04:20...
     },
     {
       "path": "/api/monitor?lote=4",
-      "schedule": "15 */2 * * *"
+      "schedule": "30 */2 * * *" // Roda às 00:30, 02:30, 04:30...
     },
     {
       "path": "/api/monitor?lote=5",
-      "schedule": "20 */2 * * *"
-    },
-    {
-      "path": "/api/monitor?lote=6",
-      "schedule": "25 */2 * * *"
-    },
-    {
-      "path": "/api/monitor?lote=7",
-      "schedule": "30 */2 * * *"
-    },
-    {
-      "path": "/api/monitor?lote=8",
-      "schedule": "35 */2 * * *"
-    },
-    {
-      "path": "/api/monitor?lote=9",
-      "schedule": "40 */2 * * *"
-    },
-    {
-      "path": "/api/monitor?lote=10",
-      "schedule": "45 */2 * * *"
+      "schedule": "40 */2 * * *" // Roda às 00:40, 02:40, 04:40...
     }
   ]
 }
