@@ -354,7 +354,8 @@
                 const dot = document.getElementById(`dot-${grupoId}`);
                 if (!dot) return;
 
-                const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === groupId);
+                // CORREÇÃO APLICADA AQUI: Era "groupId", foi corrigido para "grupoId"
+                const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === grupoId);
                 const totalTribunais = tribunaisDoGrupo.length;
                 
                 let qtdOnline = 0;
@@ -418,8 +419,7 @@
             tribunaisDaUf.forEach(t => {
                 const dadosApi = statusGerais[t.id];
                 
-                // CORREÇÃO DE EXIBIÇÃO FORÇADA PARA OS NOVOS NACIONAIS:
-                // Se a API não possuir os dados de monitoramento do ID ainda, exibe como Online/Sincronizando em vez de sumir.
+                // Exibe Sincronizando apenas se a API ainda não tiver processado o ID
                 const statusStr = dadosApi ? dadosApi.status : (uf === 'nacionais' ? "Sincronizando" : "Sem Varredura");
                 const latenciaStr = (dadosApi && dadosApi.latenciaMs) ? `Resposta em ${dadosApi.latenciaMs}ms` : (uf === 'nacionais' ? "Aguardando próxima varredura" : "Sem Varredura");
                 
