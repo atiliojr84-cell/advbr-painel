@@ -1,14 +1,18 @@
 // api/alvos.js - Base de Dados Reduzida (Fase Inicial) ADVBR.info
 const tribunais = [
     // ==========================================
-    // TRIBUNAIS SUPERIORES E NACIONAIS (Sistemas Nacionais)
+    // SISTEMAS NACIONAIS
     // ==========================================
-    { id: "pje_cnj",       nome: "PJe - Nacional",     sub: "Servidor de Login CNJ",        grupo: "nacionais", lote: 1, url: "https://www.pje.jus.br/navegador/" },
-    { id: "stj",           nome: "STJ - Processos",    sub: "Superior Tribunal de Justiça", grupo: "nacionais", lote: 1, url: "https://www.stj.jus.br/sites/portalp/inicio" },
-    { id: "stf",           nome: "STF - Eletrônico",   sub: "Autenticação PKI Login",       grupo: "nacionais", lote: 1, url: "https://portal.stf.jus.br/" },
-    { id: "tse",           nome: "TSE - Portal",       sub: "Tribunal Superior Eleitoral",  grupo: "nacionais", lote: 1, url: "https://www.tse.jus.br/" },
-    { id: "tst",           nome: "TST - PJe",          sub: "Tribunal Superior do Trabalho",grupo: "nacionais", lote: 1, url: "https://www.tst.jus.br/" },
-    { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar",    grupo: "nacionais", lote: 1, url: "https://www.stm.jus.br/" },
+    { id: "pje_cnj",       nome: "PJe Nacional (CNJ)", sub: "Servidor de Login CNJ",        grupo: "nacionais", lote: 1, url: "https://www.pje.jus.br/navegador/" },
+
+    // ==========================================
+    // TRIBUNAIS SUPERIORES
+    // ==========================================
+    { id: "stj",           nome: "STJ - Processos",    sub: "Superior Tribunal de Justiça", grupo: "superiores", lote: 1, url: "https://www.stj.jus.br/sites/portalp/inicio" },
+    { id: "stf",           nome: "STF - Eletrônico",   sub: "Autenticação PKI Login",       grupo: "superiores", lote: 1, url: "https://portal.stf.jus.br/" },
+    { id: "tse",           nome: "TSE - Portal",       sub: "Tribunal Superior Eleitoral",  grupo: "superiores", lote: 1, url: "https://www.tse.jus.br/" },
+    { id: "tst",           nome: "TST - PJe",          sub: "Tribunal Superior do Trabalho",grupo: "superiores", lote: 1, url: "https://www.tst.jus.br/" },
+    { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar",    grupo: "superiores", lote: 1, url: "https://www.stm.jus.br/" },
 
     // ==========================================
     // PARANÁ — PR (Botão Paraná)
