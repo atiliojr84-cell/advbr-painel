@@ -1,15 +1,15 @@
+// api/noticias.js - Versão com OAB-PR inclusa e feeds de alta disponibilidade
 const FEEDS_RSS = [
+  { fonte: "OAB-PR", url: "https://www.oabpr.org.br/feed/" }, // Notícias da advocacia do Paraná
   { fonte: "STJ", url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" },
   { fonte: "CNJ", url: "https://www.cnj.jus.br/feed/" },
-  { fonte: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
-  { fonte: "JOTA", url: "https://www.jota.info/feed" }
+  { fonte: "CONJUR", url: "https://www.conjur.com.br/rss.xml" }
 ];
 
 function extrairDadosDoXml(xmlTexto, fonteNome) {
   const itens = [];
   const regexBlocos = /<item[^>]*>([\s\S]*?)<\/item>/gi;
   const regexTitulo = /<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i;
-  // Regex para pegar o link original da notícia
   const regexLink = /<link[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/link>/i;
   
   let blocoMatch;
@@ -29,7 +29,8 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
 
-      if (titulo && titulo.length > 25 && !titulo.toLowerCase().startsWith("notícias")) {
+      // Filtro de tamanho para garantir manchetes reais
+      if (titulo && titulo.length > 20 && !titulo.toLowerCase().startsWith("notícias")) {
         titulo = titulo.replace(/\s+/g, ' ');
         itens.push({
           texto: `[${fonteNome}] ${titulo}`,
@@ -37,7 +38,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         });
       }
     }
-    if (itens.length >= 6) break; // Pega até 6 de cada portal para ter bastante variedade
+    if (itens.length >= 5) break; 
   }
   return itens;
 }
@@ -75,7 +76,7 @@ export default async function handler(req, res) {
 
     const resultadosAgrupados = await Promise.all(promessas);
     
-    // ALGORITMO DE EMBARALHAMENTO (Intercala as notícias para não saírem juntas do mesmo portal)
+    // Algoritmo de intercalação Round-Robin para misturar os portais
     const todasAsNoticias = [];
     let maxItens = Math.max(...resultadosAgrupados.map(lista => lista.length));
     
@@ -89,8 +90,8 @@ export default async function handler(req, res) {
 
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
-        { texto: "[STJ] Superior Tribunal de Justiça mantém expediente de plantão ativo.", url: "https://www.stj.jus.br" },
-        { texto: "[CNJ] Conselho Nacional de Justiça reforça diretrizes de segurança.", url: "https://www.cnj.jus.br" }
+        { texto: "[OAB-PR] Ordem dos Advogados do Brasil Seção Paraná ativa.", url: "https://www.oabpr.org.br" },
+        { texto: "[STJ] Superior Tribunal de Justiça mantém monitoramento de prazos.", url: "https://www.stj.jus.br" }
       );
     }
 
