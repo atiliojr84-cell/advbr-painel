@@ -1,9 +1,10 @@
-// api/noticias.js - Versão com OAB Nacional no lugar do JOTA (Sem política partidária)
+// api/noticias.js - Versão focada em advocacia e tribunais (Inclusão OAB, OAB-PR e Migalhas)
 const FEEDS_RSS = [
-  { fonte: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },         // Advocacia do Paraná
-  { fonte: "OAB",    url: "https://www.oab.org.br/rss" },             // Conselho Federal da OAB Nacional
-  { fonte: "STJ",    url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" }, // Superior Tribunal de Justiça
-  { fonte: "CONJUR", url: "https://www.conjur.com.br/rss.xml" }       // Consultor Jurídico
+  { fonte: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },         
+  { fonte: "OAB",    url: "https://www.oab.org.br/rss" },             
+  { fonte: "STJ",    url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" }, 
+  { fonte: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
+  { fonte: "MIGALHAS", url: "https://www.migalhas.com.br/rss" }       
 ];
 
 function extrairDadosDoXml(xmlTexto, fonteNome) {
@@ -29,7 +30,6 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
 
-      // Filtro rigoroso: ignora títulos genéricos e limpa espaços duplos
       if (titulo && titulo.length > 20 && !titulo.toLowerCase().startsWith("notícias")) {
         titulo = titulo.replace(/\s+/g, ' ');
         itens.push({
@@ -38,7 +38,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         });
       }
     }
-    if (itens.length >= 5) break; // Limite de 5 notícias por portal para manter o rodízio saudável
+    if (itens.length >= 5) break; 
   }
   return itens;
 }
@@ -76,7 +76,7 @@ export default async function handler(req, res) {
 
     const resultadosAgrupados = await Promise.all(promessas);
     
-    // Algoritmo de intercalação Round-Robin para misturar os portais de forma alternada
+    // Intercala as notícias (Round-Robin) para misturar os portais de forma alternada
     const todasAsNoticias = [];
     let maxItens = Math.max(...resultadosAgrupados.map(lista => lista.length));
     
@@ -91,8 +91,7 @@ export default async function handler(req, res) {
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
         { texto: "[OAB-PR] Ordem dos Advogados do Brasil Seção Paraná ativa no monitoramento de prazos.", url: "https://www.oabpr.org.br" },
-        { texto: "[OAB] Conselho Federal da OAB Nacional acompanha o andamento das pautas da advocacia.", url: "https://www.oab.org.br" },
-        { texto: "[STJ] Superior Tribunal de Justiça mantém barramento de monitoramento de instabilidades ativo.", url: "https://www.stj.jus.br" }
+        { texto: "[MIGALHAS] Informativo de direito e atualizações de jurisprudência ativo.", url: "https://www.migalhas.com.br" }
       );
     }
 
