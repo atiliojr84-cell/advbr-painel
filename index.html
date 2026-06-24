@@ -11,15 +11,22 @@
       0%   { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-    .ticker-animate { animation: ticker 40s linear infinite; }
+    .ticker-animate {
+      animation: ticker 90s linear infinite;
+      display: inline-block;
+    }
     .ticker-animate:hover { animation-play-state: paused; }
+
+    /* Esconde scrollbar dos carrosseis mas mantém o scroll */
+    .carrossel-scroll::-webkit-scrollbar { display: none; }
+    .carrossel-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body class="bg-gray-950 text-gray-100 min-h-screen font-sans">
 
 <!-- ===================== TICKER ===================== -->
 <div class="bg-gray-900 border-b border-gray-800 overflow-hidden h-9 flex items-center">
-  <span class="text-yellow-400 font-bold text-xs px-3 shrink-0">⚖️ JURÍDICO</span>
+  <span class="text-yellow-400 font-bold text-xs px-3 shrink-0 border-r border-gray-700 mr-3">⚖️ JURÍDICO</span>
   <div class="overflow-hidden flex-1 relative h-full flex items-center">
     <div id="tickerConteudo" class="ticker-animate whitespace-nowrap text-xs text-gray-300">
       Sincronizando feed de notícias intercalado e dinâmico direto dos portais da Justiça...
@@ -28,136 +35,301 @@
 </div>
 
 <!-- ===================== HEADER ===================== -->
-<header class="bg-gray-900 border-b border-gray-800 px-4 py-3 flex items-center justify-between">
+<header class="bg-gray-950 border-b border-gray-800 px-6 py-4 flex items-center justify-between">
   <div>
-    <h1 class="text-xl font-bold text-white">⚖️ ADVBR.info</h1>
-    <p class="text-xs text-gray-400">Suporte Tecnológico Integrado para Profissionais do Direito</p>
+    <h1 class="text-2xl font-bold">
+      <span class="text-blue-400">ADVBR</span><span class="text-white">.info</span>
+    </h1>
+    <p class="text-xs text-gray-400 mt-0.5">Suporte Tecnológico Integrado para Profissionais do Direito</p>
   </div>
-  <button onclick="abrirModalRelato()"
-    class="bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2 shadow-lg">
-    <i class="fa-solid fa-triangle-exclamation"></i> Estou com problema!
-  </button>
+  <div class="flex items-center gap-4">
+    <p class="text-xs text-gray-400 hidden md:block">Nos ajude a monitorar os portais comunicando o seu problema.</p>
+    <button onclick="abrirModalRelato()"
+      class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-2 shadow-lg">
+      <i class="fa-solid fa-bullhorn text-white"></i> Estou com problema!
+    </button>
+  </div>
 </header>
 
-<!-- ===================== CARROSSEL ===================== -->
-<section class="px-4 py-5">
-  <h2 class="text-base font-bold text-white mb-1">Principais Portais Jurídicos</h2>
-  <p class="text-xs text-gray-400 mb-3">Sistemas de âmbito nacional e regionais de altíssimo fluxo, ordenados dinamicamente.</p>
-  <div id="carrosselPortais" class="flex flex-row gap-3 overflow-x-auto pb-2">
-    <div class="text-gray-500 text-sm py-4">Sincronizando dados técnicos com o banco de dados...</div>
+<!-- ===================== SEÇÃO: PRINCIPAIS PORTAIS ===================== -->
+<section class="px-6 py-8">
+  <div class="flex items-center gap-2 mb-1">
+    <span class="text-yellow-400 text-xl">⭐</span>
+    <h2 class="text-lg font-bold text-white">Principais Portais Jurídicos</h2>
+  </div>
+  <p class="text-xs text-gray-400 mb-5">Sistemas de âmbito nacional e regionais de altíssimo fluxo, ordenados dinamicamente.</p>
+
+  <!-- Carrossel de Portais -->
+  <div class="relative">
+    <div id="carrosselPortais" class="carrossel-scroll flex flex-row gap-4 overflow-x-auto pb-3">
+      <!-- Gerado via JS -->
+      <div class="text-gray-500 text-sm py-4 shrink-0">Sincronizando dados técnicos com o banco de dados...</div>
+    </div>
   </div>
 </section>
 
-<!-- ===================== MONITORAMENTO ===================== -->
-<section class="px-4 py-2">
-  <h2 class="text-base font-bold text-white mb-3">Monitoramento por Estado / Região</h2>
-  <p class="text-xs text-gray-400 mb-4">Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
+<!-- ===================== SEÇÃO: MONITORAMENTO ===================== -->
+<section class="px-6 py-2 pb-8">
+  <div class="flex items-center gap-2 mb-1">
+    <span class="text-blue-400 text-xl">🗺️</span>
+    <h2 class="text-lg font-bold text-white">Monitoramento por Estado / Região</h2>
+  </div>
+  <p class="text-xs text-gray-400 mb-5">Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
 
-  <div class="flex flex-wrap gap-2 mb-5">
-    <button onclick="expandirGrupo('superiores')" class="bg-gray-800 hover:bg-blue-800 border border-gray-700 text-sm px-4 py-2 rounded-xl transition-all">Tribunais Superiores</button>
-    <button onclick="expandirGrupo('nacionais')" class="bg-gray-800 hover:bg-blue-800 border border-gray-700 text-sm px-4 py-2 rounded-xl transition-all">Sistemas Nacionais</button>
-    <button onclick="expandirGrupo('PR')" class="bg-gray-800 hover:bg-blue-800 border border-gray-700 text-sm px-4 py-2 rounded-xl transition-all">Paraná (PR)</button>
-    <button onclick="expandirGrupo('SP')" class="bg-gray-800 hover:bg-blue-800 border border-gray-700 text-sm px-4 py-2 rounded-xl transition-all">São Paulo (SP)</button>
+  <div class="flex flex-wrap gap-3 mb-6">
+    <button onclick="expandirGrupo('superiores')"
+      class="grupo-btn flex items-center gap-2 bg-gray-800 hover:bg-blue-900 border border-gray-700 text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-200">
+      <i class="fa-solid fa-scale-balanced text-blue-400"></i> Tribunais Superiores
+      <span class="w-2 h-2 rounded-full bg-gray-500 inline-block ml-1"></span>
+    </button>
+    <button onclick="expandirGrupo('nacionais')"
+      class="grupo-btn flex items-center gap-2 bg-gray-800 hover:bg-blue-900 border border-gray-700 text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-200">
+      <i class="fa-solid fa-globe text-blue-400"></i> Sistemas Nacionais
+      <span class="w-2 h-2 rounded-full bg-gray-500 inline-block ml-1"></span>
+    </button>
+    <button onclick="expandirGrupo('PR')"
+      class="grupo-btn flex items-center gap-2 bg-gray-800 hover:bg-blue-900 border border-gray-700 text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-200">
+      Paraná (PR)
+      <span class="w-2 h-2 rounded-full bg-gray-500 inline-block ml-1"></span>
+    </button>
+    <button onclick="expandirGrupo('SP')"
+      class="grupo-btn flex items-center gap-2 bg-gray-800 hover:bg-blue-900 border border-gray-700 text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-200">
+      São Paulo (SP)
+      <span class="w-2 h-2 rounded-full bg-gray-500 inline-block ml-1"></span>
+    </button>
   </div>
 
   <div id="painelMonitoramento" class="space-y-3"></div>
 </section>
 
-<!-- ===================== SEÇÃO PDF ===================== -->
-<section class="px-4 py-6 mt-4 bg-gray-900 border-y border-gray-800">
-  <h2 class="text-base font-bold text-white mb-1">Otimizador PDF inteligente</h2>
-  <p class="text-xs text-gray-400 mb-3">Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.</p>
-  <button class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-5 py-2 rounded-xl transition-all">
-    Clique aqui e edite seu PDF automaticamente
+<!-- ===================== SEÇÃO: PDF ===================== -->
+<section class="px-6 py-6 mx-6 mb-6 bg-gray-900 border border-gray-800 rounded-2xl flex items-center justify-between gap-6 flex-wrap">
+  <div class="flex items-center gap-4">
+    <div class="bg-red-900/40 border border-red-700 rounded-xl p-3">
+      <i class="fa-solid fa-file-pdf text-red-400 text-2xl"></i>
+    </div>
+    <div>
+      <h2 class="text-base font-bold text-white mb-1">Otimizador PDF inteligente</h2>
+      <p class="text-xs text-gray-400 max-w-lg">Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação do seu PDF de acordo com o padrão exigido pelo portal de destino.</p>
+    </div>
+  </div>
+  <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition-all duration-200 whitespace-nowrap shadow-lg shadow-blue-900/40">
+    Clique aqui e edite seu PDF automaticamente de acordo com o portal que deseja anexar
   </button>
 </section>
 
-<!-- ===================== SEÇÃO TOKEN ===================== -->
-<section class="px-4 py-6 bg-gray-950 border-b border-gray-800">
-  <h2 class="text-base font-bold text-white mb-1">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
-  <p class="text-xs text-gray-400 mb-3">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
-  <div class="flex gap-3 flex-wrap">
-    <button class="bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-5 py-2 rounded-xl transition-all">Iniciar Teste de Token</button>
-    <button class="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold px-5 py-2 rounded-xl transition-all">Iniciar Teste PJe Office Pro</button>
+<!-- ===================== SEÇÃO: TOKEN ===================== -->
+<section class="px-6 py-8 mx-6 mb-6 bg-gray-900 border border-gray-800 rounded-2xl text-center">
+  <div class="flex justify-center mb-4">
+    <div class="bg-blue-900/40 border border-blue-700 rounded-full w-14 h-14 flex items-center justify-center">
+      <i class="fa-solid fa-key text-blue-400 text-2xl"></i>
+    </div>
+  </div>
+  <h2 class="text-lg font-bold text-white mb-2">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
+  <p class="text-xs text-gray-400 mb-6 max-w-lg mx-auto">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
+  <div class="flex gap-4 justify-center flex-wrap">
+    <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition-all duration-200 flex items-center gap-2 shadow-lg shadow-blue-900/40">
+      <i class="fa-solid fa-usb"></i> Iniciar Teste de Token
+    </button>
+    <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl transition-all duration-200 flex items-center gap-2 shadow-lg shadow-blue-900/40">
+      <i class="fa-solid fa-display"></i> Iniciar Teste PJe Office Pro
+    </button>
   </div>
 </section>
 
-<!-- ===================== CARROSSEL EQUIPAMENTOS ===================== -->
-<section class="px-4 py-6">
-  <h2 class="text-base font-bold text-white mb-3">Equipamentos Homologados para Advocacia</h2>
-  <p class="text-xs text-gray-400 mb-3">Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas. Links testados e seguros, somente lojas oficiais.</p>
-  <div class="flex flex-row gap-3 overflow-x-auto pb-2">
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">🖱️ Mouse Ergonômico</h4>
-      <p class="text-xs text-gray-400 mb-2">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+<!-- ===================== SEÇÃO: EQUIPAMENTOS ===================== -->
+<section class="px-6 py-6 mb-8">
+  <div class="flex items-start justify-between flex-wrap gap-3 mb-5">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="text-blue-400 text-xl">🛒</span>
+        <h2 class="text-lg font-bold text-white">Equipamentos Homologados para Advocacia</h2>
+      </div>
+      <p class="text-xs text-gray-400">Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.</p>
+    </div>
+    <div class="flex items-center gap-2 bg-green-900/30 border border-green-700 rounded-xl px-4 py-2">
+      <i class="fa-solid fa-shield-halved text-green-400"></i>
+      <span class="text-green-400 text-xs font-bold">Links testados e seguros, somente lojas oficiais.</span>
+    </div>
+  </div>
+
+  <!-- Carrossel de Equipamentos -->
+  <div class="carrossel-scroll flex flex-row gap-4 overflow-x-auto pb-3">
+
+    <!-- Card 1 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-computer-mouse text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">1. Mouse Ergonômico</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">⌨️ Teclado Silent</h4>
-      <p class="text-xs text-gray-400 mb-2">Digitação macia e extremamente silenciosa para escritórios.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 2 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-keyboard text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">2. Teclado Silent</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Digitação macia e extremamente silenciosa para escritórios.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">🖥️ CPU Office Slim</h4>
-      <p class="text-xs text-gray-400 mb-2">Processamento de alta velocidade para múltiplos portais abertos.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 3 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-server text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">3. CPU Office Slim</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Processamento de alta velocidade para múltiplos portais abertos.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">💻 Laptop Advogado Pro</h4>
-      <p class="text-xs text-gray-400 mb-2">Tela antirreflexo de alta definição e bateria de longa duração para audiências.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 4 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-laptop text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">4. Laptop Advogado Pro</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Tela antirreflexo de alta definição e bateria de longa duração para audiências.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">🖨️ Impressora Laser Duplex</h4>
-      <p class="text-xs text-gray-400 mb-2">Impressão frente e verso automática rápida e de baixíssimo custo por página.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 5 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-print text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">5. Impressora Laser Duplex</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Impressão frente e verso automática rápida e de baixíssimo custo por página.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">📠 Scanner de Mesa Rápido</h4>
-      <p class="text-xs text-gray-400 mb-2">Digitalização direta para PDF pesquisável (OCR) com alimentador automático.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 6 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-scanner-image text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">6. Scanner de Mesa Rápido</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Digitalização direta para PDF pesquisável (OCR) com alimentador automático.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">🖥️ Monitor UltraWide 29"</h4>
-      <p class="text-xs text-gray-400 mb-2">Espaço ideal para abrir duas janelas lado a lado: processo e petição.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 7 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-desktop text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">7. Monitor UltraWide 29"</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Espaço ideal para abrir duas janelas lado a lado: processo e petição.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">🔋 NoBreak Senoidal</h4>
-      <p class="text-xs text-gray-400 mb-2">Proteção absoluta contra queda de energia no meio da assinatura de prazos.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 8 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-plug-circle-bolt text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">8. NoBreak Senoidal</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Proteção absoluta contra queda de energia no meio da assinatura de prazos.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">🎧 Headset Noise Cancelling</h4>
-      <p class="text-xs text-gray-400 mb-2">Isolamento acústico e microfone limpo para sustentação oral e audiências virtuais.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 9 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-headset text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">9. Headset Noise Cancelling</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Isolamento acústico e microfone limpo para sustentação oral e audiências virtuais.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
-    <a href="https://www.amazon.com.br" target="_blank" class="min-w-[180px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-4 transition-all">
-      <h4 class="text-sm font-bold text-white mb-1">💾 HD Externo Criptografado</h4>
-      <p class="text-xs text-gray-400 mb-2">Backup físico totalmente seguro para o acervo de processos do escritório.</p>
-      <span class="text-blue-400 text-xs font-semibold">Ver Preço Recomendado →</span>
+
+    <!-- Card 10 -->
+    <a href="https://www.amazon.com.br" target="_blank"
+      class="min-w-[220px] bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-blue-700 transition-all duration-200 shrink-0 flex flex-col">
+      <div class="bg-gray-800 h-40 flex items-center justify-center">
+        <i class="fa-solid fa-hard-drive text-gray-500 text-5xl"></i>
+      </div>
+      <div class="p-4 flex flex-col flex-1">
+        <h4 class="text-sm font-bold text-white mb-1">10. HD Externo Criptografado</h4>
+        <p class="text-xs text-gray-400 mb-3 flex-1">Backup físico totalmente seguro para o acervo de processos do escritório.</p>
+        <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 hover:bg-gray-700 py-2 px-3 rounded-lg transition-all flex items-center justify-center gap-1">
+          Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+        </span>
+      </div>
     </a>
+
   </div>
 </section>
 
 <!-- ===================== FOOTER ===================== -->
-<footer class="text-center text-xs text-gray-600 py-6 border-t border-gray-800">
+<footer class="text-center text-xs text-gray-600 py-6 border-t border-gray-800 mt-4">
   © 2026 ADVBR.info. Todos os direitos reservados.
 </footer>
 
 <!-- ================================================== -->
 <!-- MODAL ETAPA 1 — SELECIONAR TRIBUNAL               -->
 <!-- ================================================== -->
-<div id="modalRelato1" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
-  <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden">
-    <div class="p-4 border-b border-gray-700 flex justify-between items-center">
-      <h3 class="text-white text-lg font-semibold">🔍 Em qual site está o problema?</h3>
-      <button onclick="fecharModalRelato()" class="text-gray-400 hover:text-red-400 text-2xl leading-none">&times;</button>
+<div id="modalRelato1" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+  <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
+    <div class="p-5 border-b border-gray-700 flex justify-between items-center">
+      <div>
+        <h3 class="text-white text-base font-bold">🔍 Em qual site está o problema?</h3>
+        <p class="text-gray-400 text-xs mt-0.5">Selecione o portal para continuar.</p>
+      </div>
+      <button onclick="fecharModalRelato()" class="text-gray-500 hover:text-red-400 text-2xl leading-none ml-4">&times;</button>
     </div>
     <div class="p-4 overflow-y-auto flex-1 space-y-2" id="listaTribunaisModal"></div>
     <div class="p-4 border-t border-gray-700">
       <button id="btnAvancarProblema" disabled onclick="avancarParaProblema()"
-        class="w-full py-3 rounded-xl font-semibold text-white transition-all duration-200 bg-gray-600 cursor-not-allowed opacity-50">
+        class="w-full py-3 rounded-xl font-semibold text-white text-sm transition-all duration-200 bg-gray-700 cursor-not-allowed opacity-50">
         Selecionar Problema →
       </button>
     </div>
@@ -167,31 +339,44 @@
 <!-- ================================================== -->
 <!-- MODAL ETAPA 2 — TIPO DE PROBLEMA                  -->
 <!-- ================================================== -->
-<div id="modalRelato2" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
-  <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md">
-    <div class="p-4 border-b border-gray-700 flex justify-between items-center">
-      <h3 class="text-white text-base font-semibold">
-        ⚠️ Problema em: <span id="nomeTribunalSelecionado" class="text-yellow-400"></span>
-      </h3>
-      <button onclick="fecharModalRelato()" class="text-gray-400 hover:text-red-400 text-2xl leading-none">&times;</button>
+<div id="modalRelato2" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+  <div class="bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md shadow-2xl">
+    <div class="p-5 border-b border-gray-700 flex justify-between items-center">
+      <div>
+        <h3 class="text-white text-base font-bold">⚠️ Qual é o problema?</h3>
+        <p class="text-yellow-400 text-xs mt-0.5 font-semibold" id="nomeTribunalSelecionado"></p>
+      </div>
+      <button onclick="fecharModalRelato()" class="text-gray-500 hover:text-red-400 text-2xl leading-none ml-4">&times;</button>
     </div>
-    <div class="p-6 space-y-4">
+    <div class="p-5 space-y-3">
       <button onclick="enviarRelato('Offline')"
-        class="w-full p-4 rounded-xl border border-red-600 bg-red-900/40 text-white text-base font-semibold hover:bg-red-800/60 hover:scale-[1.02] transition-all duration-200 flex items-center gap-3">
-        <span class="text-2xl">🔴</span> Site Offline
+        class="w-full p-4 rounded-xl border border-red-700 bg-red-950/60 text-white font-semibold hover:bg-red-900/60 hover:scale-[1.01] transition-all duration-200 flex items-center gap-3 text-sm">
+        <span class="text-xl">🔴</span>
+        <div class="text-left">
+          <p class="font-bold">Site Offline</p>
+          <p class="text-xs text-gray-400 font-normal">Portal completamente fora do ar</p>
+        </div>
       </button>
       <button onclick="enviarRelato('Instabilidade')"
-        class="w-full p-4 rounded-xl border border-yellow-600 bg-yellow-900/40 text-white text-base font-semibold hover:bg-yellow-800/60 hover:scale-[1.02] transition-all duration-200 flex items-center gap-3">
-        <span class="text-2xl">🟡</span> Instabilidade / Lentidão
+        class="w-full p-4 rounded-xl border border-yellow-700 bg-yellow-950/60 text-white font-semibold hover:bg-yellow-900/60 hover:scale-[1.01] transition-all duration-200 flex items-center gap-3 text-sm">
+        <span class="text-xl">🟡</span>
+        <div class="text-left">
+          <p class="font-bold">Instabilidade / Lentidão</p>
+          <p class="text-xs text-gray-400 font-normal">Site lento ou caindo intermitentemente</p>
+        </div>
       </button>
       <button onclick="enviarRelato('Falha no Login')"
-        class="w-full p-4 rounded-xl border border-blue-600 bg-blue-900/40 text-white text-base font-semibold hover:bg-blue-800/60 hover:scale-[1.02] transition-all duration-200 flex items-center gap-3">
-        <span class="text-2xl">🔐</span> Falha no Login
+        class="w-full p-4 rounded-xl border border-blue-700 bg-blue-950/60 text-white font-semibold hover:bg-blue-900/60 hover:scale-[1.01] transition-all duration-200 flex items-center gap-3 text-sm">
+        <span class="text-xl">🔐</span>
+        <div class="text-left">
+          <p class="font-bold">Falha no Login</p>
+          <p class="text-xs text-gray-400 font-normal">Entra mas não consegue autenticar</p>
+        </div>
       </button>
     </div>
-    <div class="p-4 border-t border-gray-700">
+    <div class="px-5 pb-5">
       <button onclick="voltarParaTribunal()"
-        class="w-full py-2 rounded-xl text-gray-300 hover:text-white hover:bg-gray-700 transition-all duration-200">
+        class="w-full py-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 text-sm transition-all duration-200">
         ← Voltar
       </button>
     </div>
@@ -201,14 +386,14 @@
 <!-- ================================================== -->
 <!-- MODAL CONFIRMAÇÃO                                  -->
 <!-- ================================================== -->
-<div id="modalConfirmacao" class="hidden fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
-  <div class="bg-gray-900 border border-green-600 rounded-2xl w-full max-w-sm text-center p-8">
+<div id="modalConfirmacao" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+  <div class="bg-gray-900 border border-green-700 rounded-2xl w-full max-w-sm text-center p-8 shadow-2xl">
     <div class="text-5xl mb-4">✅</div>
-    <h3 class="text-white text-xl font-semibold mb-2">Relato enviado!</h3>
-    <p class="text-gray-400 mb-6">Seu relato ajuda colegas a identificarem problemas na rede da Justiça.</p>
+    <h3 class="text-white text-lg font-bold mb-2">Relato enviado com sucesso!</h3>
+    <p class="text-gray-400 text-sm mb-6">Obrigado, Doutor(a). Seu relato ajuda colegas a identificarem problemas na rede da Justiça em tempo real.</p>
     <button onclick="fecharModalRelato()"
-      class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-all duration-200">
-      OK
+      class="px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold text-sm transition-all duration-200">
+      OK, entendido
     </button>
   </div>
 </div>
@@ -217,28 +402,28 @@
 <!-- JAVASCRIPT                                         -->
 <!-- ================================================== -->
 <script>
-// ===================== DADOS =====================
+// ===================== DADOS DOS TRIBUNAIS =====================
 const dadosTribunaisFixo = [
-  { id: "pje_cnj",       nome: "PJe Nacional (CNJ)",    grupo: "nacionais",  url: "https://www.pje.jus.br/navegador/" },
-  { id: "domicilio_cnj", nome: "Domicílio Judicial",     grupo: "nacionais",  url: "https://domicilio-eletronico.pdpj.jus.br/" },
-  { id: "pdpj_cnj",      nome: "PDPJ - Hub CNJ",         grupo: "nacionais",  url: "https://www.cnj.jus.br/pdpj-br/" },
-  { id: "stj",           nome: "STJ - Processos",        grupo: "superiores", url: "https://www.stj.jus.br/sites/portalp/inicio" },
-  { id: "stf",           nome: "STF - Eletrônico",       grupo: "superiores", url: "https://portal.stf.jus.br/" },
-  { id: "tse",           nome: "TSE - Portal",           grupo: "superiores", url: "https://www.tse.jus.br/" },
-  { id: "tst",           nome: "TST - PJe",              grupo: "superiores", url: "https://www.tst.jus.br/" },
-  { id: "stm",           nome: "STM - Portal",           grupo: "superiores", url: "https://www.stm.jus.br/" },
-  { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",  grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_1g/" },
-  { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",  grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_2g/" },
-  { id: "tjpr_projudi",  nome: "TJPR - Projudi",         grupo: "PR",         url: "https://projudi.tjpr.jus.br/projudi/" },
-  { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",    grupo: "PR",         url: "https://pje.trt9.jus.br/pje/pje-presente.html" },
-  { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",    grupo: "PR",         url: "https://pje.trt9.jus.br/pje2g/pje-presente.html" },
-  { id: "trf4_pr",       nome: "TRF4 - Federal PR",      grupo: "PR",         url: "https://eproc.trf4.jus.br/eproc2trf4/" },
-  { id: "tjsp_saj",      nome: "TJSP - e-SAJ",           grupo: "SP",         url: "https://esaj.tjsp.jus.br/sajcas/login" }
+  { id: "pje_cnj",       nome: "PJe Nacional (CNJ)",     sub: "Servidor de Login CNJ",        grupo: "nacionais",  url: "https://www.pje.jus.br/navegador/" },
+  { id: "domicilio_cnj", nome: "Domicílio Judicial",      sub: "Domicílio Judicial Eletrônico", grupo: "nacionais",  url: "https://domicilio-eletronico.pdpj.jus.br/" },
+  { id: "pdpj_cnj",      nome: "PDPJ - Hub CNJ",          sub: "Plataforma Digital Unificada",  grupo: "nacionais",  url: "https://www.cnj.jus.br/pdpj-br/" },
+  { id: "stj",           nome: "STJ - Processos",         sub: "Superior Tribunal de Justiça",  grupo: "superiores", url: "https://www.stj.jus.br/sites/portalp/inicio" },
+  { id: "stf",           nome: "STF - Eletrônico",        sub: "Autenticação PKI Login",         grupo: "superiores", url: "https://portal.stf.jus.br/" },
+  { id: "tse",           nome: "TSE - Portal",            sub: "Tribunal Superior Eleitoral",   grupo: "superiores", url: "https://www.tse.jus.br/" },
+  { id: "tst",           nome: "TST - PJe",               sub: "Tribunal Superior do Trabalho", grupo: "superiores", url: "https://www.tst.jus.br/" },
+  { id: "stm",           nome: "STM - Portal",            sub: "Superior Tribunal Militar",     grupo: "superiores", url: "https://www.stm.jus.br/" },
+  { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",   sub: "Servidor eproc 1º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_1g/" },
+  { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",   sub: "Servidor eproc 2º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_2g/" },
+  { id: "tjpr_projudi",  nome: "TJPR - Projudi",          sub: "Servidor Projudi Login",        grupo: "PR",         url: "https://projudi.tjpr.jus.br/projudi/" },
+  { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",     sub: "Servidor PJe PR (Varas)",       grupo: "PR",         url: "https://pje.trt9.jus.br/pje/pje-presente.html" },
+  { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",     sub: "Servidor PJe PR (Tribunal)",    grupo: "PR",         url: "https://pje.trt9.jus.br/pje2g/pje-presente.html" },
+  { id: "trf4_pr",       nome: "TRF4 - Federal PR",       sub: "Justiça Federal da 4ª Região",  grupo: "PR",         url: "https://eproc.trf4.jus.br/eproc2trf4/" },
+  { id: "tjsp_saj",      nome: "TJSP - e-SAJ",            sub: "Servidor de Login eSAJ",        grupo: "SP",         url: "https://esaj.tjsp.jus.br/sajcas/login" }
 ];
 
-let statusGerais = {};
-let relatosComunidade = {};
-let grupoAberto = null;
+let statusGerais       = {};
+let relatosComunidade  = {};
+let grupoAberto        = null;
 
 // ===================== TICKER =====================
 async function carregarNoticias() {
@@ -248,44 +433,54 @@ async function carregarNoticias() {
     if (data.noticias && data.noticias.length > 0) {
       const ticker = document.getElementById('tickerConteudo');
       ticker.innerHTML = data.noticias.map(n =>
-        `<a href="${n.url}" target="_blank" class="text-gray-300 hover:text-yellow-400 mx-8 transition-colors">${n.texto}</a>`
-      ).join('<span class="mx-4 text-gray-600">|</span>');
+        `<a href="${n.url}" target="_blank"
+          class="text-gray-300 hover:text-yellow-400 mx-8 transition-colors">${n.texto}</a>`
+      ).join('<span class="mx-4 text-gray-700">•</span>');
     }
   } catch(e) { console.warn('Ticker offline'); }
 }
 
-// ===================== STATUS / CACHE =====================
+// ===================== BUSCAR STATUS + RELATOS =====================
 async function carregarStatusDoCache() {
   try {
     const r = await fetch('/api/status-atual');
     const data = await r.json();
-    statusGerais = data.status_servidores || {};
+    statusGerais      = data.status_servidores || {};
     relatosComunidade = data.relatos_comunidade || {};
+    if (!relatosComunidade || typeof relatosComunidade !== 'object' || Array.isArray(relatosComunidade)) {
+      relatosComunidade = {};
+    }
     renderizarCarrossel();
     if (grupoAberto) renderizarGrupo(grupoAberto);
   } catch(e) { console.warn('Erro ao buscar status:', e); }
 }
 
-// ===================== CARROSSEL PORTAIS =====================
+// ===================== CARROSSEL PORTAIS (top 10) =====================
 function renderizarCarrossel() {
   const container = document.getElementById('carrosselPortais');
-  const portaisDestaque = dadosTribunaisFixo.filter(t =>
-    ['pje_cnj','stj','stf','trt9_1g','tjpr_eproc_1g','tjsp_saj'].includes(t.id)
-  );
+  const portais = dadosTribunaisFixo.slice(0, 10);
 
-  container.innerHTML = portaisDestaque.map(t => {
-    const s = statusGerais[t.id];
-    const cor = s ? corStatus(s.status) : 'bg-gray-700';
-    const texto = s ? s.status : 'Aguardando...';
-    const ms = s && s.latenciaMs ? `${s.latenciaMs}ms` : '';
+  container.innerHTML = portais.map((t, i) => {
+    const s   = statusGerais[t.id];
+    const cor = s ? corStatusBg(s.status) : 'bg-gray-700';
+    const txt = s ? s.status : 'Sem Varredura';
+    const ms  = s && s.latenciaMs ? `${s.latenciaMs}ms` : '';
     return `
       <a href="${t.url}" target="_blank"
-        class="min-w-[160px] bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-xl p-3 transition-all shrink-0">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="w-2 h-2 rounded-full ${cor} inline-block"></span>
-          <span class="text-xs font-bold text-white">${t.nome}</span>
+        class="min-w-[200px] bg-gray-900 border border-gray-800 hover:border-blue-700 rounded-2xl p-4 transition-all duration-200 shrink-0 flex flex-col gap-3">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <p class="text-gray-500 text-xs mb-0.5">${i + 1}. ${t.nome}</p>
+            <p class="text-gray-600 text-xs">${t.sub}</p>
+          </div>
         </div>
-        <p class="text-xs text-gray-400">${texto} ${ms}</p>
+        <div class="flex items-center justify-between mt-auto">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full ${cor} inline-block"></span>
+            <span class="text-xs text-gray-300">${txt}</span>
+          </div>
+          ${ms ? `<span class="text-xs text-gray-500">${ms}</span>` : ''}
+        </div>
       </a>`;
   }).join('');
 }
@@ -293,40 +488,52 @@ function renderizarCarrossel() {
 // ===================== EXPANDIR GRUPO =====================
 function expandirGrupo(grupo) {
   grupoAberto = grupo;
+  // Destaca o botão ativo
+  document.querySelectorAll('.grupo-btn').forEach(b => {
+    b.classList.remove('bg-blue-900', 'border-blue-600');
+    b.classList.add('bg-gray-800', 'border-gray-700');
+  });
+  event.currentTarget.classList.add('bg-blue-900', 'border-blue-600');
+  event.currentTarget.classList.remove('bg-gray-800', 'border-gray-700');
   renderizarGrupo(grupo);
 }
 
 function renderizarGrupo(grupo) {
-  const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === grupo);
+  const lista  = dadosTribunaisFixo.filter(t => t.grupo === grupo);
   const painel = document.getElementById('painelMonitoramento');
 
-  painel.innerHTML = tribunaisDoGrupo.map(t => {
-    const s = statusGerais[t.id];
-    const cor = s ? corStatus(s.status) : 'bg-gray-600';
-    const texto = s ? s.status : 'Aguardando robô...';
-    const ms = s && s.latenciaMs ? ` — ${s.latenciaMs}ms` : '';
+  painel.innerHTML = lista.map(t => {
+    const s       = statusGerais[t.id];
+    const cor     = s ? corStatusBg(s.status) : 'bg-gray-600';
+    const txt     = s ? s.status : 'Aguardando robô...';
+    const ms      = s && s.latenciaMs ? ` — ${s.latenciaMs}ms` : '';
     const relatos = relatosComunidade[t.id];
-    const relatosHtml = renderizarRelatos(relatos);
+    const rHtml   = renderizarRelatos(relatos);
 
     return `
-      <div class="bg-gray-900 border border-gray-800 rounded-xl p-4">
-        <div class="flex items-center justify-between mb-3">
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full ${cor} inline-block"></span>
-            <span class="font-bold text-white text-sm">${t.nome}</span>
+      <div class="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <span class="w-3 h-3 rounded-full ${cor} inline-block shrink-0"></span>
+            <div>
+              <p class="font-bold text-white text-sm">${t.nome}</p>
+              <p class="text-gray-500 text-xs">${t.sub}</p>
+            </div>
           </div>
           <a href="${t.url}" target="_blank"
-            class="text-xs text-blue-400 hover:text-blue-300 border border-blue-800 px-2 py-1 rounded-lg transition-all">
+            class="text-xs text-blue-400 hover:text-blue-300 border border-blue-800 hover:border-blue-600 px-3 py-1.5 rounded-lg transition-all shrink-0">
             Abrir Portal ↗
           </a>
         </div>
-        <div class="mb-3">
-          <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Status Atual (Robôs)</p>
-          <p class="text-sm text-gray-200">${texto}${ms}</p>
-        </div>
-        <div>
-          <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Relatos Recentes de Colegas</p>
-          ${relatosHtml}
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div class="bg-gray-800/50 rounded-xl p-3">
+            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Status (Robôs)</p>
+            <p class="text-sm text-gray-200 font-medium">${txt}${ms}</p>
+          </div>
+          <div class="bg-gray-800/50 rounded-xl p-3">
+            <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Relatos de Colegas</p>
+            ${rHtml}
+          </div>
         </div>
       </div>`;
   }).join('');
@@ -334,10 +541,10 @@ function renderizarGrupo(grupo) {
 
 // ===================== RELATOS NOS CARDS =====================
 function renderizarRelatos(relatos) {
-  if (!relatos || relatos.total === 0) {
+  if (!relatos || !relatos.total || relatos.total === 0) {
     return '<p class="text-gray-600 text-xs">Nenhum relato registrado.</p>';
   }
-  let html = `<p class="text-gray-400 text-xs mb-1">${relatos.total} relato(s) • Último às ${relatos.ultimo}</p>`;
+  let html = `<p class="text-gray-400 text-xs mb-1.5">${relatos.total} relato(s) • Último às ${relatos.ultimo}</p>`;
   if (relatos.problemas['Offline'] > 0)
     html += `<p class="text-red-400 text-xs">🔴 Offline: ${relatos.problemas['Offline']}</p>`;
   if (relatos.problemas['Instabilidade'] > 0)
@@ -348,14 +555,14 @@ function renderizarRelatos(relatos) {
 }
 
 // ===================== COR DO STATUS =====================
-function corStatus(status) {
-  if (status === 'Online')    return 'bg-green-500';
-  if (status === 'Lentidão') return 'bg-yellow-400';
+function corStatusBg(status) {
+  if (status === 'Online')      return 'bg-green-500';
+  if (status === 'Lentidão')   return 'bg-yellow-400';
   if (status === 'Fora do Ar') return 'bg-red-500';
   return 'bg-gray-600';
 }
 
-// ===================== MODAL — ESTADO =====================
+// ===================== MODAL — VARIÁVEIS =====================
 let tribunalSelecionadoId   = null;
 let tribunalSelecionadoNome = null;
 
@@ -366,8 +573,8 @@ function abrirModalRelato() {
 
   dadosTribunaisFixo.forEach(t => {
     const btn = document.createElement('button');
-    btn.className = 'w-full text-left p-3 rounded-xl border border-gray-700 bg-gray-800 text-gray-200 text-sm hover:bg-blue-900/50 hover:border-blue-500 transition-all duration-200';
-    btn.textContent = t.nome;
+    btn.className = 'w-full text-left p-3 rounded-xl border border-gray-700 bg-gray-800/80 text-gray-200 text-sm hover:bg-blue-900/40 hover:border-blue-600 transition-all duration-200 flex items-center gap-3';
+    btn.innerHTML = `<span class="text-gray-500 text-xs w-4">${dadosTribunaisFixo.indexOf(t) + 1}.</span><span>${t.nome}</span>`;
     btn.onclick = () => selecionarTribunal(t.id, t.nome, btn);
     container.appendChild(btn);
   });
@@ -378,22 +585,22 @@ function abrirModalRelato() {
 
   const btnAvancar = document.getElementById('btnAvancarProblema');
   btnAvancar.disabled = true;
-  btnAvancar.className = 'w-full py-3 rounded-xl font-semibold text-white transition-all duration-200 bg-gray-600 cursor-not-allowed opacity-50';
+  btnAvancar.className = 'w-full py-3 rounded-xl font-semibold text-white text-sm transition-all duration-200 bg-gray-700 cursor-not-allowed opacity-50';
 }
 
-// ===================== MODAL — SELECIONAR TRIBUNAL =====================
-function selecionarTribunal(id, nome, elementoClicado) {
+// ===================== MODAL — SELECIONAR =====================
+function selecionarTribunal(id, nome, clicado) {
   tribunalSelecionadoId   = id;
   tribunalSelecionadoNome = nome;
 
   document.querySelectorAll('#listaTribunaisModal button').forEach(b => {
-    b.className = 'w-full text-left p-3 rounded-xl border border-gray-700 bg-gray-800 text-gray-200 text-sm hover:bg-blue-900/50 hover:border-blue-500 transition-all duration-200';
+    b.className = 'w-full text-left p-3 rounded-xl border border-gray-700 bg-gray-800/80 text-gray-200 text-sm hover:bg-blue-900/40 hover:border-blue-600 transition-all duration-200 flex items-center gap-3';
   });
-  elementoClicado.className = 'w-full text-left p-3 rounded-xl border border-blue-500 bg-blue-900/60 text-white text-sm font-semibold transition-all duration-200';
+  clicado.className = 'w-full text-left p-3 rounded-xl border border-blue-500 bg-blue-900/50 text-white text-sm font-semibold transition-all duration-200 flex items-center gap-3';
 
   const btn = document.getElementById('btnAvancarProblema');
   btn.disabled = false;
-  btn.className = 'w-full py-3 rounded-xl font-semibold text-white transition-all duration-200 bg-blue-600 hover:bg-blue-700 hover:scale-[1.02] cursor-pointer';
+  btn.className = 'w-full py-3 rounded-xl font-semibold text-white text-sm transition-all duration-200 bg-blue-600 hover:bg-blue-500 cursor-pointer';
 }
 
 // ===================== MODAL — AVANÇAR =====================
@@ -414,7 +621,6 @@ function voltarParaTribunal() {
 async function enviarRelato(tipoProblema) {
   document.getElementById('modalRelato2').classList.add('hidden');
   document.getElementById('modalConfirmacao').classList.remove('hidden');
-
   try {
     await fetch('/api/registrar-relato', {
       method: 'POST',
@@ -424,7 +630,6 @@ async function enviarRelato(tipoProblema) {
         tipoProblema: tipoProblema
       })
     });
-    // Recarrega os dados para refletir o novo relato nos cards
     await carregarStatusDoCache();
   } catch (erro) {
     console.error('Erro ao enviar relato:', erro);
