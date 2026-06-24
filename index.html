@@ -23,26 +23,26 @@
         @media (min-width: 768px) { .state-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
         @media (min-width: 1024px) { .state-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
         
-        /* CORREÇÃO DO LETREIRO: Tempo aumentado para 120s para as notícias extensas passarem devagar e legíveis */
         @keyframes ticker {
             0% { transform: translate3d(0, 0, 0); }
             100% { transform: translate3d(-50%, 0, 0); }
         }
         .ticker-wrap { width: 100%; overflow: hidden; background-color: #060911; border-bottom: 1px solid #1e293b; padding: 14px 0; }
-        .ticker { display: inline-flex; white-space: nowrap; animation: ticker 120s linear infinite; }
+        .ticker { display: inline-flex; white-space: nowrap; animation: ticker 140s linear infinite; }
         .ticker:hover { animation-play-state: paused; }
-        /* pr-16 garante um espaço excelente e amplo entre as notícias inteiras */
-        .ticker-item { padding: 0 4rem; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; color: #94a3b8; border-right: 1px solid #1e293b; white-space: nowrap; }
+        /* Adicionado efeito de transição de cor e cursor de clique na notícia */
+        .ticker-item { padding: 0 4rem; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; color: #94a3b8; border-right: 1px solid #1e293b; white-space: nowrap; transition: color 0.2s; cursor: pointer; }
+        .ticker-item:hover { color: #3b82f6; }
     </style>
 </head>
 <body>
 
-    <!-- Letreiro de Notícias Oficiais -->
+    <!-- Letreiro de Notícias Oficiais Clicáveis -->
     <div class="ticker-wrap">
         <div class="ticker" id="tickerNoticias">
-            <div class="ticker-item flex items-center">
+            <div class="ticker-item">
                 <span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span></span>
-                Sincronizando feed de notícias em tempo real direto dos portais da Justiça...
+                Sincronizando feed de notícias intercalado e dinâmico direto dos portais da Justiça...
             </div>
         </div>
     </div>
@@ -90,7 +90,7 @@
                     <span id="dot-superiores" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
                 <div onclick="abrirEstado('nacionais')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500/50 transition min-w-[200px]">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-xs text-blue-500"></i> Systems Nacionais</span>
+                    <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-xs text-blue-500"></i> Sistemas Nacionais</span>
                     <span id="dot-nacionais" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
                 <div onclick="abrirEstado('PR')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-200 min-w-[160px] justify-center gap-3">
@@ -251,7 +251,7 @@
             { id: "tjpr_projudi",  nome: "TJPR - Projudi",     sub: "Servidor Projudi Login", grupo: "PR",       url: "https://projudi.tjpr.jus.br/projudi/" },
             { id: "tse",           nome: "TSE - Portal",       sub: "Tribunal Superior Eleitoral", grupo: "superiores", url: "https://www.tse.jus.br/" },
             { id: "tst",           nome: "TST - PJe",          sub: "Tribunal Superior do Trabalho", grupo: "superiores", url: "https://www.tst.jus.br/" },
-            { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar", grupo: "superiores", url: "https://www.stm.jus.br/" }
+            { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar", group: "superiores", url: "https://www.stm.jus.br/" }
         ];
 
         let statusGerais = {};
@@ -265,15 +265,15 @@
                 const container = document.getElementById('tickerNoticias');
                 if (container && dados.noticias && dados.noticias.length > 0) {
                     container.innerHTML = '';
-                    dados.noticias.forEach(texto => {
+                    dados.noticias.forEach(noticia => {
+                        // AJUSTE DE INTERATIVIDADE: Transforma cada item em um link real clicável que abre em nova aba
                         container.innerHTML += `
-                            <div class="ticker-item flex items-center">
+                            <div onclick="window.open('${noticia.url}', '_blank')" class="ticker-item flex items-center">
                                 <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
-                                ${texto}
+                                ${noticia.texto}
                             </div>
                         `;
                     });
-                    // Duplica para manter o looping infinito perfeito no CSS
                     container.innerHTML += container.innerHTML;
                 }
             } catch (e) { console.error("Erro ao carregar notícias.", e); }
