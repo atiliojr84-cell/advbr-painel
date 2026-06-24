@@ -42,12 +42,10 @@ export default async function handler(req, res) {
       (relatos[tribunalId].problemas[tipoProblema] || 0) + 1;
     relatos[tribunalId].total = (relatos[tribunalId].total || 0) + 1;
     relatos[tribunalId].ultimo = new Date().toLocaleTimeString('pt-BR', {
-      hour: '2-digit',
-      minute: '2-digit',
+      hour: '2-digit', minute: '2-digit',
     });
 
     await kv.set(chave, relatos);
-
     return res.status(200).json({ sucesso: true });
   } catch (erro) {
     console.error('Erro ao registrar relato:', erro);
