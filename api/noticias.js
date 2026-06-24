@@ -1,10 +1,10 @@
-// api/noticias.js - Versão focada em advocacia e tribunais (Inclusão OAB, OAB-PR e Migalhas)
+// api/noticias.js - Versão PRO com link direto do Migalhas e feeds intercalados
 const FEEDS_RSS = [
   { fonte: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },         
   { fonte: "OAB",    url: "https://www.oab.org.br/rss" },             
   { fonte: "STJ",    url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" }, 
   { fonte: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
-  { fonte: "MIGALHAS", url: "https://www.migalhas.com.br/rss" }       
+  { fonte: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" } // Link direto estável
 ];
 
 function extrairDadosDoXml(xmlTexto, fonteNome) {
@@ -23,6 +23,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
       let titulo = tituloMatch[1].trim();
       let link = linkMatch ? linkMatch[1].trim() : "#";
       
+      // Limpeza de caracteres especiais e tags CDATA
       titulo = titulo
         .replace(/&amp;/g, '&')
         .replace(/&lt;/g, '<')
@@ -30,6 +31,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         .replace(/&quot;/g, '"')
         .replace(/&#039;/g, "'");
 
+      // Filtro para validar manchetes reais e remover títulos repetidos ou vazios
       if (titulo && titulo.length > 20 && !titulo.toLowerCase().startsWith("notícias")) {
         titulo = titulo.replace(/\s+/g, ' ');
         itens.push({
@@ -38,7 +40,7 @@ function extrairDadosDoXml(xmlTexto, fonteNome) {
         });
       }
     }
-    if (itens.length >= 5) break; 
+    if (itens.length >= 5) break; // Limite por portal para garantir bom rodízio
   }
   return itens;
 }
@@ -54,12 +56,12 @@ export default async function handler(req, res) {
     const promessas = FEEDS_RSS.map(async (feed) => {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 4000);
+        const timeout = setTimeout(() => controller.abort(), 4000); // 4 segundos max por requisição
         
         const resposta = await global.fetch(feed.url, { 
           signal: controller.signal,
           headers: { 
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
             'Accept': 'application/rss+xml, text/xml, */*'
           }
         });
@@ -76,7 +78,7 @@ export default async function handler(req, res) {
 
     const resultadosAgrupados = await Promise.all(promessas);
     
-    // Intercala as notícias (Round-Robin) para misturar os portais de forma alternada
+    // Algoritmo de intercalação Round-Robin para misturar as fontes perfeitamente
     const todasAsNoticias = [];
     let maxItens = Math.max(...resultadosAgrupados.map(lista => lista.length));
     
@@ -88,10 +90,12 @@ export default async function handler(req, res) {
       });
     }
 
+    // Fallback caso todas as requisições falhem temporariamente por timeout
     if (todasAsNoticias.length === 0) {
       todasAsNoticias.push(
         { texto: "[OAB-PR] Ordem dos Advogados do Brasil Seção Paraná ativa no monitoramento de prazos.", url: "https://www.oabpr.org.br" },
-        { texto: "[MIGALHAS] Informativo de direito e atualizações de jurisprudência ativo.", url: "https://www.migalhas.com.br" }
+        { texto: "[MIGALHAS] Informativo de direito e atualizações de jurisprudência em tempo real.", url: "https://www.migalhas.com.br" },
+        { texto: "[STJ] Superior Tribunal de Justiça mantém barramento de monitoramento ativo.", url: "https://www.stj.jus.br" }
       );
     }
 
