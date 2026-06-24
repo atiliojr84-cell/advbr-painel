@@ -15,8 +15,8 @@ const PROXY_PORT = process.env.PROXY_PORT || '12321';
 
 async function testarTribunal(alvo) {
   const controller = new AbortController();
-  // Limite de 12 segundos para dar tempo do proxy residencial responder
-  const timeout = setTimeout(() => controller.abort(), 12000); 
+  // Limite de 8 segundos por tribunal para dar tempo de rodar o lote todo na Vercel
+  const timeout = setTimeout(() => controller.abort(), 8000); 
   const inicio = Date.now();
 
   try {
@@ -36,13 +36,12 @@ async function testarTribunal(alvo) {
     const ms = Date.now() - inicio;
     clearTimeout(timeout);
 
-    // Entrar na tela de login e responder qualquer status HTTP válido (até erro de permissão 403) significa que o servidor está vivo e respondendo!
     if (resposta.status >= 200 && resposta.status < 500) {
       return {
         id: alvo.id,
         nome: alvo.nome,
         grupo: alvo.grupo,
-        status: ms > 6500 ? 'Lentidão' : 'Online', // Acima de 6.5 segundos já indica lentidão severa para anexar arquivos
+        status: ms > 4500 ? 'Lentidão' : 'Online', 
         latenciaMs: ms
       };
     }
@@ -50,12 +49,13 @@ async function testarTribunal(alvo) {
 
   } catch (erro) {
     clearTimeout(timeout);
+    // SE FALHAR, RETORNA RETORNO HONESTO: Sem milissegundos falsos.
     return {
       id: alvo.id,
       nome: alvo.nome,
       grupo: alvo.grupo,
       status: 'Fora do Ar',
-      latenciaMs: null
+      latenciaMs: null 
     };
   }
 }
@@ -72,11 +72,31 @@ export default async function handler(req, res) {
   }
 
   try {
-    const estadoGlobal = (await kv.get('advbr_status_global')) || {};
-    const resultados = await Promise.all(alvosDoLote.map(testarTribunal));
+    // Busca o estado atual gravado no Redis ou cria um objeto vazio
+    let estadoGlobal = {};
+    try {
+      const dadosCache = await kv.get('advbr_status_global');
+      if (dadosCache) {
+        // Se a resposta vier como string (comum em algumas versões do SDK), faz o Parse
+        estadoGlobal = typeof dadosCache === 'string' ? JSON.parse(dadosCache) : dadosCache;
+      }
+    } catch (e) {
+      console.warn("Aviso: Cache global inacessível, iniciando lote limpo.");
+    }
 
-    resultados.forEach(item => { estadoGlobal[item.id] = item; });
-    await kv.set('advbr_status_global', estadoGlobal); // Atualiza os dados salvos no cache do Redis
+    const resultados = [];
+    
+    // CORREÇÃO: Executa um por um em fila para não estourar o proxy residencial nem dar timeout na Vercel
+    for (const alvo of alvosDoLote) {
+      const resultadoAlvo = await testarTribunal(alvo);
+      resultados.push(resultadoAlvo);
+      
+      // Salva imediatamente no objeto global
+      estadoGlobal[resultadoAlvo.id] = resultadoAlvo;
+    }
+
+    // Salva a atualização consolidada de volta no Redis KV
+    await kv.set('advbr_status_global', estadoGlobal); 
 
     return res.status(200).json({ sucesso: true, lote: numLote, processados: resultados.length });
   } catch (erro) {
