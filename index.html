@@ -170,116 +170,109 @@
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
                 <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between hover:border-blue-500/40 transition duration-200">
-                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-box-archive"></i></div>
+                    <div class="w-full h-32 bg-gray-950 rounded-lg flex items-center justify-center border border-gray-800 text-gray-600 text-3xl"><i class="fa-solid fa-hard-drive"></i></div>
                     <div><h4>10. HD Externo Criptografado</h4><p class="text-xs text-gray-400 leading-relaxed">Backup físico totalmente seguro para o acervo de processos do escritório.</p></div>
                     <span class="text-[11px] text-center block w-full bg-blue-950/40 text-blue-400 py-1.5 rounded-md font-semibold border border-blue-900/30">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[9px] ml-0.5"></i></span>
                 </a>
             </div>
         </section>
+
     </div>
 
-    <!-- ===================== MODAL TOKEN ===================== -->
+    <!-- ===================== MODAL TESTE DE TOKEN ===================== -->
     <div id="modalToken" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg relative shadow-2xl p-6 space-y-5">
-            <button onclick="fecharModal('modalToken')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40">
-                    <i class="fa-brands fa-usb"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white">Teste de Token / Certificado</h3>
-                <p class="text-sm text-gray-400 leading-6 whitespace-normal break-words">
-                    Você será redirecionado para o teste oficial da Certisign em outra aba.
-                </p>
-                <p class="text-xs text-gray-500 leading-6 whitespace-normal break-words">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg relative shadow-2xl overflow-hidden">
+            <button onclick="fecharModal('modalToken')" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="p-6 border-b border-gray-800">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-usb text-blue-500"></i> Teste de Token / Certificado</h3>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="alert alert-info bg-blue-950/20 border border-blue-800/40 text-blue-400 text-sm p-3 rounded-xl">
+                    Você será redirecionado para o teste oficial da Certisign em outra aba.<br>
                     Esta página da ADVBR.info continuará aberta aqui em segundo plano.
-                </p>
-            </div>
-
-            <a href="https://suporte.certisign.com.br/duvidas-suporte/certificado-digital/teste-certificado/" target="_blank" rel="noopener noreferrer"
-               onclick="fecharModal('modalToken')"
-               class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition active:scale-95 shadow-lg">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Ir para o teste da Certisign
-            </a>
-
-            <div class="border-t border-gray-800 pt-4 space-y-2">
-                <p class="text-xs text-center text-gray-500 leading-6 whitespace-normal break-words">
+                </div>
+                <div class="alert alert-light border border-gray-800 bg-gray-950 text-gray-400 text-sm p-3 rounded-xl">
+                    <strong>Antes de prosseguir:</strong> verifique se o certificado está corretamente configurado.<br>
+                    Se for <strong>A3</strong>, confirme se o token está conectado.<br>
+                    Se for <strong>A1</strong>, confirme se o certificado está instalado no dispositivo.
+                </div>
+                <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
+                    <a href="https://www.certisign.com.br/duvidas-suporte/downloads/teste-seu-certificado" target="_blank" rel="noopener noreferrer"
+                       class="w-full sm:w-72 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-base"></i> Ir para o teste da Certisign
+                    </a>
+                </div>
+                <div class="alert alert-light border border-gray-800 bg-gray-950 text-gray-400 text-sm p-3 rounded-xl">
                     Se o teste da Certisign não reconhecer o token, chame o suporte abaixo.
-                </p>
-                <a href="https://api.whatsapp.com/send?phone=5544984416101&text=Olá%2C%20preciso%20de%20suporte%20com%20meu%20token%20certificado%20digital." target="_blank" rel="noopener noreferrer"
-                   class="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition active:scale-95 shadow-lg">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Falar com suporte no WhatsApp
-                </a>
-                <p class="text-[10px] text-center text-gray-600">(44) 98441-6101 — Suporte ADVBR.info</p>
+                    <div class="flex flex-wrap gap-2 mt-3">
+                        <a href="https://wa.me/5544984416101" target="_blank" rel="noopener noreferrer" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl transition active:scale-95">
+                            <i class="fa-brands fa-whatsapp"></i> Falar com suporte no WhatsApp
+                        </a>
+                    </div>
+                </div>
             </div>
+            <button onclick="fecharModal('modalToken')" class="w-full py-2 text-xs text-gray-500 hover:text-gray-300 transition">Fechar</button>
         </div>
     </div>
 
-    <!-- ===================== MODAL PJe OFFICE ===================== -->
+    <!-- ===================== MODAL TESTE PJE OFFICE PRO ===================== -->
     <div id="modalPjeOffice" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg relative shadow-2xl p-6 space-y-5">
-            <button onclick="fecharModal('modalPjeOffice')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40">
-                    <i class="fa-solid fa-laptop-code"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white">Teste PJe Office Pro</h3>
-                <p class="text-xs text-amber-300 bg-amber-900/30 border border-amber-700/40 rounded-lg px-3 py-2 leading-6 whitespace-normal break-words">
-                    Atenção: ao clicar em testar, o navegador pode mostrar um aviso como "advbr.info quer Acessar outros apps e serviços neste dispositivo". Isso é esperado para o PJe Office local.
-                </p>
-                <p id="pjeStatusMsg" class="text-sm text-gray-400 leading-6 whitespace-normal break-words">
-                    🔍 Verificando o PJe Office nesta máquina...
-                </p>
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg relative shadow-2xl overflow-hidden">
+            <button onclick="fecharModal('modalPjeOffice')" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="p-6 border-b border-gray-800">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-laptop-code text-blue-500"></i> Teste PJe Office Pro</h3>
             </div>
-
-            <!-- Resultado OK -->
-            <div id="pjeResultadoOk" class="hidden bg-green-950/30 border border-green-800/40 rounded-xl p-4 text-center space-y-1">
-                <p class="text-green-400 text-2xl">✅</p>
-                <p class="font-bold text-green-400">PJe Office detectado e funcionando!</p>
-                <p class="text-xs text-gray-400 leading-6 whitespace-normal break-words">O serviço local está ativo e pronto para assinatura de documentos.</p>
-            </div>
-
-            <!-- Resultado ERRO -->
-            <div id="pjeResultadoErro" class="hidden bg-red-950/20 border border-red-900/30 rounded-xl p-4 space-y-3">
-                <div class="text-center">
-                    <p class="text-red-400 text-2xl">❌</p>
-                    <p class="font-bold text-red-400">PJe Office não detectado</p>
-                    <p class="text-xs text-gray-400 mt-1 leading-6 whitespace-normal break-words">O serviço não está respondendo na porta 8800.</p>
+            <div class="p-6 space-y-4">
+                <div class="alert alert-warning bg-amber-950/20 border border-amber-800/40 text-amber-400 text-sm p-3 rounded-xl">
+                    <strong>Atenção:</strong> ao clicar em testar, o navegador pode mostrar um aviso como "advbr.info quer Acessar outros apps e serviços neste dispositivo". Isso é esperado para o PJe Office local.
                 </div>
-                <ul class="text-xs text-gray-400 space-y-1 list-none">
-                    <li class="flex items-start gap-2"><span>•</span> Verifique se o PJe Office está instalado</li>
-                    <li class="flex items-start gap-2"><span>•</span> Procure o ícone do PJe Office na bandeja do sistema e abra-o</li>
-                    <li class="flex items-start gap-2"><span>•</span> Antivírus ou firewall pode estar bloqueando a porta 8800</li>
-                </ul>
-                <div class="border-t border-gray-800 pt-3 space-y-2">
-                    <p class="text-xs text-center text-gray-500 leading-6 whitespace-normal break-words">Precisa de ajuda? Fale com o suporte.</p>
-                    <a href="https://api.whatsapp.com/send?phone=5544984416101&text=Olá%2C%20preciso%20de%20suporte%20com%20o%20PJe%20Office." target="_blank" rel="noopener noreferrer"
-                       class="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition active:scale-95">
-                        <i class="fa-brands fa-whatsapp text-lg"></i> Falar com suporte no WhatsApp
-                    </a>
-                    <p class="text-[10px] text-center text-gray-600">(44) 98441-6101 — Suporte ADVBR.info</p>
+
+                <div id="pjeStatusMsg" class="text-sm text-gray-400 flex items-center gap-2">
+                    <i class="fa-solid fa-spinner fa-spin"></i> 🔍 Verificando o PJe Office nesta máquina...
+                </div>
+
+                <div id="pjeResultadoOk" class="hidden">
+                    <div class="alert alert-success bg-green-950/20 border border-green-800/40 text-green-400 text-sm p-3 rounded-xl">
+                        <i class="fa-solid fa-check-circle"></i> <strong>PJe Office detectado e funcionando!</strong><br>
+                        O serviço local está ativo e pronto para assinatura de documentos.
+                    </div>
+                </div>
+
+                <div id="pjeResultadoErro" class="hidden">
+                    <div class="alert alert-danger bg-red-950/20 border border-red-800/40 text-red-400 text-sm p-3 rounded-xl">
+                        <i class="fa-solid fa-times-circle"></i> <strong>PJe Office não detectado</strong><br>
+                        O serviço não está respondendo na porta 8800.
+                        <ul class="list-disc list-inside mt-2 text-xs">
+                            <li>Verifique se o PJe Office está instalado</li>
+                            <li>Procure o ícone do PJe Office na bandeja do sistema e abra-o</li>
+                            <li>Antivírus ou firewall pode estar bloqueando a porta 8800</li>
+                        </ul>
+                    </div>
+                    <div class="alert alert-light border border-gray-800 bg-gray-950 text-gray-400 text-sm p-3 rounded-xl mt-3">
+                        Precisa de ajuda? Fale com o suporte.
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <a href="https://wa.me/5544984416101" target="_blank" rel="noopener noreferrer" class="btn bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl transition active:scale-95">
+                                <i class="fa-brands fa-whatsapp"></i> Falar com suporte no WhatsApp
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <button onclick="fecharModal('modalPjeOffice')" class="w-full py-2 text-xs text-gray-500 hover:text-gray-300 transition">Fechar</button>
         </div>
     </div>
 
     <!-- ===================== MODAL OTIMIZADOR PDF ===================== -->
     <div id="modalPdfOptimizer" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-xl relative shadow-2xl p-6 space-y-5">
-            <button onclick="fecharModal('modalPdfOptimizer')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40">
-                    <i class="fa-solid fa-file-pdf"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white">Otimizador PDF Inteligente</h3>
-                <p class="text-sm text-gray-400 leading-6 whitespace-normal break-words">
-                    Ajuste seu PDF para os requisitos do tribunal. Processamento 100% local no seu navegador.
-                </p>
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg relative shadow-2xl overflow-hidden">
+            <button onclick="fecharModal('modalPdfOptimizer')" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <div class="p-6 border-b border-gray-800">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-file-pdf text-red-500"></i> Otimizador PDF Inteligente</h3>
             </div>
+            <div class="p-6 space-y-4">
+                <p class="text-sm text-gray-400">Ajuste seu PDF para os requisitos do tribunal. Processamento 100% local no seu navegador.</p>
 
-            <div class="space-y-4">
-                <!-- Seleção do Portal -->
+                <!-- 1. Selecionar Portal de Destino -->
                 <div>
                     <label for="selectPortal" class="block text-sm font-medium text-gray-300 mb-2">1. Selecione o Portal de Destino:</label>
                     <select id="selectPortal" onchange="atualizarRequisitosPortal()" class="w-full p-3 rounded-xl bg-gray-800 border border-gray-700 text-gray-200 focus:ring-blue-500 focus:border-blue-500">
@@ -292,37 +285,39 @@
                     </select>
                 </div>
 
-                <!-- Requisitos do Portal -->
-                <div id="requisitosPortal" class="bg-gray-800 border border-gray-700 rounded-xl p-3 text-sm text-gray-400 hidden">
-                    <p class="font-semibold text-gray-300 mb-1">Requisitos do Portal:</p>
-                    <ul class="list-disc list-inside space-y-0.5" id="listaRequisitos">
-                        <li>Tamanho máximo: <span id="reqTamanho">N/A</span></li>
-                        <li>Páginas máximas: <span id="reqPaginas">N/A</span></li>
-                        <li>Observações: <span id="reqObservacoes">N/A</span></li>
+                <!-- Requisitos do Portal (dinâmico) -->
+                <div id="requisitosPortal" class="hidden bg-gray-800 p-4 rounded-xl border border-gray-700 space-y-2">
+                    <h4 class="text-xs font-bold text-gray-300 uppercase">Requisitos do Portal:</h4>
+                    <ul id="listaRequisitos" class="text-sm text-gray-400 space-y-1">
+                        <li>Tamanho máximo: <span id="reqTamanho" class="font-semibold">N/A</span></li>
+                        <li>Páginas máximas: <span id="reqPaginas" class="font-semibold">N/A</span></li>
+                        <li>Observações: <span id="reqObservacoes" class="font-semibold">N/A</span></li>
                     </ul>
                 </div>
 
-                <!-- Upload do PDF -->
+                <!-- 2. Carregar Arquivo PDF -->
                 <div>
                     <label for="pdfFileInput" class="block text-sm font-medium text-gray-300 mb-2">2. Carregue seu arquivo PDF:</label>
-                    <input type="file" id="pdfFileInput" accept="application/pdf" onchange="handlePdfUpload(event)" class="block w-full text-sm text-gray-500
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-blue-50 file:text-blue-700
-                        hover:file:bg-blue-100 cursor-pointer"
-                    >
-                    <p id="pdfInfo" class="text-xs text-gray-500 mt-2 hidden">Tamanho: <span id="pdfSize"></span> | Páginas: <span id="pdfPages"></span></p>
+                    <input type="file" id="pdfFileInput" accept=".pdf" onchange="handlePdfUpload(event)" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
                 </div>
 
-                <!-- Análise e Recomendações -->
-                <div id="analiseResultado" class="hidden bg-gray-800 border border-gray-700 rounded-xl p-3 text-center space-y-2">
-                    <p id="analiseMensagem" class="font-semibold text-white"></p>
-                    <div id="botoesAcao" class="flex flex-col sm:flex-row justify-center gap-3 mt-3">
-                        <button id="btnComprimir" onclick="comprimirPdf()" class="hidden w-full sm:w-auto bg-amber-600 hover:bg-amber-500 text-white font-bold py-2 px-4 rounded-xl transition active:scale-95">
+                <!-- Informações do PDF carregado -->
+                <div id="pdfInfo" class="hidden bg-gray-800 p-4 rounded-xl border border-gray-700 space-y-2">
+                    <h4 class="text-xs font-bold text-gray-300 uppercase">Informações do PDF:</h4>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li>Tamanho: <span id="pdfSize" class="font-semibold">N/A</span></li>
+                        <li>Páginas: <span id="pdfPages" class="font-semibold">N/A</span></li>
+                    </ul>
+                </div>
+
+                <!-- Análise e Ações -->
+                <div id="analiseResultado" class="hidden bg-gray-800 p-4 rounded-xl border border-gray-700 space-y-3 text-center">
+                    <p id="analiseMensagem" class="text-sm font-semibold"></p>
+                    <div class="flex justify-center gap-3">
+                        <button id="btnComprimir" onclick="comprimirPdf()" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition active:scale-95">
                             <i class="fa-solid fa-compress"></i> Comprimir PDF
                         </button>
-                        <button id="btnDividir" onclick="dividirPdf()" class="hidden w-full sm:w-auto bg-red-600 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-xl transition active:scale-95">
+                        <button id="btnDividir" onclick="dividirPdf()" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition active:scale-95">
                             <i class="fa-solid fa-scissors"></i> Dividir PDF
                         </button>
                     </div>
@@ -515,7 +510,7 @@
             const resultadoErro = document.getElementById('pjeResultadoErro');
 
             // Reset
-            statusMsg.textContent = '🔍 Verificando o PJe Office nesta máquina...'; // Texto atualizado
+            statusMsg.textContent = '🔍 Verificando o PJe Office nesta máquina...';
             statusMsg.classList.remove('hidden');
             resultadoOk.classList.add('hidden');
             resultadoErro.classList.add('hidden');
@@ -556,6 +551,7 @@
 
         // ── OTIMIZADOR PDF INTELIGENTE ────────────────────────
         let currentPdfFile = null; // Armazena o arquivo PDF atual
+        let loadedPdfDoc = null; // Armazena o objeto PDFDocument carregado
         const { PDFDocument, rgb, StandardFonts } = PDFLib; // Desestrutura para usar as classes
 
         const regrasPdfPorPortal = {
@@ -600,6 +596,7 @@
             document.getElementById('requisitosPortal').classList.add('hidden');
             document.getElementById('analiseResultado').classList.add('hidden');
             currentPdfFile = null;
+            loadedPdfDoc = null;
         }
 
         function atualizarRequisitosPortal() {
@@ -627,6 +624,7 @@
             const file = event.target.files[0];
             if (!file) {
                 currentPdfFile = null;
+                loadedPdfDoc = null;
                 document.getElementById('pdfInfo').classList.add('hidden');
                 document.getElementById('analiseResultado').classList.add('hidden');
                 return;
@@ -639,11 +637,12 @@
 
             try {
                 const arrayBuffer = await file.arrayBuffer();
-                const pdfDoc = await PDFDocument.load(arrayBuffer);
-                document.getElementById('pdfPages').textContent = pdfDoc.getPageCount();
+                loadedPdfDoc = await PDFDocument.load(arrayBuffer); // Armazena o PDF carregado
+                document.getElementById('pdfPages').textContent = loadedPdfDoc.getPageCount();
             } catch (error) {
                 console.error("Erro ao ler o PDF:", error);
                 document.getElementById('pdfPages').textContent = "Erro";
+                loadedPdfDoc = null;
             }
 
             analisarPdf();
@@ -660,12 +659,12 @@
             btnComprimir.classList.add('hidden');
             btnDividir.classList.add('hidden');
 
-            if (!currentPdfFile || !portalId || !regrasPdfPorPortal[portalId]) {
+            if (!currentPdfFile || !portalId || !regrasPdfPorPortal[portalId] || !loadedPdfDoc) {
                 return;
             }
 
             const fileSizeMb = parseFloat((currentPdfFile.size / (1024 * 1024)).toFixed(2));
-            const pageCount = parseInt(document.getElementById('pdfPages').textContent);
+            const pageCount = loadedPdfDoc.getPageCount();
             const regras = regrasPdfPorPortal[portalId];
 
             analiseDiv.classList.remove('hidden');
@@ -690,9 +689,8 @@
             }
         }
 
-        // Funções placeholder para manipulação de PDF
         async function comprimirPdf() {
-            if (!currentPdfFile) return;
+            if (!loadedPdfDoc) return;
             alert("Funcionalidade de compressão em desenvolvimento! (Usaria pdf-lib para reduzir a qualidade das imagens, etc.)");
             // Exemplo básico de como seria a estrutura:
             // const arrayBuffer = await currentPdfFile.arrayBuffer();
@@ -702,20 +700,53 @@
         }
 
         async function dividirPdf() {
-            if (!currentPdfFile) return;
-            alert("Funcionalidade de divisão em desenvolvimento! (Usaria pdf-lib para extrair páginas e criar novos PDFs)");
-            // Exemplo básico de como seria a estrutura:
-            // const arrayBuffer = await currentPdfFile.arrayBuffer();
-            // const pdfDoc = await PDFDocument.load(arrayBuffer);
-            // const totalPages = pdfDoc.getPageCount();
-            // const pagesPerPart = Math.ceil(totalPages / 2); // Exemplo: dividir em 2 partes
-            // for (let i = 0; i < totalPages; i += pagesPerPart) {
-            //     const newPdfDoc = await PDFDocument.create();
-            //     const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [i]);
-            //     newPdfDoc.addPage(copiedPage);
-            //     const pdfBytes = await newPdfDoc.save();
-            //     downloadPdf(pdfBytes, `pdf_parte_${(i / pagesPerPart) + 1}.pdf`);
-            // }
+            if (!loadedPdfDoc) return;
+
+            const pageCount = loadedPdfDoc.getPageCount();
+            let pagesToExtract = prompt(`O PDF tem ${pageCount} páginas. Digite as páginas que deseja extrair (ex: 1-3, 5, 7-9):`);
+
+            if (!pagesToExtract) {
+                alert('Operação de divisão cancelada.');
+                return;
+            }
+
+            try {
+                const newPdfDoc = await PDFLib.PDFDocument.create();
+                const pageIndicesToCopy = [];
+
+                // Parse the input string (e.g., "1-3, 5, 7-9")
+                pagesToExtract.split(',').forEach(part => {
+                    part = part.trim();
+                    if (part.includes('-')) {
+                        const [start, end] = part.split('-').map(Number);
+                        for (let i = start; i <= end; i++) {
+                            if (i >= 1 && i <= pageCount) {
+                                pageIndicesToCopy.push(i - 1); // PDFLib uses 0-indexed pages
+                            }
+                        }
+                    } else {
+                        const pageNum = Number(part);
+                        if (pageNum >= 1 && pageNum <= pageCount) {
+                            pageIndicesToCopy.push(pageNum - 1);
+                        }
+                    }
+                });
+
+                if (pageIndicesToCopy.length === 0) {
+                    alert('Nenhuma página válida selecionada para extração.');
+                    return;
+                }
+
+                const copiedPages = await newPdfDoc.copyPages(loadedPdfDoc, pageIndicesToCopy);
+                copiedPages.forEach((page) => newPdfDoc.addPage(page));
+
+                const splitPdfBytes = await newPdfDoc.save();
+                downloadPdf(splitPdfBytes, `dividido_${currentPdfFile.name}`);
+                alert('PDF dividido com sucesso!');
+            } catch (error) {
+                console.error("Erro ao dividir PDF:", error);
+                alert(`Erro ao dividir PDF: ${error.message}`);
+            }
         }
 
         function downloadPdf(pdfBytes, filename) {
