@@ -28,44 +28,24 @@
             100% { transform: translate3d(-50%, 0, 0); }
         }
         .ticker-wrap { width: 100%; overflow: hidden; background-color: #060911; border-bottom: 1px solid #1e293b; padding: 12px 0; }
-        .ticker { display: inline-flex; white-space: nowrap; padding-left: 100%; animation: ticker 50s linear infinite; }
+        .ticker { display: inline-flex; white-space: nowrap; animation: ticker 65s linear infinite; }
         .ticker:hover { animation-play-state: paused; }
-        .ticker-item { padding: 0 3rem; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; color: #94a3b8; border-right: 1px solid #1e293b; }
+        .ticker-item { padding: 0 2.5rem; font-size: 0.82rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; color: #94a3b8; border-right: 1px solid #1e293b; }
     </style>
 </head>
 <body>
 
-    <!-- Ticker de Alertas de Queda -->
     <div class="ticker-wrap">
-        <div class="ticker">
+        <div class="ticker" id="tickerNoticias">
             <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TRT9 (PR): Advogados relatam instabilidade geral no acesso ao PJe nesta tarde.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-amber-500 mr-2"></span>
-                <strong class="text-amber-400 mr-1">TJPR:</strong> Sistema eproc passará por manutenção programada neste sábado das 08h às 14h.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="h-2.5 w-2.5 rounded-full bg-blue-500 mr-2"></span>
-                <strong class="text-blue-400 mr-1">TRF3:</strong> Nova versão do assinador PJe corrigiu falhas com certificados A3 no navegador Chrome.
-            </div>
-            <div class="ticker-item flex items-center">
-                <span class="relative flex h-2.5 w-2.5 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
-                </span>
-                <strong class="text-red-400 mr-1">[ALERTA DE QUEDA]</strong> TJSP: Módulo de peticionamento do e-SAJ apresenta lentidão crítica nas comarcas do interior.
+                <span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span></span>
+                Sincronizando feed de notícias em tempo real direto dos portais da Justiça...
             </div>
         </div>
     </div>
 
     <div class="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
         
-        <!-- Cabeçalho Principal -->
         <header class="border-b border-gray-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-blue-500 flex items-center gap-1">
@@ -81,7 +61,6 @@
             </div>
         </header>
 
-        <!-- Seção: Carrossel Dinâmico -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-star text-amber-500"></i> Principais Servidores de Login
@@ -93,7 +72,6 @@
             </div>
         </section>
 
-        <!-- Seção: Escolha de Região -->
         <section>
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado / Região
@@ -101,24 +79,20 @@
             <p class="text-xs text-gray-500 mb-4">Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
             
             <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
-                <!-- Botão 1: Tribunais Superiores -->
                 <div onclick="abrirEstado('superiores')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border border-blue-800/40 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200 min-w-[240px]">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-scale-balanced text-xs"></i> Tribunais Superiores</span>
                     <span id="dot-superiores" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
-                <!-- Botão 2: Sistemas Nacionais -->
                 <div onclick="abrirEstado('nacionais')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-300 hover:border-blue-500/50 transition min-w-[200px]">
                     <span class="flex items-center gap-2"><i class="fa-solid fa-globe text-xs text-blue-500"></i> Sistemas Nacionais</span>
                     <span id="dot-nacionais" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all duration-300 inline-block ml-1"></span>
                 </div>
-                <!-- Botão 3: Paraná -->
                 <div onclick="abrirEstado('PR')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gray-900 border border-gray-800 text-gray-200 min-w-[160px] justify-center gap-3">
                     Paraná (PR) <span id="dot-PR" class="h-2.5 w-2.5 rounded-full bg-gray-600 transition-all inline-block"></span>
                 </div>
             </div>
         </section>
 
-        <!-- Otimizador PDF Inteligente -->
         <section class="p-6 card rounded-2xl border border-gray-855 bg-gradient-to-br from-gray-900 to-gray-950 flex flex-col lg:flex-row justify-between items-center gap-6">
             <div class="space-y-2 text-center lg:text-left w-full lg:flex-1">
                 <h2 class="text-lg font-bold text-gray-200 flex items-center justify-center lg:justify-start gap-3">
@@ -133,7 +107,6 @@
             </button>
         </section>
 
-        <!-- Teste de Módulos Locais -->
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
@@ -152,7 +125,6 @@
             </div>
         </section>
 
-        <!-- Vitrine de Equipamentos Homologados -->
         <section class="space-y-4">
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                 <div class="max-w-2xl">
@@ -221,7 +193,6 @@
         </section>
     </div>
 
-    <!-- Modal Detalhado de Instâncias -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
             <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -240,7 +211,6 @@
         </div>
     </div>
 
-    <!-- Modal Enviar Alerta -->
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-4 relative shadow-2xl">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -274,6 +244,30 @@
         ];
 
         let statusGerais = {};
+
+        // Nova função para puxar o feed RSS oficial e injetar no letreiro
+        async function carregarNoticiasRss() {
+            try {
+                const res = await fetch('/api/noticias');
+                if (!res.ok) return;
+                const dados = await res.json();
+                
+                const container = document.getElementById('tickerNoticias');
+                if (container && dados.noticias && dados.noticias.length > 0) {
+                    container.innerHTML = '';
+                    dados.noticias.forEach(texto => {
+                        container.innerHTML += `
+                            <div class="ticker-item flex items-center">
+                                <span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
+                                ${texto}
+                            </div>
+                        `;
+                    });
+                    // Duplica o conteúdo para garantir o looping infinito perfeito sem cortes visuais
+                    container.innerHTML += container.innerHTML;
+                }
+            } catch (e) { console.error("Erro ao sincronizar feeds RSS de notícias.", e); }
+        }
 
         async function carregarStatusDoCache() {
             try {
@@ -362,7 +356,6 @@
                     if (status === "Fora do Ar") qtdFora++;
                 });
 
-                // Limpa as classes de cores antigas mantendo a estrutura base do Tailwind
                 dot.className = "h-2.5 w-2.5 rounded-full transition-all duration-300 inline-block ml-1";
 
                 if (totalTribunais === 0) {
@@ -438,7 +431,9 @@
 
         window.onload = function() {
             carregarStatusDoCache();
+            carregarNoticiasRss();
             setInterval(carregarStatusDoCache, 30000);
+            setInterval(carregarNoticiasRss, 300000); // Atualiza o letreiro do front a cada 5 minutos
         }
     </script>
 </body>
