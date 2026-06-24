@@ -91,7 +91,7 @@
             </button>
         </section>
 
-        <!-- SEÇÃO DIAGNÓSTICO — TOKEN + PJe OFFICE -->
+        <!-- ✅ SEÇÃO CORRIGIDA: botões com largura idêntica -->
         <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
             <div class="max-w-xl mx-auto text-center space-y-5 py-4">
                 <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
@@ -99,14 +99,11 @@
                 </div>
                 <h2 class="text-xl font-bold">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
                 <p class="text-sm text-gray-400">O módulo local está pronto. Realize a validação do seu Token OAB ou execute o teste de subsistema do assinador do governo.</p>
-
                 <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-                    <!-- Botão Token -->
-                    <button onclick="abrirModalToken()" class="w-full sm:w-72 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                    <button onclick="alert('Lendo trilhas do Token USB...')" class="w-full sm:w-72 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
                         <i class="fa-brands fa-usb text-base"></i> Iniciar Teste de Token
                     </button>
-                    <!-- Botão PJe Office -->
-                    <button onclick="abrirModalPjeOffice()" class="w-full sm:w-72 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
+                    <button onclick="alert('Verificando WebSocket loopback local do PJe Office...')" class="w-full sm:w-72 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-laptop-code text-base"></i> Iniciar Teste PJe Office Pro
                     </button>
                 </div>
@@ -180,83 +177,6 @@
         </section>
     </div>
 
-    <!-- ===================== MODAL TOKEN ===================== -->
-    <div id="modalToken" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md relative shadow-2xl p-6 space-y-5">
-            <button onclick="fecharModal('modalToken')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40">
-                    <i class="fa-brands fa-usb"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white">Teste de Token / Certificado</h3>
-                <p class="text-sm text-gray-400 leading-relaxed">
-                    Você será redirecionado para o site oficial da <strong class="text-white">Certisign</strong> para realizar o teste do seu token e certificado digital.
-                </p>
-                <p class="text-xs text-gray-500">O site da ADVBR.info permanecerá aberto nesta aba.</p>
-            </div>
-
-            <a href="https://suporte.certisign.com.br/duvidas-suporte/certificado-digital/teste-certificado/" target="_blank" rel="noopener noreferrer"
-               onclick="fecharModal('modalToken')"
-               class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition active:scale-95 shadow-lg">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Ir para o teste da Certisign
-            </a>
-
-            <div class="border-t border-gray-800 pt-4 space-y-2">
-                <p class="text-xs text-center text-gray-500">Deu problema no teste ou o token não foi reconhecido?</p>
-                <a href="https://api.whatsapp.com/send?phone=5544984416101&text=Ol%C3%A1%2C%20preciso%20de%20suporte%20com%20meu%20token%20certificado%20digital." target="_blank" rel="noopener noreferrer"
-                   class="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition active:scale-95 shadow-lg">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Falar com suporte no WhatsApp
-                </a>
-                <p class="text-[10px] text-center text-gray-600">(44) 98441-6101 — Suporte ADVBR.info</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===================== MODAL PJe OFFICE ===================== -->
-    <div id="modalPjeOffice" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
-        <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-md relative shadow-2xl p-6 space-y-5">
-            <button onclick="fecharModal('modalPjeOffice')" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40">
-                    <i class="fa-solid fa-laptop-code"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white">Teste PJe Office Pro</h3>
-                <p id="pjeStatusMsg" class="text-sm text-gray-400">🔍 Verificando PJe Office na sua máquina...</p>
-            </div>
-
-            <!-- Resultado OK -->
-            <div id="pjeResultadoOk" class="hidden bg-green-950/30 border border-green-800/40 rounded-xl p-4 text-center space-y-1">
-                <p class="text-green-400 text-2xl">✅</p>
-                <p class="font-bold text-green-400">PJe Office detectado e funcionando!</p>
-                <p class="text-xs text-gray-400">O serviço local está ativo e pronto para assinatura de documentos.</p>
-            </div>
-
-            <!-- Resultado ERRO -->
-            <div id="pjeResultadoErro" class="hidden bg-red-950/20 border border-red-900/30 rounded-xl p-4 space-y-3">
-                <div class="text-center">
-                    <p class="text-red-400 text-2xl">❌</p>
-                    <p class="font-bold text-red-400">PJe Office não detectado</p>
-                    <p class="text-xs text-gray-400 mt-1">O serviço não está respondendo na porta 8800.</p>
-                </div>
-                <ul class="text-xs text-gray-400 space-y-1 list-none">
-                    <li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span> Verifique se o PJe Office está instalado</li>
-                    <li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span> Procure o ícone do PJe Office na bandeja do sistema e abra-o</li>
-                    <li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span> Antivírus ou firewall pode estar bloqueando a porta 8800</li>
-                </ul>
-                <div class="border-t border-gray-800 pt-3 space-y-2">
-                    <p class="text-xs text-center text-gray-500">Precisa de ajuda? Fale com o suporte.</p>
-                    <a href="https://api.whatsapp.com/send?phone=5544984416101&text=Ol%C3%A1%2C%20preciso%20de%20suporte%20com%20o%20PJe%20Office." target="_blank" rel="noopener noreferrer"
-                       class="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-xl transition active:scale-95">
-                        <i class="fa-brands fa-whatsapp text-lg"></i> Falar com suporte no WhatsApp
-                    </a>
-                    <p class="text-[10px] text-center text-gray-600">(44) 98441-6101 — Suporte ADVBR.info</p>
-                </div>
-            </div>
-
-            <button onclick="fecharModal('modalPjeOffice')" class="w-full py-2 text-xs text-gray-500 hover:text-gray-300 transition">Fechar</button>
-        </div>
-    </div>
-
     <!-- Modal Status por Estado -->
     <div id="modalEstado" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 space-y-5 relative shadow-2xl">
@@ -280,6 +200,8 @@
     <div id="modalReportar" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden p-4 z-50">
         <div class="bg-gray-900 border border-gray-800 rounded-2xl w-full max-w-lg relative shadow-2xl overflow-hidden">
             <button onclick="fecharModal('modalReportar')" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+            <!-- Tela 1 -->
             <div id="telaEscolhaTribunal">
                 <div class="p-6 border-b border-gray-800">
                     <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-magnifying-glass text-blue-400"></i> Em qual portal está o problema?</h3>
@@ -295,6 +217,8 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Tela 2 -->
             <div id="telaEscolhaProblema" class="hidden">
                 <div class="p-6 border-b border-gray-800">
                     <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-amber-400"></i> Qual é o problema?</h3>
@@ -318,6 +242,8 @@
                     <button onclick="voltarParaTribunal()" class="w-full py-2 text-xs text-gray-500 hover:text-gray-300 transition">← Voltar</button>
                 </div>
             </div>
+
+            <!-- Tela 3 -->
             <div id="telaConfirmacao" class="hidden">
                 <div class="p-8 text-center space-y-4">
                     <div class="text-5xl">✅</div>
@@ -357,55 +283,6 @@
         let tribunalSelecionadoId = null;
         let tribunalSelecionadoNome = null;
 
-        // ── MODAL TOKEN ───────────────────────────────────────────────
-        function abrirModalToken() {
-            document.getElementById('modalToken').classList.remove('hidden');
-        }
-
-        // ── MODAL PJe OFFICE ──────────────────────────────────────────
-        async function abrirModalPjeOffice() {
-            const modal = document.getElementById('modalPjeOffice');
-            const statusMsg = document.getElementById('pjeStatusMsg');
-            const resultadoOk = document.getElementById('pjeResultadoOk');
-            const resultadoErro = document.getElementById('pjeResultadoErro');
-
-            // Reset
-            statusMsg.textContent = '🔍 Verificando PJe Office na sua máquina...';
-            statusMsg.classList.remove('hidden');
-            resultadoOk.classList.add('hidden');
-            resultadoErro.classList.add('hidden');
-            modal.classList.remove('hidden');
-
-            const endpoints = [
-                'https://127.0.0.1:8800/',
-                'http://127.0.0.1:8800/'
-            ];
-
-            let encontrou = false;
-
-            for (const url of endpoints) {
-                try {
-                    const controller = new AbortController();
-                    const timeout = setTimeout(() => controller.abort(), 4000);
-                    await fetch(url, { signal: controller.signal, mode: 'no-cors' });
-                    clearTimeout(timeout);
-                    encontrou = true;
-                    break;
-                } catch (e) {
-                    continue;
-                }
-            }
-
-            statusMsg.classList.add('hidden');
-
-            if (encontrou) {
-                resultadoOk.classList.remove('hidden');
-            } else {
-                resultadoErro.classList.remove('hidden');
-            }
-        }
-
-        // ── MODAL REPORTAR ────────────────────────────────────────────
         function abrirReportar() {
             tribunalSelecionadoId = null;
             tribunalSelecionadoNome = null;
@@ -468,11 +345,8 @@
             } catch(e) { console.error('Erro ao registrar relato:', e); }
         }
 
-        function fecharModal(idModal) {
-            document.getElementById(idModal).classList.add('hidden');
-        }
+        function fecharModal(idModal) { document.getElementById(idModal).classList.add('hidden'); }
 
-        // ── NOTÍCIAS ──────────────────────────────────────────────────
         async function carregarNoticiasRss() {
             try {
                 const res = await fetch('/api/noticias');
@@ -489,7 +363,6 @@
             } catch(e) { console.error("Erro ao carregar notícias.", e); }
         }
 
-        // ── STATUS E CARROSSEL ────────────────────────────────────────
         async function carregarStatusDoCache() {
             try {
                 const resposta = await fetch('/api/status-atual');
@@ -562,10 +435,10 @@
                 });
                 dot.className = "h-2.5 w-2.5 rounded-full transition-all duration-300 inline-block ml-1";
                 const total = membros.length;
-                if (total === 0)              dot.className += " bg-gray-600";
-                else if (qtdOnline === total)  dot.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
-                else if (qtdFora === total)    dot.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
-                else                           dot.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
+                if (total === 0)             dot.className += " bg-gray-600";
+                else if (qtdOnline === total) dot.className += " bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
+                else if (qtdFora === total)   dot.className += " bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
+                else                          dot.className += " bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
             });
         }
 
@@ -615,4 +488,25 @@
                 if (statusStr === "Fora do Ar") corBolinha = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
                 html += `
                     <div onclick="window.open('${t.url}','_blank')" class="flex justify-between items-center bg-gray-950 border border-gray-800/60 p-3 rounded-xl mb-2 cursor-pointer hover:border-blue-500/40 transition">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-200">${t.nome}</p>
+                            <p class="text-[11px] text-gray-500">${latenciaStr}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400 font-medium">${statusStr}</span>
+                            <span class="h-2.5 w-2.5 rounded-full ${corBolinha}"></span>
+                        </div>
+                    </div>`;
+            });
+            container.innerHTML = html;
+        }
 
+        window.onload = function() {
+            carregarStatusDoCache();
+            carregarNoticiasRss();
+            setInterval(carregarStatusDoCache, 30000);
+            setInterval(carregarNoticiasRss, 300000);
+        }
+    </script>
+</body>
+</html>
