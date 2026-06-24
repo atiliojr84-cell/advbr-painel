@@ -1,4 +1,3 @@
-// api/status-atual.js
 import { createClient } from '@vercel/kv';
 
 const kv = createClient({
@@ -19,14 +18,13 @@ export default async function handler(req, res) {
     const dados = await kv.get('advbr_status_global');
     let relatos = await kv.get('advbr_relatos_comunidade');
 
-    // Garante que relatos sempre seja um objeto limpo
     if (!relatos || typeof relatos !== 'object' || Array.isArray(relatos)) {
       relatos = {};
     }
 
     return res.status(200).json({
       status_servidores: dados || {},
-      relatos_comunidade: relatos
+      relatos_comunidade: relatos,
     });
   } catch (error) {
     console.error('Erro no Redis:', error);
