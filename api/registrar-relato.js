@@ -5,30 +5,45 @@ const kv = createClient({
   token: process.env.KV_REST_API_TOKEN,
 });
 
-const EXPIRACAO_SEGUNDOS = 60 * 60 * 12; // 12 horas
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).end();
 
   const { tribunal, tipoProblema } = req.body;
-  const agora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+  if (!tribunal || !tipoProblema) {
+    return res.status(400).json({ erro: 'Dados incompletos para o relato.' });
+  }
+
+  const novoRelato = {
+    tribunal,
+    tipoProblema,
+    data: new Date().toISOString(), // Usar ISO string para padronizar e facilitar ordenação
+    timestamp: Date.now() // Adicionar timestamp para ordenação e TTL
+  };
 
   try {
-    let agregados = await kv.get('advbr_relatos_comunidade') || {};
+    // Busca os relatos atuais no Redis
+    // A chave 'advbr_relatos' vai guardar uma lista de todos os relatos brutos
+    let relatosAtuais = await kv.get('advbr_relatos') || [];
 
-    if (!agregados[tribunal]) {
-      agregados[tribunal] = { total: 0, problemas: {}, ultimoRelato: '' };
-    }
-    agregados[tribunal].total++;
-    agregados[tribunal].problemas[tipoProblema] = (agregados[tribunal].problemas[tipoProblema] || 0) + 1;
-    agregados[tribunal].ultimoRelato = agora;
+    // Adiciona o novo relato no início da lista
+    relatosAtuais.unshift(novoRelato);
 
-    // Salva com expiração de 12 horas — depois desse tempo some sozinho
-    await kv.set('advbr_relatos_comunidade', agregados, { ex: EXPIRACAO_SEGUNDOS });
+    // Limita a lista para não crescer indefinidamente (ex: últimos 100 relatos)
+    relatosAtuais = relatosAtuais.slice(0, 100);
 
-    return res.status(200).json({ sucesso: true });
+    // Salva a lista atualizada no Redis com um TTL (ex: 24 horas = 86400 segundos)
+    // Isso garante que relatos muito antigos sejam automaticamente removidos
+    await kv.set('advbr_relatos', relatosAtuais, { ex: 86400 });
+
+    return res.status(200).json({ sucesso: true, mensagem: 'Relato gravado com sucesso.' });
   } catch (erro) {
-    return res.status(500).json({ erro: 'Falha ao gravar relato' });
+    console.error('Erro ao gravar relato no Redis:', erro);
+    return res.status(500).json({ erro: 'Falha ao gravar relato.' });
   }
 }
