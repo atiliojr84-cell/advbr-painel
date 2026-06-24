@@ -115,7 +115,7 @@
 
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-desktop text-emerald-500"></i> Equipamentos Homologados para Advocacia
+                <i class="fa-solid fa-desktop text-blue-500"></i> Equipamentos Homologados para Advocacia
             </h2>
             <p class="text-xs text-gray-500 mb-4">Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.</p>
             <div class="products-carousel">
@@ -132,27 +132,27 @@
                     <a href="https://amzn.to/3V63j9F" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-lg text-center transition">Ver Preço Recomendado</a>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl">
-                    <img src="https://advbr.info/img/ssd-nvme.webp" alt="SSD NVMe" class="rounded-lg mb-3">
-                    <p class="text-sm font-bold text-gray-200">3. SSD NVMe</p>
-                    <p class="text-xs text-gray-500 mb-3">Armazenamento ultrarrápido para inicialização e carregamento de processos.</p>
+                    <img src="https://advbr.info/img/cpu-office-slim.webp" alt="CPU Office Slim" class="rounded-lg mb-3">
+                    <p class="text-sm font-bold text-gray-200">3. CPU Office Slim</p>
+                    <p class="text-xs text-gray-500 mb-3">Processamento de alta velocidade para múltiplos portais abertos.</p>
                     <a href="https://amzn.to/3V63j9F" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-lg text-center transition">Ver Preço Recomendado</a>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl">
-                    <img src="https://advbr.info/img/webcam-fullhd.webp" alt="Webcam FullHD" class="rounded-lg mb-3">
-                    <p class="text-sm font-bold text-gray-200">4. Webcam FullHD</p>
-                    <p class="text-xs text-gray-500 mb-3">Qualidade de imagem superior para audiências e reuniões online.</p>
+                    <img src="https://advbr.info/img/laptop-advogado-pro.webp" alt="Laptop Advogado Pro" class="rounded-lg mb-3">
+                    <p class="text-sm font-bold text-gray-200">4. Laptop Advogado Pro</p>
+                    <p class="text-xs text-gray-500 mb-3">Tela antirreflexo de alta definição e bateria de longa duração para audiências.</p>
                     <a href="https://amzn.to/3V63j9F" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-lg text-center transition">Ver Preço Recomendado</a>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl">
-                    <img src="https://advbr.info/img/headset-cancelamento.webp" alt="Headset com Cancelamento de Ruído" class="rounded-lg mb-3">
-                    <p class="text-sm font-bold text-gray-200">5. Headset com Cancelamento de Ruído</p>
-                    <p class="text-xs text-gray-500 mb-3">Foco total em audiências e chamadas, eliminando distrações.</p>
+                    <img src="https://advbr.info/img/impressora-laser-duplex.webp" alt="Impressora Laser Duplex" class="rounded-lg mb-3">
+                    <p class="text-sm font-bold text-gray-200">5. Impressora Laser Duplex</p>
+                    <p class="text-xs text-gray-500 mb-3">Impressão frente e verso automática rápida e de baixíssimo custo por página.</p>
                     <a href="https://amzn.to/3V63j9F" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-lg text-center transition">Ver Preço Recomendado</a>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl">
-                    <img src="https://advbr.info/img/impressora-laser.webp" alt="Impressora Laser" class="rounded-lg mb-3">
-                    <p class="text-sm font-bold text-gray-200">6. Impressora Laser</p>
-                    <p class="text-xs text-gray-500 mb-3">Velocidade e economia para grandes volumes de impressão.</p>
+                    <img src="https://advbr.info/img/scanner-de-mesa-rapido.webp" alt="Scanner de Mesa Rápido" class="rounded-lg mb-3">
+                    <p class="text-sm font-bold text-gray-200">6. Scanner de Mesa Rápido</p>
+                    <p class="text-xs text-gray-500 mb-3">Digitalização direta para PDF pesquisável (OCR) com alimentador automático.</p>
                     <a href="https://amzn.to/3V63j9F" target="_blank" class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-2 rounded-lg text-center transition">Ver Preço Recomendado</a>
                 </div>
                 <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl">
@@ -206,17 +206,24 @@
                         <i class="fa-solid fa-circle-info text-gray-400"></i> Outro
                     </button>
                 </div>
-                <textarea id="problemaDetalhes" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 mb-4 focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Descreva brevemente o problema (opcional)"></textarea>
-                <button onclick="enviarReporte()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                    Enviar Reporte
-                </button>
+                <div class="flex justify-between gap-3">
+                    <button onclick="voltarPassoReportar()" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
+                        Voltar
+                    </button>
+                    <button onclick="enviarRelato()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
+                        Enviar Relato
+                    </button>
+                </div>
             </div>
 
-            <div id="reportarPasso3" class="hidden text-center">
-                <p class="text-green-400 text-lg font-semibold mb-4">Obrigado! Seu reporte foi enviado.</p>
-                <p class="text-gray-400">Sua contribuição ajuda a manter a comunidade informada.</p>
-                <button onclick="fecharModal('modalReportar')" class="mt-6 bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-5 py-3 rounded-xl transition">
-                    Fechar
+            <div id="reportarSucesso" class="text-center hidden">
+                <div class="text-green-500 text-5xl mb-4">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <h4 class="text-xl font-bold text-gray-200 mb-2">Relato enviado!</h4>
+                <p class="text-gray-400 mb-4">Obrigado, Doutor(a). Seu relato já está visível para os colegas que consultarem este tribunal.</p>
+                <button onclick="fecharModal('modalReportar')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
+                    OK, entendido
                 </button>
             </div>
         </div>
@@ -228,19 +235,16 @@
                 <i class="fa-solid fa-times"></i>
             </button>
             <h3 class="text-xl font-bold mb-4 text-gray-200" id="estadoNome"></h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <p class="text-sm font-semibold text-gray-300 mb-2">Status dos Tribunais:</p>
-                    <div id="linksTribunais" class="space-y-2">
-                        <!-- Links dos tribunais carregados via JS -->
-                    </div>
-                </div>
-                <div>
-                    <p class="text-sm font-semibold text-gray-300 mb-2">Relatos da Comunidade:</p>
-                    <div id="relatosComunidadeEstado" class="space-y-2">
-                        <!-- Relatos da comunidade carregados via JS -->
-                    </div>
-                </div>
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-lg font-semibold text-gray-300">Status Atual (Robôs)</h4>
+                <span class="text-xs text-gray-500">Dados em cache de telemetria.</span>
+            </div>
+            <div id="linksTribunais" class="mb-6 max-h-60 overflow-y-auto pr-2">
+                <!-- Links dos tribunais carregados via JS -->
+            </div>
+            <h4 class="text-lg font-semibold text-gray-300 mb-3">Relatos Recentes de Colegas</h4>
+            <div id="relatosComunidadeEstado" class="max-h-40 overflow-y-auto pr-2">
+                <!-- Relatos da comunidade carregados via JS -->
             </div>
         </div>
     </div>
@@ -250,19 +254,22 @@
             <button onclick="fecharModal('modalToken')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-200 text-xl">
                 <i class="fa-solid fa-times"></i>
             </button>
-            <h3 class="text-xl font-bold mb-4 text-gray-200">Teste de Token/Certificado</h3>
-            <p class="text-gray-400 mb-4">
-                Este teste verifica a comunicação do seu navegador com o Token OAB ou Certificado Digital.
-                Certifique-se de que seu Token esteja conectado e os drivers instalados.
-            </p>
-            <div id="tokenStatus" class="bg-gray-800 p-4 rounded-xl mb-4 text-center text-gray-300">
-                Aguardando início do teste...
+            <h3 class="text-xl font-bold mb-4 text-gray-200">Teste de Token / Certificado</h3>
+            <p class="text-gray-400 mb-4">Você será redirecionado para o teste oficial da Certisign em outra aba.</p>
+            <p class="text-gray-400 mb-4">Esta página da ADVBR.info continuará aberta aqui em segundo plano.</p>
+            <div class="bg-gray-800 p-4 rounded-xl mb-4 border border-gray-700">
+                <p class="font-semibold text-gray-200 mb-2">Antes de prosseguir:</p>
+                <ul class="list-disc list-inside text-gray-400 text-sm space-y-1">
+                    <li>Se for <span class="font-bold text-blue-400">A3</span>, confirme se o token está conectado.</li>
+                    <li>Se for <span class="font-bold text-blue-400">A1</span>, confirme se o certificado está instalado no dispositivo.</li>
+                </ul>
             </div>
-            <button onclick="iniciarTesteToken()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                Iniciar Teste
+            <button onclick="window.open('https://www.certisign.com.br/duvidas-suporte/downloads/teste-token','_blank')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95 mb-4">
+                Ir para o teste da Certisign
             </button>
-            <div id="tokenSuporte" class="mt-6">
-                <!-- Bloco de suporte será injetado aqui -->
+            <p class="text-gray-500 text-sm text-center mb-4">Se o teste da Certisign não reconhecer o token, chame o suporte abaixo.</p>
+            <div id="tokenSuporte">
+                <!-- Bloco de suporte carregado via JS -->
             </div>
         </div>
     </div>
@@ -273,18 +280,43 @@
                 <i class="fa-solid fa-times"></i>
             </button>
             <h3 class="text-xl font-bold mb-4 text-gray-200">Teste PJe Office Pro</h3>
-            <p class="text-gray-400 mb-4">
-                Este teste verifica a instalação e o funcionamento do PJe Office Pro em seu sistema.
-                Ele tentará se comunicar com o aplicativo local.
-            </p>
-            <div id="pjeOfficeStatus" class="bg-gray-800 p-4 rounded-xl mb-4 text-center text-gray-300">
-                Aguardando início do teste...
+
+            <div id="pjeOfficeInitial" class="space-y-4">
+                <p class="text-gray-400">
+                    Atenção: ao clicar em "Testar Agora", o navegador pode exibir um aviso como
+                    “advbr.info quer acessar outros apps e serviços do dispositivo”. Isso faz parte do teste do
+                    PJe Office Pro.
+                </p>
+                <button id="btnIniciarTestePjeOffice" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
+                    Testar Agora
+                </button>
             </div>
-            <button id="btnIniciarTestePjeOffice" onclick="iniciarTestePjeOffice()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                Iniciar Teste
-            </button>
-            <div id="pjeOfficeSuporte" class="mt-6">
-                <!-- Bloco de suporte será injetado aqui -->
+
+            <div id="pjeOfficeResult" class="hidden">
+                <div id="pjeOfficeSuccess" class="text-center hidden">
+                    <div class="text-green-500 text-5xl mb-4">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-200 mb-2">PJe Office Pro detectado!</h4>
+                    <p class="text-gray-400 mb-4">O serviço está respondendo corretamente na porta 8800.</p>
+                </div>
+
+                <div id="pjeOfficeFailure" class="hidden">
+                    <div class="text-red-500 text-5xl mb-4">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-200 mb-2">PJe Office não detectado</h4>
+                    <p class="text-gray-400 mb-4">O serviço não está respondendo na porta 8800.</p>
+                    <ul class="list-disc list-inside text-gray-400 text-sm space-y-1 mb-4">
+                        <li>Verifique se o PJe Office está instalado.</li>
+                        <li>Procure o ícone do PJe Office na bandeja do sistema e abra-o.</li>
+                        <li>Antivírus ou firewall pode estar bloqueando a porta 8800.</li>
+                    </ul>
+                    <p class="text-gray-500 text-sm text-center">Precisa de ajuda? Fale com o suporte.</p>
+                </div>
+                <div id="pjeOfficeSuporte" class="mt-4">
+                    <!-- Bloco de suporte carregado via JS -->
+                </div>
             </div>
         </div>
     </div>
@@ -295,82 +327,162 @@
                 <i class="fa-solid fa-times"></i>
             </button>
             <h3 class="text-xl font-bold mb-4 text-gray-200">Otimizador PDF Inteligente</h3>
-            <p class="text-gray-400 mb-4">
-                Selecione o tribunal de destino e faça o upload do seu PDF.
-                Nossa ferramenta ajustará o arquivo para os padrões exigidos.
-            </p>
+            <p class="text-gray-400 mb-4">Ajuste seu PDF para os requisitos do tribunal. Processamento 100% local no seu navegador.</p>
 
             <div class="mb-4">
-                <label for="selectTribunalPdf" class="block text-sm font-medium text-gray-300 mb-2">Tribunal de Destino:</label>
-                <select id="selectTribunalPdf" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="pje_cnj">PJe - CNJ (1.5 MB)</option>
-                    <option value="tjsp_saj">TJSP - e-SAJ (3 MB)</option>
-                    <option value="eproc_trf4">e-Proc TRF4 (5 MB)</option>
-                    <option value="outro">Outro Tribunal (10 MB)</option>
+                <label for="selectPortalPdf" class="block text-sm font-medium text-gray-300 mb-2">1. Selecione o Portal de Destino:</label>
+                <select id="selectPortalPdf" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">-- Selecione um portal --</option>
+                    <option value="pje_cnj">PJe (Petição/Documento Padrão)</option>
+                    <option value="tjsp_saj">TJSP - e-SAJ</option>
+                    <option value="eproc_trf4">e-Proc TRF4</option>
+                    <option value="outro">Outro Tribunal (Limite padrão)</option>
                 </select>
+                <div id="portalRequirements" class="bg-gray-800 p-3 rounded-xl mt-3 text-sm text-gray-400 border border-gray-700">
+                    <p class="font-semibold text-gray-200 mb-1">Requisitos do Portal:</p>
+                    <p>Tamanho máximo: <span id="reqTamanho">N/A</span></p>
+                    <p>Páginas máximas: <span id="reqPaginas">N/A</span></p>
+                    <p>Observações: <span id="reqObservacoes">N/A</span></p>
+                </div>
             </div>
 
             <div class="mb-4">
-                <label for="pdfFile" class="block text-sm font-medium text-gray-300 mb-2">Selecione o arquivo PDF:</label>
-                <input type="file" id="pdfFile" accept=".pdf" class="w-full text-gray-200 bg-gray-800 border border-gray-700 rounded-xl p-3 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+                <label for="pdfFile" class="block text-sm font-medium text-gray-300 mb-2">2. Carregue seu arquivo PDF:</label>
+                <input type="file" id="pdfFile" accept="application/pdf" class="block w-full text-sm text-gray-400
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-xl file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-500 file:text-white
+                    hover:file:bg-blue-600 cursor-pointer" />
+                <div id="pdfInfo" class="bg-gray-800 p-3 rounded-xl mt-3 text-sm text-gray-400 border border-gray-700">
+                    <p class="font-semibold text-gray-200 mb-1">Informações do PDF:</p>
+                    <p>Tamanho: <span id="pdfTamanho">N/A</span></p>
+                    <p>Páginas: <span id="pdfPaginas">N/A</span></p>
+                </div>
             </div>
 
-            <div id="analiseResultado" class="bg-gray-800 p-4 rounded-xl mb-4 hidden">
-                <p class="text-gray-300 text-sm mb-2">Análise do PDF:</p>
-                <p class="text-gray-400 text-xs">Nome: <span id="pdfFileName"></span></p>
-                <p class="text-gray-400 text-xs">Tamanho Original: <span id="pdfFileSize"></span></p>
-                <p class="text-gray-400 text-xs">Páginas: <span id="pdfPageCount"></span></p>
-                <p class="text-gray-400 text-xs">Limite do Tribunal: <span id="pdfTribunalLimit"></span></p>
-                <p id="pdfRecommendation" class="text-amber-400 text-sm mt-2 hidden"></p>
+            <div id="analiseResultado" class="bg-gray-800 p-3 rounded-xl mt-3 text-sm text-gray-400 border border-gray-700 hidden">
+                <p class="font-semibold text-gray-200 mb-1">Análise:</p>
+                <p id="analiseMsg"></p>
             </div>
 
-            <div id="pdfActions" class="flex flex-col sm:flex-row gap-3 mt-6 hidden">
-                <button id="btnOtimizarPdf" onclick="otimizarPdf()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
+            <div id="pdfActions" class="flex flex-col sm:flex-row gap-3 mt-6">
+                <button id="btnOtimizar" onclick="otimizarPdf()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95" disabled>
                     Otimizar PDF
                 </button>
-                <button id="btnDividirPdf" onclick="dividirPdf()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
+                <button id="btnDividir" onclick="dividirPdf()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95" disabled>
                     Dividir PDF
                 </button>
             </div>
-            <div id="pdfDownloadLinks" class="mt-4 space-y-2">
-                <!-- Links de download serão injetados aqui -->
-            </div>
-            <div id="pdfOptimizationMessage" class="mt-4 text-sm text-center text-amber-400 hidden">
-                Algumas imagens não puderam ser otimizadas para evitar perda de qualidade. Considere dividir o PDF.
+
+            <div id="pdfDownloadLinks" class="mt-6 space-y-2">
+                <p class="text-sm text-gray-400">Arquivos gerados:</p>
+                <!-- Links de download serão inseridos aqui -->
             </div>
         </div>
     </div>
 
+    <div id="modalEstado" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-lg border border-gray-800 relative">
+            <button onclick="fecharModal('modalEstado')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-200 text-xl">
+                <i class="fa-solid fa-times"></i>
+            </button>
+            <h3 class="text-xl font-bold mb-4 text-gray-200" id="estadoNome"></h3>
+            <div class="flex justify-between items-center mb-4">
+                <h4 class="text-lg font-semibold text-gray-300">Status Atual (Robôs)</h4>
+                <span class="text-xs text-gray-500">Dados em cache de telemetria.</span>
+            </div>
+            <div id="linksTribunais" class="mb-6 max-h-60 overflow-y-auto pr-2">
+                <!-- Links dos tribunais carregados via JS -->
+            </div>
+            <h4 class="text-lg font-semibold text-gray-300 mb-3">Relatos Recentes de Colegas</h4>
+            <div id="relatosComunidadeEstado" class="max-h-40 overflow-y-auto pr-2">
+                <!-- Relatos da comunidade carregados via JS -->
+            </div>
+        </div>
+    </div>
+
+    <footer class="p-4 md:p-8 max-w-7xl mx-auto text-center text-gray-500 text-sm">
+        &copy; 2026 ADVBR.info. Todos os direitos reservados.
+    </footer>
 
     <script>
-        // Funções auxiliares para modais
+        // ──────────────────────────────────────────────────────────────
+        // Funções de Utilidade Geral
+        // ──────────────────────────────────────────────────────────────
+
         function abrirModal(id) {
             document.getElementById(id).classList.remove('hidden');
         }
 
         function fecharModal(id) {
             document.getElementById(id).classList.add('hidden');
+            // Resetar modais específicos ao fechar
+            if (id === 'modalReportar') {
+                document.getElementById('reportarPasso1').classList.remove('hidden');
+                document.getElementById('reportarPasso2').classList.add('hidden');
+                document.getElementById('reportarSucesso').classList.add('hidden');
+                document.getElementById('selectTribunalReportar').value = '';
+                selectedTribunalReportar = null;
+                selectedProblemaReportar = null;
+                const buttons = document.querySelectorAll('#reportarPasso2 button');
+                buttons.forEach(btn => btn.classList.remove('border-blue-500', 'bg-blue-900/20'));
+            }
+            if (id === 'modalPjeOffice') {
+                document.getElementById('pjeOfficeInitial').classList.remove('hidden');
+                document.getElementById('pjeOfficeResult').classList.add('hidden');
+                document.getElementById('pjeOfficeSuccess').classList.add('hidden');
+                document.getElementById('pjeOfficeFailure').classList.add('hidden');
+            }
+            if (id === 'modalPdfOptimizer') {
+                // Resetar o otimizador de PDF
+                document.getElementById('selectPortalPdf').value = '';
+                document.getElementById('pdfFile').value = '';
+                document.getElementById('reqTamanho').innerText = 'N/A';
+                document.getElementById('reqPaginas').innerText = 'N/A';
+                document.getElementById('reqObservacoes').innerText = 'N/A';
+                document.getElementById('pdfTamanho').innerText = 'N/A';
+                document.getElementById('pdfPaginas').innerText = 'N/A';
+                document.getElementById('analiseResultado').classList.add('hidden');
+                document.getElementById('pdfActions').classList.add('hidden');
+                document.getElementById('pdfDownloadLinks').innerHTML = '<p class="text-sm text-gray-400">Arquivos gerados:</p>';
+                document.getElementById('btnOtimizar').innerText = 'Otimizar PDF';
+                document.getElementById('btnOtimizar').disabled = true;
+                document.getElementById('btnDividir').innerText = 'Dividir PDF';
+                document.getElementById('btnDividir').disabled = true;
+                loadedPdfDoc = null;
+                originalFileName = '';
+                fileSizeMb = 0;
+                pageCount = 0;
+                numPartsToSplit = 1;
+            }
         }
 
-        // ──────────────────────────────────────────────────────────────
-        // Lógica do Bloco de Suporte (WhatsApp)
-        // ──────────────────────────────────────────────────────────────
+        function abrirReportar() { abrirModal('modalReportar'); }
+        function abrirModalToken() { abrirModal('modalToken'); }
+        function abrirModalPjeOffice() { abrirModal('modalPjeOffice'); }
+        function abrirModalPdfOptimizer() { abrirModal('modalPdfOptimizer'); }
 
+        // Bloco de suporte para WhatsApp/Telefone
         function blocoSuporteHtml() {
             const whatsappUrl = "https://api.whatsapp.com/send?phone=5541999999999&text=Ol%C3%A1%2C%20preciso%20de%20suporte%20com%20o%20ADVBR.info";
+            const telefoneUrl = "tel:+5541999999999";
             return `
-                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800/40 mt-6">
-                    <p class="text-gray-300 text-sm mb-3 text-center">Precisa de ajuda? Fale com nosso suporte:</p>
-                    <div class="flex justify-center gap-3">
+                <div class="bg-gray-800 p-4 rounded-xl mt-4 border border-gray-700">
+                    <p class="text-gray-500 text-sm text-center mb-3">Fale com nosso suporte técnico especializado:</p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
                         <a href="${whatsappUrl}" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2">
-                            <i class="fa-brands fa-whatsapp"></i> Suporte WhatsApp
+                            <i class="fa-brands fa-whatsapp"></i> Falar com suporte no WhatsApp
+                        </a>
+                        <a href="${telefoneUrl}" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-2 rounded-xl transition flex items-center gap-2">
+                            <i class="fa-solid fa-phone"></i> Ligar para suporte
                         </a>
                     </div>
                 </div>
             `;
         }
 
-        // Injetar bloco de suporte nas modais (apenas onde necessário)
+        // Injetar bloco de suporte nas modais de Token e PJe Office Pro
         document.addEventListener('DOMContentLoaded', () => {
             const tokenSuporte = document.getElementById('tokenSuporte');
             if (tokenSuporte) tokenSuporte.innerHTML = blocoSuporteHtml();
@@ -379,120 +491,6 @@
             if (pjeOfficeSuporte) pjeOfficeSuporte.innerHTML = blocoSuporteHtml();
         });
 
-        // ──────────────────────────────────────────────────────────────
-        // Lógica do Reportar Problema
-        // ──────────────────────────────────────────────────────────────
-
-        let tribunalSelecionadoReportar = '';
-        let problemaSelecionadoReportar = '';
-
-        function carregarTribunaisReportar() {
-            const select = document.getElementById('selectTribunalReportar');
-            if (!select) return;
-            select.innerHTML = '<option value="">Selecione um tribunal...</option>';
-            dadosTribunaisFixo.forEach(t => {
-                select.innerHTML += `<option value="${t.id}">${t.nome} (${t.grupo})</option>`;
-            });
-        }
-
-        function abrirReportar() {
-            document.getElementById('reportarPasso1').classList.remove('hidden');
-            document.getElementById('reportarPasso2').classList.add('hidden');
-            document.getElementById('reportarPasso3').classList.add('hidden');
-            document.getElementById('problemaDetalhes').value = '';
-            abrirModal('modalReportar');
-        }
-
-        function proximoPassoReportar() {
-            tribunalSelecionadoReportar = document.getElementById('selectTribunalReportar').value;
-            if (!tribunalSelecionadoReportar) {
-                alert('Por favor, selecione um tribunal.');
-                return;
-            }
-            document.getElementById('reportarPasso1').classList.add('hidden');
-            document.getElementById('reportarPasso2').classList.remove('hidden');
-        }
-
-        function selecionarProblema(problema) {
-            problemaSelecionadoReportar = problema;
-            // Opcional: Adicionar feedback visual ao botão selecionado
-        }
-
-        async function enviarReporte() {
-            const detalhes = document.getElementById('problemaDetalhes').value;
-            // Aqui você enviaria os dados para o seu backend
-            console.log('Reporte enviado:', {
-                tribunal: tribunalSelecionadoReportar,
-                problema: problemaSelecionadoReportar,
-                detalhes: detalhes
-            });
-
-            // Simular envio
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            document.getElementById('reportarPasso2').classList.add('hidden');
-            document.getElementById('reportarPasso3').classList.remove('hidden');
-        }
-
-        // ──────────────────────────────────────────────────────────────
-        // Lógica do Teste de Token
-        // ──────────────────────────────────────────────────────────────
-
-        function abrirModalToken() {
-            document.getElementById('tokenStatus').innerText = 'Aguardando início do teste...';
-            abrirModal('modalToken');
-        }
-
-        async function iniciarTesteToken() {
-            const statusDiv = document.getElementById('tokenStatus');
-            statusDiv.innerText = 'Verificando Token...';
-            statusDiv.classList.remove('text-green-400', 'text-red-400');
-            statusDiv.classList.add('text-gray-300');
-
-            // Simulação de teste de token
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            const sucesso = Math.random() > 0.3; // 70% de chance de sucesso
-            if (sucesso) {
-                statusDiv.innerText = 'Token/Certificado detectado e funcionando corretamente!';
-                statusDiv.classList.remove('text-gray-300');
-                statusDiv.classList.add('text-green-400');
-            } else {
-                statusDiv.innerText = 'Falha ao detectar Token/Certificado. Verifique a conexão e os drivers.';
-                statusDiv.classList.remove('text-gray-300');
-                statusDiv.classList.add('text-red-400');
-            }
-        }
-
-        // ──────────────────────────────────────────────────────────────
-        // Lógica do Teste PJe Office Pro
-        // ──────────────────────────────────────────────────────────────
-
-        function abrirModalPjeOffice() {
-            document.getElementById('pjeOfficeStatus').innerText = 'Aguardando início do teste...';
-            abrirModal('modalPjeOffice');
-        }
-
-        async function iniciarTestePjeOffice() {
-            const statusDiv = document.getElementById('pjeOfficeStatus');
-            statusDiv.innerText = 'Tentando comunicação com PJe Office Pro...';
-            statusDiv.classList.remove('text-green-400', 'text-red-400');
-            statusDiv.classList.add('text-gray-300');
-
-            // Simulação de teste PJe Office Pro
-            await new Promise(resolve => setTimeout(resolve, 2500));
-
-            const sucesso = Math.random() > 0.4; // 60% de chance de sucesso
-            if (sucesso) {
-                statusDiv.innerText = 'PJe Office Pro detectado e respondendo!';
-                statusDiv.classList.remove('text-gray-300');
-                statusDiv.classList.add('text-green-400');
-            } else {
-                statusDiv.innerText = 'Falha na comunicação com PJe Office Pro. Verifique a instalação.';
-                statusDiv.classList.remove('text-gray-300');
-                statusDiv.classList.add('text-red-400');
-            }
-        }
 
         // ──────────────────────────────────────────────────────────────
         // Lógica do Otimizador PDF
@@ -503,204 +501,185 @@
         let fileSizeMb = 0;
         let pageCount = 0;
         let numPartsToSplit = 1; // Variável para armazenar o número de partes sugerido
-        let optimizationSkippedDueToLowDPI = false; // Flag para a mensagem de DPI
 
-        // Regras de limite de PDF por portal (em MB)
+        // Regras de limite de PDF por portal (em MB e páginas)
         const regrasPdfPorPortal = {
-            'pje_cnj': { limiteMb: 1.5, nome: 'PJe - CNJ' },
-            'tjsp_saj': { limiteMb: 3, nome: 'TJSP - e-SAJ' },
-            'eproc_trf4': { limiteMb: 5, nome: 'e-Proc TRF4' },
-            'outro': { limiteMb: 10, nome: 'Outro Tribunal' } // Limite padrão para "Outro"
+            'pje_cnj': { limiteMb: 1.5, limitePaginas: 100, nome: 'PJe - CNJ', observacoes: 'Padrão para petições e documentos em geral.' },
+            'tjsp_saj': { limiteMb: 3, limitePaginas: 200, nome: 'TJSP - e-SAJ', observacoes: 'Limite para documentos no sistema e-SAJ.' },
+            'eproc_trf4': { limiteMb: 5, limitePaginas: 300, nome: 'e-Proc TRF4', observacoes: 'Limite para documentos no sistema e-Proc.' },
+            'outro': { limiteMb: 10, limitePaginas: 500, nome: 'Outro Tribunal', observacoes: 'Limite padrão para tribunais não listados.' }
         };
+
+        document.getElementById('selectPortalPdf').addEventListener('change', (event) => {
+            const portalId = event.target.value;
+            const regras = regrasPdfPorPortal[portalId];
+            if (regras) {
+                document.getElementById('reqTamanho').innerText = `${regras.limiteMb} MB`;
+                document.getElementById('reqPaginas').innerText = `${regras.limitePaginas} páginas`;
+                document.getElementById('reqObservacoes').innerText = regras.observacoes;
+            } else {
+                document.getElementById('reqTamanho').innerText = 'N/A';
+                document.getElementById('reqPaginas').innerText = 'N/A';
+                document.getElementById('reqObservacoes').innerText = 'N/A';
+            }
+            analisarPdf();
+        });
 
         document.getElementById('pdfFile').addEventListener('change', async (event) => {
             const file = event.target.files[0];
             if (!file) {
                 document.getElementById('analiseResultado').classList.add('hidden');
                 document.getElementById('pdfActions').classList.add('hidden');
-                document.getElementById('pdfDownloadLinks').innerHTML = '';
-                document.getElementById('pdfOptimizationMessage').classList.add('hidden');
                 return;
             }
 
             originalFileName = file.name;
-            fileSizeMb = file.size / (1024 * 1024); // Tamanho em MB
+            fileSizeMb = file.size / (1024 * 1024); // Convert bytes to MB
 
-            document.getElementById('pdfFileName').innerText = originalFileName;
-            document.getElementById('pdfFileSize').innerText = `${fileSizeMb.toFixed(2)} MB`;
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                loadedPdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                pageCount = loadedPdfDoc.getPageCount();
 
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                try {
-                    loadedPdfDoc = await PDFLib.PDFDocument.load(e.target.result);
-                    pageCount = loadedPdfDoc.getPageCount();
-                    document.getElementById('pdfPageCount').innerText = pageCount;
-                    analisarPdf();
-                } catch (error) {
-                    console.error("Erro ao carregar PDF:", error);
-                    alert("Não foi possível carregar o PDF. Verifique se é um arquivo PDF válido.");
-                    document.getElementById('analiseResultado').classList.add('hidden');
-                    document.getElementById('pdfActions').classList.add('hidden');
-                }
-            };
-            reader.readAsArrayBuffer(file);
+                document.getElementById('pdfTamanho').innerText = `${fileSizeMb.toFixed(2)} MB`;
+                document.getElementById('pdfPaginas').innerText = `${pageCount} páginas`;
+
+                analisarPdf();
+
+            } catch (error) {
+                console.error("Erro ao carregar PDF:", error);
+                alert("Não foi possível carregar o PDF. Verifique se o arquivo está corrompido.");
+                loadedPdfDoc = null;
+                document.getElementById('pdfTamanho').innerText = 'Erro';
+                document.getElementById('pdfPaginas').innerText = 'Erro';
+                document.getElementById('analiseResultado').classList.add('hidden');
+                document.getElementById('pdfActions').classList.add('hidden');
+            }
         });
 
-        document.getElementById('selectTribunalPdf').addEventListener('change', analisarPdf);
-
         function analisarPdf() {
-            if (!loadedPdfDoc) return;
+            const portalId = document.getElementById('selectPortalPdf').value;
+            const regras = regrasPdfPorPortal[portalId];
+            const analiseMsgElement = document.getElementById('analiseMsg');
+            const btnOtimizar = document.getElementById('btnOtimizar');
+            const btnDividir = document.getElementById('btnDividir');
+            const pdfActions = document.getElementById('pdfActions');
+            const analiseResultado = document.getElementById('analiseResultado');
 
-            const tribunalId = document.getElementById('selectTribunalPdf').value;
-            const regras = regrasPdfPorPortal[tribunalId];
+            btnOtimizar.disabled = true;
+            btnDividir.disabled = true;
+            pdfActions.classList.add('hidden');
+            analiseResultado.classList.add('hidden');
+            analiseMsgElement.innerText = '';
+            document.getElementById('pdfDownloadLinks').innerHTML = '<p class="text-sm text-gray-400">Arquivos gerados:</p>'; // Limpa downloads anteriores
+            btnOtimizar.innerText = 'Otimizar PDF'; // Reset button text
+            btnDividir.innerText = 'Dividir PDF'; // Reset button text
 
-            document.getElementById('pdfTribunalLimit').innerText = `${regras.limiteMb} MB (${regras.nome})`;
-            document.getElementById('analiseResultado').classList.remove('hidden');
-            document.getElementById('pdfActions').classList.remove('hidden');
-            document.getElementById('pdfDownloadLinks').innerHTML = ''; // Limpa links anteriores
-            document.getElementById('pdfOptimizationMessage').classList.add('hidden'); // Esconde mensagem de DPI
 
-            const recommendationDiv = document.getElementById('pdfRecommendation');
-            recommendationDiv.classList.add('hidden');
-
-            // Lógica para determinar se precisa otimizar ou dividir
-            if (fileSizeMb > regras.limiteMb) {
-                recommendationDiv.innerText = `O PDF excede o limite de ${regras.limiteMb} MB. Recomendado otimizar ou dividir.`;
-                recommendationDiv.classList.remove('hidden');
-                numPartsToSplit = Math.ceil(fileSizeMb / regras.limiteMb);
-                document.getElementById('btnDividirPdf').innerText = `Dividir PDF em ${numPartsToSplit} partes`;
-            } else {
-                recommendationDiv.innerText = `O PDF está dentro do limite de ${regras.limiteMb} MB.`;
-                recommendationDiv.classList.remove('hidden');
-                document.getElementById('btnDividirPdf').innerText = `Dividir PDF`; // Volta ao texto padrão se não precisar dividir
+            if (!loadedPdfDoc || !regras) {
+                return;
             }
 
-            // Resetar botões
-            document.getElementById('btnOtimizarPdf').innerText = 'Otimizar PDF';
-            document.getElementById('btnOtimizarPdf').disabled = false;
-            document.getElementById('btnDividirPdf').disabled = false;
+            analiseResultado.classList.remove('hidden');
+            pdfActions.classList.remove('hidden');
+
+            let problemas = [];
+            let podeOtimizar = false;
+            let podeDividir = false;
+
+            // Verifica tamanho
+            if (fileSizeMb > regras.limiteMb) {
+                problemas.push(`Tamanho (${fileSizeMb.toFixed(2)} MB) excede o limite de ${regras.limiteMb} MB.`);
+                numPartsToSplit = Math.ceil(fileSizeMb / regras.limiteMb);
+                podeDividir = true;
+            } else {
+                podeOtimizar = true; // Se não excede o tamanho, pode otimizar
+            }
+
+            // Verifica páginas
+            if (pageCount > regras.limitePaginas) {
+                problemas.push(`Número de páginas (${pageCount}) excede o limite de ${regras.limitePaginas} páginas.`);
+                // Se o problema for só páginas, ainda pode otimizar (comprimir)
+                // Se já tiver problema de tamanho, a divisão já foi sugerida
+                if (!podeDividir) { // Se não foi sugerido dividir por tamanho, sugere otimizar
+                    podeOtimizar = true;
+                }
+            }
+
+            if (problemas.length > 0) {
+                analiseMsgElement.innerHTML = `⚠️ Seu PDF possui problemas: <br> - ${problemas.join('<br> - ')}`;
+                if (podeDividir) {
+                    analiseMsgElement.innerHTML += `<br><br>Recomendado: Dividir em ${numPartsToSplit} partes.`;
+                    btnDividir.disabled = false;
+                } else if (podeOtimizar) {
+                    analiseMsgElement.innerHTML += `<br><br>Recomendado: Otimizar (comprimir) o PDF.`;
+                    btnOtimizar.disabled = false;
+                }
+            } else {
+                analiseMsgElement.innerHTML = `✅ Seu PDF está dentro dos requisitos do portal.`;
+                btnOtimizar.disabled = false; // Pode otimizar mesmo se já estiver ok
+            }
         }
 
         async function otimizarPdf() {
             if (!loadedPdfDoc) return;
 
-            const btn = document.getElementById('btnOtimizarPdf');
-            btn.innerText = 'Baixando...';
-            btn.disabled = true;
-            document.getElementById('btnDividirPdf').disabled = true;
-            document.getElementById('pdfDownloadLinks').innerHTML = '';
-            document.getElementById('pdfOptimizationMessage').classList.add('hidden');
-            optimizationSkippedDueToLowDPI = false;
+            const btnOtimizar = document.getElementById('btnOtimizar');
+            const originalText = btnOtimizar.innerText;
+            btnOtimizar.disabled = true;
+            btnOtimizar.innerText = 'Baixando...';
 
             try {
-                const pdfDoc = await PDFLib.PDFDocument.load(await loadedPdfDoc.save()); // Carrega uma cópia para otimizar
-
-                // Lógica de otimização de imagens com base no DPI
-                // Esta é uma implementação simplificada, pois pdf-lib não expõe DPI diretamente.
-                // A ideia é re-embeddar imagens com uma resolução alvo se elas forem "grandes" o suficiente.
-                // Para uma detecção precisa de DPI, seria necessário um parser de PDF mais avançado ou um backend.
-
-                const pages = pdfDoc.getPages();
-                for (const page of pages) {
-                    const { width, height } = page.getSize();
-                    // Exemplo: Iterar sobre recursos da página para encontrar imagens
-                    // Isso é complexo com pdf-lib diretamente. Uma abordagem mais simples é re-embeddar tudo.
-                    // Para simular a lógica de DPI, vamos assumir que se a imagem for muito grande em pixels,
-                    // ela tem um DPI alto e pode ser reduzida. Se for pequena, pode ser baixo DPI.
-
-                    // Esta parte é um placeholder para a lógica de DPI.
-                    // Uma implementação real exigiria:
-                    // 1. Extrair imagens do PDF.
-                    // 2. Analisar metadados da imagem (se disponíveis) para DPI.
-                    // 3. Se DPI > 150, re-embeddar com targetDPI (ex: 200).
-                    // 4. Se DPI <= 150, não re-embeddar e setar optimizationSkippedDueToLowDPI = true.
-
-                    // Como pdf-lib não facilita a extração e re-embedding seletivo por DPI,
-                    // vamos aplicar uma otimização geral e simular a condição de DPI baixo.
-                    // Em um cenário real, você precisaria de uma biblioteca mais robusta ou um serviço de backend.
-
-                    // Simulação: Se o PDF original já for pequeno, "simulamos" que as imagens já estão com baixo DPI
-                    if (fileSizeMb < 1.0 && Math.random() < 0.5) { // 50% de chance de "simular" DPI baixo se o arquivo já for pequeno
-                        optimizationSkippedDueToLowDPI = true;
-                    }
-                }
-
-                // Salvar o PDF otimizado
-                const optimizedPdfBytes = await pdfDoc.save({
-                    useCompression: true,
-                    // Não há opção direta para reduzir DPI de imagens existentes aqui.
-                    // A compressão padrão do pdf-lib já ajuda.
-                    // Para DPI, seria necessário re-embeddar imagens manualmente após processá-las.
-                });
-
-                const optimizedFileSizeMb = optimizedPdfBytes.length / (1024 * 1024);
-
-                // Se a otimização não foi suficiente ou DPI baixo foi detectado
-                const tribunalId = document.getElementById('selectTribunalPdf').value;
-                const regras = regrasPdfPorPortal[tribunalId];
-
-                if (optimizedFileSizeMb > regras.limiteMb || optimizationSkippedDueToLowDPI) {
-                    document.getElementById('pdfOptimizationMessage').classList.remove('hidden');
-                }
-
-                downloadPdf(optimizedPdfBytes, `otimizado_${originalFileName}`, document.getElementById('pdfDownloadLinks'));
-                btn.innerText = 'Seu arquivo está aqui embaixo 👇';
-
+                const pdfBytes = await loadedPdfDoc.save({ useCompression: true });
+                const optimizedFileName = originalFileName.replace('.pdf', '_otimizado.pdf');
+                addDownloadLink(pdfBytes, optimizedFileName, document.getElementById('pdfDownloadLinks'));
+                btnOtimizar.innerText = 'Seu arquivo está aqui embaixo 👇';
             } catch (error) {
                 console.error("Erro ao otimizar PDF:", error);
-                alert("Ocorreu um erro ao otimizar o PDF.");
-                btn.innerText = 'Otimizar PDF';
+                alert("Não foi possível otimizar o PDF.");
+                btnOtimizar.innerText = originalText; // Reset text on error
             } finally {
-                btn.disabled = false;
-                document.getElementById('btnDividirPdf').disabled = false;
+                btnOtimizar.disabled = false;
             }
         }
 
         async function dividirPdf() {
-            if (!loadedPdfDoc) return;
+            if (!loadedPdfDoc || numPartsToSplit <= 1) return;
 
-            const btn = document.getElementById('btnDividirPdf');
-            btn.innerText = 'Baixando...';
-            btn.disabled = true;
-            document.getElementById('btnOtimizarPdf').disabled = true;
-            document.getElementById('pdfDownloadLinks').innerHTML = ''; // Limpa links anteriores
-            document.getElementById('pdfOptimizationMessage').classList.add('hidden');
+            const btnDividir = document.getElementById('btnDividir');
+            const originalText = btnDividir.innerText;
+            btnDividir.disabled = true;
+            btnDividir.innerText = 'Baixando...';
 
             try {
-                const tribunalId = document.getElementById('selectTribunalPdf').value;
-                const regras = regrasPdfPorPortal[tribunalId];
-                const maxPagesPerPart = Math.floor(pageCount / numPartsToSplit);
-                let currentPage = 0;
+                const totalPages = loadedPdfDoc.getPageCount();
+                const pagesPerPart = Math.ceil(totalPages / numPartsToSplit);
                 const downloadLinksContainer = document.getElementById('pdfDownloadLinks');
+                downloadLinksContainer.innerHTML = '<p class="text-sm text-gray-400">Arquivos gerados:</p>'; // Limpa links anteriores
 
                 for (let i = 0; i < numPartsToSplit; i++) {
-                    const newPdfDoc = await PDFLib.PDFDocument.create();
-                    const startPage = currentPage;
-                    const endPage = (i === numPartsToSplit - 1) ? pageCount : Math.min(currentPage + maxPagesPerPart, pageCount);
+                    const startPage = i * pagesPerPart;
+                    const endPage = Math.min(startPage + pagesPerPart, totalPages);
 
-                    for (let j = startPage; j < endPage; j++) {
-                        const [copiedPage] = await newPdfDoc.copyPages(loadedPdfDoc, [j]);
-                        newPdfDoc.addPage(copiedPage);
-                    }
+                    const subDocument = await PDFLib.PDFDocument.create();
+                    const copiedPages = await subDocument.copyPages(loadedPdfDoc, Array.from({ length: endPage - startPage }, (_, k) => startPage + k));
+                    copiedPages.forEach((page) => subDocument.addPage(page));
 
-                    const pdfBytes = await newPdfDoc.save();
-                    const partFileName = `${originalFileName.replace('.pdf', '')}_parte${i + 1}.pdf`;
-                    downloadPdf(pdfBytes, partFileName, downloadLinksContainer);
-                    currentPage = endPage;
+                    const pdfBytes = await subDocument.save();
+                    const partFileName = originalFileName.replace('.pdf', `_parte${i + 1}.pdf`);
+                    addDownloadLink(pdfBytes, partFileName, downloadLinksContainer);
                 }
-                btn.innerText = 'Seus arquivos estão aqui embaixo 👇';
-
+                btnDividir.innerText = 'Seus arquivos estão aqui embaixo 👇';
             } catch (error) {
                 console.error("Erro ao dividir PDF:", error);
-                alert("Ocorreu um erro ao dividir o PDF.");
-                btn.innerText = 'Dividir PDF';
+                alert("Não foi possível dividir o PDF.");
+                btnDividir.innerText = originalText; // Reset text on error
             } finally {
-                btn.disabled = false;
-                document.getElementById('btnOtimizarPdf').disabled = false;
+                btnDividir.disabled = false;
             }
         }
 
-        function downloadPdf(pdfBytes, filename, container) {
+        function addDownloadLink(pdfBytes, filename, container) {
             const blob = new Blob([pdfBytes], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
 
@@ -717,9 +696,119 @@
             container.appendChild(listItem);
         }
 
+
         // ──────────────────────────────────────────────────────────────
-        // Dados e Lógica de Monitoramento
+        // Lógica de Teste PJe Office Pro
         // ──────────────────────────────────────────────────────────────
+
+        document.getElementById('btnIniciarTestePjeOffice').addEventListener('click', async () => {
+            document.getElementById('pjeOfficeInitial').classList.add('hidden');
+            document.getElementById('pjeOfficeResult').classList.remove('hidden');
+
+            const pjeOfficeSuccess = document.getElementById('pjeOfficeSuccess');
+            const pjeOfficeFailure = document.getElementById('pjeOfficeFailure');
+
+            // Adiciona um spinner de carregamento
+            const spinner = document.createElement('div');
+            spinner.className = 'flex justify-center items-center h-24';
+            spinner.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-blue-500 text-3xl"></i>';
+            document.getElementById('pjeOfficeResult').prepend(spinner);
+
+            try {
+                // Tenta se conectar ao PJe Office na porta 8800
+                const response = await fetch('http://localhost:8800', { method: 'GET', mode: 'no-cors' });
+                // Se a requisição não falhar (mesmo com no-cors, um erro de rede seria capturado)
+                // Consideramos que o serviço está respondendo.
+                pjeOfficeSuccess.classList.remove('hidden');
+                pjeOfficeFailure.classList.add('hidden');
+            } catch (error) {
+                console.error("Erro ao tentar conectar ao PJe Office:", error);
+                pjeOfficeSuccess.classList.add('hidden');
+                pjeOfficeFailure.classList.remove('hidden');
+            } finally {
+                spinner.remove(); // Limpa o spinner
+            }
+        });
+
+
+        // ──────────────────────────────────────────────────────────────
+        // Lógica de Reportar Problema
+        // ──────────────────────────────────────────────────────────────
+
+        let selectedTribunalReportar = null;
+        let selectedProblemaReportar = null;
+
+        function carregarTribunaisReportar() {
+            const select = document.getElementById('selectTribunalReportar');
+            select.innerHTML = '<option value="">-- Selecione o tribunal para continuar --</option>';
+            dadosTribunaisFixo.forEach(t => {
+                const option = document.createElement('option');
+                option.value = t.id;
+                option.textContent = t.nome;
+                select.appendChild(option);
+            });
+        }
+
+        function proximoPassoReportar() {
+            selectedTribunalReportar = document.getElementById('selectTribunalReportar').value;
+            if (!selectedTribunalReportar) {
+                alert('Por favor, selecione um tribunal.');
+                return;
+            }
+            document.getElementById('reportarPasso1').classList.add('hidden');
+            document.getElementById('reportarPasso2').classList.remove('hidden');
+        }
+
+        function voltarPassoReportar() {
+            document.getElementById('reportarPasso2').classList.add('hidden');
+            document.getElementById('reportarPasso1').classList.remove('hidden');
+        }
+
+        async function enviarRelato() {
+            if (!selectedTribunalReportar || !selectedProblemaReportar) {
+                alert('Por favor, selecione o tribunal e o problema.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/reportar-problema', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tribunalId: selectedTribunalReportar,
+                        problema: selectedProblemaReportar
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('reportarPasso2').classList.add('hidden');
+                    document.getElementById('reportarSucesso').classList.remove('hidden');
+                    // Atualizar dados de status após o relato
+                    carregarStatusDoCache();
+                } else {
+                    alert('Erro ao enviar relato. Tente novamente.');
+                }
+            } catch (error) {
+                console.error('Erro ao enviar relato:', error);
+                alert('Erro de conexão ao enviar relato.');
+            }
+        }
+
+        function selecionarProblema(problema) {
+            selectedProblemaReportar = problema;
+            // Opcional: Adicionar algum feedback visual para o problema selecionado
+            const buttons = document.querySelectorAll('#reportarPasso2 button');
+            buttons.forEach(btn => btn.classList.remove('border-blue-500', 'bg-blue-900/20'));
+            event.currentTarget.classList.add('border-blue-500', 'bg-blue-900/20');
+        }
+
+
+        // ──────────────────────────────────────────────────────────────
+        // Lógica de Monitoramento de Status
+        // ──────────────────────────────────────────────────────────────
+
+        let statusGerais = {};
+        let relatosComunidade = {};
 
         const dadosTribunaisFixo = [
             // Superiores
