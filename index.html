@@ -13,7 +13,7 @@
       0%   { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
     }
-    .ticker-animate { animation: ticker 120s linear infinite; display: inline-block; }
+    .ticker-animate { animation: ticker 180s linear infinite; display: inline-block; }
     .ticker-animate:hover { animation-play-state: paused; }
 
     .carrossel-scroll::-webkit-scrollbar { display: none; }
@@ -42,7 +42,6 @@
     }
     .fade-in { animation: fadeInUp 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 
-    /* Modal grupo */
     @keyframes modalEntra {
       from { opacity: 0; transform: scale(0.95) translateY(10px); }
       to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -158,7 +157,7 @@
   <div class="bg-gray-900 border border-gray-800 hover:border-gray-700 rounded-2xl p-8 text-center card-hover">
     <div class="flex justify-center mb-5">
       <div class="bg-blue-900/30 border border-blue-800/60 rounded-full w-16 h-16 flex items-center justify-center">
-        <i class="fa-brands fa-usb text-blue-400 text-2xl"></i>
+        <i class="fa-solid fa-key text-blue-400 text-2xl"></i>
       </div>
     </div>
     <h2 class="text-base font-bold text-white mb-2">Diagnóstico de Token/Certificado & PJe Office Pro</h2>
@@ -274,7 +273,7 @@
         <div class="p-4 flex flex-col flex-1">
           <h4 class="text-sm font-bold text-white mb-1.5">9. Headset Noise Cancelling</h4>
           <p class="text-xs text-gray-500 mb-4 flex-1 leading-relaxed">Isolamento acústico e microfone limpo para sustentação oral e audiências virtuais.</p>
-          <span class="text-center text-xs font-semibold text-blue-300 bg-gray-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></span>
+          <span class="text-center text-xs font-semibond text-blue-300 bg-gray-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">Ver Preço Recomendado <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></span>
         </div>
       </a>
 
@@ -296,12 +295,9 @@
   © 2026 ADVBR.info. Todos os direitos reservados.
 </footer>
 
-<!-- ================================================== -->
-<!-- MODAL GRUPO — STATUS DOS TRIBUNAIS                 -->
-<!-- ================================================== -->
+<!-- ===================== MODAL GRUPO ===================== -->
 <div id="modalGrupo" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
   <div class="modal-anima bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
-    <!-- Header do modal -->
     <div class="p-5 border-b border-gray-800 flex justify-between items-center shrink-0">
       <div>
         <h3 id="modalGrupoTitulo" class="text-white text-base font-bold"></h3>
@@ -309,22 +305,15 @@
       </div>
       <button onclick="fecharModalGrupo()" class="text-gray-600 hover:text-red-400 text-2xl leading-none ml-4">&times;</button>
     </div>
-    <!-- Grid 2 colunas -->
     <div id="modalGrupoGrid" class="p-5 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-    <!-- Footer do modal -->
     <div class="p-4 border-t border-gray-800 shrink-0 flex justify-between items-center">
       <p class="text-gray-600 text-xs">Atualizado automaticamente a cada 30s</p>
-      <button onclick="fecharModalGrupo()"
-        class="px-5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl text-sm transition-all">
-        Fechar
-      </button>
+      <button onclick="fecharModalGrupo()" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-xl text-sm">Fechar</button>
     </div>
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- MODAL RELATO 1 — TRIBUNAL                         -->
-<!-- ================================================== -->
+<!-- ===================== MODAL RELATO 1 ===================== -->
 <div id="modalRelato1" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
   <div class="modal-anima bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
     <div class="p-5 border-b border-gray-800 flex justify-between items-center">
@@ -344,9 +333,7 @@
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- MODAL RELATO 2 — PROBLEMA                         -->
-<!-- ================================================== -->
+<!-- ===================== MODAL RELATO 2 ===================== -->
 <div id="modalRelato2" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
   <div class="modal-anima bg-gray-900 border border-gray-700 rounded-2xl w-full max-w-md shadow-2xl">
     <div class="p-5 border-b border-gray-800 flex justify-between items-center">
@@ -357,60 +344,36 @@
       <button onclick="fecharModalRelato()" class="text-gray-600 hover:text-red-400 text-2xl leading-none ml-4">&times;</button>
     </div>
     <div class="p-5 space-y-3">
-      <button onclick="enviarRelato('Offline')"
-        class="w-full p-4 rounded-xl border border-red-800/60 bg-red-950/40 hover:bg-red-900/50 hover:border-red-700 text-white font-semibold flex items-center gap-3 text-sm">
+      <button onclick="enviarRelato('Offline')" class="w-full p-4 rounded-xl border border-red-800/60 bg-red-950/40 hover:bg-red-900/50 hover:border-red-700 text-white font-semibold flex items-center gap-3 text-sm">
         <span class="text-xl">🔴</span>
-        <div class="text-left">
-          <p class="font-bold">Site Offline</p>
-          <p class="text-xs text-gray-500 font-normal mt-0.5">Portal completamente fora do ar</p>
-        </div>
+        <div class="text-left"><p class="font-bold">Site Offline</p><p class="text-xs text-gray-500 font-normal mt-0.5">Portal completamente fora do ar</p></div>
       </button>
-      <button onclick="enviarRelato('Instabilidade')"
-        class="w-full p-4 rounded-xl border border-yellow-800/60 bg-yellow-950/40 hover:bg-yellow-900/50 hover:border-yellow-700 text-white font-semibold flex items-center gap-3 text-sm">
+      <button onclick="enviarRelato('Instabilidade')" class="w-full p-4 rounded-xl border border-yellow-800/60 bg-yellow-950/40 hover:bg-yellow-900/50 hover:border-yellow-700 text-white font-semibold flex items-center gap-3 text-sm">
         <span class="text-xl">🟡</span>
-        <div class="text-left">
-          <p class="font-bold">Instabilidade / Lentidão</p>
-          <p class="text-xs text-gray-500 font-normal mt-0.5">Site lento ou caindo intermitentemente</p>
-        </div>
+        <div class="text-left"><p class="font-bold">Instabilidade / Lentidão</p><p class="text-xs text-gray-500 font-normal mt-0.5">Site lento ou caindo intermitentemente</p></div>
       </button>
-      <button onclick="enviarRelato('Falha no Login')"
-        class="w-full p-4 rounded-xl border border-blue-800/60 bg-blue-950/40 hover:bg-blue-900/50 hover:border-blue-700 text-white font-semibold flex items-center gap-3 text-sm">
+      <button onclick="enviarRelato('Falha no Login')" class="w-full p-4 rounded-xl border border-blue-800/60 bg-blue-950/40 hover:bg-blue-900/50 hover:border-blue-700 text-white font-semibold flex items-center gap-3 text-sm">
         <span class="text-xl">🔐</span>
-        <div class="text-left">
-          <p class="font-bold">Falha no Login</p>
-          <p class="text-xs text-gray-500 font-normal mt-0.5">Entra mas não consegue autenticar</p>
-        </div>
+        <div class="text-left"><p class="font-bold">Falha no Login</p><p class="text-xs text-gray-500 font-normal mt-0.5">Entra mas não consegue autenticar</p></div>
       </button>
     </div>
     <div class="px-5 pb-5">
-      <button onclick="voltarParaTribunal()"
-        class="w-full py-2.5 rounded-xl text-gray-500 hover:text-white hover:bg-gray-800 text-sm">
-        ← Voltar
-      </button>
+      <button onclick="voltarParaTribunal()" class="w-full py-2.5 rounded-xl text-gray-500 hover:text-white hover:bg-gray-800 text-sm">← Voltar</button>
     </div>
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- MODAL CONFIRMAÇÃO                                  -->
-<!-- ================================================== -->
+<!-- ===================== MODAL CONFIRMAÇÃO ===================== -->
 <div id="modalConfirmacao" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
   <div class="modal-anima bg-gray-900 border border-green-800/60 rounded-2xl w-full max-w-sm text-center p-8 shadow-2xl">
     <div class="text-5xl mb-5">✅</div>
     <h3 class="text-white text-lg font-bold mb-2">Relato enviado!</h3>
-    <p class="text-gray-500 text-sm mb-7 leading-relaxed">
-      Obrigado, Doutor(a). Seu relato ajuda colegas a identificarem problemas na rede da Justiça em tempo real.
-    </p>
-    <button onclick="fecharModalRelato()"
-      class="px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold text-sm">
-      OK, entendido
-    </button>
+    <p class="text-gray-500 text-sm mb-7 leading-relaxed">Obrigado, Doutor(a). Seu relato ajuda colegas a identificarem problemas na rede da Justiça em tempo real.</p>
+    <button onclick="fecharModalRelato()" class="px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl font-bold text-sm">OK, entendido</button>
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- JAVASCRIPT                                         -->
-<!-- ================================================== -->
+<!-- ===================== JAVASCRIPT ===================== -->
 <script>
 const dadosTribunaisFixo = [
   { id: "pje_cnj",       nome: "PJe Nacional (CNJ)",    sub: "Servidor de Login CNJ",         grupo: "nacionais",  url: "https://www.pje.jus.br/navegador/" },
@@ -421,11 +384,11 @@ const dadosTribunaisFixo = [
   { id: "tse",           nome: "TSE - Portal",           sub: "Tribunal Superior Eleitoral",   grupo: "superiores", url: "https://www.tse.jus.br/" },
   { id: "tst",           nome: "TST - PJe",              sub: "Tribunal Superior do Trabalho", grupo: "superiores", url: "https://www.tst.jus.br/" },
   { id: "stm",           nome: "STM - Portal",           sub: "Superior Tribunal Militar",     grupo: "superiores", url: "https://www.stm.jus.br/" },
-  { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",  sub: "Servidor eproc 1º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_1g/" },
-  { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",  sub: "Servidor eproc 2º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc_2g/" },
+  { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",  sub: "Servidor eproc 1º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc1g/" },
+  { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",  sub: "Servidor eproc 2º Grau",        grupo: "PR",         url: "https://eproc.tjpr.jus.br/eproc2g/" },
   { id: "tjpr_projudi",  nome: "TJPR - Projudi",         sub: "Servidor Projudi Login",        grupo: "PR",         url: "https://projudi.tjpr.jus.br/projudi/" },
-  { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",    sub: "Servidor PJe PR (Varas)",       grupo: "PR",         url: "https://pje.trt9.jus.br/pje/pje-presente.html" },
-  { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",    sub: "Servidor PJe PR (Tribunal)",    grupo: "PR",         url: "https://pje.trt9.jus.br/pje2g/pje-presente.html" },
+  { id: "trt9_1g",       nome: "TRT9 - PJe 1º Grau",    sub: "Servidor PJe PR (Varas)",       grupo: "PR",         url: "https://pje.trt9.jus.br/pje/" },
+  { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau",    sub: "Servidor PJe PR (Tribunal)",    grupo: "PR",         url: "https://pje.trt9.jus.br/pje2g/" },
   { id: "trf4_pr",       nome: "TRF4 - Federal PR",      sub: "Justiça Federal da 4ª Região",  grupo: "PR",         url: "https://eproc.trf4.jus.br/eproc2trf4/" },
   { id: "tjsp_saj",      nome: "TJSP - e-SAJ",           sub: "Servidor de Login eSAJ",        grupo: "SP",         url: "https://esaj.tjsp.jus.br/sajcas/login" }
 ];
@@ -441,7 +404,6 @@ let statusGerais      = {};
 let relatosComunidade = {};
 let grupoModalAberto  = null;
 
-// ===================== TICKER =====================
 async function carregarNoticias() {
   try {
     const r = await fetch('/api/noticias');
@@ -455,7 +417,6 @@ async function carregarNoticias() {
   } catch(e) { console.warn('Ticker offline'); }
 }
 
-// ===================== STATUS =====================
 async function carregarStatusDoCache() {
   try {
     const r = await fetch('/api/status-atual');
@@ -466,12 +427,10 @@ async function carregarStatusDoCache() {
       relatosComunidade = {};
     }
     renderizarCarrossel();
-    // Atualiza o modal de grupo se estiver aberto
     if (grupoModalAberto) renderizarModalGrupo(grupoModalAberto);
   } catch(e) { console.warn('Erro ao buscar status:', e); }
 }
 
-// ===================== CARROSSEL PORTAIS =====================
 function renderizarCarrossel() {
   const container = document.getElementById('carrosselPortais');
   const portais = dadosTribunaisFixo.slice(0, 10);
@@ -498,7 +457,6 @@ function renderizarCarrossel() {
   }).join('');
 }
 
-// ===================== MODAL GRUPO =====================
 function abrirModalGrupo(grupo) {
   grupoModalAberto = grupo;
   document.getElementById('modalGrupoTitulo').textContent = nomeGrupo[grupo] || grupo;
@@ -512,9 +470,8 @@ function fecharModalGrupo() {
 }
 
 function renderizarModalGrupo(grupo) {
-  const lista  = dadosTribunaisFixo.filter(t => t.grupo === grupo);
-  const grid   = document.getElementById('modalGrupoGrid');
-
+  const lista = dadosTribunaisFixo.filter(t => t.grupo === grupo);
+  const grid  = document.getElementById('modalGrupoGrid');
   grid.innerHTML = lista.map(t => {
     const s       = statusGerais[t.id];
     const cor     = s ? corStatusBg(s.status) : 'bg-gray-700';
@@ -522,7 +479,6 @@ function renderizarModalGrupo(grupo) {
     const ms      = s && s.latenciaMs ? `${s.latenciaMs}ms` : '';
     const relatos = relatosComunidade[t.id];
     const rHtml   = renderizarRelatos(relatos);
-
     return `
       <div class="bg-gray-800/60 border border-gray-700 rounded-2xl p-4 flex flex-col gap-3">
         <div class="flex items-start justify-between gap-2">
@@ -534,7 +490,7 @@ function renderizarModalGrupo(grupo) {
             </div>
           </div>
           <a href="${t.url}" target="_blank"
-            class="text-xs text-blue-400 hover:text-blue-300 border border-blue-900 hover:border-blue-700 px-2.5 py-1 rounded-lg shrink-0 transition-all">
+            class="text-xs text-blue-400 hover:text-blue-300 border border-blue-900 hover:border-blue-700 px-2.5 py-1 rounded-lg shrink-0">
             Abrir ↗
           </a>
         </div>
@@ -552,19 +508,17 @@ function renderizarModalGrupo(grupo) {
   }).join('');
 }
 
-// ===================== RELATOS =====================
 function renderizarRelatos(relatos) {
   if (!relatos || !relatos.total || relatos.total === 0) {
     return '<p class="text-gray-700 text-xs">Sem relatos.</p>';
   }
   let html = `<p class="text-gray-500 text-xs mb-1">${relatos.total} relato(s) • ${relatos.ultimo}</p>`;
-  if (relatos.problemas['Offline'] > 0)       html += `<p class="text-red-400 text-xs">🔴 ${relatos.problemas['Offline']} offline</p>`;
-  if (relatos.problemas['Instabilidade'] > 0) html += `<p class="text-yellow-400 text-xs">🟡 ${relatos.problemas['Instabilidade']} instável</p>`;
-  if (relatos.problemas['Falha no Login'] > 0)html += `<p class="text-blue-400 text-xs">🔐 ${relatos.problemas['Falha no Login']} login</p>`;
+  if (relatos.problemas['Offline'] > 0)        html += `<p class="text-red-400 text-xs">🔴 ${relatos.problemas['Offline']} offline</p>`;
+  if (relatos.problemas['Instabilidade'] > 0)  html += `<p class="text-yellow-400 text-xs">🟡 ${relatos.problemas['Instabilidade']} instável</p>`;
+  if (relatos.problemas['Falha no Login'] > 0) html += `<p class="text-blue-400 text-xs">🔐 ${relatos.problemas['Falha no Login']} login</p>`;
   return html;
 }
 
-// ===================== COR STATUS =====================
 function corStatusBg(status) {
   if (status === 'Online')      return 'bg-green-500';
   if (status === 'Lentidão')   return 'bg-yellow-400';
@@ -572,7 +526,6 @@ function corStatusBg(status) {
   return 'bg-gray-600';
 }
 
-// ===================== MODAL RELATO =====================
 let tribunalSelecionadoId   = null;
 let tribunalSelecionadoNome = null;
 
@@ -639,7 +592,6 @@ function fecharModalRelato() {
   tribunalSelecionadoNome = null;
 }
 
-// Fechar modal clicando fora
 document.getElementById('modalGrupo').addEventListener('click', function(e) {
   if (e.target === this) fecharModalGrupo();
 });
@@ -650,7 +602,6 @@ document.getElementById('modalRelato2').addEventListener('click', function(e) {
   if (e.target === this) fecharModalRelato();
 });
 
-// ===================== INIT =====================
 carregarNoticias();
 carregarStatusDoCache();
 setInterval(carregarStatusDoCache, 30000);
