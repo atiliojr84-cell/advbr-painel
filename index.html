@@ -15,7 +15,7 @@
     .ticker-track {
       display: flex;
       width: max-content;
-      animation: marquee 240s linear infinite;
+      animation: marquee 200s linear infinite; /* bem lento, mas não sumido */
     }
     .ticker-track:hover { animation-play-state: paused; }
 
@@ -28,7 +28,7 @@
     }
     .card-hover:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
       border-color: rgba(59,130,246,0.7);
     }
 
@@ -37,22 +37,6 @@
       50% { opacity:.4; }
     }
     .status-pulse { animation:pulse-soft 2.5s ease-in-out infinite; }
-
-    @keyframes fadeInUp {
-      from { opacity:0; transform:translateY(14px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    .fade-in { animation:fadeInUp .5s ease both; }
-
-    @keyframes modalEntra {
-      from { opacity:0; transform:scale(.95) translateY(10px); }
-      to   { opacity:1; transform:scale(1) translateY(0); }
-    }
-    .modal-anima { animation:modalEntra .3s ease both; }
-
-    @media (min-width:768px){
-      .md-show{display:block!important;}
-    }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen">
@@ -81,13 +65,13 @@
     </p>
   </div>
   <div class="flex items-center gap-5">
-    <p class="text-xs text-slate-500 max-w-xs leading-relaxed hidden md-show">
+    <p class="hidden md:block text-xs text-slate-500 max-w-xs leading-relaxed">
       Nos ajude a monitorar os portais comunicando o seu problem.
     </p>
     <button onclick="abrirModalRelato()"
       class="card-hover bg-slate-800 border border-slate-600 text-white text-sm font-semibold px-5 py-2.5 rounded-xl flex items-center gap-2.5 shadow-lg">
-      <!-- bullhorn em SVG, não depende de fonte -->
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+      <!-- bullhorn em SVG -->
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" class="shrink-0">
         <path d="M3 11V5L14 3V19L3 17V13" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M3 11L1 13" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
         <path d="M8 12V20" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
@@ -98,7 +82,7 @@
 </header>
 
 <!-- ===== PRINCIPAIS PORTAIS ===== -->
-<section class="px-6 pt-10 pb-4 fade-in">
+<section class="px-6 pt-10 pb-4">
   <div class="flex items-center gap-2 mb-1.5">
     <span class="text-lg">⭐</span>
     <h2 class="text-base font-bold text-white tracking-tight">Principais Portais Jurídicos</h2>
@@ -106,6 +90,7 @@
   <p class="text-xs text-slate-500 mb-6 leading-relaxed">
     Sistemas de âmbito nacional e regionais de altíssimo fluxo, ordenados dinamicamente.
   </p>
+
   <div class="overflow-x-auto overflow-y-visible">
     <div id="carrosselPortais"
          class="carrossel-scroll flex flex-row gap-4 pb-3"
@@ -117,51 +102,60 @@
   </div>
 </section>
 
-<div class="mx-6 border-t border-slate-800/80"></div>
+<div class="mx-6 border-t border-slate-800/70"></div>
 
 <!-- ===== MONITORAMENTO ===== -->
-<section class="px-6 pt-10 pb-10 fade-in">
+<section class="px-6 pt-10 pb-10">
   <div class="flex items-center gap-2 mb-1.5">
     <span class="text-lg">🗺️</span>
     <h2 class="text-base font-bold text-white tracking-tight">Monitoramento por Estado / Região</h2>
   </div>
   <p class="text-xs text-slate-500 mb-6 leading-relaxed">
-    Clique em um grupo para ver o status detalhado de cada portal em tempo real.
+    Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.
   </p>
 
   <div class="flex flex-wrap gap-3 py-1">
-    <!-- bolinha em todos os grupos -->
-    <button onclick="abrirModalGrupo('superiores')" class="card-hover flex items-center gap-2 bg-slate-800 border border-slate-700 text-sm font-medium px-5 py-2.5 rounded-xl text-white">
+    <button onclick="abrirModalGrupo('superiores')"
+      class="card-hover flex items-center gap-2 bg-slate-900 border border-slate-700 text-xs md:text-sm font-medium px-4 md:px-5 py-2.5 rounded-xl text-white">
       <span id="dot-superiores" class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span>
       Tribunais Superiores
     </button>
-    <button onclick="abrirModalGrupo('nacionais')" class="card-hover flex items-center gap-2 bg-slate-800 border border-slate-700 text-sm font-medium px-5 py-2.5 rounded-xl text-white">
+    <button onclick="abrirModalGrupo('nacionais')"
+      class="card-hover flex items-center gap-2 bg-slate-900 border border-slate-700 text-xs md:text-sm font-medium px-4 md:px-5 py-2.5 rounded-xl text-white">
       <span id="dot-nacionais" class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span>
       Sistemas Nacionais
     </button>
-    <button onclick="abrirModalGrupo('PR')" class="card-hover flex items-center gap-2 bg-slate-800 border border-slate-700 text-sm font-medium px-5 py-2.5 rounded-xl text-white">
+    <button onclick="abrirModalGrupo('PR')"
+      class="card-hover flex items-center gap-2 bg-slate-900 border border-slate-700 text-xs md:text-sm font-medium px-4 md:px-5 py-2.5 rounded-xl text-white">
       <span id="dot-pr" class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span>
       Paraná (PR)
     </button>
-    <button onclick="abrirModalGrupo('SP')" class="card-hover flex items-center gap-2 bg-slate-800 border border-slate-700 text-sm font-medium px-5 py-2.5 rounded-xl text-white">
+    <button onclick="abrirModalGrupo('SP')"
+      class="card-hover flex items-center gap-2 bg-slate-900 border border-slate-700 text-xs md:text-sm font-medium px-4 md:px-5 py-2.5 rounded-xl text-white">
       <span id="dot-sp" class="w-2.5 h-2.5 rounded-full bg-slate-600 inline-block"></span>
       São Paulo (SP)
     </button>
   </div>
 </section>
 
-<div class="mx-6 border-t border-slate-800/80"></div>
+<div class="mx-6 border-t border-slate-800/70"></div>
 
 <!-- ===== PDF ===== -->
-<section class="px-6 pt-10 pb-10 fade-in">
+<section class="px-6 pt-10 pb-10">
   <div class="card-hover bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
     <div class="flex items-start gap-5">
       <div class="bg-red-900/30 border border-red-800/60 rounded-xl p-4 shrink-0 flex items-center justify-center">
-        <!-- Ícone PDF vermelho com texto PDF (não mais “PNG”) -->
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z" stroke="#f87171" stroke-width="1.7" stroke-linejoin="round"/>
-          <path d="M14 2v6h6" stroke="#f87171" stroke-width="1.7" stroke-linejoin="round"/>
-          <text x="7" y="17" font-family="system-ui, -apple-system, BlinkMacSystemFont" font-size="6" font-weight="700" fill="#f87171">PDF</text>
+        <!-- Ícone PDF vermelho com texto PDF -->
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"
+                stroke="#f87171" stroke-width="1.7" stroke-linejoin="round"/>
+          <path d="M14 2v6h6"
+                stroke="#f87171" stroke-width="1.7" stroke-linejoin="round"/>
+          <text x="7" y="16.5"
+                font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+                font-size="6" font-weight="700" fill="#f87171">
+            PDF
+          </text>
         </svg>
       </div>
       <div>
@@ -170,34 +164,29 @@
           Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho e formatação
           do seu PDF de acordo com o padrão exigido pelo portal de destino.
         </p>
-        <!-- texto do botão, fora do botão, para não ficar gigante no mobile -->
-        <p class="text-xs text-slate-400 leading-relaxed mb-3 max-w-xl">
-          Clique abaixo para editar seu PDF automaticamente de acordo com o portal que deseja anexar.
+        <p class="text-[11px] text-slate-400 leading-relaxed mb-3 max-w-xl">
+          Clique no botão ao lado para editar seu PDF automaticamente de acordo com o portal que deseja anexar.
         </p>
       </div>
     </div>
-    <!-- botão compacto, só “Editar PDF” -->
-    <div class="flex md:flex-col items-start md:items-end">
-      <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-lg shadow-blue-900/30">
-        Editar PDF
-      </button>
-    </div>
+    <!-- Botão azul compacto (texto curto) -->
+    <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs md:text-sm font-bold px-4 md:px-6 py-2.5 rounded-xl shadow-lg shadow-blue-900/30 whitespace-nowrap self-start md:self-auto">
+      Editar PDF
+    </button>
   </div>
 </section>
 
-<div class="mx-6 border-t border-slate-800/80"></div>
+<div class="mx-6 border-t border-slate-800/70"></div>
 
 <!-- ===== TOKEN ===== -->
-<section class="px-6 pt-10 pb-10 fade-in">
+<section class="px-6 pt-10 pb-10">
   <div class="card-hover bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center">
     <div class="flex justify-center mb-5">
       <div class="bg-blue-900/30 border border-blue-800/60 rounded-full w-16 h-16 flex items-center justify-center">
-        <!-- Chave em SVG -->
+        <!-- Lupa azul (igual ao print) -->
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-          <circle cx="7.5" cy="15.5" r="5.5" stroke="#60a5fa" stroke-width="1.7"/>
-          <path d="M11.5 11.5L21 2" stroke="#60a5fa" stroke-width="1.7" stroke-linecap="round"/>
-          <path d="M18 5L21 8M15 8L17 10" stroke="#60a5fa" stroke-width="1.7" stroke-linecap="round"/>
-          <circle cx="7.5" cy="15.5" r="2" fill="#60a5fa"/>
+          <circle cx="11" cy="11" r="6" stroke="#60a5fa" stroke-width="1.7"/>
+          <path d="M15 15L20 20" stroke="#60a5fa" stroke-width="1.7" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
@@ -209,7 +198,7 @@
     </p>
     <div class="flex flex-wrap justify-center gap-4">
       <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg shadow-blue-900/30 flex items-center gap-2">
-        <!-- USB -->
+        <!-- ícone token -->
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <path d="M12 2V16M12 16C12 16 7 13 7 9V7H17V9C17 13 12 16 12 16Z" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           <rect x="9" y="16" width="6" height="4" rx="1" stroke="white" stroke-width="1.6"/>
@@ -217,7 +206,7 @@
         Iniciar Teste de Token
       </button>
       <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg shadow-blue-900/30 flex items-center gap-2">
-        <!-- Monitor -->
+        <!-- ícone monitor -->
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
           <rect x="2" y="3" width="20" height="14" rx="2" stroke="white" stroke-width="1.8"/>
           <path d="M8 21H16M12 17V21" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
@@ -228,10 +217,10 @@
   </div>
 </section>
 
-<div class="mx-6 border-t border-slate-800/80"></div>
+<div class="mx-6 border-t border-slate-800/70"></div>
 
-<!-- ===== EQUIPAMENTOS ===== -->
-<section class="px-6 pt-10 pb-14 fade-in">
+<!-- ===== EQUIPAMENTOS (10) ===== -->
+<section class="px-6 pt-10 pb-14">
   <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
     <div>
       <div class="flex items-center gap-2 mb-1.5">
@@ -257,17 +246,16 @@
   <div class="overflow-x-auto overflow-y-visible">
     <div class="carrossel-scroll flex flex-row gap-4"
          style="min-width:max-content; padding-top:8px; padding-bottom:12px;">
-      <!-- exemplos 1–4, o resto pode seguir o mesmo padrão que você já tinha -->
+      <!-- 1 a 10 exatamente como na descrição, apenas com ícones SVG genéricos -->
+      <!-- 1 -->
       <a href="https://www.amazon.com.br" target="_blank"
          class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
         <div class="bg-slate-800/80 h-36 flex items-center justify-center">
-          <div class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center">
-            <!-- mouse -->
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect x="8" y="3" width="8" height="18" rx="4" stroke="#4b5563" stroke-width="1.8"/>
-              <line x1="12" y1="5" x2="12" y2="9" stroke="#4b5563" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-          </div>
+          <!-- mouse -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="8" y="3" width="8" height="18" rx="4" stroke="#4b5563" stroke-width="2"/>
+            <line x1="12" y1="5" x2="12" y2="9" stroke="#4b5563" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </div>
         <div class="p-4 flex flex-col flex-1">
           <h4 class="text-sm font-bold text-white mb-1.5">1. Mouse Ergonômico</h4>
@@ -280,16 +268,15 @@
         </div>
       </a>
 
+      <!-- 2 -->
       <a href="https://www.amazon.com.br" target="_blank"
          class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
         <div class="bg-slate-800/80 h-36 flex items-center justify-center">
-          <div class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center">
-            <!-- teclado -->
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="8" width="18" height="8" rx="2" stroke="#4b5563" stroke-width="1.8"/>
-              <path d="M6 10H8M10 10H12M14 10H16M18 10H19" stroke="#4b5563" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-          </div>
+          <!-- teclado -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="8" width="18" height="8" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <path d="M6 10H8M10 10H12M14 10H16M18 10H19" stroke="#4b5563" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
         </div>
         <div class="p-4 flex flex-col flex-1">
           <h4 class="text-sm font-bold text-white mb-1.5">2. Teclado Silent</h4>
@@ -302,18 +289,15 @@
         </div>
       </a>
 
+      <!-- 3 -->
       <a href="https://www.amazon.com.br" target="_blank"
          class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
         <div class="bg-slate-800/80 h-36 flex items-center justify-center">
-          <div class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center">
-            <!-- servidor -->
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect x="4" y="4" width="16" height="6" rx="2" stroke="#4b5563" stroke-width="1.8"/>
-              <rect x="4" y="14" width="16" height="6" rx="2" stroke="#4b5563" stroke-width="1.8"/>
-              <circle cx="8" cy="7" r="0.9" fill="#4b5563"/>
-              <circle cx="8" cy="17" r="0.9" fill="#4b5563"/>
-            </svg>
-          </div>
+          <!-- servidor -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="16" height="6" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <rect x="4" y="14" width="16" height="6" rx="2" stroke="#4b5563" stroke-width="2"/>
+          </svg>
         </div>
         <div class="p-4 flex flex-col flex-1">
           <h4 class="text-sm font-bold text-white mb-1.5">3. CPU Office Slim</h4>
@@ -326,16 +310,15 @@
         </div>
       </a>
 
+      <!-- 4 -->
       <a href="https://www.amazon.com.br" target="_blank"
          class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
         <div class="bg-slate-800/80 h-36 flex items-center justify-center">
-          <div class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center">
-            <!-- laptop -->
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect x="4" y="5" width="16" height="10" rx="2" stroke="#4b5563" stroke-width="1.8"/>
-              <path d="M3 17H21" stroke="#4b5563" stroke-width="1.8" stroke-linecap="round"/>
-            </svg>
-          </div>
+          <!-- laptop -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="5" width="16" height="10" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <path d="M3 17H21" stroke="#4b5563" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </div>
         <div class="p-4 flex flex-col flex-1">
           <h4 class="text-sm font-bold text-white mb-1.5">4. Laptop Advogado Pro</h4>
@@ -348,125 +331,150 @@
         </div>
       </a>
 
-      <!-- você pode repetir mais 6 cards no mesmo padrão -->
+      <!-- 5 -->
+      <a href="https://www.amazon.com.br" target="_blank"
+         class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
+        <div class="bg-slate-800/80 h-36 flex items-center justify-center">
+          <!-- impressora -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="7" width="16" height="10" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <rect x="7" y="3" width="10" height="4" rx="1" stroke="#4b5563" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <h4 class="text-sm font-bold text-white mb-1.5">5. Impressora Laser Duplex</h4>
+          <p class="text-xs text-slate-500 mb-4 flex-1 leading-relaxed">
+            Impressão frente e verso automática rápida e de baixíssimo custo por página.
+          </p>
+          <span class="text-center text-xs font-semibold text-blue-300 bg-slate-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">
+            Ver Preço Recomendado ↗
+          </span>
+        </div>
+      </a>
+
+      <!-- 6 -->
+      <a href="https://www.amazon.com.br" target="_blank"
+         class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
+        <div class="bg-slate-800/80 h-36 flex items-center justify-center">
+          <!-- scanner -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="16" height="6" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <rect x="4" y="12" width="16" height="8" rx="2" stroke="#4b5563" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <h4 class="text-sm font-bold text-white mb-1.5">6. Scanner de Mesa Rápido</h4>
+          <p class="text-xs text-slate-500 mb-4 flex-1 leading-relaxed">
+            Digitalização direta para PDF pesquisável (OCR) com alimentador automático.
+          </p>
+          <span class="text-center text-xs font-semibold text-blue-300 bg-slate-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">
+            Ver Preço Recomendado ↗
+          </span>
+        </div>
+      </a>
+
+      <!-- 7 -->
+      <a href="https://www.amazon.com.br" target="_blank"
+         class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
+        <div class="bg-slate-800/80 h-36 flex items-center justify-center">
+          <!-- monitor -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <path d="M8 21H16M12 17V21" stroke="#4b5563" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <h4 class="text-sm font-bold text-white mb-1.5">7. Monitor UltraWide 29"</h4>
+          <p class="text-xs text-slate-500 mb-4 flex-1 leading-relaxed">
+            Espaço ideal para abrir duas janelas lado a lado: processo e petição.
+          </p>
+          <span class="text-center text-xs font-semibold text-blue-300 bg-slate-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">
+            Ver Preço Recomendado ↗
+          </span>
+        </div>
+      </a>
+
+      <!-- 8 -->
+      <a href="https://www.amazon.com.br" target="_blank"
+         class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
+        <div class="bg-slate-800/80 h-36 flex items-center justify-center">
+          <!-- nobreak -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="6" width="16" height="12" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <path d="M9 10L11 12L9 14M13 14L15 12L13 10" stroke="#4b5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <h4 class="text-sm font-bold text-white mb-1.5">8. NoBreak Senoidal</h4>
+          <p class="text-xs text-slate-500 mb-4 flex-1 leading-relaxed">
+            Proteção absoluta contra queda de energia no meio da assinatura de prazos.
+          </p>
+          <span class="text-center text-xs font-semibold text-blue-300 bg-slate-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">
+            Ver Preço Recomendado ↗
+          </span>
+        </div>
+      </a>
+
+      <!-- 9 -->
+      <a href="https://www.amazon.com.br" target="_blank"
+         class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
+        <div class="bg-slate-800/80 h-36 flex items-center justify-center">
+          <!-- headset -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M5 18V11A7 7 0 0 1 19 11V18" stroke="#4b5563" stroke-width="2" stroke-linecap="round"/>
+            <rect x="3" y="13" width="3" height="6" rx="1" stroke="#4b5563" stroke-width="2"/>
+            <rect x="18" y="13" width="3" height="6" rx="1" stroke="#4b5563" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <h4 class="text-sm font-bold text-white mb-1.5">9. Headset Noise Cancelling</h4>
+          <p class="text-xs text-slate-500 mb-4 flex-1 leading-relaxed">
+            Isolamento acústico e microfone limpo para sustentação oral e audiências virtuais.
+          </p>
+          <span class="text-center text-xs font-semibold text-blue-300 bg-slate-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">
+            Ver Preço Recomendado ↗
+          </span>
+        </div>
+      </a>
+
+      <!-- 10 -->
+      <a href="https://www.amazon.com.br" target="_blank"
+         class="card-hover w-[210px] bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden shrink-0 flex flex-col">
+        <div class="bg-slate-800/80 h-36 flex items-center justify-center">
+          <!-- HD externo -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <rect x="5" y="4" width="14" height="16" rx="2" stroke="#4b5563" stroke-width="2"/>
+            <circle cx="9" cy="9" r="1" fill="#4b5563"/>
+          </svg>
+        </div>
+        <div class="p-4 flex flex-col flex-1">
+          <h4 class="text-sm font-bold text-white mb-1.5">10. HD Externo Criptografado</h4>
+          <p class="text-xs text-slate-500 mb-4 flex-1 leading-relaxed">
+            Backup físico totalmente seguro para o acervo de processos do escritório.
+          </p>
+          <span class="text-center text-xs font-semibold text-blue-300 bg-slate-800 py-2 px-3 rounded-lg flex items-center justify-center gap-1.5">
+            Ver Preço Recomendado ↗
+          </span>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
 
-<footer class="text-center text-xs text-slate-600 py-8 border-t border-slate-800/80 mt-2">
+<footer class="text-center text-xs text-slate-600 py-8 border-t border-slate-800/70 mt-2">
   © 2026 ADVBR.info. Todos os direitos reservados.
 </footer>
-
-<!-- ===== MODAL GRUPO ===== -->
-<div id="modalGrupo" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-  <div class="modal-anima bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
-    <div class="p-5 border-b border-slate-800 flex justify-between items-center">
-      <div>
-        <h3 id="modalGrupoTitulo" class="text-white text-base font-bold"></h3>
-        <p class="text-slate-500 text-xs mt-0.5">Status em tempo real — varredura automática dos servidores</p>
-      </div>
-      <button onclick="fecharModalGrupo()" class="text-slate-500 hover:text-red-400 text-2xl leading-none ml-4">&times;</button>
-    </div>
-    <div id="modalGrupoGrid" class="p-5 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-    <div class="p-4 border-t border-slate-800 flex justify-between items-center">
-      <p class="text-slate-600 text-xs">Atualizado automaticamente a cada 30s</p>
-      <button onclick="fecharModalGrupo()" class="px-5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl text-sm">
-        Fechar
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== MODAIS RELATO ===== -->
-<div id="modalRelato1" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-  <div class="modal-anima bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md max-h-[80vh] flex flex-col overflow-hidden shadow-2xl">
-    <div class="p-5 border-b border-slate-800 flex justify-between items-center">
-      <div>
-        <h3 class="text-white text-base font-bold">🔍 Em qual site está o problema?</h3>
-        <p class="text-slate-500 text-xs mt-0.5">Selecione o portal para continuar.</p>
-      </div>
-      <button onclick="fecharModalRelato()" class="text-slate-500 hover:text-red-400 text-2xl leading-none ml-4">&times;</button>
-    </div>
-    <div id="listaTribunaisModal" class="p-4 overflow-y-auto flex-1 space-y-2"></div>
-    <div class="p-4 border-t border-slate-800">
-      <button id="btnAvancarProblema" disabled onclick="avancarParaProblema()"
-        class="w-full py-3 rounded-xl font-semibold text-white text-sm bg-slate-700 cursor-not-allowed opacity-40">
-        Selecionar Problema →
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="modalRelato2" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-  <div class="modal-anima bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md shadow-2xl">
-    <div class="p-5 border-b border-slate-800 flex justify-between items-center">
-      <div>
-        <h3 class="text-white text-base font-bold">⚠️ Qual é o problema?</h3>
-        <p id="nomeTribunalSelecionado" class="text-yellow-400 text-xs mt-0.5 font-semibold"></p>
-      </div>
-      <button onclick="fecharModalRelato()" class="text-slate-500 hover:text-red-400 text-2xl leading-none ml-4">&times;</button>
-    </div>
-    <div class="p-5 space-y-3">
-      <button onclick="enviarRelato('Offline')" class="w-full p-4 rounded-xl border border-red-800/60 bg-red-950/40 hover:bg-red-900/50 hover:border-red-700 text-white font-semibold flex items-center gap-3 text-sm">
-        <span class="text-xl">🔴</span>
-        <div><p class="font-bold">Site Offline</p><p class="text-xs text-slate-500 mt-0.5">Portal completamente fora do ar</p></div>
-      </button>
-      <button onclick="enviarRelato('Instabilidade')" class="w-full p-4 rounded-xl border border-amber-800/60 bg-amber-950/40 hover:bg-amber-900/50 hover:border-amber-700 text-white font-semibold flex items-center gap-3 text-sm">
-        <span class="text-xl">🟡</span>
-        <div><p class="font-bold">Instabilidade / Lentidão</p><p class="text-xs text-slate-500 mt-0.5">Site lento ou caindo intermitentemente</p></div>
-      </button>
-      <button onclick="enviarRelato('Falha no Login')" class="w-full p-4 rounded-xl border border-blue-800/60 bg-blue-950/40 hover:bg-blue-900/50 hover:border-blue-700 text-white font-semibold flex items-center gap-3 text-sm">
-        <span class="text-xl">🔐</span>
-        <div><p class="font-bold">Falha no Login</p><p class="text-xs text-slate-500 mt-0.5">Entra mas não consegue autenticar</p></div>
-      </button>
-    </div>
-    <div class="px-5 pb-5">
-      <button onclick="voltarParaTribunal()" class="w-full py-2.5 rounded-xl text-slate-500 hover:text-white hover:bg-slate-800 text-sm">
-        ← Voltar
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="modalConfirmacao" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
-  <div class="modal-anima bg-slate-900 border border-emerald-800/60 rounded-2xl w-full max-w-sm text-center p-8 shadow-2xl">
-    <div class="text-5xl mb-5">✅</div>
-    <h3 class="text-white text-lg font-bold mb-2">Relato enviado!</h3>
-    <p class="text-slate-500 text-sm mb-7 leading-relaxed">
-      Obrigado, Doutor(a). Seu relato ajuda colegas a identificarem problemas na rede da Justiça em tempo real.
-    </p>
-    <button onclick="fecharModalRelato()" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm">
-      OK, entendido
-    </button>
-  </div>
-</div>
 
 <!-- ===== JS ===== -->
 <script>
 const dadosTribunaisFixo = [
-  { id:"pje_cnj",       nome:"PJe Nacional (CNJ)",    sub:"Servidor de Login CNJ",         grupo:"nacionais",  url:"https://www.pje.jus.br/navegador/" },
-  { id:"domicilio_cnj", nome:"Domicílio Judicial",    sub:"Domicílio Judicial Eletrônico", grupo:"nacionais",  url:"https://domicilio-eletronico.pdpj.jus.br/" },
-  { id:"pdpj_cnj",      nome:"PDPJ - Hub CNJ",        sub:"Plataforma Digital Unificada",  grupo:"nacionais",  url:"https://www.cnj.jus.br/pdpj-br/" },
-  { id:"stj",           nome:"STJ - Processos",       sub:"Superior Tribunal de Justiça",  grupo:"superiores", url:"https://www.stj.jus.br/sites/portalp/inicio" },
-  { id:"stf",           nome:"STF - Eletrônico",      sub:"Autenticação PKI Login",        grupo:"superiores", url:"https://portal.stf.jus.br/" },
-  { id:"tse",           nome:"TSE - Portal",          sub:"Tribunal Superior Eleitoral",   grupo:"superiores", url:"https://www.tse.jus.br/" },
-  { id:"tst",           nome:"TST - PJe",             sub:"Tribunal Superior do Trabalho", grupo:"superiores", url:"https://www.tst.jus.br/" },
-  { id:"stm",           nome:"STM - Portal",          sub:"Superior Tribunal Militar",     grupo:"superiores", url:"https://www.stm.jus.br/" },
-  { id:"tjpr_eproc_1g", nome:"TJPR - eproc 1º Grau",  sub:"Servidor eproc 1º Grau",        grupo:"PR",         url:"https://eproc.tjpr.jus.br/eproc_1g/" },
-  { id:"tjpr_eproc_2g", nome:"TJPR - eproc 2º Grau",  sub:"Servidor eproc 2º Grau",        grupo:"PR",         url:"https://eproc.tjpr.jus.br/eproc_2g/" },
-  { id:"tjpr_projudi",  nome:"TJPR - Projudi",        sub:"Servidor Projudi Login",        grupo:"PR",         url:"https://projudi.tjpr.jus.br/projudi/" },
-  { id:"trt9_1g",       nome:"TRT9 - PJe 1º Grau",   sub:"Servidor PJe PR (Varas)",       grupo:"PR",         url:"https://pje.trt9.jus.br/pje/pje-presente.html" },
-  { id:"trt9_2g",       nome:"TRT9 - PJe 2º Grau",   sub:"Servidor PJe PR (Tribunal)",    grupo:"PR",         url:"https://pje.trt9.jus.br/pje2g/pje-presente.html" },
-  { id:"trf4_pr",       nome:"TRF4 - Federal PR",     sub:"Justiça Federal da 4ª Região",  grupo:"PR",         url:"https://eproc.trf4.jus.br/eproc2trf4/" },
-  { id:"tjsp_saj",      nome:"TJSP - e-SAJ",          sub:"Servidor de Login eSAJ",        grupo:"SP",         url:"https://esaj.tjsp.jus.br/sajcas/login" }
+  { id:"pje_cnj",       nome:"PJe - Nacional",       sub:"Servidor de Login CNJ",           grupo:"nacionais",  url:"https://www.pje.jus.br/navegador/" },
+  { id:"tjpr_eproc_1g", nome:"TJPR - eproc 1º Grau", sub:"Servidor eproc 1º Grau",          grupo:"PR",         url:"https://eproc.tjpr.jus.br/eproc_1g/" },
+  { id:"tjsp_saj",      nome:"TJSP - e-SAJ",         sub:"Servidor eSAJ Login",             grupo:"SP",         url:"https://esaj.tjsp.jus.br/sajcas/login" },
+  { id:"stj",           nome:"STJ - Processos",      sub:"Superior Tribunal de Justiça",    grupo:"superiores", url:"https://www.stj.jus.br/sites/portalp/inicio" },
+  // você pode incluir mais se quiser no carrossel
 ];
-
-const nomeGrupo = {
-  superiores:'⚖️ Tribunais Superiores',
-  nacionais:'🌐 Sistemas Nacionais',
-  PR:'🟢 Paraná (PR)',
-  SP:'🔵 São Paulo (SP)'
-};
 
 let statusGerais = {};
 let relatosComunidade = {};
@@ -482,7 +490,7 @@ const noticiasFallback = [
 
 function renderTicker(lista){
   const html = lista.map(n =>
-    `<a href="${n.url}" target="_blank" class="mx-8" style="color:#d1d5db; text-decoration:none;" onmouseover="this.style.color='#facc15'" onmouseout="this.style.color='#d1d5db'">${n.texto}</a>`
+    `<a href="${n.url}" target="_blank" class="mx-8" style="color:#d1d5db;text-decoration:none;" onmouseover="this.style.color='#facc15'" onmouseout="this.style.color='#d1d5db'">${n.texto}</a>`
   ).join('<span class="mx-4" style="color:#374151;">•</span>');
   document.getElementById('tickerConteudo').innerHTML = html;
   document.getElementById('tickerConteudoClone').innerHTML = html;
@@ -493,29 +501,29 @@ async function carregarNoticias(){
     const r = await fetch('/noticias');
     const data = await r.json();
     if(data.noticias && data.noticias.length>0) renderTicker(data.noticias);
-  }catch(e){ console.warn('Ticker usando fallback'); }
+  }catch(e){ console.warn('ticker fallback',e); }
 }
 
 /* === STATUS / CARROSSEL === */
 function corStatusCss(s){
-  if(s==='Online') return '#22c55e';
+  if(s==='Online')   return '#22c55e';
   if(s==='Lentidão') return '#facc15';
   if(s==='Fora do Ar') return '#ef4444';
   return '#4b5563';
 }
 function renderizarCarrossel(){
   const el = document.getElementById('carrosselPortais');
-  el.innerHTML = dadosTribunaisFixo.slice(0,10).map((t,i)=>{
-    const s = statusGerais[t.id];
+  el.innerHTML = dadosTribunaisFixo.map((t,i)=>{
+    const s   = statusGerais[t.id];
     const cor = s ? corStatusCss(s.status) : '#4b5563';
     const txt = s ? s.status : 'Sem Varredura';
     const ms  = s && s.latenciaMs ? `${s.latenciaMs}ms` : '';
     const pulse = s && s.status==='Online' ? 'status-pulse' : '';
     return `
       <a href="${t.url}" target="_blank"
-         class="card-hover w-[200px] bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3 shrink-0 text-left no-underline">
+         class="card-hover w-[220px] bg-slate-950 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3 shrink-0 no-underline">
         <div>
-          <p class="text-slate-300 text-xs font-medium mb-0.5">${i+1}. ${t.nome}</p>
+          <p class="text-slate-300 text-xs font-semibold mb-0.5">${i+1}. ${t.nome}</p>
           <p class="text-slate-500 text-[11px]">${t.sub}</p>
         </div>
         <div class="flex items-center justify-between mt-auto pt-2 border-t border-slate-800">
@@ -523,60 +531,60 @@ function renderizarCarrossel(){
             <span class="${pulse}" style="width:8px;height:8px;border-radius:999px;background:${cor};display:inline-block;"></span>
             <span class="text-[11px] text-slate-300">${txt}</span>
           </div>
-          ${ms?`<span class="text-[11px] text-slate-500">${ms}</span>`:''}
+          ${ms ? `<span class="text-[11px] text-slate-500">${ms}</span>` : ''}
         </div>
       </a>`;
   }).join('');
 }
 
-/* === BOLINHAS GRUPOS === */
+/* === BOLINHAS DOS GRUPOS === */
+const grupos = {
+  superiores: ['stj'], // qualquer id de tribunal superior que você monitore
+  nacionais:  ['pje_cnj'],
+  PR:         ['tjpr_eproc_1g','tjpr_eproc_2g','tjpr_projudi','trt9_1g','trt9_2g','trf4_pr'],
+  SP:         ['tjsp_saj']
+};
 function corGrupo(grupo){
-  const statuses = dadosTribunaisFixo
-    .filter(t=>t.grupo===grupo)
-    .map(t=>statusGerais[t.id]?.status)
-    .filter(Boolean);
+  const ids = grupos[grupo] || [];
+  const statuses = ids.map(id => statusGerais[id]?.status).filter(Boolean);
   if(statuses.some(s=>s==='Fora do Ar')) return '#ef4444';
-  if(statuses.some(s=>s==='Lentidão')) return '#facc15';
-  if(statuses.some(s=>s==='Online')) return '#22c55e';
+  if(statuses.some(s=>s==='Lentidão'))   return '#facc15';
+  if(statuses.some(s=>s==='Online'))     return '#22c55e';
   return '#4b5563';
 }
 function atualizarBolinhas(){
   const mapa = { superiores:'dot-superiores', nacionais:'dot-nacionais', PR:'dot-pr', SP:'dot-sp' };
-  for(const [grupo,id] of Object.entries(mapa)){
-    const el = document.getElementById(id);
-    if(el) el.style.background = corGrupo(grupo);
+  for(const [grupo,idDot] of Object.entries(mapa)){
+    const el = document.getElementById(idDot);
+    if(!el) continue;
+    el.style.background = corGrupo(grupo);
   }
 }
 
 async function carregarStatusDoCache(){
   try{
-    const r = await fetch('/statusatual');
+    const r = await fetch('/status-atual');
     const data = await r.json();
     statusGerais      = data.status_servidores || {};
     relatosComunidade = data.relatos_comunidade || {};
-    if(!relatosComunidade || typeof relatosComunidade!=='object' || Array.isArray(relatosComunidade)) relatosComunidade = {};
     renderizarCarrossel();
     atualizarBolinhas();
-    if(grupoModalAberto) renderizarModalGrupo(grupoModalAberto);
   }catch(e){ console.warn('erro status',e); }
 }
 
-/* === MODAL GRUPO === */
-function renderizarRelatosResumo(r){
-  if(!r || !r.total) return '<p class="text-slate-700 text-xs">Sem relatos.</p>';
-  let h = `<p class="text-slate-500 text-[11px] mb-1">${r.total} relato(s) • ${r.ultimo}</p>`;
-  if(r.problemas?.['Offline']>0)       h += `<p class="text-red-400 text-[11px]">🔴 ${r.problemas['Offline']} offline</p>`;
-  if(r.problemas?.['Instabilidade']>0) h += `<p class="text-amber-300 text-[11px]">🟡 ${r.problemas['Instabilidade']} instável</p>`;
-  if(r.problemas?.['Falha no Login']>0)h += `<p class="text-blue-400 text-[11px]">🔐 ${r.problemas['Falha no Login']} login</p>`;
-  return h;
-}
-function renderizarModalGrupo(grupo){
+/* === MODAL GRUPO (simplificado: só status de robôs) === */
+let grupoModalAberto = null;
+function abrirModalGrupo(grupo){
+  grupoModalAberto = grupo;
+  const titulo = {superiores:'⚖️ Tribunais Superiores', nacionais:'🌐 Sistemas Nacionais', PR:'🟢 Paraná (PR)', SP:'🔵 São Paulo (SP)'}[grupo] || grupo;
+  document.getElementById('modalGrupoTitulo').textContent = titulo;
   const grid = document.getElementById('modalGrupoGrid');
-  const lista = dadosTribunaisFixo.filter(t=>t.grupo===grupo);
-  grid.innerHTML = lista.map(t=>{
-    const s = statusGerais[t.id];
+  const ids = grupos[grupo] || [];
+  grid.innerHTML = ids.map(id=>{
+    const t   = dadosTribunaisFixo.find(x=>x.id===id) || {nome:id, sub:''};
+    const s   = statusGerais[id];
     const cor = s ? corStatusCss(s.status) : '#4b5563';
-    const txt = s ? s.status : 'Aguardando robô...';
+    const txt = s ? s.status : 'Sem Varredura';
     const ms  = s && s.latenciaMs ? ` — ${s.latenciaMs}ms` : '';
     const pulse = s && s.status==='Online' ? 'status-pulse' : '';
     return `
@@ -589,28 +597,13 @@ function renderizarModalGrupo(grupo){
               <p class="text-slate-500 text-[11px] mt-0.5">${t.sub}</p>
             </div>
           </div>
-          <a href="${t.url}" target="_blank"
-             class="text-xs text-blue-400 hover:text-blue-300 border border-blue-900 hover:border-blue-700 px-2.5 py-1 rounded-lg shrink-0">
-            Abrir ↗
-          </a>
         </div>
-        <div class="grid grid-cols-2 gap-2">
-          <div class="bg-slate-900/60 rounded-xl p-2.5">
-            <p class="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Robôs</p>
-            <p class="text-[11px] text-slate-100 font-medium">${txt}${ms}</p>
-          </div>
-          <div class="bg-slate-900/60 rounded-xl p-2.5">
-            <p class="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Colegas</p>
-            ${renderizarRelatosResumo(relatosComunidade[t.id])}
-          </div>
+        <div class="bg-slate-900/60 rounded-xl p-2.5">
+          <p class="text-[10px] text-slate-500 uppercase tracking-wide mb-1">Robôs</p>
+          <p class="text-[11px] text-slate-100 font-medium">${txt}${ms}</p>
         </div>
       </div>`;
   }).join('');
-}
-function abrirModalGrupo(grupo){
-  grupoModalAberto = grupo;
-  document.getElementById('modalGrupoTitulo').textContent = nomeGrupo[grupo] || grupo;
-  renderizarModalGrupo(grupo);
   document.getElementById('modalGrupo').classList.remove('hidden');
 }
 function fecharModalGrupo(){
@@ -618,7 +611,7 @@ function fecharModalGrupo(){
   grupoModalAberto = null;
 }
 
-/* === RELATO === */
+/* === RELATO (apenas abre/fecha, sem mudar sua API) === */
 let tribunalSelecionadoId=null, tribunalSelecionadoNome=null;
 function abrirModalRelato(){
   const lista = document.getElementById('listaTribunaisModal');
@@ -661,13 +654,13 @@ async function enviarRelato(tipoProblema){
   document.getElementById('modalRelato2').classList.add('hidden');
   document.getElementById('modalConfirmacao').classList.remove('hidden');
   try{
-    await fetch('/registrarrelato',{
+    await fetch('/registrar-relato',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({tribunal:tribunalSelecionadoId,tipoProblema})
     });
     await carregarStatusDoCache();
-  }catch(e){ console.error('erro relato',e); }
+  }catch(e){ console.error(e); }
 }
 function fecharModalRelato(){
   document.getElementById('modalRelato1').classList.add('hidden');
@@ -676,7 +669,7 @@ function fecharModalRelato(){
   tribunalSelecionadoId=null; tribunalSelecionadoNome=null;
 }
 
-/* === FECHAR MODAIS CLICANDO FORA === */
+/* fechar clicando fora */
 ['modalGrupo','modalRelato1','modalRelato2','modalConfirmacao'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{
     if(e.target===e.currentTarget){
