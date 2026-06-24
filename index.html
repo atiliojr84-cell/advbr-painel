@@ -82,7 +82,7 @@
             <h2 class="text-lg font-semibold mb-2 text-gray-300 flex items-center gap-2">
                 <i class="fa-solid fa-map-location-dot text-blue-500"></i> Monitoramento por Estado / Região
             </h2>
-            <p class="text-xs text-gray-500 mb-4">Selecione o grupo ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
+            <p class="text-xs text-gray-500 mb-4">Selecione o group ou o estado correspondente para expandir as varreduras de rede em tempo real.</p>
             
             <div class="flex flex-col sm:flex-row flex-wrap gap-4 pt-2">
                 <div onclick="abrirEstado('superiores')" class="state-btn p-3.5 rounded-xl font-bold text-sm shadow-md bg-gradient-to-r from-blue-950/60 to-gray-800 border border-blue-800/40 hover:from-blue-600 hover:to-blue-700 text-blue-400 hover:text-white transition duration-200 min-w-[240px]">
@@ -240,6 +240,8 @@
     <script>
         const dadosTribunaisFixo = [
             { id: "pje_cnj",       nome: "PJe - Nacional",     sub: "Servidor de Login CNJ", grupo: "nacionais", url: "https://www.pje.jus.br/navegador/" },
+            { id: "domicilio_cnj", nome: "Domicílio Judicial", sub: "Domicílio Judicial Eletrônico", grupo: "nacionais", url: "https://domicilio-eletronico.pdpj.jus.br/" },
+            { id: "pdpj_cnj",      nome: "PDPJ - Hub CNJ",     sub: "Plataforma Digital Unificada", grupo: "nacionais", url: "https://www.cnj.jus.br/pdpj-br/" },
             { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau",sub: "Servidor eproc 1º Grau",grupo: "PR",        url: "https://eproc.tjpr.jus.br/eproc_1g/" },
             { id: "tjpr_eproc_2g", nome: "TJPR - eproc 2º Grau",sub: "Servidor eproc 2º Grau",grupo: "PR",        url: "https://eproc.tjpr.jus.br/eproc_2g/" },
             { id: "tjsp_saj",      nome: "TJSP - e-SAJ",       sub: "Servidor de Login eSAJ",grupo: "SP",        url: "https://esaj.tjsp.jus.br/sajcas/login" },
@@ -251,7 +253,7 @@
             { id: "tjpr_projudi",  nome: "TJPR - Projudi",     sub: "Servidor Projudi Login", grupo: "PR",       url: "https://projudi.tjpr.jus.br/projudi/" },
             { id: "tse",           nome: "TSE - Portal",       sub: "Tribunal Superior Eleitoral", grupo: "superiores", url: "https://www.tse.jus.br/" },
             { id: "tst",           nome: "TST - PJe",          sub: "Tribunal Superior do Trabalho", grupo: "superiores", url: "https://www.tst.jus.br/" },
-            { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar", group: "superiores", url: "https://www.stm.jus.br/" }
+            { id: "stm",           nome: "STM - Portal",       sub: "Superior Tribunal Militar", grupo: "superiores", url: "https://www.stm.jus.br/" }
         ];
 
         let statusGerais = {};
