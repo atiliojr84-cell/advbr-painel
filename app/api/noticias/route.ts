@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   const fontes = [
     { nome: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },
-    { nome: "OAB-NAC", url: "https://www.oab.org.br/rss" },
+    { nome: "OAB-BR", url: "https://www.oab.org.br/rss" },
     { nome: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
     { nome: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" },
     { nome: "STJ", url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" }
@@ -31,7 +31,7 @@ export async function GET() {
     } catch (e) { continue; }
   }
 
-  // Lógica de "Distribuição de Cartas" (1 de cada site por vez)
+  // Distribuição de "cartas" para misturar as fontes
   const todasNoticias = [];
   const maxNoticias = Math.max(...colecoes.map(c => c.length));
 
