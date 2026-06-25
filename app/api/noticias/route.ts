@@ -1,22 +1,22 @@
 import { NextResponse } from 'next/server';
 
 export async function GET() {
-  // Lista expandida com fontes de alta relevância para advogados
   const fontes = [
     { nome: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },
     { nome: "OAB-BR", url: "https://www.oab.org.br/rss" },
     { nome: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
     { nome: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" },
     { nome: "STJ", url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" },
-    { nome: "JOTA", url: "https://www.jota.info/feed" },
-    { nome: "DIR-NEWS", url: "https://www.direitonews.com.br/feed" }
+    { nome: "JUSTICA-FOCO", url: "https://www.justicaemfoco.com.br/feed" },
+    { nome: "TRF4", url: "https://www.trf4.jus.br/trf4/noticias.xml" },
+    { nome: "HP-JURIDICA", url: "https://www.homepagejuridica.net/feed/" },
+    { nome: "TRT7", url: "https://www.trt7.jus.br/index.php?option=com_content&view=category&id=152&Itemid=887&format=feed&type=rss" }
   ];
 
   const colecoes = [];
 
   for (const fonte of fontes) {
     try {
-      // Adicionamos um User-Agent para garantir que os sites não bloqueiem a requisição
       const res = await fetch(fonte.url, { 
         next: { revalidate: 3600 },
         headers: { 'User-Agent': 'Mozilla/5.0' } 
@@ -40,7 +40,6 @@ export async function GET() {
     } catch (e) { continue; }
   }
 
-  // Lógica de distribuição (Round-Robin)
   const todasNoticias = [];
   const maxNoticias = Math.max(...colecoes.map(c => c.length));
 
