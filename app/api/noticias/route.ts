@@ -20,21 +20,23 @@ export async function GET() {
         headers: { 'User-Agent': 'Mozilla/5.0' } 
       });
       
-      // Converte o buffer para texto garantindo a leitura correta de acentos
-      const buffer = await res.arrayBuffer();
-      const decoder = new TextDecoder('iso-8859-1'); // Corrige o encoding do TRF4 e outros
-      const xml = decoder.decode(buffer);
+      const arrayBuffer = await res.arrayBuffer();
+      // Lê como um texto bruto (ISO-8859-1 que cobre quase tudo)
+      const decoder = new TextDecoder('iso-8859-1');
+      let xml = decoder.decode(arrayBuffer);
       
+      // Limpeza agressiva de caracteres que causam aquele ""
+      xml = xml.replace(/Ã©/g, 'é').replace(/Ã£/g, 'ã').replace(/Ã§/g, 'ç')
+               .replace(/Ã³/g, 'ó').replace(/Ãª/g, 'ê').replace(/Ã­/g, 'í')
+               .replace(/Ã¡/g, 'á').replace(/Ã¼/g, 'ü').replace(/Ãµ/g, 'õ');
+
       const regex = /<item>[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>/gi;
       let match;
       let count = 0;
       
       while ((match = regex.exec(xml)) !== null && count < 3) {
-        const titulo = match[1].replace(/<!\[CDATA\[|\]\]>|<\/?[^>]+(>|$)/g, "").trim();
-        todasNoticias.push({ 
-          texto: `[${fonte.nome}] ${titulo}`, 
-          url: match[2].trim() 
-        });
+        let titulo = match[1].replace(/<!\[CDATA\[|\]\]>|<\/?[^>]+(>|$)/g, "").trim();
+        todasNoticias.push({ texto: `[${fonte.nome}] ${titulo}`, url: match[2].trim() });
         count++;
       }
     } catch (e) { continue; }
