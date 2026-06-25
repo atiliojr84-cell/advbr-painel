@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Ticker from "@/components/ui/Ticker";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ADVBR.info - Suporte Tecnológico Jurídico",
-  description: "Diagnóstico, ferramentas PDF e monitoramento de tribunais para advogados.",
+  title: "Painel AdvBR",
+  description: "Hub de ferramentas jurídicas",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="pt-BR">
-      <body className="min-h-screen bg-[#0b0f19] text-slate-300 antialiased overflow-x-hidden selection:bg-blue-500/30">
+    <html lang="pt-br">
+      <body className={inter.className}>
+        <Ticker />
         {children}
       </body>
     </html>
