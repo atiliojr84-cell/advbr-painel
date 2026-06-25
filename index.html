@@ -82,552 +82,250 @@
             </div>
         </section>
 
-        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
-            <div class="max-w-xl mx-auto text-center space-y-5 py-4">
-                <div class="w-14 h-14 bg-blue-950/50 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner" style="color: #d9381e;">
-                    <i class="fa-solid fa-file-pdf"></i>
+        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900/50 to-gray-950/50">
+            <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
+                <i class="fa-solid fa-screwdriver-wrench text-purple-400"></i> Ferramentas Essenciais
+            </h2>
+            <p class="text-xs text-gray-500 mb-4">Acesso rápido a utilitários que otimizam sua rotina jurídica.</p>
+            <div class="products-carousel">
+                <!-- PJE Office -->
+                <div onclick="abrirModalPjeOffice()" class="card p-4 rounded-xl flex-shrink-0 w-48 cursor-pointer">
+                    <div class="text-purple-400 text-3xl mb-2"><i class="fa-solid fa-briefcase"></i></div>
+                    <h3 class="font-semibold text-gray-200">PJE Office</h3>
+                    <p class="text-xs text-gray-400">Otimize e assine documentos para o PJE.</p>
                 </div>
-                <h2 class="text-xl font-bold">Divisão de PDF inteligente</h2>
-                <p class="text-sm text-gray-400">Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho do seu PDF de acordo com o padrão exigido pelo portal de destino.</p>
+                <!-- PDF Optimizer -->
+                <div onclick="abrirModalPdfOptimizer()" class="card p-4 rounded-xl flex-shrink-0 w-48 cursor-pointer">
+                    <div class="text-blue-400 text-3xl mb-2"><i class="fa-solid fa-file-pdf"></i></div>
+                    <h3 class="font-semibold text-gray-200">Otimizador de PDF</h3>
+                    <p class="text-xs text-gray-400">Reduza o tamanho e divida seus PDFs.</p>
+                </div>
+                <!-- Token Test -->
+                <div onclick="abrirModalToken()" class="card p-4 rounded-xl flex-shrink-0 w-48 cursor-pointer">
+                    <div class="text-green-400 text-3xl mb-2"><i class="fa-solid fa-key"></i></div>
+                    <h3 class="font-semibold text-gray-200">Teste de Token</h3>
+                    <p class="text-xs text-gray-400">Verifique a validade do seu certificado digital.</p>
+                </div>
+                <!-- Placeholder para mais ferramentas -->
+                <div class="card p-4 rounded-xl flex-shrink-0 w-48 opacity-50">
+                    <div class="text-gray-500 text-3xl mb-2"><i class="fa-solid fa-ellipsis"></i></div>
+                    <h3 class="font-semibold text-gray-400">Em Breve</h3>
+                    <p class="text-xs text-gray-500">Novas ferramentas a caminho!</p>
+                </div>
             </div>
-            <button onclick="abrirModalPdfOptimizer()" class="w-full mt-6 block mx-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-blue-950/40 active:scale-95 text-center tracking-wide lg:max-w-md">
-                Clique aqui e edite seu PDF automaticamente de acordo com o portal que deseja anexar
-            </button>
         </section>
 
-        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
-            <div class="max-w-xl mx-auto text-center space-y-5 py-4">
-                <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
-                    <i class="fa-solid fa-key fa-rotate-270"></i>
-                </div>
-                <h2 class="text-xl font-bold">Gerador de Token PJE</h2>
-                <p class="text-sm text-gray-400">Gere tokens de acesso para o PJE de forma rápida e segura, garantindo a autenticidade das suas petições e documentos.</p>
-            </div>
-            <button onclick="abrirModalToken()" class="w-full mt-6 block mx-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-blue-950/40 active:scale-95 text-center tracking-wide lg:max-w-md">
-                Gerar Token PJE
-            </button>
-        </section>
-
-        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
-            <div class="max-w-xl mx-auto text-center space-y-5 py-4">
-                <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
-                    <i class="fa-solid fa-file-signature"></i>
-                </div>
-                <h2 class="text-xl font-bold">PJE Office</h2>
-                <p class="text-sm text-gray-400">Otimize seus documentos para o PJE Office, garantindo que estejam nos padrões exigidos pelos tribunais.</p>
-            </div>
-            <button onclick="abrirModalPjeOffice()" class="w-full mt-6 block mx-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-blue-950/40 active:scale-95 text-center tracking-wide lg:max-w-md">
-                Otimizar para PJE Office
-            </button>
-        </section>
-
+        <!-- Seção de Produtos (mantida como estava) -->
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-briefcase text-purple-500"></i> Nossos Produtos
+                <i class="fa-solid fa-box-open text-orange-400"></i> Nossos Produtos
             </h2>
-            <p class="text-xs text-gray-500 mb-4">Conheça as soluções que desenvolvemos para otimizar sua rotina jurídica.</p>
-            <div class="products-carousel" id="carrosselProdutos">
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Cloud</h3>
-                    <p class="text-sm text-gray-400 mt-1">Armazenamento seguro e acesso rápido aos seus documentos.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+            <p class="text-xs text-gray-500 mb-4">Conheça as soluções que oferecemos para o seu escritório.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Cloud</h3>
+                    <p class="text-sm text-gray-400 mb-4">Armazenamento seguro e acesso a documentos de qualquer lugar.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Monitor</h3>
-                    <p class="text-sm text-gray-400 mt-1">Monitoramento inteligente de processos e publicações.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Automação</h3>
+                    <p class="text-sm text-gray-400 mb-4">Automatize tarefas repetitivas e ganhe tempo.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.IA</h3>
-                    <p class="text-sm text-gray-400 mt-1">Inteligência Artificial para análise de jurisprudência.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Analytics</h3>
+                    <p class="text-sm text-gray-400 mb-4">Insights poderosos para decisões estratégicas.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Docs</h3>
-                    <p class="text-sm text-gray-400 mt-1">Geração automática de petições e documentos jurídicos.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR CRM</h3>
+                    <p class="text-sm text-gray-400 mb-4">Gerencie seus clientes e casos de forma eficiente.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Agenda</h3>
-                    <p class="text-sm text-gray-400 mt-1">Organização e gestão de prazos e compromissos.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Compliance</h3>
+                    <p class="text-sm text-gray-400 mb-4">Garanta a conformidade legal do seu escritório.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Financeiro</h3>
-                    <p class="text-sm text-gray-400 mt-1">Controle financeiro e faturamento para escritórios.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Mobile</h3>
+                    <p class="text-sm text-gray-400 mb-4">Acesse suas ferramentas e documentos pelo celular.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.CRM</h3>
-                    <p class="text-sm text-gray-400 mt-1">Gestão de clientes e relacionamento com o cliente.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR IA Jurídica</h3>
+                    <p class="text-sm text-gray-400 mb-4">Inteligência Artificial para pesquisa e análise jurídica.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Mobile</h3>
-                    <p class="text-sm text-gray-400 mt-1">Acesso a todas as ferramentas pelo seu smartphone.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Gestão Financeira</h3>
+                    <p class="text-sm text-gray-400 mb-4">Controle total das finanças do seu escritório.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Academy</h3>
-                    <p class="text-sm text-gray-400 mt-1">Cursos e treinamentos para advogados.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Treinamentos</h3>
+                    <p class="text-sm text-gray-400 mb-4">Capacitação para você e sua equipe.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
-                <div class="flex-none w-64 p-4 card rounded-xl">
-                    <h3 class="font-bold text-lg text-blue-400">ADVBR.Suporte</h3>
-                    <p class="text-sm text-gray-400 mt-1">Atendimento especializado para todas as suas dúvidas.</p>
-                    <button class="mt-4 bg-blue-700 hover:bg-blue-800 text-white text-xs px-3 py-1.5 rounded-lg">Saiba Mais</button>
+                <div class="card p-6 rounded-xl">
+                    <h3 class="font-semibold text-gray-200 text-lg mb-2">ADVBR Suporte 24/7</h3>
+                    <p class="text-sm text-gray-400 mb-4">Atendimento especializado a qualquer hora.</p>
+                    <a href="#" class="text-blue-500 hover:underline text-sm">Saiba Mais <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
             </div>
         </section>
-
-        <footer class="text-center text-gray-500 text-sm mt-12 py-6 border-t border-gray-800">
-            &copy; 2026 ADVBR.info. Todos os direitos reservados.
-        </footer>
 
     </div>
 
     <!-- Modal de Reportar Problema -->
     <div id="modalReportar" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
         <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-md border border-gray-800">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
-                <h3 class="text-xl font-bold text-gray-200">Reportar Problema</h3>
-                <button onclick="fecharModal('modalReportar')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-times"></i>
-                </button>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-200">Reportar Problema</h2>
+                <button onclick="fecharModal('modalReportar')" class="text-gray-400 hover:text-gray-200 text-2xl">&times;</button>
             </div>
 
             <!-- Passo 1: Selecionar Tribunal -->
             <div id="reportarPasso1">
-                <p class="text-gray-300 mb-4">Qual tribunal você está enfrentando problemas?</p>
-                <select id="selectTribunalReportar" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500 mb-4">
-                    <option value="">-- Selecione o tribunal para continuar --</option>
+                <p class="text-gray-300 mb-4">Qual tribunal está com problema?</p>
+                <select id="selectTribunalReportar" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 mb-4">
+                    <!-- Opções serão carregadas via JS -->
                 </select>
-                <button onclick="proximoPassoReportar()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                    Próximo
-                </button>
+                <div class="flex justify-end gap-3">
+                    <button onclick="fecharModal('modalReportar')" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-xl transition">Cancelar</button>
+                    <button onclick="proximoPassoReportar()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition">Próximo</button>
+                </div>
             </div>
 
             <!-- Passo 2: Selecionar Tipo de Problema -->
             <div id="reportarPasso2" class="hidden">
                 <p class="text-gray-300 mb-4">Qual tipo de problema você está enfrentando?</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-                    <button onclick="selecionarProblema('Fora do Ar', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm border border-gray-800">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                    <button onclick="selecionarProblema('Fora do Ar', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 border border-gray-800 hover:border-blue-500/40" data-problema="Fora do Ar">
                         <i class="fa-solid fa-circle-xmark text-red-400"></i> Fora do Ar
                     </button>
-                    <button onclick="selecionarProblema('Lentidão', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm border border-gray-800">
+                    <button onclick="selecionarProblema('Lentidão', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 border border-gray-800 hover:border-blue-500/40" data-problema="Lentidão">
                         <i class="fa-solid fa-hourglass-half text-amber-400"></i> Lentidão
                     </button>
-                    <button onclick="selecionarProblema('Falha no Login', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm border border-gray-800">
+                    <button onclick="selecionarProblema('Falha no Login', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 border border-gray-800 hover:border-blue-500/40" data-problema="Falha no Login">
                         <i class="fa-solid fa-lock text-blue-400"></i> Falha no Login
                     </button>
-                    <button onclick="selecionarProblema('Outro', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm border border-gray-800">
+                    <button onclick="selecionarProblema('Outro', event)" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 border border-gray-800 hover:border-blue-500/40" data-problema="Outro">
                         <i class="fa-solid fa-circle-info text-gray-400"></i> Outro
                     </button>
                 </div>
                 <div class="flex justify-between gap-3">
-                    <button onclick="voltarPassoReportar()" class="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                        Voltar
-                    </button>
-                    <button onclick="enviarRelato()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                        Enviar Relato
-                    </button>
+                    <button onclick="voltarPassoReportar()" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-xl transition">Voltar</button>
+                    <button onclick="enviarRelato()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition">Enviar Relato</button>
                 </div>
             </div>
 
-            <!-- Sucesso ao Reportar -->
-            <div id="reportarSucesso" class="text-center hidden">
-                <div class="text-green-500 text-5xl mb-4">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
-                <h4 class="text-2xl font-bold text-gray-200 mb-2">Relato enviado!</h4>
+            <!-- Sucesso no Envio -->
+            <div id="reportarSucesso" class="hidden text-center">
+                <div class="text-green-500 text-5xl mb-4"><i class="fa-solid fa-circle-check"></i></div>
+                <h3 class="text-2xl font-bold text-gray-200 mb-2">Relato enviado!</h3>
                 <p class="text-gray-300 mb-6">Obrigado, Doutor(a). Seu relato já está visível para os colegas que consultarem este tribunal.</p>
-                <button onclick="fecharModal('modalReportar')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg active:scale-95">
-                    OK, entendi
-                </button>
-            </div>
-
-            <!-- Erro ao Reportar -->
-            <div id="reportarErro" class="text-center hidden">
-                <div class="text-red-500 text-5xl mb-4">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </div>
-                <h4 class="text-2xl font-bold text-gray-200 mb-2">Erro ao enviar relato!</h4>
-                <p class="text-gray-300 mb-6" id="reportarErroMensagem">Ocorreu um erro ao enviar seu relato. Por favor, tente novamente.</p>
-                <button onclick="fecharModal('modalReportar')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg active:scale-95">
-                    Fechar
-                </button>
+                <button onclick="fecharModal('modalReportar')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition text-lg">OK, entendi</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Estado/Região -->
+    <!-- Modal de Estado/Grupo de Tribunais -->
     <div id="modalEstado" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
         <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-2xl border border-gray-800">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
-                <h3 class="text-xl font-bold text-gray-200" id="estadoNome"></h3>
-                <button onclick="fecharModal('modalEstado')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-times"></i>
-                </button>
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="estadoNome" class="text-xl font-bold text-gray-200"></h2>
+                <button onclick="fecharModal('modalEstado')" class="text-gray-400 hover:text-gray-200 text-2xl">&times;</button>
             </div>
             <div class="space-y-4">
-                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800/60">
-                    <h4 class="text-lg font-semibold text-gray-200 mb-3">Status dos Portais</h4>
-                    <div id="linksTribunais" class="space-y-2">
-                        <!-- Conteúdo dinâmico dos links dos tribunais -->
-                        <div class="text-gray-500 italic">Carregando status...</div>
+                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800">
+                    <h3 class="text-lg font-semibold text-gray-200 mb-2">Relatos da Comunidade (últimas 12h)</h3>
+                    <div id="relatosComunidadeEstado" class="text-sm text-gray-400">
+                        <!-- Resumo dos relatos da comunidade aparecerá aqui -->
+                        Nenhum alerta reportado por advogados nas últimas horas.
                     </div>
                 </div>
-                <div class="bg-gray-950 p-4 rounded-xl border border-gray-800/60">
-                    <h4 class="text-lg font-semibold text-gray-200 mb-3">Relatos da Comunidade (últimas 12h)</h4>
-                    <div id="relatosComunidadeEstado" class="space-y-2">
-                        <!-- Conteúdo dinâmico dos relatos da comunidade -->
-                        <div class="text-gray-500 italic">Carregando relatos...</div>
-                    </div>
+                <div id="linksTribunais" class="grid grid-cols-1 gap-3">
+                    <!-- Links dos tribunais e seus status aparecerão aqui -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Otimização de PDF -->
-    <div id="modalPdfOptimizer" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
-        <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-md border border-gray-800">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
-                <h3 class="text-xl font-bold text-gray-200">Otimizador de PDF</h3>
-                <button onclick="fecharModal('modalPdfOptimizer')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-times"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <p class="text-gray-300">Selecione um arquivo PDF para otimizar ou dividir.</p>
-                <input type="file" id="pdfFileInput" accept=".pdf" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-
-                <div id="pdfActions" class="hidden mt-4 pt-4 border-t border-gray-800">
-                    <p class="text-gray-300 mb-2">Arquivo selecionado: <span id="pdfFileName" class="font-semibold text-blue-400"></span></p>
-                    <p class="text-gray-400 text-sm mb-4">Tamanho original: <span id="pdfOriginalSize"></span> | Páginas: <span id="pdfPageCount"></span></p>
-
-                    <button id="btnOtimizarPdf" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95 mb-3">
-                        Otimizar PDF (Reduzir Tamanho)
-                    </button>
-
-                    <div class="mt-4 pt-4 border-t border-gray-800">
-                        <label for="numPartsToSplit" class="block text-gray-400 text-sm font-semibold mb-2">Dividir PDF em partes:</label>
-                        <input type="number" id="numPartsToSplit" min="1" value="1" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500 mb-3">
-                        <button id="btnDividirPdf" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                            Dividir PDF
-                        </button>
-                    </div>
-
-                    <div id="pdfDownloadLinks" class="mt-4 space-y-2">
-                        <!-- Links de download aparecerão aqui -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Gerador de Token PJE -->
+    <!-- Modal de Teste de Token -->
     <div id="modalToken" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
         <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-md border border-gray-800">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
-                <h3 class="text-xl font-bold text-gray-200">Gerador de Token PJE</h3>
-                <button onclick="fecharModal('modalToken')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-times"></i>
-                </button>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-200">Teste de Token</h2>
+                <button onclick="fecharModal('modalToken')" class="text-gray-400 hover:text-gray-200 text-2xl">&times;</button>
             </div>
-            <div class="space-y-4">
-                <p class="text-gray-300">Insira seus dados para gerar um token de acesso ao PJE.</p>
-                <input type="text" placeholder="CPF" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                <input type="password" placeholder="Senha" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95">
-                    Gerar Token
-                </button>
-                <div class="mt-4 p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 break-all hidden">
-                    <p class="font-semibold">Seu Token:</p>
-                    <code class="text-sm text-blue-400">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</code>
-                </div>
+            <p class="text-gray-300 mb-4">Esta funcionalidade simula a verificação de um certificado digital.</p>
+            <button onclick="simularTesteToken()" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-xl transition">Iniciar Teste</button>
+            <div id="resultadoToken" class="mt-4 p-3 rounded-xl text-center hidden"></div>
+        </div>
+    </div>
+
+    <!-- Modal PJE Office -->
+    <div id="modalPjeOffice" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-md border border-gray-800">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-200">PJE Office</h2>
+                <button onclick="fecharModal('modalPjeOffice')" class="text-gray-400 hover:text-gray-200 text-2xl">&times;</button>
+            </div>
+
+            <div id="pjeOfficeInitial">
+                <p class="text-gray-300 mb-4">Simule a otimização de um documento para o PJE.</p>
+                <input type="file" id="pjeOfficeFileInput" class="w-full p-2 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 mb-4">
+                <button id="btnOtimizarPjeOffice" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-xl transition">Otimizar para PJE</button>
+            </div>
+
+            <div id="pjeOfficeSuccess" class="hidden text-center">
+                <div class="text-green-500 text-5xl mb-4"><i class="fa-solid fa-check-circle"></i></div>
+                <h3 class="text-2xl font-bold text-gray-200 mb-2">Documento Otimizado!</h3>
+                <p class="text-gray-300 mb-6">Seu documento está pronto para o PJE.</p>
+                <button onclick="fecharModal('modalPjeOffice')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition text-lg">Fechar</button>
+            </div>
+
+            <div id="pjeOfficeFailure" class="hidden text-center">
+                <div class="text-red-500 text-5xl mb-4"><i class="fa-solid fa-times-circle"></i></div>
+                <h3 class="text-2xl font-bold text-gray-200 mb-2">Falha na Otimização!</h3>
+                <p class="text-gray-300 mb-6">Ocorreu um erro ao otimizar o documento. Tente novamente.</p>
+                <button onclick="fecharModal('modalPjeOffice')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition text-lg">Fechar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de PJE Office -->
-    <div id="modalPjeOffice" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
+    <!-- Modal Otimizador de PDF -->
+    <div id="modalPdfOptimizer" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">
         <div class="bg-gray-900 p-6 rounded-2xl shadow-lg w-full max-w-md border border-gray-800">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
-                <h3 class="text-xl font-bold text-gray-200">Otimizar para PJE Office</h3>
-                <button onclick="fecharModal('modalPjeOffice')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-times"></i>
-                </button>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-200">Otimizador de PDF</h2>
+                <button onclick="fecharModal('modalPdfOptimizer')" class="text-gray-400 hover:text-gray-200 text-2xl">&times;</button>
             </div>
-            <div class="space-y-4">
-                <!-- Estado inicial -->
-                <div id="pjeOfficeInitial">
-                    <p class="text-gray-300 mb-4">Selecione um arquivo para otimizar para o PJE Office.</p>
-                    <input type="file" id="pjeOfficeFileInput" accept=".doc,.docx,.odt,.pdf" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                    <button id="btnOtimizarPjeOffice" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl transition shadow-lg active:scale-95 mt-4">
-                        Otimizar Documento
-                    </button>
+
+            <p class="text-gray-300 mb-4">Selecione um arquivo PDF para otimizar ou dividir.</p>
+            <input type="file" id="pdfFileInput" accept=".pdf" class="w-full p-2 bg-gray-800 border border-gray-700 rounded-xl text-gray-200 mb-4">
+
+            <div id="pdfActions" class="hidden space-y-4">
+                <p class="text-gray-400 text-sm">Arquivo: <span id="pdfFileName" class="font-semibold"></span></p>
+                <p class="text-gray-400 text-sm">Tamanho Original: <span id="pdfOriginalSize" class="font-semibold"></span></p>
+                <p class="text-gray-400 text-sm">Páginas: <span id="pdfPageCount" class="font-semibold"></span></p>
+
+                <button id="btnOtimizarPdf" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-xl transition">Otimizar PDF</button>
+
+                <div class="flex items-center gap-2">
+                    <input type="number" id="numPartsToSplit" value="1" min="1" class="w-20 p-2 bg-gray-800 border border-gray-700 rounded-xl text-gray-200">
+                    <button id="btnDividirPdf" class="flex-grow bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-xl transition">Dividir PDF em Partes</button>
                 </div>
 
-                <!-- Resultado (Sucesso) -->
-                <div id="pjeOfficeSuccess" class="text-center hidden">
-                    <div class="text-green-500 text-5xl mb-4">
-                        <i class="fa-solid fa-check-circle"></i>
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-200 mb-2">Documento Otimizado!</h4>
-                    <p class="text-gray-300 mb-6">Seu documento foi otimizado com sucesso para o PJE Office.</p>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg active:scale-95">
-                        Baixar Documento Otimizado
-                    </button>
-                </div>
-
-                <!-- Resultado (Falha) -->
-                <div id="pjeOfficeFailure" class="text-center hidden">
-                    <div class="text-red-500 text-5xl mb-4">
-                        <i class="fa-solid fa-times-circle"></i>
-                    </div>
-                    <h4 class="text-2xl font-bold text-gray-200 mb-2">Falha na Otimização</h4>
-                    <p class="text-gray-300 mb-6">Não foi possível otimizar o documento. Por favor, tente novamente ou verifique o formato.</p>
-                    <button onclick="fecharModal('modalPjeOffice')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition shadow-lg active:scale-95">
-                        Fechar
-                    </button>
+                <div id="pdfDownloadLinks" class="space-y-2 mt-4">
+                    <!-- Links de download aparecerão aqui -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Variáveis globais para o status e relatos
-        let statusGerais = {};
-        let relatosComunidade = {};
-
-        // Dados fixos dos tribunais (movido para o escopo global)
-        const dadosTribunaisFixo = [
-            { id: "STF", nome: "Supremo Tribunal Federal", grupo: "superiores", url: "https://portal.stf.jus.br/" },
-            { id: "STJ", nome: "Superior Tribunal de Justiça", grupo: "superiores", url: "https://www.stj.jus.br/" },
-            { id: "TST", nome: "Tribunal Superior do Trabalho", grupo: "superiores", url: "https://www.tst.jus.br/" },
-            { id: "STM", nome: "Superior Tribunal Militar", grupo: "superiores", url: "https://www.stm.jus.br/" },
-            { id: "TSE", nome: "Tribunal Superior Eleitoral", grupo: "superiores", url: "https://www.tse.jus.br/" },
-            { id: "CNJ", nome: "Conselho Nacional de Justiça", grupo: "nacionais", url: "https://www.cnj.jus.br/" },
-            { id: "CJF", nome: "Conselho da Justiça Federal", grupo: "nacionais", url: "https://www.cjf.jus.br/" },
-            { id: "CSJT", nome: "Conselho Superior da Justiça do Trabalho", grupo: "nacionais", url: "https://www.csjt.jus.br/" },
-            { id: "TJPR", nome: "Tribunal de Justiça do Paraná", grupo: "PR", url: "https://www.tjpr.jus.br/" },
-            { id: "TRF4", nome: "Tribunal Regional Federal da 4ª Região", grupo: "PR", url: "https://www.trf4.jus.br/" },
-            { id: "TRT9", nome: "Tribunal Regional do Trabalho da 9ª Região", grupo: "PR", url: "https://www.trt9.jus.br/" },
-            { id: "TREPR", nome: "Tribunal Regional Eleitoral do Paraná", grupo: "PR", url: "https://www.tre-pr.jus.br/" },
-            { id: "MPPR", nome: "Ministério Público do Paraná", grupo: "PR", url: "https://www.mppr.mp.br/" },
-            { id: "OABPR", nome: "OAB Paraná", grupo: "PR", url: "https://www.oabpr.org.br/" },
-            { id: "PGEPR", nome: "Procuradoria Geral do Estado do Paraná", grupo: "PR", url: "https://www.pge.pr.gov.br/" },
-            { id: "SEFAZPR", nome: "Secretaria da Fazenda do Paraná", grupo: "PR", url: "https://www.fazenda.pr.gov.br/" },
-            { id: "TJSP", nome: "Tribunal de Justiça de São Paulo", grupo: "SP", url: "https://www.tjsp.jus.br/" },
-            { id: "TRF3", nome: "Tribunal Regional Federal da 3ª Região", grupo: "SP", url: "https://www.trf3.jus.br/" },
-            { id: "TRT2", nome: "Tribunal Regional do Trabalho da 2ª Região", grupo: "SP", url: "https://www.trtsp.jus.br/" },
-            { id: "TRESP", nome: "Tribunal Regional Eleitoral de São Paulo", grupo: "SP", url: "https://www.tre-sp.jus.br/" },
-            { id: "MPSP", nome: "Ministério Público de São Paulo", grupo: "SP", url: "https://www.mpsp.mp.br/" },
-            { id: "OABSP", nome: "OAB São Paulo", grupo: "SP", url: "https://www.oabsp.org.br/" },
-            { id: "PGESP", nome: "Procuradoria Geral do Estado de São Paulo", grupo: "SP", url: "https://www.pge.sp.gov.br/" },
-            { id: "SEFAZSP", nome: "Secretaria da Fazenda de São Paulo", grupo: "SP", url: "https://portal.fazenda.sp.gov.br/" },
-            { id: "TJRJ", nome: "Tribunal de Justiça do Rio de Janeiro", grupo: "RJ", url: "https://www.tjrj.jus.br/" },
-            { id: "TRF2", nome: "Tribunal Regional Federal da 2ª Região", grupo: "RJ", url: "https://www.trf2.jus.br/" },
-            { id: "TRT1", nome: "Tribunal Regional do Trabalho da 1ª Região", grupo: "RJ", url: "https://www.trt1.jus.br/" },
-            { id: "TRERJ", nome: "Tribunal Regional Eleitoral do Rio de Janeiro", grupo: "RJ", url: "https://www.tre-rj.jus.br/" },
-            { id: "MPRJ", nome: "Ministério Público do Rio de Janeiro", grupo: "RJ", url: "https://www.mprj.mp.br/" },
-            { id: "OABRJ", nome: "OAB Rio de Janeiro", grupo: "RJ", url: "https://www.oabrj.org.br/" },
-            { id: "PGERJ", nome: "Procuradoria Geral do Estado do Rio de Janeiro", grupo: "RJ", url: "https://www.pge.rj.gov.br/" },
-            { id: "SEFAZRJ", nome: "Secretaria da Fazenda do Rio de Janeiro", grupo: "RJ", url: "https://www.fazenda.rj.gov.br/" },
-            { id: "TJMG", nome: "Tribunal de Justiça de Minas Gerais", grupo: "MG", url: "https://www.tjmg.jus.br/" },
-            { id: "TRF6", nome: "Tribunal Regional Federal da 6ª Região", grupo: "MG", url: "https://www.trf6.jus.br/" },
-            { id: "TRT3", nome: "Tribunal Regional do Trabalho da 3ª Região", grupo: "MG", url: "https://www.trt3.jus.br/" },
-            { id: "TREMG", nome: "Tribunal Regional Eleitoral de Minas Gerais", grupo: "MG", url: "https://www.tre-mg.jus.br/" },
-            { id: "MPMG", nome: "Ministério Público de Minas Gerais", grupo: "MG", url: "https://www.mpmg.mp.br/" },
-            { id: "OABMG", nome: "OAB Minas Gerais", grupo: "MG", url: "https://www.oabmg.org.br/" },
-            { id: "PGEMG", nome: "Procuradoria Geral do Estado de Minas Gerais", grupo: "MG", url: "https://www.pge.mg.gov.br/" },
-            { id: "SEFAZMG", nome: "Secretaria da Fazenda de Minas Gerais", grupo: "MG", url: "https://www.fazenda.mg.gov.br/" },
-            { id: "TJRS", nome: "Tribunal de Justiça do Rio Grande do Sul", grupo: "RS", url: "https://www.tjrs.jus.br/" },
-            { id: "TRF4_RS", nome: "Tribunal Regional Federal da 4ª Região (RS)", grupo: "RS", url: "https://www.trf4.jus.br/" },
-            { id: "TRT4", nome: "Tribunal Regional do Trabalho da 4ª Região", grupo: "RS", url: "https://www.trt4.jus.br/" },
-            { id: "TRERS", nome: "Tribunal Regional Eleitoral do Rio Grande do Sul", grupo: "RS", url: "https://www.tre-rs.jus.br/" },
-            { id: "MPRS", nome: "Ministério Público do Rio Grande do Sul", grupo: "RS", url: "https://www.mprs.mp.br/" },
-            { id: "OABRS", nome: "OAB Rio Grande do Sul", grupo: "RS", url: "https://www.oabrs.org.br/" },
-            { id: "PGERS", nome: "Procuradoria Geral do Estado do Rio Grande do Sul", grupo: "RS", url: "https://www.pge.rs.gov.br/" },
-            { id: "SEFAZRS", nome: "Secretaria da Fazenda do Rio Grande do Sul", grupo: "RS", url: "https://www.sefaz.rs.gov.br/" },
-            { id: "TJSC", nome: "Tribunal de Justiça de Santa Catarina", grupo: "SC", url: "https://www.tjsc.jus.br/" },
-            { id: "TRF4_SC", nome: "Tribunal Regional Federal da 4ª Região (SC)", grupo: "SC", url: "https://www.trf4.jus.br/" },
-            { id: "TRT12", nome: "Tribunal Regional do Trabalho da 12ª Região", grupo: "SC", url: "https://www.trt12.jus.br/" },
-            { id: "TRESC", nome: "Tribunal Regional Eleitoral de Santa Catarina", grupo: "SC", url: "https://www.tre-sc.jus.br/" },
-            { id: "MPSC", nome: "Ministério Público de Santa Catarina", grupo: "SC", url: "https://www.mpsc.mp.br/" },
-            { id: "OABSC", nome: "OAB Santa Catarina", grupo: "SC", url: "https://www.oab-sc.org.br/" },
-            { id: "PGESC", nome: "Procuradoria Geral do Estado de Santa Catarina", grupo: "SC", url: "https://www.pge.sc.gov.br/" },
-            { id: "SEFAZSC", nome: "Secretaria da Fazenda de Santa Catarina", grupo: "SC", url: "https://www.sef.sc.gov.br/" },
-            { id: "TJBA", nome: "Tribunal de Justiça da Bahia", grupo: "BA", url: "https://www.tjba.jus.br/" },
-            { id: "TRF1_BA", nome: "Tribunal Regional Federal da 1ª Região (BA)", grupo: "BA", url: "https://www.trf1.jus.br/" },
-            { id: "TRT5", nome: "Tribunal Regional do Trabalho da 5ª Região", grupo: "BA", url: "https://www.trt5.jus.br/" },
-            { id: "TREBA", nome: "Tribunal Regional Eleitoral da Bahia", grupo: "BA", url: "https://www.tre-ba.jus.br/" },
-            { id: "MPBA", nome: "Ministério Público da Bahia", grupo: "BA", url: "https://www.mpba.mp.br/" },
-            { id: "OABBA", nome: "OAB Bahia", grupo: "BA", url: "https://www.oab-ba.org.br/" },
-            { id: "PGEBA", nome: "Procuradoria Geral do Estado da Bahia", grupo: "BA", url: "https://www.pge.ba.gov.br/" },
-            { id: "SEFAZBA", nome: "Secretaria da Fazenda da Bahia", grupo: "BA", url: "https://www.sefaz.ba.gov.br/" },
-            { id: "TJPE", nome: "Tribunal de Justiça de Pernambuco", grupo: "PE", url: "https://www.tjpe.jus.br/" },
-            { id: "TRF5_PE", nome: "Tribunal Regional Federal da 5ª Região (PE)", grupo: "PE", url: "https://www.trf5.jus.br/" },
-            { id: "TRT6", nome: "Tribunal Regional do Trabalho da 6ª Região", grupo: "PE", url: "https://www.trt6.jus.br/" },
-            { id: "TREPE", nome: "Tribunal Regional Eleitoral de Pernambuco", grupo: "PE", url: "https://www.tre-pe.jus.br/" },
-            { id: "MPPE", nome: "Ministério Público de Pernambuco", grupo: "PE", url: "https://www.mppe.mp.br/" },
-            { id: "OABPE", nome: "OAB Pernambuco", grupo: "PE", url: "https://www.oabpe.org.br/" },
-            { id: "PGEPE", nome: "Procuradoria Geral do Estado de Pernambuco", grupo: "PE", url: "https://www.pge.pe.gov.br/" },
-            { id: "SEFAZPE", nome: "Secretaria da Fazenda de Pernambuco", grupo: "PE", url: "https://www.sefaz.pe.gov.br/" },
-            { id: "TJCE", nome: "Tribunal de Justiça do Ceará", grupo: "CE", url: "https://www.tjce.jus.br/" },
-            { id: "TRF5_CE", nome: "Tribunal Regional Federal da 5ª Região (CE)", grupo: "CE", url: "https://www.trf5.jus.br/" },
-            { id: "TRT7", nome: "Tribunal Regional do Trabalho da 7ª Região", grupo: "CE", url: "https://www.trt7.jus.br/" },
-            { id: "TRECE", nome: "Tribunal Regional Eleitoral do Ceará", grupo: "CE", url: "https://www.tre-ce.jus.br/" },
-            { id: "MPCE", nome: "Ministério Público do Ceará", grupo: "CE", url: "https://www.mpce.mp.br/" },
-            { id: "OABCE", nome: "OAB Ceará", grupo: "CE", url: "https://www.oabce.org.br/" },
-            { id: "PGECE", nome: "Procuradoria Geral do Estado do Ceará", grupo: "CE", url: "https://www.pge.ce.gov.br/" },
-            { id: "SEFAZCE", nome: "Secretaria da Fazenda do Ceará", grupo: "CE", url: "https://www.sefaz.ce.gov.br/" },
-            { id: "TJPA", nome: "Tribunal de Justiça do Pará", grupo: "PA", url: "https://www.tjpa.jus.br/" },
-            { id: "TRF1_PA", nome: "Tribunal Regional Federal da 1ª Região (PA)", grupo: "PA", url: "https://www.trf1.jus.br/" },
-            { id: "TRT8", nome: "Tribunal Regional do Trabalho da 8ª Região", grupo: "PA", url: "https://www.trt8.jus.br/" },
-            { id: "TREPA", nome: "Tribunal Regional Eleitoral do Pará", grupo: "PA", url: "https://www.tre-pa.jus.br/" },
-            { id: "MPPA", nome: "Ministério Público do Pará", grupo: "PA", url: "https://www.mppa.mp.br/" },
-            { id: "OABPA", nome: "OAB Pará", grupo: "PA", url: "https://www.oabpa.org.br/" },
-            { id: "PGEPA", nome: "Procuradoria Geral do Estado do Pará", grupo: "PA", url: "https://www.pge.pa.gov.br/" },
-            { id: "SEFAZPA", nome: "Secretaria da Fazenda do Pará", grupo: "PA", url: "https://www.sefaz.pa.gov.br/" },
-            { id: "TJDF", nome: "Tribunal de Justiça do Distrito Federal e Territórios", grupo: "DF", url: "https://www.tjdft.jus.br/" },
-            { id: "TRF1_DF", nome: "Tribunal Regional Federal da 1ª Região (DF)", grupo: "DF", url: "https://www.trf1.jus.br/" },
-            { id: "TRT10", nome: "Tribunal Regional do Trabalho da 10ª Região", grupo: "DF", url: "https://www.trt10.jus.br/" },
-            { id: "TREDF", nome: "Tribunal Regional Eleitoral do Distrito Federal", grupo: "DF", url: "https://www.tre-df.jus.br/" },
-            { id: "MPDFT", nome: "Ministério Público do Distrito Federal e Territórios", grupo: "DF", url: "https://www.mpdft.mp.br/" },
-            { id: "OABDF", nome: "OAB Distrito Federal", grupo: "DF", url: "https://www.oabdf.org.br/" },
-            { id: "PGEDF", nome: "Procuradoria Geral do Distrito Federal", grupo: "DF", url: "https://www.pg.df.gov.br/" },
-            { id: "SEFAZDF", nome: "Secretaria da Fazenda do Distrito Federal", grupo: "DF", url: "https://www.fazenda.df.gov.br/" },
-            { id: "TJGO", nome: "Tribunal de Justiça de Goiás", grupo: "GO", url: "https://www.tjgo.jus.br/" },
-            { id: "TRF1_GO", nome: "Tribunal Regional Federal da 1ª Região (GO)", grupo: "GO", url: "https://www.trf1.jus.br/" },
-            { id: "TRT18", nome: "Tribunal Regional do Trabalho da 18ª Região", grupo: "GO", url: "https://www.trt18.jus.br/" },
-            { id: "TREGO", nome: "Tribunal Regional Eleitoral de Goiás", grupo: "GO", url: "https://www.tre-go.jus.br/" },
-            { id: "MPGO", nome: "Ministério Público de Goiás", grupo: "GO", url: "https://www.mpgo.mp.br/" },
-            { id: "OABGO", nome: "OAB Goiás", grupo: "GO", url: "https://www.oabgo.org.br/" },
-            { id: "PGEGO", nome: "Procuradoria Geral do Estado de Goiás", grupo: "GO", url: "https://www.pge.go.gov.br/" },
-            { id: "SEFAZGO", nome: "Secretaria da Fazenda de Goiás", grupo: "GO", url: "https://www.sefaz.go.gov.br/" },
-            { id: "TJMT", nome: "Tribunal de Justiça de Mato Grosso", grupo: "MT", url: "https://www.tjmt.jus.br/" },
-            { id: "TRF1_MT", nome: "Tribunal Regional Federal da 1ª Região (MT)", grupo: "MT", url: "https://www.trf1.jus.br/" },
-            { id: "TRT23", nome: "Tribunal Regional do Trabalho da 23ª Região", grupo: "MT", url: "https://www.trt23.jus.br/" },
-            { id: "TREMT", nome: "Tribunal Regional Eleitoral de Mato Grosso", grupo: "MT", url: "https://www.tre-mt.jus.br/" },
-            { id: "MPMT", nome: "Ministério Público de Mato Grosso", grupo: "MT", url: "https://www.mpmt.mp.br/" },
-            { id: "OABMT", nome: "OAB Mato Grosso", grupo: "MT", url: "https://www.oabmt.org.br/" },
-            { id: "PGEMT", nome: "Procuradoria Geral do Estado de Mato Grosso", grupo: "MT", url: "https://www.pge.mt.gov.br/" },
-            { id: "SEFAZMT", nome: "Secretaria da Fazenda de Mato Grosso", grupo: "MT", url: "https://www.sefaz.mt.gov.br/" },
-            { id: "TJMS", nome: "Tribunal de Justiça de Mato Grosso do Sul", grupo: "MS", url: "https://www.tjms.jus.br/" },
-            { id: "TRF3_MS", nome: "Tribunal Regional Federal da 3ª Região (MS)", grupo: "MS", url: "https://www.trf3.jus.br/" },
-            { id: "TRT24", nome: "Tribunal Regional do Trabalho da 24ª Região", grupo: "MS", url: "https://www.trt24.jus.br/" },
-            { id: "TREMS", nome: "Tribunal Regional Eleitoral de Mato Grosso do Sul", grupo: "MS", url: "https://www.tre-ms.jus.br/" },
-            { id: "MPMS", nome: "Ministério Público de Mato Grosso do Sul", grupo: "MS", url: "https://www.mpms.mp.br/" },
-            { id: "OABMS", nome: "OAB Mato Grosso do Sul", grupo: "MS", url: "https://www.oabms.org.br/" },
-            { id: "PGEMS", nome: "Procuradoria Geral do Estado de Mato Grosso do Sul", grupo: "MS", url: "https://www.pge.ms.gov.br/" },
-            { id: "SEFAZMS", nome: "Secretaria da Fazenda de Mato Grosso do Sul", grupo: "MS", url: "https://www.sefaz.ms.gov.br/" },
-            { id: "TJES", nome: "Tribunal de Justiça do Espírito Santo", grupo: "ES", url: "https://www.tjes.jus.br/" },
-            { id: "TRF2_ES", nome: "Tribunal Regional Federal da 2ª Região (ES)", grupo: "ES", url: "https://www.trf2.jus.br/" },
-            { id: "TRT17", nome: "Tribunal Regional do Trabalho da 17ª Região", grupo: "ES", url: "https://www.trt17.jus.br/" },
-            { id: "TREES", nome: "Tribunal Regional Eleitoral do Espírito Santo", grupo: "ES", url: "https://www.tre-es.jus.br/" },
-            { id: "MPES", nome: "Ministério Público do Espírito Santo", grupo: "ES", url: "https://www.mpes.mp.br/" },
-            { id: "OABES", nome: "OAB Espírito Santo", grupo: "ES", url: "https://www.oabes.org.br/" },
-            { id: "PGEES", nome: "Procuradoria Geral do Estado do Espírito Santo", grupo: "ES", url: "https://www.pge.es.gov.br/" },
-            { id: "SEFAZES", nome: "Secretaria da Fazenda do Espírito Santo", grupo: "ES", url: "https://www.sefaz.es.gov.br/" },
-            { id: "TJRO", nome: "Tribunal de Justiça de Rondônia", grupo: "RO", url: "https://www.tjro.jus.br/" },
-            { id: "TRF1_RO", nome: "Tribunal Regional Federal da 1ª Região (RO)", grupo: "RO", url: "https://www.trf1.jus.br/" },
-            { id: "TRT14", nome: "Tribunal Regional do Trabalho da 14ª Região", grupo: "RO", url: "https://www.trt14.jus.br/" },
-            { id: "TRERO", nome: "Tribunal Regional Eleitoral de Rondônia", grupo: "RO", url: "https://www.tre-ro.jus.br/" },
-            { id: "MPRO", nome: "Ministério Público de Rondônia", grupo: "RO", url: "https://www.mpro.mp.br/" },
-            { id: "OABRO", nome: "OAB Rondônia", grupo: "RO", url: "https://www.oabro.org.br/" },
-            { id: "PGERO", nome: "Procuradoria Geral do Estado de Rondônia", grupo: "RO", url: "https://www.pge.ro.gov.br/" },
-            { id: "SEFAZRO", nome: "Secretaria da Fazenda de Rondônia", grupo: "RO", url: "https://www.sefaz.ro.gov.br/" },
-            { id: "TJAC", nome: "Tribunal de Justiça do Acre", grupo: "AC", url: "https://www.tjac.jus.br/" },
-            { id: "TRF1_AC", nome: "Tribunal Regional Federal da 1ª Região (AC)", grupo: "AC", url: "https://www.trf1.jus.br/" },
-            { id: "TRT14_AC", nome: "Tribunal Regional do Trabalho da 14ª Região (AC)", grupo: "AC", url: "https://www.trt14.jus.br/" },
-            { id: "TREAC", nome: "Tribunal Regional Eleitoral do Acre", grupo: "AC", url: "https://www.tre-ac.jus.br/" },
-            { id: "MPAC", nome: "Ministério Público do Acre", grupo: "AC", url: "https://www.mpac.mp.br/" },
-            { id: "OABAC", nome: "OAB Acre", grupo: "AC", url: "https://www.oabac.org.br/" },
-            { id: "PGEAC", nome: "Procuradoria Geral do Estado do Acre", grupo: "AC", url: "https://www.pge.ac.gov.br/" },
-            { id: "SEFAZAC", nome: "Secretaria da Fazenda do Acre", grupo: "AC", url: "https://www.sefaz.ac.gov.br/" },
-            { id: "TJRR", nome: "Tribunal de Justiça de Roraima", grupo: "RR", url: "https://www.tjrr.jus.br/" },
-            { id: "TRF1_RR", nome: "Tribunal Regional Federal da 1ª Região (RR)", grupo: "RR", url: "https://www.trf1.jus.br/" },
-            { id: "TRT11_RR", nome: "Tribunal Regional do Trabalho da 11ª Região (RR)", grupo: "RR", url: "https://www.trt11.jus.br/" },
-            { id: "TRERR", nome: "Tribunal Regional Eleitoral de Roraima", grupo: "RR", url: "https://www.tre-rr.jus.br/" },
-            { id: "MPRR", nome: "Ministério Público de Roraima", grupo: "RR", url: "https://www.mprr.mp.br/" },
-            { id: "OABRR", nome: "OAB Roraima", grupo: "RR", url: "https://www.oabrr.org.br/" },
-            { id: "PGERR", nome: "Procuradoria Geral do Estado de Roraima", grupo: "RR", url: "https://www.pge.rr.gov.br/" },
-            { id: "SEFAZRR", nome: "Secretaria da Fazenda de Roraima", grupo: "RR", url: "https://www.sefaz.rr.gov.br/" },
-            { id: "TJAP", nome: "Tribunal de Justiça do Amapá", grupo: "AP", url: "https://www.tjap.jus.br/" },
-            { id: "TRF1_AP", nome: "Tribunal Regional Federal da 1ª Região (AP)", grupo: "AP", url: "https://www.trf1.jus.br/" },
-            { id: "TRT11_AP", nome: "Tribunal Regional do Trabalho da 11ª Região (AP)", grupo: "AP", url: "https://www.trt11.jus.br/" },
-            { id: "TREAP", nome: "Tribunal Regional Eleitoral do Amapá", grupo: "AP", url: "https://www.tre-ap.jus.br/" },
-            { id: "MPAP", nome: "Ministério Público do Amapá", grupo: "AP", url: "https://www.mpap.mp.br/" },
-            { id: "OABAP", nome: "OAB Amapá", grupo: "AP", url: "https://www.oabap.org.br/" },
-            { id: "PGEAP", nome: "Procuradoria Geral do Estado do Amapá", grupo: "AP", url: "https://www.pge.ap.gov.br/" },
-            { id: "SEFAZAP", nome: "Secretaria da Fazenda do Amapá", grupo: "AP", url: "https://www.sefaz.ap.gov.br/" },
-            { id: "TJAM", nome: "Tribunal de Justiça do Amazonas", grupo: "AM", url: "https://www.tjam.jus.br/" },
-            { id: "TRF1_AM", nome: "Tribunal Regional Federal da 1ª Região (AM)", grupo: "AM", url: "https://www.trf1.jus.br/" },
-            { id: "TRT11", nome: "Tribunal Regional do Trabalho da 11ª Região", grupo: "AM", url: "https://www.trt11.jus.br/" },
-            { id: "TREAM", nome: "Tribunal Regional Eleitoral do Amazonas", grupo: "AM", url: "https://www.tre-am.jus.br/" },
-            { id: "MPAM", nome: "Ministério Público do Amazonas", grupo: "AM", url: "https://www.mpam.mp.br/" },
-            { id: "OABAM", nome: "OAB Amazonas", grupo: "AM", url: "https://www.oabam.org.br/" },
-            { id: "PGEAM", nome: "Procuradoria Geral do Estado do Amazonas", grupo: "AM", url: "https://www.pge.am.gov.br/" },
-            { id: "SEFAZAM", nome: "Secretaria da Fazenda do Amazonas", grupo: "AM", url: "https://www.sefaz.am.gov.br/" },
-            { id: "TJMA", nome: "Tribunal de Justiça do Maranhão", grupo: "MA", url: "https://www.tjma.jus.br/" },
-            { id: "TRF1_MA", nome: "Tribunal Regional Federal da 1ª Região (MA)", grupo: "MA", url: "https://www.trf1.jus.br/" },
-            { id: "TRT16", nome: "Tribunal Regional do Trabalho da 16ª Região", grupo: "MA", url: "https://www.trt16.jus.br/" },
-            { id: "TREMA", nome: "Tribunal Regional Eleitoral do Maranhão", grupo: "MA", url: "https://www.tre-ma.jus.br/" },
-            { id: "MPMA", nome: "Ministério Público do Maranhão", grupo: "MA", url: "https://www.mpma.mp.br/" },
-            { id: "OABMA", nome: "OAB Maranhão", grupo: "MA", url: "https://www.oabma.org.br/" },
-            { id: "PGEMA", nome: "Procuradoria Geral do Estado do Maranhão", grupo: "MA", url: "https://www.pge.ma.gov.br/" },
-            { id: "SEFAZMA", nome: "Secretaria da Fazenda do Maranhão", grupo: "MA", url: "https://www.sefaz.ma.gov.br/" },
-            { id: "TJPI", nome: "Tribunal de Justiça do Piauí", grupo: "PI", url: "https://www.tjpi.jus.br/" },
-            { id: "TRF1_PI", nome: "Tribunal Regional Federal da 1ª Região (PI)", grupo: "PI", url: "https://www.trf1.jus.br/" },
-            { id: "TRT22", nome: "Tribunal Regional do Trabalho da 22ª Região", grupo: "PI", url: "https://www.trt22.jus.br/" },
-            { id: "TREPI", nome: "Tribunal Regional Eleitoral do Piauí", grupo: "PI", url: "https://www.tre-pi.jus.br/" },
-            { id: "MPPI", nome: "Ministério Público do Piauí", grupo: "PI", url: "https://www.mppi.mp.br/" },
-            { id: "OABPI", nome: "OAB Piauí", grupo: "PI", url: "https://www.oabpi.org.br/" },
-            { id: "PGEPI", nome: "Procuradoria Geral do Estado do Piauí", grupo: "PI", url: "https://www.pge.pi.gov.br/" },
-            { id: "SEFAZPI", nome: "Secretaria da Fazenda do Piauí", grupo: "PI", url: "https://www.sefaz.pi.gov.br/" },
-            { id: "TJRN", nome: "Tribunal de Justiça do Rio Grande do Norte", grupo: "RN", url: "https://www.tjrn.jus.br/" },
-            { id: "TRF5_RN", nome: "Tribunal Regional Federal da 5ª Região (RN)", grupo: "RN", url: "https://www.trf5.jus.br/" },
-            { id: "TRT21", nome: "Tribunal Regional do Trabalho da 21ª Região", grupo: "RN", url: "https://www.trt21.jus.br/" },
-            { id: "TRERN", nome: "Tribunal Regional Eleitoral do Rio Grande do Norte", grupo: "RN", url: "https://www.tre-rn.jus.br/" },
-            { id: "MPRN", nome: "Ministério Público do Rio Grande do Norte", grupo: "RN", url: "https://www.mprn.mp.br/" },
-            { id: "OABRN", nome: "OAB Rio Grande do Norte", grupo: "RN", url: "https://www.oabrn.org.br/" },
-            { id: "PGERN", nome: "Procuradoria Geral do Estado do Rio Grande do Norte", grupo: "RN", url: "https://www.pge.rn.gov.br/" },
-            { id: "SEFAZRN", nome: "Secretaria da Fazenda do Rio Grande do Norte", grupo: "RN", url: "https://www.sefaz.rn.gov.br/" },
-            { id: "TJPB", nome: "Tribunal de Justiça da Paraíba", grupo: "PB", url: "https://www.tjpb.jus.br/" },
-            { id: "TRF5_PB", nome: "Tribunal Regional Federal da 5ª Região (PB)", grupo: "PB", url: "https://www.trf5.jus.br/" },
-            { id: "TRT13", nome: "Tribunal Regional do Trabalho da 13ª Região", grupo: "PB", url: "https://www.trt13.jus.br/" },
-            { id: "TREPB", nome: "Tribunal Regional Eleitoral da Paraíba", grupo: "PB", url: "https://www.tre-pb.jus.br/" },
-            { id: "MPPB", nome: "Ministério Público da Paraíba", grupo: "PB", url: "https://www.mppb.mp.br/" },
-            { id: "OABPB", nome: "OAB Paraíba", grupo: "PB", url: "https://www.oabpb.org.br/" },
-            { id: "PGEPB", nome: "Procuradoria Geral do Estado da Paraíba", grupo: "PB", url: "https://www.pge.pb.gov.br/" },
-            { id: "SEFAZPB", nome: "Secretaria da Fazenda da Paraíba", grupo: "PB", url: "https://www.sefaz.pb.gov.br/" },
-            { id: "TJAL", nome: "Tribunal de Justiça de Alagoas", grupo: "AL", url: "https://www.tjal.jus.br/" },
-            { id: "TRF5_AL", nome: "Tribunal Regional Federal da 5ª Região (AL)", grupo: "AL", url: "https://www.trf5.jus.br/" },
-            { id: "TRT19", nome: "Tribunal Regional do Trabalho da 19ª Região", grupo: "AL", url: "https://www.trt19.jus.br/" },
-            { id: "TREAL", nome: "Tribunal Regional Eleitoral de Alagoas", grupo: "AL", url: "https://www.tre-al.jus.br/" },
-            { id: "MPAL", nome: "Ministério Público de Alagoas", grupo: "AL", url: "https://www.mpal.mp.br/" },
-            { id: "OABAL", nome: "OAB Alagoas", grupo: "AL", url: "https://www.oabal.org.br/" },
-            { id: "PGEAL", nome: "Procuradoria Geral do Estado de Alagoas", grupo: "AL", url: "https://www.pge.al.gov.br/" },
-            { id: "SEFAZAL", nome: "Secretaria da Fazenda de Alagoas", grupo: "AL", url: "https://www.sefaz.al.gov.br/" },
-            { id: "TJSE", nome: "Tribunal de Justiça de Sergipe", grupo: "SE", url: "https://www.tjse.jus.br/" },
-            { id: "TRF5_SE", nome: "Tribunal Regional Federal da 5ª Região (SE)", grupo: "SE", url: "https://www.trf5.jus.br/" },
-            { id: "TRT20", nome: "Tribunal Regional do Trabalho da 20ª Região", grupo: "SE", url: "https://www.trt20.jus.br/" },
-            { id: "TRESE", nome: "Tribunal Regional Eleitoral de Sergipe", grupo: "SE", url: "https://www.tre-se.jus.br/" },
-            { id: "MPSE", nome: "Ministério Público de Sergipe", grupo: "SE", url: "https://www.mpse.mp.br/" },
-            { id: "OABSE", nome: "OAB Sergipe", grupo: "SE", url: "https://www.oabse.org.br/" },
-            { id: "PGESE", nome: "Procuradoria Geral do Estado de Sergipe", grupo: "SE", url: "https://www.pge.se.gov.br/" },
-            { id: "SEFAZSE", nome: "Secretaria da Fazenda de Sergipe", grupo: "SE", url: "https://www.sefaz.se.gov.br/" },
-            { id: "TJTO", nome: "Tribunal de Justiça do Tocantins", grupo: "TO", url: "https://www.tjto.jus.br/" },
-            { id: "TRF1_TO", nome: "Tribunal Regional Federal da 1ª Região (TO)", grupo: "TO", url: "https://www.trf1.jus.br/" },
-            { id: "TRT10_TO", nome: "Tribunal Regional do Trabalho da 10ª Região (TO)", grupo: "TO", url: "https://www.trt10.jus.br/" },
-            { id: "TRETO", nome: "Tribunal Regional Eleitoral do Tocantins", grupo: "TO", url: "https://www.tre-to.jus.br/" },
-            { id: "MPTO", nome: "Ministério Público do Tocantins", grupo: "TO", url: "https://www.mpto.mp.br/" },
-            { id: "OABTO", nome: "OAB Tocantins", grupo: "TO", url: "https://www.oabto.org.br/" },
-            { id: "PGETO", nome: "Procuradoria Geral do Estado do Tocantins", grupo: "TO", url: "https://www.pge.to.gov.br/" },
-            { id: "SEFAZTO", nome: "Secretaria da Fazenda do Tocantins", grupo: "TO", url: "https://www.sefaz.to.gov.br/" }
-        ];
-
         // Funções de controle de modais
         function abrirModal(id) {
             document.getElementById(id).classList.remove('hidden');
@@ -636,7 +334,6 @@
                 document.getElementById('reportarPasso1').classList.remove('hidden');
                 document.getElementById('reportarPasso2').classList.add('hidden');
                 document.getElementById('reportarSucesso').classList.add('hidden');
-                document.getElementById('reportarErro').classList.add('hidden'); // Garante que o erro esteja oculto
             }
             if (id === 'modalPdfOptimizer') {
                 document.getElementById('pdfFileInput').value = '';
@@ -645,7 +342,7 @@
             }
             if (id === 'modalPjeOffice') {
                 document.getElementById('pjeOfficeInitial').classList.remove('hidden');
-                document.getElementById('pjeOfficeResult').classList.add('hidden'); // Não existe, mas para consistência
+                document.getElementById('pjeOfficeResult').classList.add('hidden');
                 document.getElementById('pjeOfficeSuccess').classList.add('hidden');
                 document.getElementById('pjeOfficeFailure').classList.add('hidden');
             }
@@ -672,146 +369,94 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        // Lógica de Reportar Problema
+        // Lógica de Teste de Token (Simulação)
         // ──────────────────────────────────────────────────────────────
 
-        let selectedTribunalReportar = null;
-        let selectedProblemaReportar = null;
+        function simularTesteToken() {
+            const resultadoDiv = document.getElementById('resultadoToken');
+            resultadoDiv.classList.remove('hidden');
+            resultadoDiv.className = 'mt-4 p-3 rounded-xl text-center bg-blue-900 text-blue-200';
+            resultadoDiv.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Verificando certificado...';
 
-        function carregarTribunaisReportar() {
-            const select = document.getElementById('selectTribunalReportar');
-            select.innerHTML = '<option value="">-- Selecione o tribunal para continuar --</option>';
-            dadosTribunaisFixo.forEach(t => {
-                const option = document.createElement('option');
-                option.value = t.id;
-                option.textContent = t.nome;
-                select.appendChild(option);
-            });
-        }
-
-        function proximoPassoReportar() {
-            selectedTribunalReportar = document.getElementById('selectTribunalReportar').value;
-            if (!selectedTribunalReportar) {
-                alert('Por favor, selecione um tribunal.');
-                return;
-            }
-            document.getElementById('reportarPasso1').classList.add('hidden');
-            document.getElementById('reportarPasso2').classList.remove('hidden');
-        }
-
-        function voltarPassoReportar() {
-            document.getElementById('reportarPasso2').classList.add('hidden');
-            document.getElementById('reportarPasso1').classList.remove('hidden');
-            selectedProblemaReportar = null; // Limpa a seleção do problema
-            // Remove a borda azul de todos os botões de problema
-            document.querySelectorAll('#reportarPasso2 button').forEach(btn => {
-                btn.classList.remove('border-blue-500', 'bg-blue-900/20');
-            });
-        }
-
-        function selecionarProblema(problema, ev) {
-            selectedProblemaReportar = problema;
-            // Remove a borda azul de todos os botões de problema
-            document.querySelectorAll('#reportarPasso2 button').forEach(btn => {
-                btn.classList.remove('border-blue-500', 'bg-blue-900/20');
-            });
-            // Adiciona a borda azul ao botão clicado
-            const alvo = ev.currentTarget || ev.target; // Garante que 'ev' seja passado
-            if (alvo) {
-                alvo.classList.add('border-blue-500', 'bg-blue-900/20');
-            }
-        }
-
-        async function enviarRelato() {
-            if (!selectedTribunalReportar || !selectedProblemaReportar) {
-                alert('Por favor, selecione o tribunal e o tipo de problema.');
-                return;
-            }
-
-            // Mostra um spinner ou desabilita o botão para indicar carregamento
-            const enviarBtn = document.querySelector('#reportarPasso2 button.bg-blue-600');
-            enviarBtn.disabled = true;
-            enviarBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Enviando...';
-
-            try {
-                const response = await fetch('/api/reportar-problema', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        tribunalId: selectedTribunalReportar,
-                        description: selectedProblemaReportar,
-                    }),
-                });
-
-                if (response.ok) {
-                    document.getElementById('reportarPasso2').classList.add('hidden');
-                    document.getElementById('reportarSucesso').classList.remove('hidden');
-                    // Recarrega o status do cache para atualizar os relatos
-                    carregarStatusDoCache();
+            setTimeout(() => {
+                const sucesso = Math.random() > 0.3; // 70% de chance de sucesso
+                if (sucesso) {
+                    resultadoDiv.className = 'mt-4 p-3 rounded-xl text-center bg-green-900 text-green-200';
+                    resultadoDiv.innerHTML = '<i class="fa-solid fa-check-circle mr-2"></i> Certificado válido e ativo!';
                 } else {
-                    const errorData = await response.json();
-                    document.getElementById('reportarErroMensagem').innerText = errorData.message || 'Erro desconhecido ao enviar relato.';
-                    document.getElementById('reportarPasso2').classList.add('hidden');
-                    document.getElementById('reportarErro').classList.remove('hidden');
-                    console.error('Erro ao enviar relato:', errorData);
+                    resultadoDiv.className = 'mt-4 p-3 rounded-xl text-center bg-red-900 text-red-200';
+                    resultadoDiv.innerHTML = '<i class="fa-solid fa-times-circle mr-2"></i> Certificado inválido ou expirado.';
                 }
-            } catch (error) {
-                document.getElementById('reportarErroMensagem').innerText = 'Erro de conexão ou servidor. Por favor, tente novamente.';
-                document.getElementById('reportarPasso2').classList.add('hidden');
-                document.getElementById('reportarErro').classList.remove('hidden');
-                console.error('Erro ao enviar relato:', error);
-            } finally {
-                enviarBtn.disabled = false;
-                enviarBtn.innerHTML = 'Enviar Relato';
-                selectedProblemaReportar = null; // Limpa a seleção do problema
-                // Remove a borda azul de todos os botões de problema
-                document.querySelectorAll('#reportarPasso2 button').forEach(btn => {
-                    btn.classList.remove('border-blue-500', 'bg-blue-900/20');
-                });
-            }
+            }, 2000);
         }
 
         // ──────────────────────────────────────────────────────────────
         // Lógica de Monitoramento de Status e Relatos
         // ──────────────────────────────────────────────────────────────
 
-        function renderizarCarrosselDinamicamente() {
-            const container = document.getElementById('carrosselPrincipais');
-            if (!container) return;
+        let statusGerais = {};
+        let relatosComunidade = {};
 
-            let html = '';
-            const ordemExibicao = [
-                { id: "PJE", label: "1. PJE" },
-                { id: "PROJUDI", label: "2. PROJUDI" },
-                { id: "ESAJ", label: "3. e-SAJ" },
-                { id: "EPROC", label: "4. e-PROC" },
-                { id: "SEEU", label: "5. SEEU" },
-                { id: "PJE_CALC", label: "6. PJE-Calc" },
-                { id: "PJE_OFFICE", label: "7. PJE-Office" },
-                { id: "PJE_MOBI", label: "8. PJE-Mobi" },
-                { id: "PJE_TOKEN", label: "9. PJE-Token" },
-                { id: "domicilio_cnj", label: "10. Domicílio Judicial" }
-            ];
-            ordemExibicao.forEach(itemConfig => {
-                const alvo = dadosTribunaisFixo.find(t => t.id === itemConfig.id) || { sub: "Barramento Central" };
-                const dadosApi = statusGerais[itemConfig.id];
+        const dadosTribunaisFixo = [
+            // Tribunais Superiores
+            { id: 'STF', nome: 'Supremo Tribunal Federal', url: 'https://portal.stf.jus.br/', grupo: 'superiores' },
+            { id: 'STJ', nome: 'Superior Tribunal de Justiça', url: 'https://www.stj.jus.br/', grupo: 'superiores' },
+            { id: 'TST', nome: 'Tribunal Superior do Trabalho', url: 'https://www.tst.jus.br/', grupo: 'superiores' },
+            { id: 'TSE', nome: 'Tribunal Superior Eleitoral', url: 'https://www.tse.jus.br/', grupo: 'superiores' },
+            { id: 'STM', nome: 'Superior Tribunal Militar', url: 'https://www.stm.jus.br/', grupo: 'superiores' },
+
+            // Sistemas Nacionais
+            { id: 'PJE', nome: 'PJE Nacional', url: 'https://pje.jus.br/', grupo: 'nacionais' },
+            { id: 'PROJUDI', nome: 'PROJUDI Nacional', url: 'https://projudi.cnj.jus.br/', grupo: 'nacionais' },
+            { id: 'ESAJ', nome: 'e-SAJ Nacional', url: 'https://esaj.tjsp.jus.br/sajcas/login?service=https%3A%2F%2Fesaj.tjsp.jus.br%2Fesaj%2Fj_spring_security_cas_security_check', grupo: 'nacionais' },
+            { id: 'EPROC', nome: 'e-PROC Nacional', url: 'https://eproc.jf.jus.br/eproc/', grupo: 'nacionais' },
+            { id: 'SEEU', nome: 'SEEU Nacional', url: 'https://seeu.pje.jus.br/seeu/', grupo: 'nacionais' },
+
+            // Paraná (PR)
+            { id: 'TJPR', nome: 'TJPR', url: 'https://www.tjpr.jus.br/', grupo: 'PR' },
+            { id: 'TRF4', nome: 'TRF4 (PR)', url: 'https://www.trf4.jus.br/', grupo: 'PR' },
+            { id: 'TRT9', nome: 'TRT9 (PR)', url: 'https://www.trt9.jus.br/', grupo: 'PR' },
+            { id: 'TREPR', nome: 'TRE-PR', url: 'https://www.tre-pr.jus.br/', grupo: 'PR' },
+            { id: 'JFPRA', nome: 'JFPR (A)', url: 'https://www.jfpr.jus.br/', grupo: 'PR' },
+            { id: 'JFPRA_PJE', nome: 'JFPR (PJE)', url: 'https://pje.jfpr.jus.br/pje/', grupo: 'PR' },
+        ];
+
+        function renderizarCarrosselDinamicamente() {
+            const carrossel = document.getElementById('carrosselPrincipais');
+            if (!carrossel) return;
+
+            carrossel.innerHTML = ''; // Limpa o conteúdo existente
+
+            const principais = dadosTribunaisFixo.filter(t => ['STF', 'STJ', 'PJE', 'TJPR'].includes(t.id));
+
+            principais.forEach(t => {
+                const dadosApi = statusGerais[t.id];
                 const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
-                let classeBadge = "bg-gray-900 text-gray-500 border border-gray-800";
-                if (statusStr === "Online")     classeBadge = "bg-green-950 text-green-400 border border-green-800/40";
-                if (statusStr === "Lentidão")   classeBadge = "bg-amber-950 text-amber-400 border border-amber-800/40";
-                if (statusStr === "Fora do Ar") classeBadge = "bg-red-950 text-red-400 border border-red-800/40";
-                html += `
-                    <div class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex justify-between items-center">
-                        <div>
-                            <p class="text-sm font-bold text-gray-200">${itemConfig.label}</p>
-                            <p class="text-xs text-gray-500">${alvo.sub}</p>
+                const latenciaStr = (dadosApi && dadosApi.latenciaMs) ? `Resposta em ${dadosApi.latenciaMs}ms` : "Aguardando varredura";
+
+                let corBolinha = "bg-gray-600";
+                if (statusStr === "Online")     corBolinha = "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]";
+                if (statusStr === "Lentidão")   corBolinha = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]";
+                if (statusStr === "Fora do Ar") corBolinha = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
+
+                const relato = relatosComunidade[t.id];
+                let badgeRelato = '';
+                if (relato && relato.total > 0) {
+                    badgeRelato = `<span class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-full">${relato.total}</span>`;
+                }
+
+                carrossel.innerHTML += `
+                    <div onclick="window.open('${t.url}','_blank')" class="card p-4 rounded-xl flex-shrink-0 w-48 cursor-pointer relative">
+                        ${badgeRelato}
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="h-2.5 w-2.5 rounded-full ${corBolinha}"></span>
+                            <h3 class="font-semibold text-gray-200">${t.nome}</h3>
                         </div>
-                        <span class="px-2 py-0.5 text-xs font-bold rounded ${classeBadge}">${statusStr}</span>
-                    </div>`;
+                        <p class="text-xs text-gray-400">${statusStr}</p>
+                        <p class="text-[10px] text-gray-500">${latenciaStr}</p>
+                    </div>
+                `;
             });
-            container.innerHTML = html;
         }
 
         function atualizarBolinhasEstados() {
@@ -842,9 +487,9 @@
 
             const tribunaisDaUf = dadosTribunaisFixo.filter(t => t.grupo === uf);
 
-            // resumo geral já existente
+            // Resumo geral dos relatos da comunidade
             if (containerComunidade) {
-                let htmlRelatos = '';
+                let htmlRelatosComunidade = '';
                 tribunaisDaUf.forEach(t => {
                     const rel = relatosComunidade[t.id];
                     if (rel && rel.total > 0) {
@@ -852,14 +497,14 @@
                         if (rel.problemas['Fora do Ar'])     partes.push(`🔴 ${rel.problemas['Fora do Ar']}x fora do ar`);
                         if (rel.problemas['Lentidão'])       partes.push(`🟡 ${rel.problemas['Lentidão']}x lentidão`);
                         if (rel.problemas['Falha no Login']) partes.push(`🔐 ${rel.problemas['Falha no Login']}x login`);
-                        htmlRelatos += `
+                        htmlRelatosComunidade += `
                             <div class="border-b border-gray-800 pb-2 mb-2">
                                 <p class="font-semibold text-gray-200">${t.nome}</p>
                                 <p class="text-gray-400">${partes.join(' · ')} <span class="text-gray-600 text-[10px] ml-1">último: ${rel.ultimoRelato}</span></p>
                             </div>`;
                     }
                 });
-                containerComunidade.innerHTML = htmlRelatos ||
+                containerComunidade.innerHTML = htmlRelatosComunidade ||
                     `<div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40 text-gray-500 text-center italic">Nenhum alerta reportado por advogados nas últimas horas.</div>`;
             }
 
@@ -938,6 +583,84 @@
             document.getElementById('modalEstado').classList.remove('hidden');
 
             await renderizarConteudoModal(uf);
+        }
+
+        // Lógica de Reportar Problema
+        let selectedTribunalReportar = null;
+        let selectedProblemaReportar = null;
+
+        function carregarTribunaisReportar() {
+            const select = document.getElementById('selectTribunalReportar');
+            select.innerHTML = '<option value="">-- Selecione o tribunal para continuar --</option>';
+            dadosTribunaisFixo.forEach(t => {
+                const option = document.createElement('option');
+                option.value = t.id;
+                option.textContent = t.nome;
+                select.appendChild(option);
+            });
+        }
+
+        function proximoPassoReportar() {
+            selectedTribunalReportar = document.getElementById('selectTribunalReportar').value;
+            if (!selectedTribunalReportar) {
+                alert('Por favor, selecione um tribunal.');
+                return;
+            }
+            document.getElementById('reportarPasso1').classList.add('hidden');
+            document.getElementById('reportarPasso2').classList.remove('hidden');
+        }
+
+        function voltarPassoReportar() {
+            document.getElementById('reportarPasso2').classList.add('hidden');
+            document.getElementById('reportarPasso1').classList.remove('hidden');
+        }
+
+        function selecionarProblema(problema, ev) {
+            selectedProblemaReportar = problema;
+            const buttons = document.querySelectorAll('#reportarPasso2 button');
+            buttons.forEach(btn => btn.classList.remove('border-blue-500', 'bg-blue-900/20'));
+            if (ev && ev.currentTarget) {
+                ev.currentTarget.classList.add('border-blue-500', 'bg-blue-900/20');
+            }
+        }
+
+        async function enviarRelato() {
+            if (!selectedTribunalReportar || !selectedProblemaReportar) {
+                alert('Por favor, selecione o tribunal e o tipo de problema.');
+                return;
+            }
+
+            const btnEnviar = document.querySelector('#reportarPasso2 button.bg-blue-600');
+            const originalBtnText = btnEnviar.innerHTML;
+            btnEnviar.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Enviando...';
+            btnEnviar.disabled = true;
+
+            try {
+                const response = await fetch('/api/reportar-problema', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tribunalId: selectedTribunalReportar,
+                        description: selectedProblemaReportar
+                    })
+                });
+
+                if (response.ok) {
+                    document.getElementById('reportarPasso2').classList.add('hidden');
+                    document.getElementById('reportarSucesso').classList.remove('hidden');
+                    // Atualiza o cache de status para refletir o novo relato
+                    await carregarStatusDoCache();
+                } else {
+                    const errorData = await response.json();
+                    alert('Erro ao enviar relato: ' + (errorData.message || 'Erro desconhecido.'));
+                }
+            } catch (error) {
+                console.error('Erro ao enviar relato:', error);
+                alert('Erro de conexão ao enviar relato.');
+            } finally {
+                btnEnviar.innerHTML = originalBtnText;
+                btnEnviar.disabled = false;
+            }
         }
 
         async function carregarNoticiasRss() {
