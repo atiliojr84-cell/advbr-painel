@@ -253,176 +253,169 @@
                         <span class="text-xs text-gray-500">Mercado Livre</span>
                     </div>
                 </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://m.media-amazon.com/images/I/71c5j1b5QHL._AC_SL1500_.jpg" alt="Teclado Mecânico" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Teclado Mecânico HyperX Alloy</p>
-                            <p class="text-xs text-gray-400">Conforto e precisão.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 349,00</span>
-                        <span class="text-xs text-gray-500">Amazon</span>
-                    </div>
-                </a>
             </div>
         </section>
 
     </div>
 
-    <!-- Modals -->
-    <!-- Modal Reportar Problema -->
-    <div id="modalReportar" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
-            <div class="modal-header p-4 border-b border-gray-800 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-gray-200">Reportar Problema</h3>
-                <button onclick="fecharModal('modalReportar')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <div class="modal-body p-6">
-                <form id="formReportarProblema" class="space-y-4">
-                    <div>
-                        <label for="tribunalSelect" class="block text-sm font-medium text-gray-300 mb-1">Tribunal:</label>
-                        <select id="tribunalSelect" name="tribunal" class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                            <!-- Opções carregadas via JS -->
-                        </select>
-                    </div>
-                    <div>
-                        <label for="problemaTipo" class="block text-sm font-medium text-gray-300 mb-1">Tipo de Problema:</label>
-                        <select id="problemaTipo" name="tipo" class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="Fora do Ar">Fora do Ar</option>
-                            <option value="Lentidão">Lentidão</option>
-                            <option value="Falha no Login">Falha no Login</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="observacao" class="block text-sm font-medium text-gray-300 mb-1">Observação (opcional):</label>
-                        <textarea id="observacao" name="observacao" rows="3" class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Descreva brevemente o problema..."></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg transition active:scale-95">
-                        Enviar Relato
-                    </button>
-                </form>
-                <p id="reportarStatus" class="text-center mt-4"></p>
-            </div>
-        </div>
-    </div>
+    <!-- Modais -->
 
-    <!-- Modal de Estado/Grupo -->
-    <div id="modalEstado" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
+    <!-- Modal de Estado -->
+    <div id="modalEstado" class="app-modal-backdrop hidden" onclick="fecharModal('modalEstado')">
+        <div class="modal-shell" onclick="event.stopPropagation()">
             <div class="modal-header p-4 border-b border-gray-800 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-gray-200" id="estadoNome"></h3>
+                <h3 class="text-lg font-bold text-gray-100">Tribunais em <span id="estadoNome"></span></h3>
                 <button onclick="fecharModal('modalEstado')" class="text-gray-400 hover:text-gray-200">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div class="modal-body p-6">
-                <div id="linksTribunais" class="space-y-3">
+            <div class="modal-body p-4 space-y-3">
+                <div id="linksTribunais">
                     <!-- Links dos tribunais serão carregados aqui -->
                 </div>
-                <div id="relatosComunidadeEstado" class="mt-6 hidden">
-                    <!-- Relatos da comunidade serão carregados aqui, mas agora estão inline -->
+                <div id="relatosComunidadeEstado" class="hidden">
+                    <!-- Relatos da comunidade serão carregados aqui -->
                 </div>
             </div>
+            <div class="modal-footer flex justify-end p-4 border-t border-gray-800">
+                <button onclick="fecharModal('modalEstado')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium">Fechar</button>
+            </div>
         </div>
     </div>
 
-    <!-- Modal PJe Office Pre-Test -->
-    <div id="modalPjeOfficePreTest" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
+    <!-- Modal de Reportar Problema -->
+    <div id="modalReportar" class="app-modal-backdrop hidden" onclick="fecharModal('modalReportar')">
+        <div class="modal-shell" onclick="event.stopPropagation()">
             <div class="modal-header p-4 border-b border-gray-800 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-gray-200">Teste PJe Office Pro</h3>
-                <button onclick="fecharModal('modalPjeOfficePreTest')" class="text-gray-400 hover:text-gray-200">
+                <h3 class="text-lg font-bold text-gray-100">Reportar Problema</h3>
+                <button onclick="fecharModal('modalReportar')" class="text-gray-400 hover:text-gray-200">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div class="modal-body p-6 text-center space-y-4">
-                <p class="text-gray-300 text-base">Nós vamos testar o PJe Office do seu computador.</p>
-                <p class="text-gray-400 text-sm">Se não der certo, ou se tiver algum problema, podemos te ajudar através do nosso suporte.</p>
-                <a href="https://wa.me/5544984416161" target="_blank" class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 transition text-sm font-medium">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Fale conosco no WhatsApp
-                </a>
-                <p id="pjeOfficeTestStatus" class="text-sm font-semibold mt-4"></p>
-            </div>
-            <div class="modal-footer flex justify-end">
-                <button onclick="iniciarTestePjeOffice()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-lg transition active:scale-95">
-                    Iniciar Teste
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Token Pre-Test -->
-    <div id="modalTokenPreTest" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
-            <div class="modal-header p-4 border-b border-gray-800 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-gray-200">Teste de Token/Certificado</h3>
-                <button onclick="fecharModal('modalTokenPreTest')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <div class="modal-body p-6 text-center space-y-4">
-                <p class="text-gray-300 text-base">Nós vamos abrir a página de teste da Certisign para você verificar seu Certificado Digital (Token).</p>
-                <p class="text-gray-400 text-sm">Se não der certo, ou se tiver algum problema, podemos te ajudar através do nosso suporte.</p>
-                <a href="https://wa.me/5544984416161" target="_blank" class="inline-flex items-center gap-2 text-green-400 hover:text-green-300 transition text-sm font-medium">
-                    <i class="fa-brands fa-whatsapp text-lg"></i> Fale conosco no WhatsApp
-                </a>
-                <p id="tokenTestStatus" class="text-sm font-semibold mt-4"></p>
-            </div>
-            <div class="modal-footer flex justify-end">
-                <button onclick="iniciarTesteToken()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-5 rounded-lg transition active:scale-95">
-                    Iniciar Teste
-                </button>
+            <div class="modal-body p-4 space-y-4">
+                <form id="formReportarProblema" class="space-y-4">
+                    <div>
+                        <label for="tribunalSelect" class="block text-sm font-medium text-gray-300 mb-1">Qual tribunal/sistema?</label>
+                        <select id="tribunalSelect" name="tribunalId" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                            <!-- Opções carregadas via JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="problemaTipo" class="block text-sm font-medium text-gray-300 mb-1">Qual o tipo de problema?</label>
+                        <select id="problemaTipo" name="problemaTipo" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">Selecione o tipo</option>
+                            <option value="Fora do Ar">🔴 Fora do Ar</option>
+                            <option value="Lentidão">🟡 Lentidão</option>
+                            <option value="Falha no Login">🔐 Falha no Login</option>
+                            <option value="Outro">⚪ Outro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="observacao" class="block text-sm font-medium text-gray-300 mb-1">Observação (opcional):</label>
+                        <textarea id="observacao" name="observacao" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Descreva brevemente o problema..."></textarea>
+                    </div>
+                    <div id="reportarStatus" class="text-center text-sm font-medium mt-4"></div>
+                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg transition active:scale-95">
+                        Enviar Relato
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal PDF Optimizer -->
-    <div id="modalPdfOptimizer" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
+    <!-- Modal Otimizador PDF -->
+    <div id="modalPdfOptimizer" class="app-modal-backdrop hidden" onclick="fecharModal('modalPdfOptimizer')">
+        <div class="modal-shell" onclick="event.stopPropagation()">
             <div class="modal-header p-4 border-b border-gray-800 flex justify-between items-center">
-                <h3 class="text-lg font-bold text-gray-200">Otimizador de PDF</h3>
+                <h3 class="text-lg font-bold text-gray-100">Otimizador de PDF</h3>
                 <button onclick="fecharModal('modalPdfOptimizer')" class="text-gray-400 hover:text-gray-200">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <div class="modal-body p-6 space-y-4">
-                <p class="text-gray-300">Selecione um arquivo PDF e o tribunal de destino para otimizá-lo.</p>
-                <input type="file" id="pdfInput" accept=".pdf" class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                <select id="pdfTribunalSelect" class="w-full p-2.5 bg-gray-900 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="">Selecione o Tribunal de Destino</option>
-                    <option value="PJe">PJe (CNJ)</option>
-                    <option value="e-SAJ">e-SAJ (TJSP)</option>
-                    <option value="e-proc">e-proc (TRF4/TJPR)</option>
-                </select>
-                <button onclick="otimizarPdf()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg transition active:scale-95">
-                    Otimizar PDF
+            <div class="modal-body p-4 space-y-4">
+                <div>
+                    <label for="pdfInput" class="block text-sm font-medium text-gray-300 mb-1">Selecione o arquivo PDF:</label>
+                    <input type="file" id="pdfInput" accept=".pdf" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="pdfTribunalSelect" class="block text-sm font-medium text-gray-300 mb-1">Tribunal de destino:</label>
+                    <select id="pdfTribunalSelect" class="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Selecione o tribunal</option>
+                        <option value="TJPR">TJPR</option>
+                        <option value="TJSP">TJSP</option>
+                        <option value="TRF4">TRF4</option>
+                        <!-- Adicione mais opções conforme necessário -->
+                    </select>
+                </div>
+                <div id="pdfOptimizerStatus" class="text-center text-sm font-medium mt-4"></div>
+                <button onclick="otimizarPdf()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition active:scale-95">
+                    Otimizar e Baixar PDF
                 </button>
-                <div id="pdfOptimizerStatus" class="text-center text-sm mt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pré-Teste PJe Office Pro -->
+    <div id="modalPjeOfficePreTest" class="app-modal-backdrop hidden" onclick="fecharModal('modalPjeOfficePreTest')">
+        <div class="modal-shell" onclick="event.stopPropagation()">
+            <div class="modal-header p-4 border-b border-gray-800 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-gray-100">Teste PJe Office Pro</h3>
+                <button onclick="fecharModal('modalPjeOfficePreTest')" class="text-gray-400 hover:text-gray-200">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body p-4 text-center space-y-4">
+                <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
+                    <i class="fa-solid fa-file-signature"></i>
+                </div>
+                <p class="text-sm text-gray-300">Nós vamos testar o PJe Office do seu computador. Certifique-se de que ele está instalado e em execução.</p>
+                <p class="text-xs text-gray-500">Se precisar de ajuda, <a href="https://wa.me/5544984416161" target="_blank" class="text-blue-400 hover:underline">fale com nosso suporte via WhatsApp</a>.</p>
+                <div id="pjeOfficeTestStatus" class="text-sm font-semibold mt-4"></div>
+                <button onclick="iniciarTestePjeOffice()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition active:scale-95">
+                    Iniciar Teste PJe Office Pro
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pré-Teste Token -->
+    <div id="modalTokenPreTest" class="app-modal-backdrop hidden" onclick="fecharModal('modalTokenPreTest')">
+        <div class="modal-shell" onclick="event.stopPropagation()">
+            <div class="modal-header p-4 border-b border-gray-800 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-gray-100">Teste de Token/Certificado</h3>
+                <button onclick="fecharModal('modalTokenPreTest')" class="text-gray-400 hover:text-gray-200">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body p-4 text-center space-y-4">
+                <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
+                    <i class="fa-brands fa-usb"></i>
+                </div>
+                <p class="text-sm text-gray-300">Nós vamos abrir uma página da Certisign para você testar seu Token OAB ou Certificado Digital.</p>
+                <p class="text-xs text-gray-500">Se precisar de ajuda, <a href="https://wa.me/5544984416161" target="_blank" class="text-blue-400 hover:underline">fale com nosso suporte via WhatsApp</a>.</p>
+                <div id="tokenTestStatus" class="text-sm font-semibold mt-4"></div>
+                <button onclick="iniciarTesteToken()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition active:scale-95">
+                    Iniciar Teste de Token
+                </button>
             </div>
         </div>
     </div>
 
 
     <script>
-        // Dados fixos dos tribunais (simulando um banco de dados)
+        // Dados fixos dos tribunais
         const dadosTribunaisFixo = [
             // Tribunais Superiores
-            { id: "stf",           nome: "STF - Supremo Tribunal Federal", url: "https://portal.stf.jus.br/processos/processoEletronico.asp", grupo: "superiores", sub: "Processo Eletrônico" },
-            { id: "stj",           nome: "STJ - Superior Tribunal de Justiça", url: "https://www.stj.jus.br/sites/portalp/Processos/Processos-Eletronicos", grupo: "superiores", sub: "Processos Eletrônicos" },
-            { id: "tst",           nome: "TST - Tribunal Superior do Trabalho", url: "https://www.tst.jus.br/pje", grupo: "superiores", sub: "PJe" },
-            { id: "tse",           nome: "TSE - Tribunal Superior Eleitoral", url: "https://www.tse.jus.br/servicos/processo-judicial-eletronico-pje", grupo: "superiores", sub: "PJe" },
-            { id: "stm",           nome: "STM - Superior Tribunal Militar", url: "https://www.stm.jus.br/servicos-judiciais/pje", grupo: "superiores", sub: "PJe" },
+            { id: "stf",           nome: "STF - Eletrônico", url: "https://portal.stf.jus.br/processos/listarProcessos.asp", grupo: "superiores", sub: "Supremo Tribunal Federal" },
+            { id: "stj",           nome: "STJ - Processos", url: "https://www.stj.jus.br/sites/portalp/Paginas/Servicos/Processos/Consulta-Processual.aspx", grupo: "superiores", sub: "Superior Tribunal de Justiça" },
+            { id: "tst",           nome: "TST - PJe", url: "https://pje.tst.jus.br/pje/login.seam", grupo: "superiores", sub: "Tribunal Superior do Trabalho" },
+            { id: "tse",           nome: "TSE - PJe", url: "https://pje.tse.jus.br/pje/login.seam", grupo: "superiores", sub: "Tribunal Superior Eleitoral" },
 
             // Sistemas Nacionais
-            { id: "pje_cnj",       nome: "PJe - Conselho Nacional de Justiça", url: "https://www.pje.jus.br/wiki/index.php/P%C3%A1gina_principal", grupo: "nacionais", sub: "Sistema PJe" },
+            { id: "pje_cnj",       nome: "PJe - Nacional", url: "https://www.pje.jus.br/wiki/index.php/P%C3%A1gina_principal", grupo: "nacionais", sub: "Processo Judicial Eletrônico" },
             { id: "domicilio_cnj", nome: "Domicílio Judicial Eletrônico", url: "https://domicilio-eletronico.pje.jus.br/", grupo: "nacionais", sub: "CNJ" },
-            { id: "saj_pg5",       nome: "SAJ PG5 - Softplan", url: "https://www.softplan.com.br/saj-pg5/", grupo: "nacionais", sub: "Sistema de Automação da Justiça" },
-            { id: "eproc_trf4",    nome: "e-Proc - TRF4", url: "https://www.trf4.jus.br/trf4/controlador.php?acao=pagina_inicial", grupo: "nacionais", sub: "Processo Eletrônico" },
+            { id: "eproc_cnj",     nome: "e-Proc - Nacional", url: "https://www.eproc.jus.br/", grupo: "nacionais", sub: "Processo Eletrônico" },
+            { id: "saj_cnj",       nome: "e-SAJ - Nacional", url: "https://www.esaj.jus.br/", grupo: "nacionais", sub: "Sistema de Automação da Justiça" },
 
             // Paraná (PR)
             { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau", url: "https://eproc1g.tjpr.jus.br/eproc/externo_controlador.php?acao=principal", grupo: "PR", sub: "Processo Eletrônico" },
@@ -432,7 +425,7 @@
             { id: "trt9_2g",       nome: "TRT9 - PJe 2º Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", grupo: "PR", sub: "PJe" },
             { id: "trf4_pr",       nome: "TRF4 - Seção Judiciária do PR", url: "https://www.trf4.jus.br/trf4/controlador.php?acao=pagina_inicial", grupo: "PR", sub: "Processo Eletrônico" },
             { id: "tjpr_saj",      nome: "TJPR - e-SAJ", url: "https://esaj.tjpr.jus.br/sajcas/login?service=https%3A%2F%2Fesaj.tjpr.jus.br%2Fesaj%2Fj_spring_cas_security_check", grupo: "PR", sub: "Sistema de Automação da Justiça" },
-            { id: "tjpr_procuradoria", nome: "TJPR - Procuradoria Geral", url: "https://www.procuradoria.pr.gov.br/", grupo: "PR", sub: "Procuradoria" },
+            { id: "tjpr_procuradoria", nome: "TJPR - Procuradoria General", url: "https://www.procuradoria.pr.gov.br/", grupo: "PR", sub: "Procuradoria" },
             { id: "oab_pr",        nome: "OAB-PR", url: "https://www.oabpr.org.br/", grupo: "PR", sub: "Ordem dos Advogados do Brasil" },
 
             // São Paulo (SP)
@@ -476,6 +469,9 @@
         function abrirReportar() {
             abrirModal('modalReportar');
             document.getElementById('reportarStatus').textContent = ''; // Limpa status anterior
+            document.getElementById('observacao').value = ''; // Limpa observação
+            document.getElementById('problemaTipo').value = ''; // Limpa seleção de tipo
+            document.getElementById('tribunalSelect').value = ''; // Limpa seleção de tribunal
         }
 
         function carregarTribunaisReportar() {
@@ -508,6 +504,7 @@
                     event.preventDefault();
                     const tribunalId = document.getElementById('tribunalSelect').value;
                     const problemaTipo = document.getElementById('problemaTipo').value;
+                    const observacao = document.getElementById('observacao').value;
                     const reportarStatus = document.getElementById('reportarStatus');
 
                     if (!tribunalId) {
@@ -515,26 +512,32 @@
                         reportarStatus.textContent = 'Por favor, selecione um tribunal.';
                         return;
                     }
+                    if (!problemaTipo) {
+                        reportarStatus.className = 'text-red-400';
+                        reportarStatus.textContent = 'Por favor, selecione o tipo de problema.';
+                        return;
+                    }
 
                     reportarStatus.className = 'text-blue-400';
                     reportarStatus.textContent = 'Enviando seu relato...';
 
                     try {
-                        // Simula o envio para uma API
                         const response = await fetch('/api/reportar-problema', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ tribunalId, problemaTipo, observacao: document.getElementById('observacao').value })
+                            body: JSON.stringify({ tribunalId, problemaTipo, observacao })
                         });
 
                         if (response.ok) {
                             reportarStatus.className = 'text-green-400';
                             reportarStatus.textContent = 'Relato enviado com sucesso! Agradecemos sua contribuição.';
-                            // Opcional: recarregar status ou fechar modal após um tempo
+                            // Recarrega os status para exibir os novos relatos
+                            carregarStatusDoCache();
                             setTimeout(() => fecharModal('modalReportar'), 3000);
                         } else {
+                            const errorData = await response.json();
                             reportarStatus.className = 'text-red-400';
-                            reportarStatus.textContent = 'Erro ao enviar relato. Tente novamente.';
+                            reportarStatus.textContent = `Erro ao enviar relato: ${errorData.message || 'Tente novamente.'}`;
                         }
                     } catch (error) {
                         console.error('Erro ao enviar relato:', error);
@@ -726,7 +729,7 @@
                 { id: "trt9_2g",       label: "7. TRT9 - PJe 2º Grau" },
                 { id: "trf4_pr",       label: "8. TRF4 - Federal PR" },
                 { id: "tjpr_projudi",  label: "9. TJPR - Projudi" },
-                { id: "domicilio_cnj", label: "10. Domicílio Judicial" }
+                { id: "domicilio_cnj", label: "10. Domicílio Judicial Eletrônico" }
             ];
             ordemExibicao.forEach(itemConfig => {
                 const alvo = dadosTribunaisFixo.find(t => t.id === itemConfig.id) || { sub: "Barramento Central" };
@@ -791,12 +794,13 @@
 
                 // Adiciona os relatos da comunidade abaixo de cada tribunal
                 let relatosHtml = '';
-                const rel = relatosComunidade[t.id];
+                const rel = relatosComunidade[t.id]; // Agora 'rel' virá da nova estrutura da API de status
                 if (rel && rel.total > 0) {
                     const partes = [];
                     if (rel.problemas['Fora do Ar'])     partes.push(`🔴 ${rel.problemas['Fora do Ar']}x fora do ar`);
                     if (rel.problemas['Lentidão'])       partes.push(`🟡 ${rel.problemas['Lentidão']}x lentidão`);
                     if (rel.problemas['Falha no Login']) partes.push(`🔐 ${rel.problemas['Falha no Login']}x login`);
+                    if (rel.problemas['Outro'])          partes.push(`⚪ ${rel.problemas['Outro']}x outro`); // Adicionado 'Outro'
                     relatosHtml = `
                         <div class="text-[10px] text-gray-500 mt-1 ml-1">
                             Relatos: ${partes.join(' · ')} <span class="text-gray-600 ml-1">último: ${rel.ultimoRelato}</span>
