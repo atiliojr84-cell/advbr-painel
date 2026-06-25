@@ -15,22 +15,30 @@ export async function GET() {
 
   for (const fonte of fontes) {
     try {
-      // Usamos o serviço rss2json para garantir que o feed seja lido sem bloqueio
-      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(fonte.url)}`;
-      const res = await fetch(apiUrl, { next: { revalidate: 3600 } });
-      const data = await res.json();
+      const res = await fetch(fonte.url, { 
+        next: { revalidate: 3600 },
+        headers: { 'User-Agent': 'Mozilla/5.0' } 
+      });
       
-      if (data.items) {
-        data.items.slice(0, 3).forEach((item: any) => {
-          todasNoticias.push({ 
-            texto: `[${fonte.nome}] ${item.title}`, 
-            url: item.link 
-          });
+      // Converte o buffer para texto garantindo a leitura correta de acentos
+      const buffer = await res.arrayBuffer();
+      const decoder = new TextDecoder('iso-8859-1'); // Corrige o encoding do TRF4 e outros
+      const xml = decoder.decode(buffer);
+      
+      const regex = /<item>[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>/gi;
+      let match;
+      let count = 0;
+      
+      while ((match = regex.exec(xml)) !== null && count < 3) {
+        const titulo = match[1].replace(/<!\[CDATA\[|\]\]>|<\/?[^>]+(>|$)/g, "").trim();
+        todasNoticias.push({ 
+          texto: `[${fonte.nome}] ${titulo}`, 
+          url: match[2].trim() 
         });
+        count++;
       }
     } catch (e) { continue; }
   }
 
-  // Embaralha para ficar misturado
   return NextResponse.json({ noticias: todasNoticias.sort(() => Math.random() - 0.5) });
 }
