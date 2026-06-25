@@ -15,25 +15,32 @@ export async function GET() {
 
   for (const fonte of fontes) {
     try {
-      // Usamos o RSS2JSON que resolve o problema do encoding automaticamente (acentuação)
-      const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(fonte.url)}`, { 
-        next: { revalidate: 3600 } 
+      const res = await fetch(fonte.url, { 
+        next: { revalidate: 3600 },
+        headers: { 'User-Agent': 'Mozilla/5.0' } 
       });
       
-      const data = await res.json();
+      const arrayBuffer = await res.arrayBuffer();
+      // Decodificador universal para UTF-8 (mais comum e moderno)
+      const decoder = new TextDecoder('utf-8');
+      let xml = decoder.decode(arrayBuffer);
+
+      // Limpeza de caracteres corrompidos comuns
+      xml = xml.replace(/Ã©/g, 'é').replace(/Ã£/g, 'ã').replace(/Ã§/g, 'ç')
+               .replace(/Ã³/g, 'ó').replace(/Ãª/g, 'ê').replace(/Ã­/g, 'í')
+               .replace(/Ã¡/g, 'á').replace(/Ãµ/g, 'õ');
       
-      if (data.items) {
-        // Pega as 3 primeiras notícias de cada fonte
-        data.items.slice(0, 3).forEach((item: any) => {
-          todasNoticias.push({ 
-            texto: `[${fonte.nome}] ${item.title}`, 
-            url: item.link 
-          });
-        });
+      const regex = /<item>[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>/gi;
+      let match;
+      let count = 0;
+      
+      while ((match = regex.exec(xml)) !== null && count < 3) {
+        let titulo = match[1].replace(/<!\[CDATA\[|\]\]>|<\/?[^>]+(>|$)/g, "").trim();
+        todasNoticias.push({ texto: `[${fonte.nome}] ${titulo}`, url: match[2].trim() });
+        count++;
       }
     } catch (e) { continue; }
   }
 
-  // Retorna a lista misturada
   return NextResponse.json({ noticias: todasNoticias.sort(() => Math.random() - 0.5) });
 }
