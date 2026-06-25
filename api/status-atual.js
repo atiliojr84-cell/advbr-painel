@@ -1,3 +1,4 @@
+// api/status-atual.js
 import { createClient } from '@vercel/kv';
 
 const kv = createClient({
@@ -16,27 +17,44 @@ export default async function handler(req, res) {
 
   try {
     const dadosStatus = await kv.get('advbr_status_global');
-    const relatosBrutos = await kv.get('advbr_relatos') || []; // Lê os relatos brutos
 
-    // Processa os relatos brutos para o formato esperado pelo front-end
-    const relatosProcessados = {};
-    relatosBrutos.forEach(relato => {
-      if (!relatosProcessados[relato.tribunal]) {
-        relatosProcessados[relato.tribunal] = {
-          total: 0,
-          problemas: {},
-          ultimoRelato: ''
-        };
+    // --- Nova lógica para buscar e agregar os contadores de relatos ---
+    const relatosComunidade = {};
+    let cursor = 0;
+    do {
+      // Busca chaves que começam com 'relatos_contador:'
+      const [nextCursor, keys] = await kv.scan(cursor, { match: 'relatos_contador:*', count: 100 });
+      cursor = nextCursor;
+
+      for (const key of keys) {
+        const parts = key.split(':'); // Ex: ['relatos_contador', 'tjpr_eproc_1g', 'Fora do Ar']
+        if (parts.length === 3) {
+          const tribunalId = parts[1];
+          const problemaTipo = parts[2];
+          const count = await kv.get(key); // Pega o valor do contador
+
+          if (count > 0) { // Só adiciona se houver relatos
+            if (!relatosComunidade[tribunalId]) {
+              relatosComunidade[tribunalId] = {
+                total: 0,
+                problemas: {},
+                ultimoRelato: 'recentemente' // Ou você pode armazenar um timestamp no KV
+              };
+            }
+            relatosComunidade[tribunalId].problemas[problemaTipo] = count;
+            relatosComunidade[tribunalId].total += count;
+            // Nota: 'ultimoRelato' aqui será uma string genérica.
+            // Se precisar de um timestamp real, o api/reportar-problema.js precisaria
+            // armazenar um timestamp junto com o contador ou em uma chave separada.
+          }
+        }
       }
-      relatosProcessados[relato.tribunal].total++;
-      relatosProcessados[relato.tribunal].problemas[relato.tipoProblema] =
-        (relatosProcessados[relato.tribunal].problemas[relato.tipoProblema] || 0) + 1;
-      relatosProcessados[relato.tribunal].ultimoRelato = relato.data; // Atualiza com o mais recente
-    });
+    } while (cursor !== 0);
+    // --- Fim da nova lógica ---
 
     return res.status(200).json({
       status_servidores: dadosStatus || {},
-      relatos_comunidade: relatosProcessados
+      relatos_comunidade: relatosComunidade
     });
   } catch (error) {
     console.error('Erro no Redis (status-atual.js):', error);
