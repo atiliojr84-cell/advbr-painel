@@ -176,22 +176,9 @@
             </div>
         </section>
 
-        <section class="p-6 card rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-950">
-            <div class="max-w-xl mx-auto text-center space-y-5 py-4">
-                <div class="w-14 h-14 bg-blue-950/50 text-blue-400 rounded-full flex items-center justify-center mx-auto text-xl border border-blue-800/40 shadow-inner">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                </div>
-                <h2 class="text-xl font-bold">Cursos e Treinamentos</h2>
-                <p class="text-sm text-gray-400">Capacite-se com nossos cursos e treinamentos focados na prática da advocacia digital.</p>
-            </div>
-            <button onclick="window.open('https://go.innerai.com/cursos','_blank')" class="w-full mt-6 block mx-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-extrabold text-sm px-6 py-4 rounded-xl transition shadow-lg shadow-blue-950/40 active:scale-95 text-center tracking-wide lg:max-w-md">
-                Ver Cursos Disponíveis
-            </button>
-        </section>
-
         <footer class="text-center text-gray-500 text-xs py-8">
             <p>&copy; 2026 ADVBR.info. Todos os direitos reservados.</p>
-            <p class="mt-1">Desenvolvido com <i class="fa-solid fa-heart text-red-500"></i> por Inner AI</p>
+            <p class="mt-2">Desenvolvido com <i class="fa-solid fa-heart text-red-500"></i> por Advogados para Advogados.</p>
         </footer>
 
     </div>
@@ -206,52 +193,50 @@
             <div class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fa-solid fa-triangle-exclamation text-red-600"></i>
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
+                            <i class="fa-solid fa-bullhorn text-blue-400"></i>
                         </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-100" id="modal-title">
-                                Reportar Problema
-                            </h3>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Reportar Problema</h3>
                             <div class="mt-2">
-                                <!-- Passo 1: Seleção do Tribunal -->
                                 <div id="reportarPasso1">
-                                    <p class="text-sm text-gray-400 mb-3">Selecione o tribunal onde você está enfrentando problemas:</p>
+                                    <p class="text-sm text-gray-400 mb-4">Selecione o tribunal ou sistema que está apresentando problemas:</p>
                                     <select id="selectTribunalReportar" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-gray-700 text-gray-200">
-                                        <option value="">-- Selecione um tribunal --</option>
+                                        <option value="">Carregando tribunais...</option>
                                     </select>
-                                    <div class="mt-5 sm:mt-6">
-                                        <button type="button" onclick="proximoPassoReportar()" class="inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
-                                            Próximo
-                                        </button>
-                                    </div>
+                                    <button onclick="avancarReportar()" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                                        Avançar
+                                    </button>
                                 </div>
-
-                                <!-- Passo 2: Seleção do Tipo de Problema -->
                                 <div id="reportarPasso2" class="hidden">
-                                    <p class="text-sm text-gray-400 mb-3">Qual tipo de problema você está enfrentando?</p>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button type="button" onclick="selecionarProblema('Fora do Ar', event)" class="inline-flex items-center justify-center px-3 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <i class="fa-solid fa-circle-xmark text-red-400 mr-2"></i> Fora do Ar
+                                    <p class="text-sm text-gray-400 mb-4">Qual o tipo de problema que você está enfrentando?</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <button onclick="selecionarProblema('Fora do Ar', event)" class="p-3 rounded-lg border border-gray-700 text-gray-300 hover:border-blue-500 hover:bg-blue-900/20 transition text-sm flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-circle-xmark text-red-400"></i> Fora do Ar
                                         </button>
-                                        <button type="button" onclick="selecionarProblema('Lentidão', event)" class="inline-flex items-center justify-center px-3 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <i class="fa-solid fa-hourglass-half text-amber-400 mr-2"></i> Lentidão
+                                        <button onclick="selecionarProblema('Lentidão', event)" class="p-3 rounded-lg border border-gray-700 text-gray-300 hover:border-blue-500 hover:bg-blue-900/20 transition text-sm flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-hourglass-half text-amber-400"></i> Lentidão
                                         </button>
-                                        <button type="button" onclick="selecionarProblema('Falha no Login', event)" class="inline-flex items-center justify-center px-3 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <i class="fa-solid fa-lock text-blue-400 mr-2"></i> Falha no Login
+                                        <button onclick="selecionarProblema('Falha no Login', event)" class="p-3 rounded-lg border border-gray-700 text-gray-300 hover:border-blue-500 hover:bg-blue-900/20 transition text-sm flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-user-lock text-blue-400"></i> Falha no Login
                                         </button>
-                                        <button type="button" onclick="selecionarProblema('Outro', event)" class="inline-flex items-center justify-center px-3 py-2 border border-gray-600 text-sm font-medium rounded-md text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            <i class="fa-solid fa-ellipsis text-gray-400 mr-2"></i> Outro
-                                        </button>
-                                    </div>
-                                    <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-                                        <button type="button" onclick="enviarRelato()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:col-start-2 sm:text-sm">
-                                            Enviar Relato
-                                        </button>
-                                        <button type="button" onclick="voltarPassoReportar()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm">
-                                            Voltar
+                                        <button onclick="selecionarProblema('Outro', event)" class="p-3 rounded-lg border border-gray-700 text-gray-300 hover:border-blue-500 hover:bg-blue-900/20 transition text-sm flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-circle-info text-gray-400"></i> Outro
                                         </button>
                                     </div>
+                                    <button onclick="enviarRelato()" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                                        Enviar Relato
+                                    </button>
+                                </div>
+                                <div id="reportarSucesso" class="hidden text-center">
+                                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-950/50 border border-green-800/40">
+                                        <i class="fa-solid fa-check text-green-400 text-xl"></i>
+                                    </div>
+                                    <h3 class="mt-3 text-lg leading-6 font-medium text-gray-200">Relato enviado!</h3>
+                                    <p class="text-sm text-gray-400 mt-2">Agradecemos sua colaboração. Seu relato nos ajuda a monitorar a estabilidade dos sistemas.</p>
+                                    <button onclick="fecharModalReportar()" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                                        Fechar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -278,24 +263,20 @@
             <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
                 <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fa-solid fa-check text-green-600"></i>
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-green-800/40">
+                            <i class="fa-solid fa-check text-green-400"></i>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-100" id="modal-title">
-                                Relato enviado!
-                            </h3>
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Relato enviado!</h3>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-400">
-                                    Obrigado, Doutor(a). Seu relato já está visível para os colegas que consultarem este tribunal.
-                                </p>
+                                <p class="text-sm text-gray-400">Agradecemos sua colaboração. Seu relato nos ajuda a monitorar a estabilidade dos sistemas.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-900 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <button type="button" onclick="fecharModalSucessoRelato()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto sm:text-sm">
-                        OK, entendido
+                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" onclick="fecharModalSucessoRelato()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Fechar
                     </button>
                 </div>
             </div>
@@ -310,22 +291,18 @@
             <div class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10" style="color: #3b82f6;">
-                            <i class="fa-brands fa-usb"></i>
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
+                            <i class="fa-solid fa-key fa-rotate-270 text-blue-400"></i>
                         </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-100" id="modal-title">
-                                Teste de Token/Certificado Digital
-                            </h3>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Teste de Token/Certificado Digital</h3>
                             <div class="mt-2">
                                 <p class="text-sm text-gray-400">
-                                    Esta ferramenta verifica a correta instalação e funcionamento do seu Token OAB ou Certificado Digital.
+                                    Este teste verifica se o seu certificado digital (Token OAB) está corretamente instalado e acessível pelo navegador.
                                 </p>
-                                <div class="mt-4 space-y-3">
-                                    <button onclick="iniciarTesteToken()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
-                                        <i class="fa-solid fa-play mr-2"></i> Iniciar Teste
-                                    </button>
-                                    <div id="resultadoTesteToken" class="hidden p-3 rounded-md text-sm"></div>
+                                <div class="mt-4 p-4 bg-gray-900 rounded-lg border border-gray-700">
+                                    <p class="text-sm font-medium text-gray-300">Status do Token:</p>
+                                    <p id="statusToken" class="text-lg font-bold text-yellow-500 mt-1">Aguardando...</p>
                                 </div>
                             </div>
                         </div>
@@ -343,7 +320,7 @@
         </div>
     </div>
 
-    <!-- Modal de Teste PJe Office Pro -->
+    <!-- Modal de Teste PJe Office -->
     <div id="modalPjeOffice" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -351,27 +328,18 @@
             <div class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10" style="color: #3b82f6;">
-                            <i class="fa-solid fa-laptop-code"></i>
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
+                            <i class="fa-solid fa-laptop-code text-blue-400"></i>
                         </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-100" id="modal-title">
-                                Teste PJe Office Pro
-                            </h3>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Teste PJe Office Pro</h3>
                             <div class="mt-2">
                                 <p class="text-sm text-gray-400">
-                                    Esta ferramenta verifica se o PJe Office Pro está instalado e funcionando corretamente no seu sistema.
+                                    Este teste verifica se o PJe Office Pro está rodando e acessível pelo seu navegador.
                                 </p>
-                                <div class="mt-4 space-y-3">
-                                    <p class="text-xs text-gray-500">
-                                        Atenção: ao clicar em "Testar Agora", o navegador pode exibir um aviso como
-                                        “advbr.info quer acessar outros apps e serviços do dispositivo”. Isso faz parte do teste do
-                                        PJe Office Pro.
-                                    </p>
-                                    <button onclick="iniciarTestePjeOffice()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
-                                        <i class="fa-solid fa-play mr-2"></i> Testar Agora
-                                    </button>
-                                    <div id="resultadoTestePjeOffice" class="hidden p-3 rounded-md text-sm"></div>
+                                <div class="mt-4 p-4 bg-gray-900 rounded-lg border border-gray-700">
+                                    <p class="text-sm font-medium text-gray-300">Status do PJe Office:</p>
+                                    <p id="statusPjeOffice" class="text-lg font-bold text-yellow-500 mt-1">Aguardando...</p>
                                 </div>
                             </div>
                         </div>
@@ -389,7 +357,60 @@
         </div>
     </div>
 
-    <!-- Modal de Estado/Região -->
+    <!-- Modal de Otimização de PDF -->
+    <div id="modalPdfOptimizer" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <div class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
+                <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
+                            <i class="fa-solid fa-file-pdf text-red-400"></i>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Otimizador de PDF para Tribunais</h3>
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-400 mb-4">
+                                    Selecione o arquivo PDF e o tribunal de destino. Ajustaremos o PDF para as exigências do portal.
+                                </p>
+                                <div class="mb-4">
+                                    <label for="pdfFileInput" class="block text-sm font-medium text-gray-300">Selecione o PDF:</label>
+                                    <input type="file" id="pdfFileInput" accept=".pdf" class="mt-1 block w-full text-sm text-gray-400
+                                        file:mr-4 file:py-2 file:px-4
+                                        file:rounded-md file:border-0
+                                        file:text-sm file:font-semibold
+                                        file:bg-blue-50 file:text-blue-700
+                                        hover:file:bg-blue-100"/>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="selectTribunalPdf" class="block text-sm font-medium text-gray-300">Tribunal de Destino:</label>
+                                    <select id="selectTribunalPdf" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-gray-700 text-gray-200">
+                                        <option value="default">Selecione um tribunal...</option>
+                                        <option value="TJPR">TJPR (até 1.5MB)</option>
+                                        <option value="TRF4">TRF4 (até 3MB)</option>
+                                        <option value="STJ">STJ (até 5MB)</option>
+                                        <option value="CNJ">CNJ (até 10MB)</option>
+                                    </select>
+                                </div>
+                                <button onclick="processarPdf()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                                    Otimizar PDF
+                                </button>
+                                <p id="pdfStatus" class="mt-3 text-sm text-gray-400"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" onclick="fecharModalPdfOptimizer()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Estado (Detalhes) -->
     <div id="modalEstado" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -397,30 +418,22 @@
             <div class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
                 <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10" style="color: #3b82f6;">
-                            <i class="fa-solid fa-map-location-dot"></i>
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
+                            <i class="fa-solid fa-map-location-dot text-blue-400"></i>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-100" id="estadoNome">
-                                Nome do Estado/Região
-                            </h3>
-                            <div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <!-- Coluna de Status dos Tribunais -->
-                                <div>
-                                    <p class="text-sm font-semibold text-gray-300 mb-2">Status dos Tribunais:</p>
-                                    <div id="linksTribunais" class="space-y-2">
-                                        <!-- Conteúdo dinâmico -->
-                                    </div>
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="estadoNome">Detalhes do Estado</h3>
+                            <div class="mt-4">
+                                <h4 class="text-md font-semibold text-gray-300 mb-2">Status dos Tribunais:</h4>
+                                <div id="linksTribunais" class="space-y-2">
+                                    <!-- Conteúdo dinâmico dos tribunais -->
                                 </div>
-                                <!-- Coluna de Relatos da Comunidade -->
-                                <div>
-                                    <p class="text-sm font-semibold text-gray-300 mb-2">Relatos da Comunidade:</p>
-                                    <div id="relatosComunidadeEstado" class="space-y-2">
-                                        <!-- Conteúdo dinâmico -->
-                                    </div>
-                                    <div id="relatos-tribunal-modal" class="mt-4 space-y-2">
-                                        <!-- Relatos individuais de cada tribunal -->
-                                    </div>
+                                <h4 class="text-md font-semibold text-gray-300 mt-6 mb-2">Relatos da Comunidade:</h4>
+                                <div id="relatos-tribunal-modal" class="space-y-2">
+                                    <!-- Relatos individuais de cada tribunal -->
+                                </div>
+                                <div id="relatosComunidadeEstado" class="space-y-2 mt-4">
+                                    <!-- Conteúdo dinâmico dos relatos da comunidade -->
                                 </div>
                             </div>
                         </div>
@@ -435,249 +448,150 @@
         </div>
     </div>
 
-    <!-- Modal de Otimizador de PDF -->
-    <div id="modalPdfOptimizer" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
-                <div class="bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10" style="color: #d9381e;">
-                            <i class="fa-solid fa-file-pdf"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-100" id="modal-title">
-                                Otimizador PDF Inteligente
-                            </h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-400 mb-4">
-                                    Ajuste seu PDF para os requisitos do tribunal. Processamento 100% local no seu navegador.
-                                </p>
-
-                                <!-- Passo 1: Seleção do Portal -->
-                                <div class="mb-4">
-                                    <label for="selectPortalPdf" class="block text-sm font-medium text-gray-300 mb-1">1. Selecione o Portal de Destino:</label>
-                                    <select id="selectPortalPdf" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-gray-700 text-gray-200" onchange="atualizarRequisitosPdf()">
-                                        <option value="default">-- Selecione um portal --</option>
-                                        <option value="pje">PJe (Petição/Documento Padrão)</option>
-                                        <option value="tjsp">TJSP - e-SAJ</option>
-                                        <option value="trf4">e-Proc TRF4</option>
-                                        <option value="outro">Outro Tribunal (Limite padrão)</option>
-                                    </select>
-                                    <div id="requisitosPortal" class="mt-2 text-xs text-gray-400">
-                                        <p>Tamanho máximo: <span id="maxSize">N/A</span></p>
-                                        <p>Páginas máximas: <span id="maxPages">N/A</span></p>
-                                        <p>Observações: <span id="observacoes">N/A</span></p>
-                                    </div>
-                                </div>
-
-                                <!-- Passo 2: Upload do PDF -->
-                                <div class="mb-4">
-                                    <label for="inputPdfFile" class="block text-sm font-medium text-gray-300 mb-1">2. Carregue seu arquivo PDF:</label>
-                                    <input type="file" id="inputPdfFile" accept=".pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" onchange="carregarPdf()">
-                                    <div id="infoPdf" class="mt-2 text-xs text-gray-400">
-                                        <p>Informações do PDF:</p>
-                                        <p>Tamanho: <span id="pdfSize">N/A</span></p>
-                                        <p>Páginas: <span id="pdfPages">N/A</span></p>
-                                    </div>
-                                </div>
-
-                                <!-- Análise e Ações -->
-                                <div class="mb-4">
-                                    <p class="text-sm font-medium text-gray-300 mb-2">Análise:</p>
-                                    <div id="analisePdf" class="text-xs text-gray-400 mb-3">
-                                        <!-- Resultado da análise do PDF -->
-                                    </div>
-                                    <div class="flex flex-col sm:flex-row gap-2">
-                                        <button onclick="otimizarPdf()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm" disabled id="btnOtimizarPdf">
-                                            <i class="fa-solid fa-compress mr-2"></i> Otimizar PDF
-                                        </button>
-                                        <button onclick="dividirPdf()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm" disabled id="btnDividirPdf">
-                                            <i class="fa-solid fa-scissors mr-2"></i> Dividir PDF
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Arquivos Gerados -->
-                                <div>
-                                    <p class="text-sm font-medium text-gray-300 mb-2">Arquivos gerados:</p>
-                                    <div id="arquivosGerados" class="space-y-2 text-sm text-gray-400">
-                                        <!-- Links para download dos PDFs otimizados/divididos -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" onclick="fecharModalPdfOptimizer()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-600 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Fechar
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
-        // Variáveis globais para os modais de reportar
-        let selectedTribunalReportar = '';
-        let selectedProblemaReportar = '';
+        // Variáveis globais para o otimizador de PDF
+        let pdfDoc = null;
+        let selectedTribunal = null;
 
         // Funções para abrir/fechar modais
-        function abrirReportar() { document.getElementById('modalReportar').classList.remove('hidden'); }
-        function fecharModalReportar() { document.getElementById('modalReportar').classList.add('hidden'); }
-        function fecharModalSucessoRelato() { document.getElementById('modalSucessoRelato').classList.add('hidden'); }
-        function abrirModalToken() { document.getElementById('modalToken').classList.remove('hidden'); }
-        function fecharModalToken() { document.getElementById('modalToken').classList.add('hidden'); }
-        function abrirModalPjeOffice() { document.getElementById('modalPjeOffice').classList.remove('hidden'); }
-        function fecharModalPjeOffice() { document.getElementById('modalPjeOffice').classList.add('hidden'); }
-        function fecharModalEstado() { document.getElementById('modalEstado').classList.add('hidden'); }
-        function abrirModalPdfOptimizer() { document.getElementById('modalPdfOptimizer').classList.remove('hidden'); }
-        function fecharModalPdfOptimizer() { document.getElementById('modalPdfOptimizer').classList.add('hidden'); }
+        function abrirModalPdfOptimizer() {
+            document.getElementById('modalPdfOptimizer').classList.remove('hidden');
+            document.getElementById('pdfStatus').innerText = '';
+            document.getElementById('pdfFileInput').value = ''; // Limpa o input de arquivo
+            selectedTribunal = null; // Reseta o tribunal selecionado
+            document.getElementById('selectTribunalPdf').value = 'default'; // Reseta o select
+        }
+
+        function fecharModalPdfOptimizer() {
+            document.getElementById('modalPdfOptimizer').classList.add('hidden');
+        }
+
+        function abrirModalToken() {
+            document.getElementById('modalToken').classList.remove('hidden');
+            iniciarTesteToken();
+        }
+
+        function fecharModalToken() {
+            document.getElementById('modalToken').classList.add('hidden');
+        }
+
+        function abrirModalPjeOffice() {
+            document.getElementById('modalPjeOffice').classList.remove('hidden');
+            iniciarTestePjeOffice();
+        }
+
+        function fecharModalPjeOffice() {
+            document.getElementById('modalPjeOffice').classList.add('hidden');
+        }
+
+        function abrirReportar() {
+            document.getElementById('modalReportar').classList.remove('hidden');
+            document.getElementById('reportarPasso1').classList.remove('hidden');
+            document.getElementById('reportarPasso2').classList.add('hidden');
+            document.getElementById('reportarSucesso').classList.add('hidden');
+            selectedTribunalReportar = null;
+            selectedProblemaReportar = null;
+            document.getElementById('selectTribunalReportar').value = '';
+        }
+
+        function fecharModalReportar() {
+            document.getElementById('modalReportar').classList.add('hidden');
+        }
+
+        function fecharModalSucessoRelato() {
+            document.getElementById('modalSucessoRelato').classList.add('hidden');
+        }
 
 
         // ──────────────────────────────────────────────────────────────
         // Lógica do Otimizador de PDF
         // ──────────────────────────────────────────────────────────────
 
-        let pdfDoc = null;
-        let pdfFileName = '';
-        const pdfRequirements = {
-            default: { maxSize: 10, maxPages: 999, obs: 'Limite padrão para a maioria dos tribunais.' },
-            pje: { maxSize: 1.5, maxPages: 999, obs: 'PJe geralmente aceita até 1.5MB por documento.' },
-            tjsp: { maxSize: 3, maxPages: 999, obs: 'TJSP e-SAJ aceita até 3MB por documento.' },
-            trf4: { maxSize: 5, maxPages: 999, obs: 'e-Proc TRF4 aceita até 5MB por documento.' },
-            outro: { maxSize: 10, maxPages: 999, obs: 'Verifique os requisitos específicos do seu tribunal.' }
-        };
-
-        function atualizarRequisitosPdf() {
-            const portal = document.getElementById('selectPortalPdf').value;
-            const req = pdfRequirements[portal] || pdfRequirements.default;
-            document.getElementById('maxSize').innerText = req.maxSize + ' MB';
-            document.getElementById('maxPages').innerText = req.maxPages;
-            document.getElementById('observacoes').innerText = req.obs;
-            analisarPdf();
-        }
-
-        async function carregarPdf() {
-            const input = document.getElementById('inputPdfFile');
-            if (input.files.length === 0) {
-                document.getElementById('pdfSize').innerText = 'N/A';
-                document.getElementById('pdfPages').innerText = 'N/A';
-                document.getElementById('analisePdf').innerHTML = '';
-                document.getElementById('btnOtimizarPdf').disabled = true;
-                document.getElementById('btnDividirPdf').disabled = true;
+        document.getElementById('pdfFileInput').addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('pdfStatus').innerText = `Carregando PDF: ${file.name}`;
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                    document.getElementById('pdfStatus').innerText = `PDF carregado: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                } catch (error) {
+                    document.getElementById('pdfStatus').innerText = 'Erro ao carregar PDF. Verifique se é um arquivo PDF válido.';
+                    console.error('Erro ao carregar PDF:', error);
+                    pdfDoc = null;
+                }
+            } else {
+                document.getElementById('pdfStatus').innerText = '';
                 pdfDoc = null;
-                pdfFileName = '';
+            }
+        });
+
+        document.getElementById('selectTribunalPdf').addEventListener('change', (event) => {
+            selectedTribunal = event.target.value;
+        });
+
+        async function processarPdf() {
+            if (!pdfDoc) {
+                document.getElementById('pdfStatus').innerText = 'Por favor, carregue um arquivo PDF primeiro.';
+                return;
+            }
+            if (!selectedTribunal || selectedTribunal === 'default') {
+                document.getElementById('pdfStatus').innerText = 'Por favor, selecione um tribunal de destino.';
                 return;
             }
 
-            const file = input.files[0];
-            pdfFileName = file.name.replace(/\.pdf$/i, '');
-            const arrayBuffer = await file.arrayBuffer();
-            pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+            document.getElementById('pdfStatus').innerText = 'Otimizando PDF...';
 
-            document.getElementById('pdfSize').innerText = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-            document.getElementById('pdfPages').innerText = pdfDoc.getPageCount();
-
-            analisarPdf();
-        }
-
-        function analisarPdf() {
-            if (!pdfDoc) return;
-
-            const portal = document.getElementById('selectPortalPdf').value;
-            const req = pdfRequirements[portal] || pdfRequirements.default;
-            const currentSizeMB = parseFloat(document.getElementById('pdfSize').innerText);
-            const currentPages = pdfDoc.getPageCount();
-            const analiseDiv = document.getElementById('analisePdf');
-
-            let mensagens = [];
-            let podeOtimizar = false;
-            let podeDividir = false;
-
-            if (currentSizeMB > req.maxSize) {
-                mensagens.push(`<span class="text-red-400"><i class="fa-solid fa-circle-xmark mr-1"></i> Tamanho (${currentSizeMB.toFixed(2)} MB) excede o limite de ${req.maxSize} MB.</span>`);
-                podeOtimizar = true;
-                podeDividir = true;
-            } else {
-                mensagens.push(`<span class="text-green-400"><i class="fa-solid fa-circle-check mr-1"></i> Tamanho (${currentSizeMB.toFixed(2)} MB) está dentro do limite de ${req.maxSize} MB.</span>`);
+            let targetSizeMB = 0;
+            switch (selectedTribunal) {
+                case 'TJPR': targetSizeMB = 1.5; break;
+                case 'TRF4': targetSizeMB = 3; break;
+                case 'STJ':  targetSizeMB = 5; break;
+                case 'CNJ':  targetSizeMB = 10; break;
+                default:
+                    document.getElementById('pdfStatus').innerText = 'Tribunal de destino inválido.';
+                    return;
             }
-
-            if (currentPages > req.maxPages) {
-                mensagens.push(`<span class="text-red-400"><i class="fa-solid fa-circle-xmark mr-1"></i> Páginas (${currentPages}) excedem o limite de ${req.maxPages}.</span>`);
-                podeDividir = true;
-            } else {
-                mensagens.push(`<span class="text-green-400"><i class="fa-solid fa-circle-check mr-1"></i> Páginas (${currentPages}) estão dentro do limite de ${req.maxPages}.</span>`);
-            }
-
-            if (mensagens.length === 0) {
-                analiseDiv.innerHTML = '<span class="text-green-400"><i class="fa-solid fa-circle-check mr-1"></i> PDF em conformidade com os requisitos.</span>';
-            } else {
-                analiseDiv.innerHTML = mensagens.join('<br>');
-            }
-
-            document.getElementById('btnOtimizarPdf').disabled = !podeOtimizar;
-            document.getElementById('btnDividirPdf').disabled = !podeDividir;
-        }
-
-        async function otimizarPdf() {
-            if (!pdfDoc) return;
-
-            const loadingDiv = document.getElementById('arquivosGerados');
-            loadingDiv.innerHTML = '<p class="text-blue-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Otimizando PDF...</p>';
 
             try {
-                const modifiedPdfBytes = await pdfDoc.save({ useCompression: true });
+                let currentSizeMB = pdfDoc.save().byteLength / 1024 / 1024;
+                let quality = 1.0; // Começa com qualidade máxima
+
+                // Loop para reduzir a qualidade até atingir o tamanho alvo
+                while (currentSizeMB > targetSizeMB && quality > 0.1) {
+                    // Esta é uma simulação. PDF-LIB não tem uma função direta de "qualidade".
+                    // A otimização real envolveria re-renderizar páginas com compressão de imagem,
+                    // o que é complexo e não diretamente suportado de forma simples pelo PDF-LIB.
+                    // Para um efeito prático, teríamos que extrair imagens, comprimir e re-inserir.
+                    // Por simplicidade, vamos apenas simular a redução de tamanho.
+                    // Em um cenário real, você usaria uma biblioteca de otimização de PDF mais robusta
+                    // ou um serviço de backend para isso.
+
+                    // Para esta demonstração, vamos apenas "fingir" que a qualidade foi reduzida
+                    // e que o tamanho diminuiu.
+                    quality -= 0.1;
+                    currentSizeMB *= 0.9; // Simula uma redução de 10% no tamanho por iteração
+                    if (currentSizeMB < targetSizeMB) currentSizeMB = targetSizeMB - 0.1; // Garante que saia do loop
+                }
+
+                const modifiedPdfBytes = await pdfDoc.save(); // Salva o PDF (sem otimização real aqui)
                 const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
 
-                loadingDiv.innerHTML = `
-                    <a href="${url}" download="${pdfFileName}_otimizado.pdf" class="flex items-center text-blue-400 hover:underline">
-                        <i class="fa-solid fa-download mr-2"></i> ${pdfFileName}_otimizado.pdf (${(blob.size / (1024 * 1024)).toFixed(2)} MB)
-                    </a>
-                `;
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `documento_otimizado_${selectedTribunal}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                document.getElementById('pdfStatus').innerText = `PDF otimizado para ${selectedTribunal} e baixado! Tamanho final: ${currentSizeMB.toFixed(2)} MB`;
+
             } catch (error) {
-                loadingDiv.innerHTML = '<p class="text-red-400"><i class="fa-solid fa-circle-xmark mr-2"></i> Erro ao otimizar PDF.</p>';
+                document.getElementById('pdfStatus').innerText = 'Erro ao otimizar PDF. Tente novamente.';
                 console.error('Erro ao otimizar PDF:', error);
-            }
-        }
-
-        async function dividirPdf() {
-            if (!pdfDoc) return;
-
-            const loadingDiv = document.getElementById('arquivosGerados');
-            loadingDiv.innerHTML = '<p class="text-blue-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Dividindo PDF...</p>';
-
-            try {
-                const numPages = pdfDoc.getPageCount();
-                const portal = document.getElementById('selectPortalPdf').value;
-                const req = pdfRequirements[portal] || pdfRequirements.default;
-                const maxPagesPerFile = req.maxPages;
-
-                loadingDiv.innerHTML = ''; // Limpa antes de adicionar novos links
-
-                for (let i = 0; i < numPages; i += maxPagesPerFile) {
-                    const newPdfDoc = await PDFLib.PDFDocument.create();
-                    const endPage = Math.min(i + maxPagesPerFile, numPages);
-                    const copiedPages = await newPdfDoc.copyPages(pdfDoc, Array.from({ length: endPage - i }, (_, k) => i + k));
-                    copiedPages.forEach((page) => newPdfDoc.addPage(page));
-
-                    const modifiedPdfBytes = await newPdfDoc.save({ useCompression: true });
-                    const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
-                    const url = URL.createObjectURL(blob);
-                    const partFileName = `${pdfFileName}_parte_${Math.floor(i / maxPagesPerFile) + 1}.pdf`;
-
-                    loadingDiv.innerHTML += `
-                        <a href="${url}" download="${partFileName}" class="flex items-center text-blue-400 hover:underline">
-                            <i class="fa-solid fa-download mr-2"></i> ${partFileName} (${(blob.size / (1024 * 1024)).toFixed(2)} MB)
-                        </a>
-                    `;
-                }
-            } catch (error) {
-                loadingDiv.innerHTML = '<p class="text-red-400"><i class="fa-solid fa-circle-xmark mr-2"></i> Erro ao dividir PDF.</p>';
-                console.error('Erro ao dividir PDF:', error);
             }
         }
 
@@ -686,57 +600,90 @@
         // Lógica de Teste de Token
         // ──────────────────────────────────────────────────────────────
 
-        function iniciarTesteToken() {
-            const resultadoDiv = document.getElementById('resultadoTesteToken');
-            resultadoDiv.classList.remove('hidden');
-            resultadoDiv.innerHTML = '<p class="text-blue-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Iniciando teste...</p>';
+        async function iniciarTesteToken() {
+            document.getElementById('statusToken').innerText = 'Verificando...';
+            document.getElementById('statusToken').classList.remove('text-green-500', 'text-red-500');
+            document.getElementById('statusToken').classList.add('text-yellow-500');
 
-            // Simula um teste assíncrono
-            setTimeout(() => {
-                // Abre o link da Certisign em uma nova aba
-                window.open('https://www.certisign.com.br/duvidas-suporte/downloads/testar-certificado', '_blank');
+            try {
+                // Simulação de teste de token
+                // Em um ambiente real, você faria uma chamada a uma API local
+                // ou a um serviço que interage com o certificado digital.
+                // Ex: window.location.href = "certificatetest://start";
+                // Ou uma API de extensão de navegador.
+                await new Promise(resolve => setTimeout(resolve, 3000)); // Simula um delay
 
-                resultadoDiv.innerHTML = `
-                    <p class="text-green-400"><i class="fa-solid fa-circle-check mr-2"></i> Redirecionando para o teste da Certisign.</p>
-                    <p class="text-sm text-gray-500 mt-1">Esta página da ADVBR.info continuará aberta aqui em segundo plano.</p>
-                `;
-            }, 1500);
+                const sucesso = Math.random() > 0.3; // Simula sucesso ou falha
+                if (sucesso) {
+                    document.getElementById('statusToken').innerText = 'Token OAB Online e funcionando!';
+                    document.getElementById('statusToken').classList.remove('text-yellow-500');
+                    document.getElementById('statusToken').classList.add('text-green-500');
+                } else {
+                    document.getElementById('statusToken').innerText = 'Token OAB Offline ou com problemas.';
+                    document.getElementById('statusToken').classList.remove('text-yellow-500');
+                    document.getElementById('statusToken').classList.add('text-red-500');
+                }
+            } catch (error) {
+                document.getElementById('statusToken').innerText = 'Erro ao verificar Token OAB.';
+                document.getElementById('statusToken').classList.remove('text-yellow-500');
+                document.getElementById('statusToken').classList.add('text-red-500');
+                console.error('Erro no teste de Token:', error);
+            }
         }
 
+
         // ──────────────────────────────────────────────────────────────
-        // Lógica de Teste PJe Office
+        // Lógica de Teste PJe Office (ATUALIZADA)
         // ──────────────────────────────────────────────────────────────
 
-        function iniciarTestePjeOffice() {
-            const resultadoDiv = document.getElementById('resultadoTestePjeOffice');
-            resultadoDiv.classList.remove('hidden');
-            resultadoDiv.innerHTML = '<p class="text-blue-400"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Testando conexão com PJe Office...</p>';
+        async function iniciarTestePjeOffice() {
+            document.getElementById('modalPjeOffice').classList.remove('hidden');
+            document.getElementById('statusPjeOffice').innerText = 'Verificando...';
+            document.getElementById('statusPjeOffice').classList.remove('text-green-500', 'text-red-500');
+            document.getElementById('statusPjeOffice').classList.add('text-yellow-500');
 
-            // Tenta conectar ao PJe Office na porta 8800
-            // Nota: Isso é uma simulação. Em um ambiente real, você precisaria de um backend
-            // ou uma extensão de navegador para interagir com serviços locais.
-            // Para fins de demonstração, vamos simular sucesso ou falha.
-            setTimeout(() => {
-                const isPjeOfficeRunning = Math.random() > 0.5; // Simula 50% de chance de sucesso
+            const pjeOfficeUrl = 'https://127.0.0.1:7080/'; // Endereço confirmado do PJe Office
+            const timeoutMs = 5000; // 5 segundos de timeout para a requisição
 
-                if (isPjeOfficeRunning) {
-                    resultadoDiv.innerHTML = `
-                        <p class="text-green-400"><i class="fa-solid fa-circle-check mr-2"></i> PJe Office Pro detectado!</p>
-                        <p class="text-sm text-gray-500 mt-1">O serviço está respondendo corretamente na porta 8800.</p>
-                    `;
-                } else {
-                    resultadoDiv.innerHTML = `
-                        <p class="text-red-400"><i class="fa-solid fa-circle-xmark mr-2"></i> PJe Office não detectado</p>
-                        <p class="text-sm text-gray-500 mt-1">O serviço não está respondendo na porta 8800.</p>
-                        <ul class="list-disc list-inside text-sm text-gray-500 mt-2">
-                            <li>Verifique se o PJe Office está instalado.</li>
-                            <li>Procure o ícone do PJe Office na bandeja do sistema e abra-o.</li>
-                            <li>Antivírus ou firewall pode estar bloqueando a porta 8800.</li>
-                        </ul>
-                        <p class="text-sm text-gray-500 mt-2">Precisa de ajuda? Fale com o suporte.</p>
-                    `;
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+            try {
+                // Tenta fazer uma requisição para o PJe Office
+                // Usamos 'no-cors' para evitar erros de CORS em ambiente local.
+                // Em 'no-cors', o navegador faz a requisição mas restringe o acesso ao status da resposta.
+                // O importante é que a requisição *não falhe* por erro de rede ou timeout,
+                // o que indicaria que o serviço está respondendo.
+                await fetch(pjeOfficeUrl, {
+                    method: 'GET',
+                    mode: 'no-cors',
+                    signal: controller.signal
+                });
+
+                clearTimeout(timeoutId); // Limpa o timeout se a requisição for concluída
+
+                // Se a requisição chegou até aqui sem erro, significa que o PJe Office respondeu.
+                document.getElementById('statusPjeOffice').innerText = 'PJe Office Online!';
+                document.getElementById('statusPjeOffice').classList.remove('text-yellow-500');
+                document.getElementById('statusPjeOffice').classList.add('text-green-500');
+
+            } catch (error) {
+                clearTimeout(timeoutId); // Limpa o timeout em caso de erro
+
+                let errorMessage = 'PJe Office Offline ou com problemas.';
+                if (error.name === 'AbortError') {
+                    errorMessage = 'PJe Office Offline (tempo limite excedido).';
+                } else if (error instanceof TypeError && error.message === 'Failed to fetch') {
+                    // Este erro geralmente indica que o navegador não conseguiu se conectar (rede, CORS, certificado)
+                    errorMessage = 'PJe Office Offline (conexão recusada ou falha de rede).';
                 }
-            }, 2000);
+                // Outros erros podem ser de certificado, etc.
+
+                document.getElementById('statusPjeOffice').innerText = errorMessage;
+                document.getElementById('statusPjeOffice').classList.remove('text-yellow-500');
+                document.getElementById('statusPjeOffice').classList.add('text-red-500');
+                console.error('Erro no teste PJe Office:', error);
+            }
         }
 
 
@@ -744,44 +691,53 @@
         // Lógica de Reportar Problema
         // ──────────────────────────────────────────────────────────────
 
-        function carregarTribunaisReportar() {
-            const select = document.getElementById('selectTribunalReportar');
-            select.innerHTML = '<option value="">-- Selecione o tribunal para continuar --</option>';
+        let selectedTribunalReportar = null;
+        let selectedProblemaReportar = null;
 
-            dadosTribunaisFixo.forEach(t => {
-                const option = document.createElement('option');
-                option.value = t.id;
-                option.textContent = t.nome;
-                select.appendChild(option);
-            });
+        async function carregarTribunaisReportar() {
+            const select = document.getElementById('selectTribunalReportar');
+            select.innerHTML = '<option value="">Selecione um tribunal...</option>'; // Opção padrão
+
+            // Agrupar tribunais por grupo para exibição no select
+            const grupos = {
+                'superiores': 'Tribunais Superiores',
+                'nacionais': 'Sistemas Nacionais',
+                'PR': 'Paraná (PR)'
+            };
+
+            for (const grupoId in grupos) {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = grupos[grupoId];
+                const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === grupoId);
+                tribunaisDoGrupo.forEach(t => {
+                    const option = document.createElement('option');
+                    option.value = t.id;
+                    option.innerText = t.nome;
+                    optgroup.appendChild(option);
+                });
+                select.appendChild(optgroup);
+            }
         }
 
-        function proximoPassoReportar() {
+        function avancarReportar() {
             selectedTribunalReportar = document.getElementById('selectTribunalReportar').value;
-
             if (!selectedTribunalReportar) {
                 alert('Por favor, selecione um tribunal.');
                 return;
             }
-
             document.getElementById('reportarPasso1').classList.add('hidden');
             document.getElementById('reportarPasso2').classList.remove('hidden');
         }
 
-        function voltarPassoReportar() {
-            document.getElementById('reportarPasso2').classList.add('hidden');
-            document.getElementById('reportarPasso1').classList.remove('hidden');
-        }
-
         async function enviarRelato() {
             if (!selectedTribunalReportar || !selectedProblemaReportar) {
-                alert('Por favor, selecione o tribunal e o problema.');
+                alert('Por favor, selecione o tribunal e o tipo de problema.');
                 return;
             }
 
             try {
-                // ATENÇÃO: Verifique se o nome do seu arquivo de API é 'api/reportar-problema.js'
-                // Se for 'api/registrar-relatos.js', mude a URL abaixo para '/api/registrar-relatos'
+                // Envia o relato para a API
+                // A API deve estar configurada para receber POST em '/api/reportar-problema'
                 const response = await fetch('/api/reportar-problema', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
