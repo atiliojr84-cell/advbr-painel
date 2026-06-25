@@ -69,7 +69,8 @@ export async function GET() {
         clearTimeout(timeout);
         if (!resposta.ok) return [];
         
-        const xmlTexto = await text();
+        // CORREÇÃO: Adicionado o "resposta." que estava faltando
+        const xmlTexto = await resposta.text();
         return extrairDadosDoXml(xmlTexto, feed.fonte);
       } catch (e) {
         return [];
