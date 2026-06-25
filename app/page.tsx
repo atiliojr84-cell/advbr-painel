@@ -1,8 +1,18 @@
+import Header from "../components/ui/Header";
+import Ticker from "../components/ui/Ticker";
+
 export default function Home() {
   return (
-    <main className="p-8">
-      <h1 className="text-2xl text-blue-500 font-bold">Painel ADVBR</h1>
-      <p className="text-gray-400">Migração para Next.js iniciada com sucesso.</p>
-    </main>
+    <div className="min-h-screen bg-[#0b0f19]">
+      {/* Ticker de Notícias no topo absoluto */}
+      <Ticker />
+      
+      <main className="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
+        {/* Cabeçalho */}
+        <Header />
+
+        {/* Aqui vão entrar os outros módulos em breve */}
+      </main>
+    </div>
   );
 }
