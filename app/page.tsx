@@ -1,5 +1,6 @@
 import Header from "../components/ui/Header";
 import Ticker from "../components/ui/Ticker";
+import ServiceGrid from "../components/ServiceGrid";
 
 export default function Home() {
   return (
@@ -11,7 +12,22 @@ export default function Home() {
         {/* Cabeçalho */}
         <Header />
 
-        {/* Aqui vão entrar os outros módulos em breve */}
+        {/* Módulo F: Serviços Corporativos */}
+        <ServiceGrid />
+
+        {/* Seção Know-How Institucional */}
+        <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
+          <h2 className="text-xl font-bold text-white mb-4">Mais de 20 anos de excelência em TI Jurídica</h2>
+          <p className="leading-relaxed">
+            A ADVBR.INFO possui mais de 20 anos de excelência no mercado de tecnologia e segurança digital. 
+            Há mais de 15 anos, dedicamos nossa expertise exclusivamente às necessidades do ecossistema jurídico, 
+            prestando serviços de infraestrutura de TI para grandes escritórios e entidades de classe, como a OAB Maringá. 
+            Entendemos a urgência dos seus prazos e a criticidade do sigilo dos seus processos. 
+            Não somos apenas suporte técnico, somos parceiros estratégicos do seu escritório.
+          </p>
+        </section>
+
+        {/* Aqui entrarão os próximos módulos (Módulo A, B, C, D, E) */}
       </main>
     </div>
   );
