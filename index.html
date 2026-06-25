@@ -22,7 +22,46 @@
         .ticker { display: inline-flex; white-space: nowrap; animation: ticker 140s linear infinite; }
         .ticker:hover { animation-play-state: paused; }
         .ticker-item { padding: 0 4rem; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; color: #94a3b8; border-right: 1px solid #1e293b; white-space: nowrap; transition: color 0.2s; cursor: pointer; }
-        .ticker-item:hover { color: #3b82f6; }
+        .ticker-item:hover { animation-play-state: paused; }
+
+        /* NOVOS ESTILOS */
+        .portal-card {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94)) !important;
+            border: 1px solid rgba(51, 65, 85, 0.75) !important;
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .portal-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(59, 130, 246, 0.45) !important;
+        }
+
+        .modal-shell {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 1.25rem !important;
+            border: 1px solid rgba(51, 65, 85, 0.85) !important;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(17, 24, 39, 0.98)) !important;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55) !important;
+            max-height: calc(100vh - 4rem);
+        }
+
+        .modal-shell > .bg-gray-900 {
+            background: transparent !important;
+            overflow-y: auto;
+            max-height: calc(100vh - 12rem);
+        }
+
+        .modal-shell > .bg-gray-800 {
+            background: rgba(15, 23, 42, 0.98) !important;
+            border-top: 1px solid rgba(51, 65, 85, 0.85);
+        }
+
+        .app-modal-backdrop {
+            background: rgba(2, 6, 23, 0.72) !important;
+            backdrop-filter: blur(4px);
+        }
     </style>
 </head>
 <body>
@@ -284,9 +323,9 @@
     <!-- Modal Reportar Problema -->
     <div id="modalReportar" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
                 <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-red-800/40">
@@ -308,22 +347,22 @@
                                 </div>
                                 <!-- Passo 2: Seleção do Tipo de Problema -->
                                 <div id="reportarPasso2" class="hidden">
-                                    <p class="block text-sm font-medium text-gray-300 mt-4">Qual tipo de problema você está enfrentando?</p>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
-                                        <button onclick="selecionarProblema('Fora do Ar')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex justify-between items-center border border-gray-700 hover:border-blue-500/40">
-                                            <i class="fa-solid fa-circle-xmark text-red-400"></i> Fora do Ar
+                                    <label for="selectTipoProblema" class="block text-sm font-medium text-gray-300 mt-4">Tipo de Problema:</label>
+                                    <div class="mt-2 grid grid-cols-1 gap-2">
+                                        <button onclick="selecionarProblema('Fora do Ar')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            Fora do Ar
                                         </button>
-                                        <button onclick="selecionarProblema('Lentidão')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex justify-between items-center border border-gray-700 hover:border-blue-500/40">
-                                            <i class="fa-solid fa-hourglass-half text-amber-400"></i> Lentidão
+                                        <button onclick="selecionarProblema('Lentidão')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            Lentidão
                                         </button>
-                                        <button onclick="selecionarProblema('Falha no Login')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex justify-between items-center border border-gray-700 hover:border-blue-500/40">
-                                            <i class="fa-solid fa-lock text-purple-400"></i> Falha no Login
+                                        <button onclick="selecionarProblema('Falha no Login')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            Falha no Login
                                         </button>
-                                        <button onclick="selecionarProblema('Outro')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 font-semibold px-4 py-3 rounded-xl transition flex justify-between items-center border border-gray-700 hover:border-blue-500/40">
-                                            <i class="fa-solid fa-ellipsis-h text-gray-400"></i> Outro
+                                        <button onclick="selecionarProblema('Outro')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            Outro
                                         </button>
                                     </div>
-                                    <button onclick="enviarRelato()" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm">
+                                    <button onclick="enviarRelato()" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm">
                                         Enviar Relato
                                     </button>
                                 </div>
@@ -343,18 +382,18 @@
     <!-- Modal Relato Enviado -->
     <div id="modalRelatoEnviado" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
                 <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-green-800/40">
-                            <i class="fa-solid fa-check text-green-400"></i>
+                            <i class="fa-solid fa-check-circle text-green-400"></i>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Relato enviado!</h3>
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Relato Enviado!</h3>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-400">Agradecemos sua colaboração. Seu relato nos ajuda a monitorar a estabilidade dos sistemas.</p>
+                                <p class="text-sm text-gray-400">Agradecemos por sua colaboração. Seu relato nos ajuda a manter a comunidade jurídica informada.</p>
                             </div>
                         </div>
                     </div>
@@ -368,33 +407,29 @@
         </div>
     </div>
 
-    <!-- Modal Teste de Token / Certificado Digital -->
+    <!-- Modal Teste de Token -->
     <div id="modalToken" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
                 <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
-                            <i class="fa-solid fa-key text-blue-400"></i>
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-purple-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-purple-800/40">
+                            <i class="fa-brands fa-usb text-purple-400"></i>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Teste de Token / Certificado Digital</h3>
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Teste de Token/Certificado</h3>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-400">O teste do seu Token/Certificado Digital será realizado em uma página externa da Certisign. Clique no botão abaixo para iniciar.</p>
-                                <p class="text-sm text-gray-400 mt-2">Esta janela permanecerá aberta para que você possa nos contatar via WhatsApp em caso de dúvidas ou problemas durante o teste.</p>
-                                <a href="https://suporte.certisign.com.br/duvidas-suporte/certificado-digital/teste-certificado/" target="_blank" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:w-auto sm:text-sm">
-                                    <i class="fa-solid fa-external-link-alt mr-2"></i> Ir para Teste Certisign
-                                </a>
+                                <p class="text-sm text-gray-400">Conecte seu token e clique em "Iniciar Teste" para verificar a validade e o funcionamento do seu certificado digital.</p>
+                                <button onclick="alert('Funcionalidade de teste de token ainda não implementada.')" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
+                                    Iniciar Teste
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <a href="https://wa.me/5541999999999" target="_blank" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:w-auto sm:text-sm">
-                        <i class="fa-brands fa-whatsapp mr-2"></i> Falar com Suporte (WhatsApp)
-                    </a>
                     <button type="button" onclick="fecharModalToken()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
                         Fechar
                     </button>
@@ -404,29 +439,55 @@
     </div>
 
     <!-- Modal Teste PJe Office Pro -->
-    <div id="modalPjeOffice" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="modalPjeOffice" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title-pje" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
                 <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
                             <i class="fa-solid fa-laptop-code text-blue-400"></i>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Teste PJe Office Pro</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-400">Este teste verifica se o PJe Office Pro está rodando e acessível pelo seu navegador.</p>
-                                <p id="statusPjeOffice" class="text-lg font-bold text-yellow-500 mt-4">Verificando...</p>
+                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title-pje">Teste PJe Office Pro</h3>
+                            <div class="mt-2 space-y-3">
+                                <p class="text-sm text-gray-400">
+                                    Este teste verifica se o PJe Office Pro está rodando e acessível pelo seu navegador. Ele só começa quando você clicar em <strong>Iniciar Teste</strong>.
+                                </p>
+
+                                <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3 space-y-2">
+                                    <p class="text-sm text-gray-400">
+                                        Antes de iniciar, permita as permissões solicitadas pelo navegador, caso apareçam.
+                                    </p>
+                                    <p class="text-sm text-gray-400">
+                                        O navegador pode mostrar um pop-up de segurança durante a abertura do assinador.
+                                    </p>
+                                    <p class="text-sm text-gray-400">
+                                        Em caso de dúvida, fale no WhatsApp:
+                                        <a href="https://wa.me/5541999999999" target="_blank" rel="noopener noreferrer" class="text-green-400 hover:text-green-300 font-semibold">
+                                            clique aqui
+                                        </a>.
+                                    </p>
+                                </div>
+
+                                <p id="statusPjeOffice" class="mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-slate-700 bg-slate-950/60 text-slate-300">
+                                    Aguardando início do teste.
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <a href="https://wa.me/5541999999999" target="_blank" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:w-auto sm:text-sm">
+
+                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-wrap sm:justify-center gap-2">
+                    <a href="https://wa.me/5541999999999" target="_blank" rel="noopener noreferrer" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:mt-0 sm:w-auto sm:text-sm">
                         <i class="fa-brands fa-whatsapp mr-2"></i> Falar com Suporte (WhatsApp)
                     </a>
+
+                    <button type="button" onclick="iniciarTestePjeOffice()" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">
+                        Iniciar Teste
+                    </button>
+
                     <button type="button" onclick="fecharModalPjeOffice()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
                         Fechar
                     </button>
@@ -438,9 +499,9 @@
     <!-- Modal Otimizador de PDF -->
     <div id="modalOtimizadorPdf" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
                 <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-red-800/40">
@@ -485,9 +546,9 @@
     <!-- Modal Detalhes do Estado -->
     <div id="modalEstado" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
                 <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
@@ -580,7 +641,7 @@
             { id: 'TRF1_RO', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (RO)', grupo: 'RO', url: 'https://www.trf1.jus.br/' },
             { id: 'TJAC', nome: 'TJAC - Tribunal de Justiça do Acre', grupo: 'AC', url: 'https://www.tjac.jus.br/' },
             { id: 'TRF1_AC', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (AC)', grupo: 'AC', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJRR', nome: 'TJRR - Tribunal de Justiça de Roraima', grupo: 'RR', url: 'https://www.tjrr.jus.br/' },
+            { id: 'TJRR', nome: 'TJRR - Tribunal de Justiça do Roraima', grupo: 'RR', url: 'https://www.tjrr.jus.br/' },
             { id: 'TRF1_RR', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (RR)', grupo: 'RR', url: 'https://www.trf1.jus.br/' },
             { id: 'TJAP', nome: 'TJAP - Tribunal de Justiça do Amapá', grupo: 'AP', url: 'https://www.tjap.jus.br/' },
             { id: 'TRF1_AP', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (AP)', grupo: 'AP', url: 'https://www.trf1.jus.br/' },
@@ -593,85 +654,173 @@
         let tribunalSelecionadoReportar = '';
         let tipoProblemaSelecionado = '';
 
-        // Funções de controle dos modais
+        // NOVOS HELPERS
+        const MODAIS_IDS = [
+            'modalReportar',
+            'modalRelatoEnviado',
+            'modalToken',
+            'modalPjeOffice',
+            'modalOtimizadorPdf',
+            'modalEstado'
+        ];
+
+        const NOME_EXIBICAO_ESTADO = {
+            superiores: 'Tribunais Superiores',
+            nacionais: 'Sistemas Nacionais'
+        };
+
+        function fecharTodosModais() {
+            MODAIS_IDS.forEach(id => {
+                const modal = document.getElementById(id);
+                if (modal) modal.classList.add('hidden');
+            });
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                fecharTodosModais();
+            }
+        });
+
+        function obterNomeExibicaoEstado(uf) {
+            return NOME_EXIBICAO_ESTADO[uf] || uf;
+        }
+
+        function obterVisualStatus(statusStr) {
+            if (statusStr === 'Online') {
+                return {
+                    dot: 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]',
+                    badge: 'bg-green-500/10 text-green-300 border border-green-500/20'
+                };
+            }
+
+            if (statusStr === 'Lentidão') {
+                return {
+                    dot: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]',
+                    badge: 'bg-amber-500/10 text-amber-300 border border-amber-500/20'
+                };
+            }
+
+            if (statusStr === 'Fora do Ar') {
+                return {
+                    dot: 'bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]',
+                    badge: 'bg-red-500/10 text-red-300 border border-red-500/20'
+                };
+            }
+
+            return {
+                dot: 'bg-gray-600',
+                badge: 'bg-gray-700/60 text-gray-300 border border-gray-600/60'
+            };
+        }
+
+        function atualizarStatusPjeOffice(texto, tipo = 'pending') {
+            const statusElement = document.getElementById('statusPjeOffice');
+            if (!statusElement) return;
+
+            statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors';
+
+            if (tipo === 'success') {
+                statusElement.classList.add('border-green-800/40', 'bg-green-950/30', 'text-green-400');
+            } else if (tipo === 'error') {
+                statusElement.classList.add('border-gray-300', 'bg-white', 'text-black');
+            } else {
+                statusElement.classList.add('border-slate-700', 'bg-slate-950/60', 'text-slate-300');
+            }
+
+            statusElement.innerText = texto;
+        }
+
+        // Funções de controle dos modais (ATUALIZADAS)
         function abrirReportar() {
+            fecharTodosModais();
+            tribunalSelecionadoReportar = '';
+            tipoProblemaSelecionado = '';
             document.getElementById('modalReportar').classList.remove('hidden');
             document.getElementById('reportarPasso1').classList.remove('hidden');
             document.getElementById('reportarPasso2').classList.add('hidden');
             carregarTribunaisReportar();
+
+            const select = document.getElementById('selectTribunalReportar');
+            if (select) select.value = '';
         }
+
         function fecharModalReportar() {
             document.getElementById('modalReportar').classList.add('hidden');
         }
+
         function fecharModalRelatoEnviado() {
             document.getElementById('modalRelatoEnviado').classList.add('hidden');
         }
+
         function abrirOtimizadorPdf() {
+            fecharTodosModais();
             document.getElementById('modalOtimizadorPdf').classList.remove('hidden');
         }
+
         function fecharOtimizadorPdf() {
             document.getElementById('modalOtimizadorPdf').classList.add('hidden');
         }
+
         function abrirModalToken() {
+            fecharTodosModais();
             document.getElementById('modalToken').classList.remove('hidden');
         }
+
         function fecharModalToken() {
             document.getElementById('modalToken').classList.add('hidden');
         }
+
         function abrirModalPjeOffice() {
+            fecharTodosModais();
             document.getElementById('modalPjeOffice').classList.remove('hidden');
-            iniciarTestePjeOffice(); // Inicia o teste ao abrir o modal
+            atualizarStatusPjeOffice('Aguardando início do teste.', 'pending');
         }
+
         function fecharModalPjeOffice() {
             document.getElementById('modalPjeOffice').classList.add('hidden');
         }
+
         function abrirEstado(uf) {
-            document.getElementById('estadoNome').innerText = uf;
+            fecharTodosModais();
+            document.getElementById('estadoNome').innerText = obterNomeExibicaoEstado(uf);
             document.getElementById('modalEstado').classList.remove('hidden');
             renderizarConteudoModal(uf);
         }
+
         function fecharModalEstado() {
             document.getElementById('modalEstado').classList.add('hidden');
         }
 
-        // Funções do Teste PJe Office Pro
+        // Funções do Teste PJe Office Pro (ATUALIZADAS)
         async function iniciarTestePjeOffice() {
             const statusElement = document.getElementById('statusPjeOffice');
-            statusElement.innerText = 'Verificando...';
-            statusElement.classList.remove('text-green-500', 'text-red-500');
-            statusElement.classList.add('text-yellow-500');
+            if (!statusElement) return;
 
-            const pjeOfficeUrl = 'https://127.0.0.1:7080/'; // URL padrão do PJe Office
-            const timeout = 5000; // 5 segundos de timeout
+            statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-slate-700 bg-slate-950/60 text-slate-300';
+            statusElement.innerText = 'Verificando...';
+
+            const pjeOfficeUrl = 'https://127.0.0.1:7080/';
+            const timeout = 5000;
 
             try {
                 const controller = new AbortController();
                 const id = setTimeout(() => controller.abort(), timeout);
 
-                const response = await fetch(pjeOfficeUrl, {
+                await fetch(pjeOfficeUrl, {
                     method: 'GET',
-                    mode: 'no-cors', // Para evitar erros CORS em requisições locais
+                    mode: 'no-cors',
                     signal: controller.signal
                 });
 
                 clearTimeout(id);
 
-                // Se a requisição não falhou por timeout ou rede, consideramos que o serviço respondeu.
-                // Em 'no-cors', a resposta sempre terá status 0 e type 'opaque'.
-                // Apenas a ausência de erro já indica que o servidor local está de pé.
-                statusElement.innerText = 'PJe Office Online!';
-                statusElement.classList.remove('text-yellow-500', 'text-red-500');
-                statusElement.classList.add('text-green-500');
-
+                statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-green-800/40 bg-green-950/30 text-green-400';
+                statusElement.innerText = 'Sucesso: o PJe Office Pro respondeu corretamente.';
             } catch (error) {
-                if (error.name === 'AbortError') {
-                    statusElement.innerText = 'PJe Office Offline ou não respondeu a tempo (Timeout).';
-                } else {
-                    statusElement.innerText = 'PJe Office Offline ou com problemas de conexão.';
-                }
-                statusElement.classList.remove('text-yellow-500', 'text-green-500');
-                statusElement.classList.add('text-red-500');
-                console.error("Erro ao testar PJe Office:", error);
+                statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-gray-300 bg-white text-black';
+                statusElement.innerText = 'O teste não funcionou.';
+                console.error('Erro ao testar PJe Office:', error);
             }
         }
 
@@ -799,68 +948,83 @@
             event.currentTarget.classList.add('border-blue-500/80', 'bg-blue-800/40');
         }
 
-        // Funções de Carrossel e Status
+        // Funções de Carrossel e Status (ATUALIZADAS)
         function renderizarCarrosselDinamicamente() {
             const container = document.getElementById('carrosselPrincipais');
             if (!container) return;
 
-            // Ordenar os tribunais com base no status: Fora do Ar > Lentidão > Online > Sem Varredura
             const tribunaisOrdenados = [...dadosTribunaisFixo].sort((a, b) => {
-                const statusA = statusGerais[a.id] ? statusGerais[a.id].status : "Sem Varredura";
-                const statusB = statusGerais[b.id] ? statusGerais[b.id].status : "Sem Varredura";
+                const statusA = statusGerais[a.id] ? statusGerais[a.id].status : 'Sem Varredura';
+                const statusB = statusGerais[b.id] ? statusGerais[b.id].status : 'Sem Varredura';
 
-                const ordemStatus = { "Fora do Ar": 0, "Lentidão": 1, "Online": 2, "Sem Varredura": 3 };
+                const ordemStatus = {
+                    'Fora do Ar': 0,
+                    'Lentidão': 1,
+                    'Online': 2,
+                    'Sem Varredura': 3
+                };
+
                 return ordemStatus[statusA] - ordemStatus[statusB];
             });
 
             let html = '';
+
             tribunaisOrdenados.forEach(t => {
                 const dadosApi = statusGerais[t.id];
-                const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
-                const latenciaStr = (dadosApi && dadosApi.latenciaMs) ? `Resposta em ${dadosApi.latenciaMs}ms` : "Aguardando varredura";
-                let corBolinha = "bg-gray-600";
-                if (statusStr === "Online")     corBolinha = "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]";
-                if (statusStr === "Lentidão")   corBolinha = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]";
-                if (statusStr === "Fora do Ar") corBolinha = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
+                const statusStr = dadosApi ? dadosApi.status : 'Sem Varredura';
+                const latenciaStr = (dadosApi && dadosApi.latenciaMs) ? `Resposta em ${dadosApi.latenciaMs}ms` : 'Aguardando varredura';
+                const visual = obterVisualStatus(statusStr);
+
                 html += `
-                    <div onclick="window.open('${t.url}','_blank')" class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0 border border-gray-800/60 hover:border-blue-500/40 transition">
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-semibold text-gray-200 text-sm">${t.nome}</h3>
-                            <span class="h-2.5 w-2.5 rounded-full ${corBolinha}"></span>
+                    <a href="${t.url}" target="_blank" rel="noopener noreferrer"
+                       class="card portal-card group block h-[152px] w-[250px] flex-shrink-0 rounded-2xl p-4 shadow-lg no-underline">
+                        <div class="flex h-full flex-col justify-between">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="min-w-0">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] text-slate-500">Portal</p>
+                                    <h3 class="mt-1 text-sm font-semibold leading-snug text-slate-100">${t.nome}</h3>
+                                </div>
+                                <span class="mt-1 h-3 w-3 flex-shrink-0 rounded-full ${visual.dot}"></span>
+                            </div>
+
+                            <div class="mt-4 flex items-center justify-between gap-3">
+                                <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold ${visual.badge}">
+                                    ${statusStr}
+                                </span>
+                                <span class="text-[11px] text-slate-500">${latenciaStr}</span>
+                            </div>
                         </div>
-                        <p class="text-gray-400 text-xs mb-1">${statusStr}</p>
-                        <p class="text-gray-500 text-[10px]">${latenciaStr}</p>
-                    </div>`;
+                    </a>`;
             });
+
             container.innerHTML = html;
         }
 
         function atualizarBolinhasEstados() {
             const grupos = ['superiores', 'nacionais', 'PR', 'SP', 'RJ', 'MG', 'RS', 'SC', 'BA', 'DF', 'GO', 'MS', 'MT', 'ES', 'PE', 'CE', 'AM', 'PA', 'MA', 'PB', 'RN', 'AL', 'SE', 'PI', 'RO', 'AC', 'RR', 'AP', 'TO'];
+
             grupos.forEach(grupoId => {
                 const dot = document.getElementById(`dot-${grupoId}`);
                 if (dot) {
                     const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === grupoId);
-                    let statusGeralGrupo = "Online"; // Assume online se todos estiverem online
+                    let statusGeralGrupo = 'Online';
 
                     for (const t of tribunaisDoGrupo) {
                         const dadosApi = statusGerais[t.id];
-                        const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
+                        const statusStr = dadosApi ? dadosApi.status : 'Sem Varredura';
 
-                        if (statusStr === "Fora do Ar") {
-                            statusGeralGrupo = "Fora do Ar";
-                            break; // Se um está fora do ar, o grupo está fora do ar
+                        if (statusStr === 'Fora do Ar') {
+                            statusGeralGrupo = 'Fora do Ar';
+                            break;
                         }
-                        if (statusStr === "Lentidão") {
-                            statusGeralGrupo = "Lentidão"; // Se um está lento, o grupo está lento (a menos que outro esteja fora do ar)
+
+                        if (statusStr === 'Lentidão') {
+                            statusGeralGrupo = 'Lentidão';
                         }
                     }
 
-                    dot.classList.remove('bg-gray-600', 'bg-green-400', 'bg-amber-400', 'bg-red-400');
-                    if (statusGeralGrupo === "Online") dot.classList.add('bg-green-400');
-                    else if (statusGeralGrupo === "Lentidão") dot.classList.add('bg-amber-400');
-                    else if (statusGeralGrupo === "Fora do Ar") dot.classList.add('bg-red-400');
-                    else dot.classList.add('bg-gray-600'); // Sem Varredura ou indefinido
+                    const visual = obterVisualStatus(statusGeralGrupo);
+                    dot.className = `h-2.5 w-2.5 rounded-full transition-all duration-300 inline-block ml-1 ${visual.dot}`;
                 }
             });
         }
@@ -896,10 +1060,8 @@
                 const dadosApi = statusGerais[t.id];
                 const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
                 const latenciaStr = (dadosApi && dadosApi.latenciaMs) ? `Resposta em ${dadosApi.latenciaMs}ms` : "Aguardando varredura";
-                let corBolinha = "bg-gray-600";
-                if (statusStr === "Online")     corBolinha = "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]";
-                if (statusStr === "Lentidão")   corBolinha = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]";
-                if (statusStr === "Fora do Ar") corBolinha = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
+                const visual = obterVisualStatus(statusStr); // Usando o helper
+
                 html += `
                     <div onclick="window.open('${t.url}','_blank')" class="flex justify-between items-center bg-gray-950 border border-gray-800/60 p-3 rounded-xl mb-2 cursor-pointer hover:border-blue-500/40 transition">
                         <div>
@@ -908,7 +1070,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <span class="text-xs text-gray-400 font-medium">${statusStr}</span>
-                            <span class="h-2.5 w-2.5 rounded-full ${corBolinha}"></span>
+                            <span class="h-2.5 w-2.5 rounded-full ${visual.dot}"></span>
                         </div>
                     </div>`;
             });
@@ -986,8 +1148,13 @@
                 if (modalAberto) {
                     const ufAtual = document.getElementById('estadoNome').innerText;
                     let idGrupo = ufAtual;
-                    if (ufAtual === 'Tribunais Superiores') idGrupo = 'superiores';
-                    if (ufAtual === 'Sistemas Nacionais') idGrupo = 'nacionais';
+                    // Mapeia de volta para o ID do grupo se for um nome de exibição
+                    for (const key in NOME_EXIBICAO_ESTADO) {
+                        if (NOME_EXIBICAO_ESTADO[key] === ufAtual) {
+                            idGrupo = key;
+                            break;
+                        }
+                    }
 
                     // Recarrega o conteúdo do modal de estado, incluindo os relatos
                     renderizarConteudoModal(idGrupo);
