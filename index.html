@@ -948,74 +948,97 @@ function selecionarProblema(problema, ev) {
             });
         }
 
-        async function abrirEstado(uf) {
-            let labelTitulo = uf;
-            if (uf === 'superiores') labelTitulo = 'Tribunais Superiores';
-            if (uf === 'nacionais')  labelTitulo = 'Sistemas Nacionais';
-            document.getElementById('estadoNome').innerText = labelTitulo;
-            renderizarConteudoModal(uf);
-            document.getElementById('modalEstado').classList.remove('hidden');
+        async function renderizarConteudoModal(uf) {
+    const container = document.getElementById('linksTribunais');
+    const containerComunidade = document.getElementById('relatosComunidadeEstado');
+    if (!container) return;
+const tribunaisDaUf = dadosTribunaisFixo.filter(t =&gt; t.grupo === uf);
 
-            // Carregar relatos para cada tribunal do grupo
-            const tribunaisDoGrupo = dadosTribunaisFixo.filter(t => t.grupo === uf);
-            const relatosContainer = document.getElementById('relatos-tribunal-modal');
-            relatosContainer.innerHTML = ''; // Limpa relatos anteriores
-
-            for (const tribunal of tribunaisDoGrupo) {
-                await carregarRelatosTribunal(tribunal.id, relatosContainer);
-            }
+// resumo geral já existente
+if (containerComunidade) {
+    let htmlRelatos = '';
+    tribunaisDaUf.forEach(t =&gt; {
+        const rel = relatosComunidade[t.id];
+        if (rel &amp;&amp; rel.total &gt; 0) {
+            const partes = [];
+            if (rel.problemas['Fora do Ar'])     partes.push(`🔴 ${rel.problemas['Fora do Ar']}x fora do ar`);
+            if (rel.problemas['Lentidão'])       partes.push(`🟡 ${rel.problemas['Lentidão']}x lentidão`);
+            if (rel.problemas['Falha no Login']) partes.push(`🔐 ${rel.problemas['Falha no Login']}x login`);
+            htmlRelatos += `
+                &lt;div class="border-b border-gray-800 pb-2 mb-2"&gt;
+                    &lt;p class="font-semibold text-gray-200"&gt;${t.nome}&lt;/p&gt;
+                    &lt;p class="text-gray-400"&gt;${partes.join(' · ')} &lt;span class="text-gray-600 text-[10px] ml-1"&gt;último: ${rel.ultimoRelato}&lt;/span&gt;&lt;/p&gt;
+                &lt;/div&gt;`;
         }
+    });
+    containerComunidade.innerHTML = htmlRelatos ||
+        `&lt;div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40 text-gray-500 text-center italic"&gt;Nenhum alerta reportado por advogados nas últimas horas.&lt;/div&gt;`;
+}
 
-        function renderizarConteudoModal(uf) {
-            const container = document.getElementById('linksTribunais');
-            const containerComunidade = document.getElementById('relatosComunidadeEstado');
-            if (!container) return;
-            const tribunaisDaUf = dadosTribunaisFixo.filter(t => t.grupo === uf);
+let html = '';
 
-            if (containerComunidade) {
-                let htmlRelatos = '';
-                tribunaisDaUf.forEach(t => {
-                    const rel = relatosComunidade[t.id];
-                    if (rel && rel.total > 0) {
-                        const partes = [];
-                        if (rel.problemas['Fora do Ar'])     partes.push(`🔴 ${rel.problemas['Fora do Ar']}x fora do ar`);
-                        if (rel.problemas['Lentidão'])       partes.push(`🟡 ${rel.problemas['Lentidão']}x lentidão`);
-                        if (rel.problemas['Falha no Login']) partes.push(`🔐 ${rel.problemas['Falha no Login']}x login`);
-                        htmlRelatos += `
-                            <div class="border-b border-gray-800 pb-2 mb-2">
-                                <p class="font-semibold text-gray-200">${t.nome}</p>
-                                <p class="text-gray-400">${partes.join(' · ')} <span class="text-gray-600 text-[10px] ml-1">último: ${rel.ultimoRelato}</span></p>
-                            </div>`;
-                    }
-                });
-                containerComunidade.innerHTML = htmlRelatos ||
-                    `<div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800/40 text-gray-500 text-center italic">Nenhum alerta reportado por advogados nas últimas horas.</div>`;
-            }
+for (const t of tribunaisDaUf) {
+    const dadosApi = statusGerais[t.id];
+    const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
+    const latenciaStr = (dadosApi &amp;&amp; dadosApi.latenciaMs) ? `Resposta em ${dadosApi.latenciaMs}ms` : "Aguardando varredura";
 
-            let html = '';
-            tribunaisDaUf.forEach(t => {
-                const dadosApi = statusGerais[t.id];
-                const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
-                const latenciaStr = (dadosApi && dadosApi.latenciaMs) ? `Resposta em ${dadosApi.latenciaMs}ms` : "Aguardando varredura";
-                let corBolinha = "bg-gray-600";
-                if (statusStr === "Online")     corBolinha = "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]";
-                if (statusStr === "Lentidão")   corBolinha = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]";
-                if (statusStr === "Fora do Ar") corBolinha = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
-                html += `
-                    <div onclick="window.open('${t.url}','_blank')" class="flex justify-between items-center bg-gray-950 border border-gray-800/60 p-3 rounded-xl mb-2 cursor-pointer hover:border-blue-500/40 transition">
-                        <div>
-                            <p class="text-sm font-semibold text-gray-200">${t.nome}</p>
-                            <p class="text-[11px] text-gray-500">${latenciaStr}</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs text-gray-400 font-medium">${statusStr}</span>
-                            <span class="h-2.5 w-2.5 rounded-full ${corBolinha}"></span>
-                        </div>
-                    </div>`;
-            });
-            container.innerHTML = html;
+    let corBolinha = "bg-gray-600";
+    if (statusStr === "Online")     corBolinha = "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]";
+    if (statusStr === "Lentidão")   corBolinha = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]";
+    if (statusStr === "Fora do Ar") corBolinha = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
+
+    let relatosHtml = `&lt;div class="mt-2 text-xs text-gray-500 italic"&gt;Carregando relatos...&lt;/div&gt;`;
+
+    try {
+        const respRelatos = await fetch(`/api/listar-relatos?tribunal=${encodeURIComponent(t.id)}`);
+        const relatos = respRelatos.ok ? await respRelatos.json() : [];
+        const recentes = Array.isArray(relatos) ? relatos.slice().reverse().slice(0, 3) : [];
+
+        if (recentes.length &gt; 0) {
+            relatosHtml = `
+                &lt;div class="mt-2 pt-2 border-t border-gray-800 text-xs text-gray-300 space-y-1"&gt;
+                    &lt;p class="text-[11px] uppercase tracking-wide text-blue-400 font-semibold"&gt;Relatos nas últimas 12h&lt;/p&gt;
+                    ${recentes.map(r =&gt; `
+                        &lt;div class="bg-gray-950/80 rounded-lg px-2 py-1 border border-gray-800/50"&gt;
+                            ${new Date(r.createdAt).toLocaleString('pt-BR')} — ${r.description}
+                        &lt;/div&gt;
+                    `).join('')}
+                &lt;/div&gt;
+            `;
+        } else {
+            relatosHtml = `
+                &lt;div class="mt-2 pt-2 border-t border-gray-800 text-xs text-gray-500 italic"&gt;
+                    Sem relatos nas últimas 12h.
+                &lt;/div&gt;
+            `;
         }
+    } catch (e) {
+        console.error(`Erro ao carregar relatos para ${t.id}:`, e);
+        relatosHtml = `
+            &lt;div class="mt-2 pt-2 border-t border-gray-800 text-xs text-gray-500 italic"&gt;
+                Não foi possível carregar os relatos.
+            &lt;/div&gt;
+        `;
+    }
 
+    html += `
+        &lt;div class="bg-gray-950 border border-gray-800/60 p-3 rounded-xl mb-2"&gt;
+            &lt;div onclick="window.open('${t.url}','_blank')" class="flex justify-between items-center cursor-pointer hover:border-blue-500/40 transition"&gt;
+                &lt;div&gt;
+                    &lt;p class="text-sm font-semibold text-gray-200"&gt;${t.nome}&lt;/p&gt;
+                    &lt;p class="text-[11px] text-gray-500"&gt;${latenciaStr}&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="flex items-center gap-2"&gt;
+                    &lt;span class="text-xs text-gray-400 font-medium"&gt;${statusStr}&lt;/span&gt;
+                    &lt;span class="h-2.5 w-2.5 rounded-full ${corBolinha}"&gt;&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            ${relatosHtml}
+        &lt;/div&gt;
+    `;
+}
+
+container.innerHTML = html;
         // NOVO: Função para carregar relatos individuais de um tribunal
         async function carregarRelatosTribunal(tribunalId, containerElement) {
             try {
