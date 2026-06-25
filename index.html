@@ -47,13 +47,13 @@
             max-height: calc(100vh - 4rem);
         }
 
-        .modal-shell > .bg-gray-900 {
+        .modal-shell > .bg-gray-900 { /* Corpo do modal */
             background: transparent !important;
             overflow-y: auto;
-            max-height: calc(100vh - 12rem);
+            max-height: calc(100vh - 12rem); /* Ajuste para cabeçalho e rodapé */
         }
 
-        .modal-shell > .bg-gray-800 {
+        .modal-shell > .bg-gray-800 { /* Rodapé do modal */
             background: rgba(15, 23, 42, 0.98) !important;
             border-top: 1px solid rgba(51, 65, 85, 0.85);
         }
@@ -227,507 +227,452 @@
 
         <section>
             <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-file-pdf text-red-500"></i> Divisão de PDF inteligente
+                <i class="fa-solid fa-toolbox text-purple-500"></i> Ferramentas e Utilitários
             </h2>
-            <p class="text-xs text-gray-500 mb-4">Evite rejeição de arquivos nos tribunais. Ajustamos automaticamente o tamanho do seu PDF de acordo com o padrão exigido pelo portal de destino.</p>
-            <button onclick="abrirOtimizadorPdf()" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-arrow-right-arrow-left text-base"></i> Clique aqui e edite seu PDF automaticamente de acordo com o portal que deseja anexar
-            </button>
-        </section>
-
-        <section>
-            <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-fingerprint text-purple-500"></i> Diagnóstico de Token/Certificado & PJe Office Pro
-            </h2>
-            <p class="text-xs text-gray-500 mb-4">Realize a validação do seu Token OAB e execute o teste de subsistema do assinador do governo PJe Office Pro.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
-                <button onclick="abrirModalToken()" class="w-full sm:w-72 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-usb text-base"></i> Iniciar Teste de Token
-                </button>
-                <button onclick="abrirModalPjeOffice()" class="w-full sm:w-72 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm px-5 py-3 rounded-xl transition shadow-lg active:scale-95 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-laptop-code text-base"></i> Iniciar Teste PJe Office Pro
-                </button>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i class="fa-solid fa-desktop text-teal-500"></i> Equipamentos Homologados para Advocacia
-            </h2>
-            <p class="text-xs text-gray-500 mb-4">Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.</p>
+            <p class="text-xs text-gray-500 mb-4">Ferramentas essenciais para o dia a dia do advogado.</p>
             <div class="products-carousel">
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=Mouse+Ergonômico" alt="Mouse Ergonômico" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">1. Mouse Ergonômico</h3>
-                    <p class="text-gray-400 text-xs mb-3">Formato anatômico vertical para evitar fadiga em peticionamentos longos.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
+                <div onclick="abrirOtimizadorPdf()" class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0 cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-200 text-sm">Otimizador de PDF</h3>
+                        <i class="fa-solid fa-file-pdf text-red-500"></i>
+                    </div>
+                    <p class="text-gray-400 text-xs">Reduza o tamanho de seus PDFs para os limites dos tribunais.</p>
                 </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=Teclado+Silent" alt="Teclado Silent" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">2. Teclado Silent</h3>
-                    <p class="text-gray-400 text-xs mb-3">Digitação macia e extremamente silenciosa para escritórios.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
+                <div onclick="abrirModalToken()" class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0 cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-200 text-sm">Validar Token</h3>
+                        <i class="fa-solid fa-key text-yellow-500"></i>
+                    </div>
+                    <p class="text-gray-400 text-xs">Verifique a validade e informações do seu token digital.</p>
                 </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=CPU+Office+Slim" alt="CPU Office Slim" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">3. CPU Office Slim</h3>
-                    <p class="text-gray-400 text-xs mb-3">Processamento de alta velocidade para múltiplos portais abertos.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
-                </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=Laptop+Advogado+Pro" alt="Laptop Advogado Pro" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">4. Laptop Advogado Pro</h3>
-                    <p class="text-gray-400 text-xs mb-3">Tela antirreflexo de alta definição e bateria de longa duração para audiências.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
-                </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=Impressora+Laser+Duplex" alt="Impressora Laser Duplex" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">5. Impressora Laser Duplex</h3>
-                    <p class="text-gray-400 text-xs mb-3">Impressão frente e verso automática rápida e de baixíssimo custo por página.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
-                </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=Scanner+de+Mesa+Rápido" alt="Scanner de Mesa Rápido" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">6. Scanner de Mesa Rápido</h3>
-                    <p class="text-gray-400 text-xs mb-3">Digitalização direta para PDF pesquisável (OCR) com alimentador automático.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
-                </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=Nobreak+Senoidal" alt="Nobreak Senoidal" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">7. Nobreak Senoidal</h3>
-                    <p class="text-gray-400 text-xs mb-3">Proteção contra quedas de energia e oscilações para manter o trabalho contínuo.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
-                </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=SSD+NVMe+Alta+Velocidade" alt="SSD NVMe Alta Velocidade" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">8. SSD NVMe Alta Velocidade</h3>
-                    <p class="text-gray-400 text-xs mb-3">Carregamento instantâneo do sistema operacional e programas.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
-                </div>
-                <div class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0">
-                    <img src="https://via.placeholder.com/150x100?text=Monitor+Ultrawide" alt="Monitor Ultrawide" class="rounded-md mb-3">
-                    <h3 class="font-semibold text-gray-200 text-sm mb-1">9. Monitor Ultrawide</h3>
-                    <p class="text-gray-400 text-xs mb-3">Visualize múltiplos documentos lado a lado sem alternar janelas.</p>
-                    <a href="#" target="_blank" class="text-blue-500 hover:text-blue-400 text-xs font-medium flex items-center gap-1">Ver Preço Recomendado <i class="fa-solid fa-external-link-alt text-[10px]"></i></a>
+                <div onclick="abrirModalPjeOffice()" class="card p-4 rounded-xl shadow-lg min-w-[200px] max-w-[200px] flex-shrink-0 cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold text-gray-200 text-sm">PJe Office Pro</h3>
+                        <i class="fa-solid fa-gavel text-blue-500"></i>
+                    </div>
+                    <p class="text-gray-400 text-xs">Verifique a instalação e funcionamento do PJe Office Pro.</p>
                 </div>
             </div>
         </section>
-
-        <footer class="text-center text-gray-500 text-xs pt-12 pb-4 border-t border-gray-800">
-            <p>&copy; 2026 ADVBR.info. Todos os direitos reservados.</p>
-            <p>Desenvolvido com <i class="fa-solid fa-heart text-red-500"></i> por Advogados para Advogados.</p>
-        </footer>
 
     </div>
 
     <!-- Modal Reportar Problema -->
-    <div id="modalReportar" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
-                <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-red-800/40">
-                            <i class="fa-solid fa-triangle-exclamation text-red-400"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Reportar Problema</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-400">Selecione o tribunal e o tipo de problema que você está enfrentando.</p>
-                                <!-- Passo 1: Seleção do Tribunal -->
-                                <div id="reportarPasso1">
-                                    <label for="selectTribunalReportar" class="block text-sm font-medium text-gray-300 mt-4">Tribunal:</label>
-                                    <select id="selectTribunalReportar" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-gray-700 text-gray-200">
-                                        <option value="">-- Selecione o tribunal para continuar --</option>
-                                    </select>
-                                    <button onclick="proximoPassoReportar()" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
-                                        Próximo
-                                    </button>
-                                </div>
-                                <!-- Passo 2: Seleção do Tipo de Problema -->
-                                <div id="reportarPasso2" class="hidden">
-                                    <label for="selectTipoProblema" class="block text-sm font-medium text-gray-300 mt-4">Tipo de Problema:</label>
-                                    <div class="mt-2 grid grid-cols-1 gap-2">
-                                        <button onclick="selecionarProblema('Fora do Ar')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            Fora do Ar
-                                        </button>
-                                        <button onclick="selecionarProblema('Lentidão')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            Lentidão
-                                        </button>
-                                        <button onclick="selecionarProblema('Falha no Login')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            Falha no Login
-                                        </button>
-                                        <button onclick="selecionarProblema('Outro')" class="inline-flex justify-center rounded-md border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                            Outro
-                                        </button>
-                                    </div>
-                                    <button onclick="enviarRelato()" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm">
-                                        Enviar Relato
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+    <div id="modalReportar" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 app-modal-backdrop" onclick="fecharModalReportar()">
+        <div class="relative w-full max-w-md modal-shell" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-bullhorn text-red-400 text-xl"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-100">Reportar Problema</h3>
+                        <p class="text-xs text-gray-400">Ajude a comunidade informando sobre instabilidades.</p>
                     </div>
                 </div>
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <button type="button" onclick="fecharModalReportar()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Fechar
-                    </button>
+                <button onclick="fecharModalReportar()" class="text-gray-400 hover:text-gray-200 transition">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4 bg-gray-900">
+                <div id="reportarPasso1">
+                    <label for="selectTribunalReportar" class="block text-sm font-medium text-gray-300 mb-2">Qual portal/tribunal está com problema?</label>
+                    <select id="selectTribunalReportar" class="w-full p-2.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">-- Selecione o tribunal para continuar --</option>
+                    </select>
                 </div>
+
+                <div id="reportarPasso2" class="hidden">
+                    <p class="text-sm font-medium text-gray-300 mb-3">Qual o tipo de problema?</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="selecionarProblema('Fora do Ar')" class="p-3 rounded-xl border border-gray-700 bg-gray-800 text-gray-200 text-sm font-semibold hover:border-blue-500/80 hover:bg-blue-800/40 transition">
+                            <i class="fa-solid fa-circle-xmark text-red-400 mr-2"></i> Fora do Ar
+                        </button>
+                        <button onclick="selecionarProblema('Lentidão')" class="p-3 rounded-xl border border-gray-700 bg-gray-800 text-gray-200 text-sm font-semibold hover:border-blue-500/80 hover:bg-blue-800/40 transition">
+                            <i class="fa-solid fa-hourglass-half text-amber-400 mr-2"></i> Lentidão
+                        </button>
+                        <button onclick="selecionarProblema('Falha no Login')" class="p-3 rounded-xl border border-gray-700 bg-gray-800 text-gray-200 text-sm font-semibold hover:border-blue-500/80 hover:bg-blue-800/40 transition">
+                            <i class="fa-solid fa-lock text-yellow-400 mr-2"></i> Falha no Login
+                        </button>
+                        <button onclick="selecionarProblema('Outro')" class="p-3 rounded-xl border border-gray-700 bg-gray-800 text-gray-200 text-sm font-semibold hover:border-blue-500/80 hover:bg-blue-800/40 transition">
+                            <i class="fa-solid fa-circle-info text-blue-400 mr-2"></i> Outro
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-end p-4 bg-gray-800">
+                <button id="btnProximoPassoReportar" onclick="proximoPassoReportar()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Próximo
+                </button>
+                <button id="btnEnviarRelato" onclick="enviarRelato()" class="hidden bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Enviar Relato
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Modal Relato Enviado -->
-    <div id="modalRelatoEnviado" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
-                <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-green-800/40">
-                            <i class="fa-solid fa-check-circle text-green-400"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Relato Enviado!</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-400">Agradecemos por sua colaboração. Seu relato nos ajuda a manter a comunidade jurídica informada.</p>
-                            </div>
-                        </div>
+    <div id="modalRelatoEnviado" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 app-modal-backdrop" onclick="fecharModalRelatoEnviado()">
+        <div class="relative w-full max-w-sm modal-shell" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-check-circle text-green-400 text-xl"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-100">Relato Enviado!</h3>
+                        <p class="text-xs text-gray-400">Agradecemos sua contribuição.</p>
                     </div>
                 </div>
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <button type="button" onclick="fecharModalRelatoEnviado()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Fechar
-                    </button>
-                </div>
+                <button onclick="fecharModalRelatoEnviado()" class="text-gray-400 hover:text-gray-200 transition">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
             </div>
-        </div>
-    </div>
 
-    <!-- Modal Teste de Token -->
-    <div id="modalToken" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
-                <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-purple-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-purple-800/40">
-                            <i class="fa-brands fa-usb text-purple-400"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Teste de Token/Certificado</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-400">Conecte seu token e clique em "Iniciar Teste" para verificar a validade e o funcionamento do seu certificado digital.</p>
-                                <button onclick="alert('Funcionalidade de teste de token ainda não implementada.')" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
-                                    Iniciar Teste
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <button type="button" onclick="fecharModalToken()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Fechar
-                    </button>
-                </div>
+            <!-- Body -->
+            <div class="p-4 bg-gray-900 text-center">
+                <p class="text-gray-300 text-sm">Seu relato foi registrado e ajudará outros advogados a se prepararem para possíveis instabilidades.</p>
             </div>
-        </div>
-    </div>
 
-    <!-- Modal Teste PJe Office Pro -->
-    <div id="modalPjeOffice" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title-pje" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
-                <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
-                            <i class="fa-solid fa-laptop-code text-blue-400"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title-pje">Teste PJe Office Pro</h3>
-                            <div class="mt-2 space-y-3">
-                                <p class="text-sm text-gray-400">
-                                    Este teste verifica se o PJe Office Pro está rodando e acessível pelo seu navegador. Ele só começa quando você clicar em <strong>Iniciar Teste</strong>.
-                                </p>
-
-                                <div class="rounded-xl border border-slate-800 bg-slate-950/70 p-3 space-y-2">
-                                    <p class="text-sm text-gray-400">
-                                        Antes de iniciar, permita as permissões solicitadas pelo navegador, caso apareçam.
-                                    </p>
-                                    <p class="text-sm text-gray-400">
-                                        O navegador pode mostrar um pop-up de segurança durante a abertura do assinador.
-                                    </p>
-                                    <p class="text-sm text-gray-400">
-                                        Em caso de dúvida, fale no WhatsApp:
-                                        <a href="https://wa.me/5541999999999" target="_blank" rel="noopener noreferrer" class="text-green-400 hover:text-green-300 font-semibold">
-                                            clique aqui
-                                        </a>.
-                                    </p>
-                                </div>
-
-                                <p id="statusPjeOffice" class="mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-slate-700 bg-slate-950/60 text-slate-300">
-                                    Aguardando início do teste.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:flex-wrap sm:justify-center gap-2">
-                    <a href="https://wa.me/5541999999999" target="_blank" rel="noopener noreferrer" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        <i class="fa-brands fa-whatsapp mr-2"></i> Falar com Suporte (WhatsApp)
-                    </a>
-
-                    <button type="button" onclick="iniciarTestePjeOffice()" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Iniciar Teste
-                    </button>
-
-                    <button type="button" onclick="fecharModalPjeOffice()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Fechar
-                    </button>
-                </div>
+            <!-- Footer -->
+            <div class="flex justify-end p-4 bg-gray-800">
+                <button onclick="fecharModalRelatoEnviado()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Ok
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Modal Otimizador de PDF -->
-    <div id="modalOtimizadorPdf" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
-                <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-red-800/40">
-                            <i class="fa-solid fa-file-pdf text-red-400"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Otimizador de PDF para Tribunais</h3>
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-400">Selecione o arquivo PDF e o tribunal de destino. Ajustaremos o PDF para as exigências do portal.</p>
-                                <label for="pdfInput" class="block text-sm font-medium text-gray-300 mt-4">Selecione o PDF:</label>
-                                <input type="file" id="pdfInput" accept="application/pdf" class="mt-1 block w-full text-sm text-gray-400
-                                    file:mr-4 file:py-2 file:px-4
-                                    file:rounded-md file:border-0
-                                    file:text-sm file:font-semibold
-                                    file:bg-blue-500 file:text-white
-                                    hover:file:bg-blue-600"/>
-
-                                <label for="tribunalSelect" class="block text-sm font-medium text-gray-300 mt-4">Tribunal de Destino:</label>
-                                <select id="tribunalSelect" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-gray-700 text-gray-200">
-                                    <option value="">Selecione um tribunal...</option>
-                                    <option value="TJPR">TJPR (até 1.5MB)</option>
-                                    <option value="TRF4">TRF4 (até 3MB)</option>
-                                    <option value="STJ">STJ (até 5MB)</option>
-                                    <option value="CNJ">CNJ (até 10MB)</option>
-                                </select>
-                                <button onclick="otimizarPdf()" class="mt-4 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:text-sm">
-                                    Otimizar PDF
-                                </button>
-                            </div>
-                        </div>
+    <div id="modalOtimizadorPdf" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 app-modal-backdrop" onclick="fecharOtimizadorPdf()">
+        <div class="relative w-full max-w-md modal-shell" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-file-pdf text-red-500 text-xl"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-100">Otimizador de PDF</h3>
+                        <p class="text-xs text-gray-400">Reduza o tamanho de seus PDFs para os limites dos tribunais.</p>
                     </div>
                 </div>
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <button type="button" onclick="fecharOtimizadorPdf()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Fechar
-                    </button>
+                <button onclick="fecharOtimizadorPdf()" class="text-gray-400 hover:text-gray-200 transition">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4 bg-gray-900">
+                <div class="mb-4">
+                    <label for="pdfInput" class="block text-sm font-medium text-gray-300 mb-2">Selecione o arquivo PDF:</label>
+                    <input type="file" id="pdfInput" accept=".pdf" class="w-full text-sm text-gray-400
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 file:text-blue-700
+                        hover:file:bg-blue-100"/>
                 </div>
+                <div class="mb-4">
+                    <label for="tribunalSelect" class="block text-sm font-medium text-gray-300 mb-2">Selecione o Tribunal (limite de tamanho):</label>
+                    <select id="tribunalSelect" class="w-full p-2.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="TJPR">TJPR (1.5 MB)</option>
+                        <option value="TRF4">TRF4 (3 MB)</option>
+                        <option value="STJ">STJ (5 MB)</option>
+                        <option value="CNJ">CNJ (10 MB)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-end p-4 bg-gray-800">
+                <button onclick="otimizarPdf()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Otimizar e Baixar
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Detalhes do Estado -->
-    <div id="modalEstado" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div onclick="fecharTodosModais()" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity app-modal-backdrop" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-gray-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full modal-shell">
-                <div class="bg-gray-900 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-950/50 sm:mx-0 sm:h-10 sm:w-10 border border-blue-800/40">
-                            <i class="fa-solid fa-map-location-dot text-blue-400"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-200" id="modal-title">Detalhes do Estado: <span id="estadoNome"></span></h3>
-                            <div class="mt-2">
-                                <p class="text-sm font-semibold text-gray-300 mb-2">Status dos Tribunais:</p>
-                                <div id="linksTribunais" class="space-y-2">
-                                    <!-- Conteúdo dinâmico dos links dos tribunais -->
-                                </div>
-                                <p class="text-sm font-semibold text-gray-300 mt-4 mb-2">Relatos da Comunidade:</p>
-                                <div id="relatosComunidadeEstado" class="space-y-2">
-                                    <!-- Conteúdo dinâmico dos relatos da comunidade -->
-                                </div>
-                                <p class="text-sm font-semibold text-gray-300 mt-4 mb-2">Relatos Detalhados:</p>
-                                <div id="relatos-tribunal-modal" class="space-y-2">
-                                    <!-- Relatos individuais dos tribunais -->
-                                </div>
-                            </div>
-                        </div>
+    <!-- Modal Validar Token -->
+    <div id="modalToken" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 app-modal-backdrop" onclick="fecharModalToken()">
+        <div class="relative w-full max-w-md modal-shell" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-key text-yellow-500 text-xl"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-100">Validar Token Digital</h3>
+                        <p class="text-xs text-gray-400">Verifique a validade e informações do seu token.</p>
                     </div>
                 </div>
-                <div class="bg-gray-800 px-4 py-3 sm:px-6 sm:flex sm:justify-center">
-                    <button type="button" onclick="fecharModalEstado()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm">
-                        Fechar
-                    </button>
-                </div>
+                <button onclick="fecharModalToken()" class="text-gray-400 hover:text-gray-200 transition">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4 bg-gray-900 text-center">
+                <p class="text-gray-300 text-sm">Funcionalidade em desenvolvimento. Em breve você poderá validar seu token digital aqui.</p>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-end p-4 bg-gray-800">
+                <button onclick="fecharModalToken()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Ok
+                </button>
             </div>
         </div>
     </div>
+
+    <!-- Modal PJe Office Pro (Janela Intermediária) -->
+    <div id="modalPjeOffice" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 app-modal-backdrop" onclick="fecharModalPjeOffice()">
+        <div class="relative w-full max-w-md modal-shell" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-gavel text-blue-500 text-xl"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-100">Teste PJe Office Pro</h3>
+                        <p class="text-xs text-gray-400">Verifique a instalação e funcionamento.</p>
+                    </div>
+                </div>
+                <button onclick="fecharModalPjeOffice()" class="text-gray-400 hover:text-gray-200 transition">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4 bg-gray-900">
+                <p class="text-sm text-gray-300 mb-3">Este teste tentará se comunicar com o PJe Office Pro instalado em seu computador.</p>
+                <ul class="list-disc list-inside text-sm text-gray-400 mb-4 space-y-1">
+                    <li>Certifique-se de que o PJe Office Pro esteja **aberto e em execução**.</li>
+                    <li>Seu navegador pode pedir permissão para acessar o aplicativo. **Permita o acesso**.</li>
+                    <li>Um **pop-up de segurança** pode aparecer. Aceite ou ignore-o se for o caso.</li>
+                </ul>
+                <p class="text-sm text-gray-300 mb-4">Em caso de dúvidas ou problemas, entre em contato:</p>
+                <a href="https://wa.me/5541999999999" target="_blank" class="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition mb-4">
+                    <i class="fa-brands fa-whatsapp"></i> Falar com Suporte (WhatsApp)
+                </a>
+                <div id="statusPjeOffice" class="mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-slate-700 bg-slate-950/60 text-slate-300">
+                    Aguardando início do teste.
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-end p-4 bg-gray-800">
+                <button onclick="iniciarTestePjeOffice()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Iniciar Teste
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Estado/Grupo de Tribunais -->
+    <div id="modalEstado" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 app-modal-backdrop" onclick="fecharModalEstado()">
+        <div class="relative w-full max-w-lg modal-shell" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-700">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-map-location-dot text-blue-500 text-xl"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-100" id="estadoNome"></h3>
+                        <p class="text-xs text-gray-400">Status dos portais monitorados.</p>
+                    </div>
+                </div>
+                <button onclick="fecharModalEstado()" class="text-gray-400 hover:text-gray-200 transition">
+                    <i class="fa-solid fa-times text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="p-4 bg-gray-900">
+                <div class="mb-4">
+                    <h4 class="text-md font-semibold text-gray-200 mb-2">Status dos Tribunais:</h4>
+                    <div id="linksTribunais" class="space-y-2">
+                        <!-- Links dos tribunais serão renderizados aqui -->
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-md font-semibold text-gray-200 mb-2">Relatos da Comunidade:</h4>
+                    <div id="relatosComunidadeEstado" class="space-y-2">
+                        <!-- Relatos da comunidade serão renderizados aqui -->
+                    </div>
+                </div>
+                <div id="relatos-tribunal-modal" class="mt-4 space-y-3">
+                    <!-- Relatos individuais de cada tribunal serão carregados aqui -->
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="flex justify-end p-4 bg-gray-800">
+                <button onclick="fecharModalEstado()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
-        // Dados fixos dos tribunais (pode ser carregado de uma API no futuro)
+        // Dados simulados (em um ambiente real, viriam de uma API)
         const dadosTribunaisFixo = [
-            { id: 'STF', nome: 'Supremo Tribunal Federal', grupo: 'superiores', url: 'https://portal.stf.jus.br/' },
-            { id: 'STJ', nome: 'Superior Tribunal de Justiça', grupo: 'superiores', url: 'https://www.stj.jus.br/' },
-            { id: 'TST', nome: 'Tribunal Superior do Trabalho', grupo: 'superiores', url: 'https://www.tst.jus.br/' },
-            { id: 'TSE', nome: 'Tribunal Superior Eleitoral', grupo: 'superiores', url: 'https://www.tse.jus.br/' },
-            { id: 'CNJ', nome: 'Conselho Nacional de Justiça', grupo: 'nacionais', url: 'https://www.cnj.jus.br/' },
-            { id: 'PJE', nome: 'PJe - Processo Judicial Eletrônico', grupo: 'nacionais', url: 'https://www.pje.jus.br/' },
-            { id: 'PROJUDI', nome: 'PROJUDI', grupo: 'nacionais', url: 'https://projudi.tjpr.jus.br/' },
-            { id: 'ESAJ', nome: 'e-SAJ', grupo: 'nacionais', url: 'https://esaj.tjsp.jus.br/' },
-            { id: 'TJPR', nome: 'TJPR - Tribunal de Justiça do Paraná', grupo: 'PR', url: 'https://www.tjpr.jus.br/' },
-            { id: 'TRF4', nome: 'TRF4 - Tribunal Regional Federal da 4ª Região', grupo: 'PR', url: 'https://www.trf4.jus.br/' },
-            { id: 'TJSP', nome: 'TJSP - Tribunal de Justiça de São Paulo', grupo: 'SP', url: 'https://www.tjsp.jus.br/' },
-            { id: 'TRF3', nome: 'TRF3 - Tribunal Regional Federal da 3ª Região', grupo: 'SP', url: 'https://www.trf3.jus.br/' },
-            { id: 'TJRJ', nome: 'TJRJ - Tribunal de Justiça do Rio de Janeiro', grupo: 'RJ', url: 'https://www.tjrj.jus.br/' },
-            { id: 'TRF2', nome: 'TRF2 - Tribunal Regional Federal da 2ª Região', grupo: 'RJ', url: 'https://www.trf2.jus.br/' },
-            { id: 'TJMG', nome: 'TJMG - Tribunal de Justiça de Minas Gerais', grupo: 'MG', url: 'https://www.tjmg.jus.br/' },
-            { id: 'TRF1', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região', grupo: 'MG', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJRS', nome: 'TJRS - Tribunal de Justiça do Rio Grande do Sul', grupo: 'RS', url: 'https://www.tjrs.jus.br/' },
-            { id: 'TRF4_RS', nome: 'TRF4 - Tribunal Regional Federal da 4ª Região (RS)', grupo: 'RS', url: 'https://www.trf4.jus.br/' },
-            { id: 'TJSC', nome: 'TJSC - Tribunal de Justiça de Santa Catarina', grupo: 'SC', url: 'https://www.tjsc.jus.br/' },
-            { id: 'TRF4_SC', nome: 'TRF4 - Tribunal Regional Federal da 4ª Região (SC)', grupo: 'SC', url: 'https://www.trf4.jus.br/' },
-            { id: 'TJBA', nome: 'TJBA - Tribunal de Justiça da Bahia', grupo: 'BA', url: 'https://www.tjba.jus.br/' },
-            { id: 'TRF1_BA', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (BA)', grupo: 'BA', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJDF', nome: 'TJDFT - Tribunal de Justiça do Distrito Federal e dos Territórios', grupo: 'DF', url: 'https://www.tjdft.jus.br/' },
-            { id: 'TRF1_DF', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (DF)', grupo: 'DF', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJGO', nome: 'TJGO - Tribunal de Justiça de Goiás', grupo: 'GO', url: 'https://www.tjgo.jus.br/' },
-            { id: 'TRF1_GO', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (GO)', grupo: 'GO', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJMS', nome: 'TJMS - Tribunal de Justiça de Mato Grosso do Sul', grupo: 'MS', url: 'https://www.tjms.jus.br/' },
-            { id: 'TRF3_MS', nome: 'TRF3 - Tribunal Regional Federal da 3ª Região (MS)', grupo: 'MS', url: 'https://www.trf3.jus.br/' },
-            { id: 'TJMT', nome: 'TJMT - Tribunal de Justiça de Mato Grosso', grupo: 'MT', url: 'https://www.tjmt.jus.br/' },
-            { id: 'TRF1_MT', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (MT)', grupo: 'MT', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJES', nome: 'TJES - Tribunal de Justiça do Espírito Santo', grupo: 'ES', url: 'https://www.tjes.jus.br/' },
-            { id: 'TRF2_ES', nome: 'TRF2 - Tribunal Regional Federal da 2ª Região (ES)', grupo: 'ES', url: 'https://www.trf2.jus.br/' },
-            { id: 'TJPE', nome: 'TJPE - Tribunal de Justiça de Pernambuco', grupo: 'PE', url: 'https://www.tjpe.jus.br/' },
-            { id: 'TRF5', nome: 'TRF5 - Tribunal Regional Federal da 5ª Região', grupo: 'PE', url: 'https://www.trf5.jus.br/' },
-            { id: 'TJCE', nome: 'TJCE - Tribunal de Justiça do Ceará', grupo: 'CE', url: 'https://www.tjce.jus.br/' },
-            { id: 'TRF5_CE', nome: 'TRF5 - Tribunal Regional Federal da 5ª Região (CE)', grupo: 'CE', url: 'https://www.trf5.jus.br/' },
-            { id: 'TJAM', nome: 'TJAM - Tribunal de Justiça do Amazonas', grupo: 'AM', url: 'https://www.tjam.jus.br/' },
-            { id: 'TRF1_AM', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (AM)', grupo: 'AM', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJPA', nome: 'TJPA - Tribunal de Justiça do Pará', grupo: 'PA', url: 'https://www.tjpa.jus.br/' },
-            { id: 'TRF1_PA', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (PA)', grupo: 'PA', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJMA', nome: 'TJMA - Tribunal de Justiça do Maranhão', grupo: 'MA', url: 'https://www.tjma.jus.br/' },
-            { id: 'TRF1_MA', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (MA)', grupo: 'MA', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJPB', nome: 'TJPB - Tribunal de Justiça da Paraíba', grupo: 'PB', url: 'https://www.tjpb.jus.br/' },
-            { id: 'TRF5_PB', nome: 'TRF5 - Tribunal Regional Federal da 5ª Região (PB)', grupo: 'PB', url: 'https://www.trf5.jus.br/' },
-            { id: 'TJRN', nome: 'TJRN - Tribunal de Justiça do Rio Grande do Norte', grupo: 'RN', url: 'https://www.tjrn.jus.br/' },
-            { id: 'TRF5_RN', nome: 'TRF5 - Tribunal Regional Federal da 5ª Região (RN)', grupo: 'RN', url: 'https://www.trf5.jus.br/' },
-            { id: 'TJAL', nome: 'TJAL - Tribunal de Justiça de Alagoas', grupo: 'AL', url: 'https://www.tjal.jus.br/' },
-            { id: 'TRF5_AL', nome: 'TRF5 - Tribunal Regional Federal da 5ª Região (AL)', grupo: 'AL', url: 'https://www.trf5.jus.br/' },
-            { id: 'TJSE', nome: 'TJSE - Tribunal de Justiça de Sergipe', grupo: 'SE', url: 'https://www.tjse.jus.br/' },
-            { id: 'TRF5_SE', nome: 'TRF5 - Tribunal Regional Federal da 5ª Região (SE)', grupo: 'SE', url: 'https://www.trf5.jus.br/' },
-            { id: 'TJPI', nome: 'TJPI - Tribunal de Justiça do Piauí', grupo: 'PI', url: 'https://www.tjpi.jus.br/' },
-            { id: 'TRF1_PI', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (PI)', grupo: 'PI', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJRO', nome: 'TJRO - Tribunal de Justiça de Rondônia', grupo: 'RO', url: 'https://www.tjro.jus.br/' },
-            { id: 'TRF1_RO', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (RO)', grupo: 'RO', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJAC', nome: 'TJAC - Tribunal de Justiça do Acre', grupo: 'AC', url: 'https://www.tjac.jus.br/' },
-            { id: 'TRF1_AC', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (AC)', grupo: 'AC', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJRR', nome: 'TJRR - Tribunal de Justiça do Roraima', grupo: 'RR', url: 'https://www.tjrr.jus.br/' },
-            { id: 'TRF1_RR', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (RR)', grupo: 'RR', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJAP', nome: 'TJAP - Tribunal de Justiça do Amapá', grupo: 'AP', url: 'https://www.tjap.jus.br/' },
-            { id: 'TRF1_AP', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (AP)', grupo: 'AP', url: 'https://www.trf1.jus.br/' },
-            { id: 'TJTO', nome: 'TJTO - Tribunal de Justiça do Tocantins', grupo: 'TO', url: 'https://www.tjto.jus.br/' },
-            { id: 'TRF1_TO', nome: 'TRF1 - Tribunal Regional Federal da 1ª Região (TO)', grupo: 'TO', url: 'https://www.trf1.jus.br/' }
-        ];
-
-        let statusGerais = {};
-        let relatosComunidade = {};
-        let tribunalSelecionadoReportar = '';
-        let tipoProblemaSelecionado = '';
-
-        // NOVOS HELPERS
-        const MODAIS_IDS = [
-            'modalReportar',
-            'modalRelatoEnviado',
-            'modalToken',
-            'modalPjeOffice',
-            'modalOtimizadorPdf',
-            'modalEstado'
+            { id: 'STF', nome: 'Supremo Tribunal Federal', url: 'https://portal.stf.jus.br/', grupo: 'superiores' },
+            { id: 'STJ', nome: 'Superior Tribunal de Justiça', url: 'https://www.stj.jus.br/', grupo: 'superiores' },
+            { id: 'TST', nome: 'Tribunal Superior do Trabalho', url: 'https://www.tst.jus.br/', grupo: 'superiores' },
+            { id: 'TSE', nome: 'Tribunal Superior Eleitoral', url: 'https://www.tse.jus.br/', grupo: 'superiores' },
+            { id: 'STM', nome: 'Superior Tribunal Militar', url: 'https://www.stm.jus.br/', grupo: 'superiores' },
+            { id: 'CNJ', nome: 'Conselho Nacional de Justiça', url: 'https://www.cnj.jus.br/', grupo: 'nacionais' },
+            { id: 'PJE', nome: 'PJe Nacional', url: 'https://www.pje.jus.br/', grupo: 'nacionais' },
+            { id: 'ESAJ', nome: 'e-SAJ (Nacional)', url: 'https://www.esaj.jus.br/', grupo: 'nacionais' },
+            { id: 'PROJUDI', nome: 'PROJUDI (Nacional)', url: 'https://projudi.cnj.jus.br/', grupo: 'nacionais' },
+            { id: 'TJPR', nome: 'TJPR', url: 'https://www.tjpr.jus.br/', grupo: 'PR' },
+            { id: 'TRF4', nome: 'TRF4', url: 'https://www.trf4.jus.br/', grupo: 'PR' },
+            { id: 'TRT9', nome: 'TRT9', url: 'https://www.trt9.jus.br/', grupo: 'PR' },
+            { id: 'TJSP', nome: 'TJSP', url: 'https://www.tjsp.jus.br/', grupo: 'SP' },
+            { id: 'TRF3', nome: 'TRF3', url: 'https://www.trf3.jus.br/', grupo: 'SP' },
+            { id: 'TRT2', nome: 'TRT2', url: 'https://www.trt2.jus.br/', grupo: 'SP' },
+            { id: 'TJRJ', nome: 'TJRJ', url: 'https://www.tjrj.jus.br/', grupo: 'RJ' },
+            { id: 'TRF2', nome: 'TRF2', url: 'https://www.trf2.jus.br/', grupo: 'RJ' },
+            { id: 'TRT1', nome: 'TRT1', url: 'https://www.trt1.jus.br/', grupo: 'RJ' },
+            { id: 'TJMG', nome: 'TJMG', url: 'https://www.tjmg.jus.br/', grupo: 'MG' },
+            { id: 'TRF1', nome: 'TRF1', url: 'https://www.trf1.jus.br/', grupo: 'MG' },
+            { id: 'TRT3', nome: 'TRT3', url: 'https://www.trt3.jus.br/', grupo: 'MG' },
+            { id: 'TJRS', nome: 'TJRS', url: 'https://www.tjrs.jus.br/', grupo: 'RS' },
+            { id: 'TRF4_RS', nome: 'TRF4 (RS)', url: 'https://www.trf4.jus.br/', grupo: 'RS' },
+            { id: 'TRT4', nome: 'TRT4', url: 'https://www.trt4.jus.br/', grupo: 'RS' },
+            { id: 'TJSC', nome: 'TJSC', url: 'https://www.tjsc.jus.br/', grupo: 'SC' },
+            { id: 'TRF4_SC', nome: 'TRF4 (SC)', url: 'https://www.trf4.jus.br/', grupo: 'SC' },
+            { id: 'TRT12', nome: 'TRT12', url: 'https://www.trt12.jus.br/', grupo: 'SC' },
+            { id: 'TJBA', nome: 'TJBA', url: 'https://www.tjba.jus.br/', grupo: 'BA' },
+            { id: 'TRF1_BA', nome: 'TRF1 (BA)', url: 'https://www.trf1.jus.br/', grupo: 'BA' },
+            { id: 'TRT5', nome: 'TRT5', url: 'https://www.trt5.jus.br/', grupo: 'BA' },
+            { id: 'TJDF', nome: 'TJDFT', url: 'https://www.tjdft.jus.br/', grupo: 'DF' },
+            { id: 'TRF1_DF', nome: 'TRF1 (DF)', url: 'https://www.trf1.jus.br/', grupo: 'DF' },
+            { id: 'TRT10', nome: 'TRT10', url: 'https://www.trt10.jus.br/', grupo: 'DF' },
+            { id: 'TJGO', nome: 'TJGO', url: 'https://www.tjgo.jus.br/', grupo: 'GO' },
+            { id: 'TRF1_GO', nome: 'TRF1 (GO)', url: 'https://www.trf1.jus.br/', grupo: 'GO' },
+            { id: 'TRT18', nome: 'TRT18', url: 'https://www.trt18.jus.br/', grupo: 'GO' },
+            { id: 'TJMS', nome: 'TJMS', url: 'https://www.tjms.jus.br/', grupo: 'MS' },
+            { id: 'TRF3_MS', nome: 'TRF3 (MS)', url: 'https://www.trf3.jus.br/', grupo: 'MS' },
+            { id: 'TRT24', nome: 'TRT24', url: 'https://www.trt24.jus.br/', grupo: 'MS' },
+            { id: 'TJMT', nome: 'TJMT', url: 'https://www.tjmt.jus.br/', grupo: 'MT' },
+            { id: 'TRF1_MT', nome: 'TRF1 (MT)', url: 'https://www.trf1.jus.br/', grupo: 'MT' },
+            { id: 'TRT23', nome: 'TRT23', url: 'https://www.trt23.jus.br/', grupo: 'MT' },
+            { id: 'TJES', nome: 'TJES', url: 'https://www.tjes.jus.br/', grupo: 'ES' },
+            { id: 'TRF2_ES', nome: 'TRF2 (ES)', url: 'https://www.trf2.jus.br/', grupo: 'ES' },
+            { id: 'TRT17', nome: 'TRT17', url: 'https://www.trt17.jus.br/', grupo: 'ES' },
+            { id: 'TJPE', nome: 'TJPE', url: 'https://www.tjpe.jus.br/', grupo: 'PE' },
+            { id: 'TRF5', nome: 'TRF5', url: 'https://www.trf5.jus.br/', grupo: 'PE' },
+            { id: 'TRT6', nome: 'TRT6', url: 'https://www.trt6.jus.br/', grupo: 'PE' },
+            { id: 'TJCE', nome: 'TJCE', url: 'https://www.tjce.jus.br/', grupo: 'CE' },
+            { id: 'TRF5_CE', nome: 'TRF5 (CE)', url: 'https://www.trf5.jus.br/', grupo: 'CE' },
+            { id: 'TRT7', nome: 'TRT7', url: 'https://www.trt7.jus.br/', grupo: 'CE' },
+            { id: 'TJAM', nome: 'TJAM', url: 'https://www.tjam.jus.br/', grupo: 'AM' },
+            { id: 'TRF1_AM', nome: 'TRF1 (AM)', url: 'https://www.trf1.jus.br/', grupo: 'AM' },
+            { id: 'TRT11', nome: 'TRT11', url: 'https://www.trt11.jus.br/', grupo: 'AM' },
+            { id: 'TJPA', nome: 'TJPA', url: 'https://www.tjpa.jus.br/', grupo: 'PA' },
+            { id: 'TRF1_PA', nome: 'TRF1 (PA)', url: 'https://www.trf1.jus.br/', grupo: 'PA' },
+            { id: 'TRT8', nome: 'TRT8', url: 'https://www.trt8.jus.br/', grupo: 'PA' },
+            { id: 'TJMA', nome: 'TJMA', url: 'https://www.tjma.jus.br/', grupo: 'MA' },
+            { id: 'TRF1_MA', nome: 'TRF1 (MA)', url: 'https://www.trf1.jus.br/', grupo: 'MA' },
+            { id: 'TRT16', nome: 'TRT16', url: 'https://www.trt16.jus.br/', grupo: 'MA' },
+            { id: 'TJPB', nome: 'TJPB', url: 'https://www.tjpb.jus.br/', grupo: 'PB' },
+            { id: 'TRF5_PB', nome: 'TRF5 (PB)', url: 'https://www.trf5.jus.br/', grupo: 'PB' },
+            { id: 'TRT13', nome: 'TRT13', url: 'https://www.trt13.jus.br/', grupo: 'PB' },
+            { id: 'TJRN', nome: 'TJRN', url: 'https://www.tjrn.jus.br/', grupo: 'RN' },
+            { id: 'TRF5_RN', nome: 'TRF5 (RN)', url: 'https://www.trf5.jus.br/', grupo: 'RN' },
+            { id: 'TRT21', nome: 'TRT21', url: 'https://www.trt21.jus.br/', grupo: 'RN' },
+            { id: 'TJAL', nome: 'TJAL', url: 'https://www.tjal.jus.br/', grupo: 'AL' },
+            { id: 'TRF5_AL', nome: 'TRF5 (AL)', url: 'https://www.trf5.jus.br/', grupo: 'AL' },
+            { id: 'TRT19', nome: 'TRT19', url: 'https://www.trt19.jus.br/', grupo: 'AL' },
+            { id: 'TJSE', nome: 'TJSE', url: 'https://www.tjse.jus.br/', grupo: 'SE' },
+            { id: 'TRF5_SE', nome: 'TRF5 (SE)', url: 'https://www.trf5.jus.br/', grupo: 'SE' },
+            { id: 'TRT20', nome: 'TRT20', url: 'https://www.trt20.jus.br/', grupo: 'SE' },
+            { id: 'TJPI', nome: 'TJPI', url: 'https://www.tjpi.jus.br/', grupo: 'PI' },
+            { id: 'TRF1_PI', nome: 'TRF1 (PI)', url: 'https://www.trf1.jus.br/', grupo: 'PI' },
+            { id: 'TRT22', nome: 'TRT22', url: 'https://www.trt22.jus.br/', grupo: 'PI' },
+            { id: 'TJRO', nome: 'TJRO', url: 'https://www.tjro.jus.br/', grupo: 'RO' },
+            { id: 'TRF1_RO', nome: 'TRF1 (RO)', url: 'https://www.trf1.jus.br/', grupo: 'RO' },
+            { id: 'TRT14_RO', nome: 'TRT14 (RO)', url: 'https://www.trt14.jus.br/', grupo: 'RO' },
+            { id: 'TJAC', nome: 'TJAC', url: 'https://www.tjac.jus.br/', grupo: 'AC' },
+            { id: 'TRF1_AC', nome: 'TRF1 (AC)', url: 'https://www.trf1.jus.br/', grupo: 'AC' },
+            { id: 'TRT14_AC', nome: 'TRT14 (AC)', url: 'https://www.trt14.jus.br/', grupo: 'AC' },
+            { id: 'TJRR', nome: 'TJRR', url: 'https://www.tjrr.jus.br/', grupo: 'RR' },
+            { id: 'TRF1_RR', nome: 'TRF1 (RR)', url: 'https://www.trf1.jus.br/', grupo: 'RR' },
+            { id: 'TRT11_RR', nome: 'TRT11 (RR)', url: 'https://www.trt11.jus.br/', grupo: 'RR' },
+            { id: 'TJAP', nome: 'TJAP', url: 'https://www.tjap.jus.br/', grupo: 'AP' },
+            { id: 'TRF1_AP', nome: 'TRF1 (AP)', url: 'https://www.trf1.jus.br/', grupo: 'AP' },
+            { id: 'TRT8_AP', nome: 'TRT8 (AP)', url: 'https://www.trt8.jus.br/', grupo: 'AP' },
+            { id: 'TJTO', nome: 'TJTO', url: 'https://www.tjto.jus.br/', grupo: 'TO' },
+            { id: 'TRF1_TO', nome: 'TRF1 (TO)', url: 'https://www.trf1.jus.br/', grupo: 'TO' },
+            { id: 'TRT10_TO', nome: 'TRT10 (TO)', url: 'https://www.trt10.jus.br/', grupo: 'TO' },
         ];
 
         const NOME_EXIBICAO_ESTADO = {
-            superiores: 'Tribunais Superiores',
-            nacionais: 'Sistemas Nacionais'
+            'superiores': 'Tribunais Superiores',
+            'nacionais': 'Sistemas Nacionais',
+            'PR': 'Paraná (PR)', 'SP': 'São Paulo (SP)', 'RJ': 'Rio de Janeiro (RJ)', 'MG': 'Minas Gerais (MG)',
+            'RS': 'Rio Grande do Sul (RS)', 'SC': 'Santa Catarina (SC)', 'BA': 'Bahia (BA)', 'DF': 'Distrito Federal (DF)',
+            'GO': 'Goiás (GO)', 'MS': 'Mato Grosso do Sul (MS)', 'MT': 'Mato Grosso (MT)', 'ES': 'Espírito Santo (ES)',
+            'PE': 'Pernambuco (PE)', 'CE': 'Ceará (CE)', 'AM': 'Amazonas (AM)', 'PA': 'Pará (PA)',
+            'MA': 'Maranhão (MA)', 'PB': 'Paraíba (PB)', 'RN': 'Rio Grande do Norte (RN)', 'AL': 'Alagoas (AL)',
+            'SE': 'Sergipe (SE)', 'PI': 'Piauí (PI)', 'RO': 'Rondônia (RO)', 'AC': 'Acre (AC)',
+            'RR': 'Roraima (RR)', 'AP': 'Amapá (AP)', 'TO': 'Tocantins (TO)'
         };
 
-        function fecharTodosModais() {
-            MODAIS_IDS.forEach(id => {
-                const modal = document.getElementById(id);
-                if (modal) modal.classList.add('hidden');
-            });
+        let statusGerais = {}; // Objeto para armazenar o status de todos os tribunais
+        let relatosComunidade = {}; // Objeto para armazenar relatos da comunidade
+        let tribunalSelecionadoReportar = '';
+        let tipoProblemaSelecionado = '';
+
+        // Helper para obter nome de exibição do estado
+        function obterNomeExibicaoEstado(uf) {
+            return NOME_EXIBICAO_ESTADO[uf] || uf;
         }
 
-        document.addEventListener('keydown', (event) => {
+        // Helper para obter classes de status visual
+        function obterVisualStatus(statusStr) {
+            let dotClass = "bg-gray-600";
+            let badgeClass = "bg-gray-700 text-gray-300"; // Default para "Sem Varredura"
+
+            if (statusStr === "Online") {
+                dotClass = "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]";
+                badgeClass = "bg-green-950/30 text-green-400";
+            } else if (statusStr === "Lentidão") {
+                dotClass = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]";
+                badgeClass = "bg-amber-950/30 text-amber-400";
+            } else if (statusStr === "Fora do Ar") {
+                dotClass = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]";
+                badgeClass = "bg-red-950/30 text-red-400";
+            }
+            return { dot: dotClass, badge: badgeClass };
+        }
+
+        // Função para fechar todos os modais
+        function fecharTodosModais() {
+            const modais = document.querySelectorAll('.fixed.inset-0.z-50');
+            modais.forEach(modal => modal.classList.add('hidden'));
+        }
+
+        // Event listener para fechar modais com a tecla ESC
+        document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 fecharTodosModais();
             }
         });
 
-        function obterNomeExibicaoEstado(uf) {
-            return NOME_EXIBICAO_ESTADO[uf] || uf;
-        }
-
-        function obterVisualStatus(statusStr) {
-            if (statusStr === 'Online') {
-                return {
-                    dot: 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]',
-                    badge: 'bg-green-500/10 text-green-300 border border-green-500/20'
-                };
-            }
-
-            if (statusStr === 'Lentidão') {
-                return {
-                    dot: 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]',
-                    badge: 'bg-amber-500/10 text-amber-300 border border-amber-500/20'
-                };
-            }
-
-            if (statusStr === 'Fora do Ar') {
-                return {
-                    dot: 'bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.6)]',
-                    badge: 'bg-red-500/10 text-red-300 border border-red-500/20'
-                };
-            }
-
-            return {
-                dot: 'bg-gray-600',
-                badge: 'bg-gray-700/60 text-gray-300 border border-gray-600/60'
-            };
-        }
-
-        function atualizarStatusPjeOffice(texto, tipo = 'pending') {
+        // Função para atualizar o status do PJe Office
+        function atualizarStatusPjeOffice(texto, tipo) {
             const statusElement = document.getElementById('statusPjeOffice');
             if (!statusElement) return;
 
-            statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors';
-
             if (tipo === 'success') {
-                statusElement.classList.add('border-green-800/40', 'bg-green-950/30', 'text-green-400');
-            } else if (tipo === 'error') {
-                statusElement.classList.add('border-gray-300', 'bg-white', 'text-black');
-            } else {
-                statusElement.classList.add('border-slate-700', 'bg-slate-950/60', 'text-slate-300');
+                statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-green-800/40 bg-green-950/30 text-green-400';
+            } else if (tipo === 'failure') {
+                statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-gray-300 bg-white text-black';
+            } else { // pending ou default
+                statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-slate-700 bg-slate-950/60 text-slate-300';
             }
-
             statusElement.innerText = texto;
         }
 
@@ -739,6 +684,8 @@
             document.getElementById('modalReportar').classList.remove('hidden');
             document.getElementById('reportarPasso1').classList.remove('hidden');
             document.getElementById('reportarPasso2').classList.add('hidden');
+            document.getElementById('btnProximoPassoReportar').classList.remove('hidden');
+            document.getElementById('btnEnviarRelato').classList.add('hidden');
             carregarTribunaisReportar();
 
             const select = document.getElementById('selectTribunalReportar');
@@ -794,11 +741,7 @@
 
         // Funções do Teste PJe Office Pro (ATUALIZADAS)
         async function iniciarTestePjeOffice() {
-            const statusElement = document.getElementById('statusPjeOffice');
-            if (!statusElement) return;
-
-            statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-slate-700 bg-slate-950/60 text-slate-300';
-            statusElement.innerText = 'Verificando...';
+            atualizarStatusPjeOffice('Verificando...', 'pending');
 
             const pjeOfficeUrl = 'https://127.0.0.1:7080/';
             const timeout = 5000;
@@ -814,12 +757,9 @@
                 });
 
                 clearTimeout(id);
-
-                statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-green-800/40 bg-green-950/30 text-green-400';
-                statusElement.innerText = 'Sucesso: o PJe Office Pro respondeu corretamente.';
+                atualizarStatusPjeOffice('Sucesso: o PJe Office Pro respondeu corretamente.', 'success');
             } catch (error) {
-                statusElement.className = 'mt-4 rounded-xl border px-3 py-2 text-sm font-semibold transition-colors border-gray-300 bg-white text-black';
-                statusElement.innerText = 'O teste não funcionou.';
+                atualizarStatusPjeOffice('O teste não funcionou.', 'failure');
                 console.error('Erro ao testar PJe Office:', error);
             }
         }
@@ -901,6 +841,8 @@
             }
             document.getElementById('reportarPasso1').classList.add('hidden');
             document.getElementById('reportarPasso2').classList.remove('hidden');
+            document.getElementById('btnProximoPassoReportar').classList.add('hidden');
+            document.getElementById('btnEnviarRelato').classList.remove('hidden');
         }
 
         async function enviarRelato() {
@@ -938,7 +880,7 @@
 
         function selecionarProblema(problema) {
             tipoProblemaSelecionado = problema;
-            // Opcional: Adicionar feedback visual para o botão selecionado
+            // Adicionar feedback visual para o botão selecionado
             const botoesProblema = document.querySelectorAll('#reportarPasso2 button');
             botoesProblema.forEach(btn => {
                 btn.classList.remove('border-blue-500/80', 'bg-blue-800/40');
