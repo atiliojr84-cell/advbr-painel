@@ -10,10 +10,11 @@ export default function Ticker() {
     fetch('/api/noticias')
       .then((res) => res.json())
       .then((data) => {
-        // Garantimos que apenas notícias únicas sejam setadas
-        const uniqueNoticias = Array.from(new Set(data.noticias.map((n: any) => n.texto)))
-          .map(texto => data.noticias.find((n: any) => n.texto === texto));
-        setNoticias(uniqueNoticias);
+        // Garantindo unicidade absoluta
+        const unique = data.noticias.filter((v: any, i: any, a: any) => 
+          a.findIndex((t: any) => t.texto === v.texto) === i
+        );
+        setNoticias(unique);
       })
       .catch(() => console.error("Erro ao carregar notícias"));
   }, []);
@@ -21,12 +22,12 @@ export default function Ticker() {
   if (noticias.length === 0) return null;
 
   return (
-    <div className="w-full bg-slate-950 text-slate-300 py-2 overflow-hidden border-b border-slate-800 relative h-10 flex items-center">
+    <div className="w-full bg-slate-950 text-slate-300 py-3 overflow-hidden border-b border-slate-800 h-12 flex items-center">
       <motion.div 
-        className="flex whitespace-nowrap absolute"
-        // Inicia da direita para a esquerda continuamente
+        className="flex whitespace-nowrap"
+        // Aumentei a duração para 60 segundos para ficar lento e profissional
         animate={{ x: ["100%", "-100%"] }}
-        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
       >
         {noticias.map((item, index) => (
           <a 
@@ -34,9 +35,9 @@ export default function Ticker() {
             href={item.url} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center mx-8 hover:text-blue-400 transition-colors font-medium text-sm shrink-0"
+            className="flex items-center mx-10 hover:text-blue-400 transition-colors font-medium text-sm shrink-0"
           >
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 animate-pulse" />
+            <span className="w-2 h-2 bg-blue-500 rounded-full mr-3" />
             {item.texto}
           </a>
         ))}
