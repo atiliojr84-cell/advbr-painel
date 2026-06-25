@@ -1,3 +1,6 @@
+// api/reportar-problema.js
+import { kv } from '@vercel/kv'; // Usaremos a biblioteca @vercel/kv para simplificar a interação
+
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
 
@@ -6,72 +9,49 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Garante que req.body é um objeto, independentemente do Content-Type
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body || {};
 
-    const tribunal = body.tribunal || body.tribunalId;
-    const description = body.description || body.problema;
+    const tribunalId = body.tribunalId || body.tribunal; // Usar tribunalId para consistência
+    const problemaTipo = body.problemaTipo || body.description || body.problema; // Usar problemaTipo para consistência
+    const observacao = body.observacao || ''; // Campo opcional
 
-    if (!tribunal || !description) {
+    if (!tribunalId || !problemaTipo) {
       return res.status(400).json({
-        message: 'Tribunal e descrição do problema são obrigatórios.'
+        message: 'Tribunal e tipo de problema são obrigatórios.'
       });
     }
 
-    const url = process.env.KV_REST_API_URL;
-    const token = process.env.KV_REST_API_TOKEN;
+    // --- Lógica para guardar a lista detalhada de relatos (com expiração) ---
+    const keyListaRelatos = `relatos_detalhe:${tribunalId}`; // Chave para a lista detalhada
+    const TTL_SECONDS = 12 * 60 * 60; // 12 horas em segundos
 
-    if (!url || !token) {
-      return res.status(500).json({
-        message: 'Variáveis do Upstash não configuradas.'
-      });
-    }
-
-    const key = `relatos:${tribunal}`;
-
-    // Lê relatos existentes
     let existentes = [];
-    const getRes = await fetch(`${url}/get/${encodeURIComponent(key)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    if (getRes.ok) {
-      const getData = await getRes.json();
-      if (getData?.result) {
-        try {
-          existentes = JSON.parse(getData.result);
-          if (!Array.isArray(existentes)) existentes = [];
-        } catch {
-          existentes = [];
+    try {
+        const existingData = await kv.get(keyListaRelatos);
+        if (existingData && Array.isArray(existingData)) {
+            existentes = existingData;
         }
-      }
+    } catch (error) {
+        console.warn(`Não foi possível recuperar lista existente para ${keyListaRelatos}, iniciando nova.`, error);
     }
 
     const novoRelato = {
-      tribunal,
-      description,
+      tribunalId,
+      problemaTipo,
+      observacao,
       createdAt: new Date().toISOString()
     };
 
-    existentes.unshift(novoRelato);
+    existentes.unshift(novoRelato); // Adiciona o novo relato no início da lista
 
-    const setRes = await fetch(`${url}/set/${encodeURIComponent(key)}`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(existentes)
-    });
+    // Salva a lista atualizada e define/reseta a expiração
+    await kv.set(keyListaRelatos, existentes, { ex: TTL_SECONDS });
 
-    if (!setRes.ok) {
-      const texto = await setRes.text();
-      return res.status(500).json({
-        message: 'Falha ao salvar no Upstash.',
-        details: texto
-      });
-    }
+    // --- Lógica para os contadores agregados por tipo de problema (com expiração) ---
+    const keyContador = `relatos_contador:${tribunalId}:${problemaTipo}`;
+    await kv.incr(keyContador); // Incrementa o contador
+    await kv.expire(keyContador, TTL_SECONDS); // Define/reseta a expiração para o contador
 
     return res.status(201).json({
       message: 'Relato salvo com sucesso.',
