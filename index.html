@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Script para a biblioteca pdf-lib (para manipulação de PDF no navegador) -->
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-    <!-- Script para JSZip (para criar arquivos ZIP) - ADICIONADO -->
+    <!-- Script para JSZip (para criar arquivos ZIP) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; overflow-x: hidden; }
@@ -164,93 +164,94 @@
                     </h2>
                     <p class="text-xs text-gray-500 leading-relaxed">Evite travamentos no dia a dia jurídico utilizando hardware testado por especialistas.</p>
                 </div>
-                <div class="flex items-center gap-2.5 text-base font-bold text-green-400 bg-green-950/20 border border-green-900/40 p-3 rounded-xl lg:self-center">
-                    <i class="fa-solid fa-shield-halved text-xl"></i><span>Links testados e seguros, somente lojas oficiais.</span>
-                </div>
+                <a href="https://advbr.info/equipamentos" target="_blank" class="w-full lg:w-auto flex-none bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-blue-500/50 text-gray-300 hover:text-blue-400 text-sm font-semibold px-4 py-2 rounded-xl transition flex items-center justify-center gap-2 active:scale-95 shadow-sm whitespace-nowrap">
+                    Ver todos os equipamentos <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
             </div>
             <div class="products-carousel" id="carrosselEquipamentos">
-                <a href="https://www.amazon.com.br/dp/B08G8J535M" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Monitor Dell 24'' Full HD</h3>
-                    <p class="text-sm text-gray-400">Ideal para multitarefas.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 999,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">Amazon <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.kabum.com.br/produto/157400/notebook-gamer-acer-nitro-5-intel-core-i5-10300h-8gb-ram-512gb-ssd-nvidia-geforce-gtx-1650-15-6-full-hd-windows-10-an515-55-592a" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Notebook Gamer Acer Nitro 5</h3>
-                    <p class="text-sm text-gray-400">Alta performance para o dia a dia.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 5.499,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">KaBuM! <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.magazineluiza.com.br/impressora-multifuncional-epson-ecotank-l3150-tanque-de-tinta-wi-fi-usb-colorida/p/222047800/in/impr/" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Impressora Epson EcoTank L3150</h3>
-                    <p class="text-sm text-gray-400">Economia e qualidade de impressão.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 1.299,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">Magazine Luiza <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.mercadolivre.com.br/ssd-kingston-a400-sa400s37480g-480gb/p/MLB8707094" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">SSD Kingston A400 480GB</h3>
-                    <p class="text-sm text-gray-400">Velocidade e desempenho para seu PC.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 289,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">Mercado Livre <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br/Logitech-C920s-Webcam-Full-Privacy/dp/B07S475G6X" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Webcam Logitech C920s Pro HD</h3>
-                    <p class="text-sm text-gray-400">Qualidade profissional para reuniões.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 499,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">Amazon <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.kabum.com.br/produto/101000/roteador-tp-link-archer-c6-ac1200-dual-band-gigabit-4-antenas-externas-1-interna" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Roteador TP-Link Archer C6 AC1200</h3>
-                    <p class="text-sm text-gray-400">Conexão estável e rápida.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 249,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">KaBuM! <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.magazineluiza.com.br/mouse-sem-fio-logitech-m90-usb-preto/p/218360600/in/mous/" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Mouse Sem Fio Logitech M90</h3>
-                    <p class="text-sm text-gray-400">Conforto e precisão.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 79,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">Magazine Luiza <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.mercadolivre.com.br/teclado-multilaser-slim-usb-tc203-preto/p/MLB15934360" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Teclado Multilaser Slim USB</h3>
-                    <p class="text-sm text-gray-400">Design compacto e funcional.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 59,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">Mercado Livre <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.amazon.com.br/Monitor-Samsung-FHD-HDMI-VGA/dp/B08F22X5M9" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Monitor Samsung 22'' Full HD</h3>
-                    <p class="text-sm text-gray-400">Opção compacta e eficiente.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 799,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">Amazon <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
-                <a href="https://www.kabum.com.br/produto/123456/cadeira-gamer-elements-vanguard-preta-e-azul" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
-                    <h3 class="font-semibold text-gray-100">Cadeira Gamer Elements Vanguard</h3>
-                    <p class="text-sm text-gray-400">Conforto para longas horas de trabalho.</p>
-                    <p class="text-lg font-bold text-blue-400">R$ 1.199,00</p>
-                    <span class="text-blue-500 hover:underline text-sm">KaBuM! <i class="fa-solid fa-external-link-alt ml-1"></i></span>
-                </a>
+                <!-- Os produtos serão carregados aqui via JS -->
             </div>
         </section>
 
     </div>
 
     <!-- Modais -->
-    <!-- Modal de Estado/Grupo -->
+    <!-- Modal para Reportar Problema -->
+    <div id="modalReportar" class="app-modal-backdrop hidden">
+        <div class="modal-shell">
+            <div class="modal-header flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 class="text-lg font-semibold text-gray-200">Reportar Problema</h3>
+                <button onclick="fecharModal('modalReportar')" class="text-gray-400 hover:text-gray-200 text-xl">&times;</button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="text-gray-300 mb-4">Selecione o tribunal e o tipo de problema que você está enfrentando. Isso nos ajuda a monitorar e alertar a comunidade.</p>
+                <form id="formReportarProblema" class="space-y-4">
+                    <div>
+                        <label for="tribunalSelect" class="block text-sm font-medium text-gray-400 mb-1">Tribunal:</label>
+                        <select id="tribunalSelect" name="tribunalId" class="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="">Selecione um tribunal</option>
+                            <!-- Opções carregadas via JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label for="problemaTipo" class="block text-sm font-medium text-gray-400 mb-1">Tipo de Problema:</label>
+                        <select id="problemaTipo" name="tipo" class="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="Fora do Ar">Fora do Ar</option>
+                            <option value="Lentidão">Lentidão</option>
+                            <option value="Falha no Login">Falha no Login</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="observacao" class="block text-sm font-medium text-gray-400 mb-1">Observação (opcional):</label>
+                        <textarea id="observacao" name="observacao" rows="3" class="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Descreva brevemente o problema..."></textarea>
+                    </div>
+                    <div id="reportarStatus" class="text-sm font-semibold mt-4"></div>
+                    <div class="modal-footer flex justify-end">
+                        <button type="submit" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white text-sm font-medium">Enviar Relato</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Resumo de Relatos -->
+    <div id="modalResumoRelatos" class="app-modal-backdrop hidden">
+        <div class="modal-shell">
+            <div class="modal-header flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 class="text-lg font-semibold text-gray-200">Relatos Ativos da Comunidade</h3>
+                <button onclick="fecharModal('modalResumoRelatos')" class="text-gray-400 hover:text-gray-200 text-xl">&times;</button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="text-gray-300 mb-4">Aqui você encontra os problemas reportados por outros advogados nas últimas 12 horas.</p>
+                <div id="resumoRelatosConteudo" class="space-y-3">
+                    <!-- Conteúdo carregado via JS -->
+                </div>
+            </div>
+            <div class="modal-footer flex justify-between items-center">
+                <button onclick="gerarRelatorioRelatosPdf()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> Gerar PDF
+                </button>
+                <button onclick="fecharModal('modalResumoRelatos')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Detalhes do Estado/Grupo -->
     <div id="modalEstado" class="app-modal-backdrop hidden">
         <div class="modal-shell">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Tribunais de <span id="estadoNome"></span></h3>
-                <button onclick="fecharModal('modalEstado')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+            <div class="modal-header flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 class="text-lg font-semibold text-gray-200" id="estadoNome"></h3>
+                <button onclick="fecharModal('modalEstado')" class="text-gray-400 hover:text-gray-200 text-xl">&times;</button>
             </div>
-            <div class="modal-body">
-                <div id="linksTribunais" class="space-y-3">
-                    <!-- Links dos tribunais serão carregados aqui -->
+            <div class="modal-body p-4">
+                <p class="text-gray-300 mb-4">Status detalhado dos portais deste grupo/estado.</p>
+                <div id="linksTribunais" class="space-y-2">
+                    <!-- Links dos tribunais carregados via JS -->
                 </div>
-                <!-- Esta div estava no HTML original, mas agora os relatos são exibidos abaixo de cada tribunal -->
                 <div id="relatosComunidadeEstado" class="mt-4 space-y-2 hidden">
-                    <h4 class="font-semibold text-gray-300">Relatos da Comunidade:</h4>
+                    <!-- Relatos da comunidade carregados via JS (oculto por padrão) -->
                 </div>
             </div>
             <div class="modal-footer flex justify-end">
@@ -259,143 +260,48 @@
         </div>
     </div>
 
-    <!-- Modal de Reportar Problema -->
-    <div id="modalReportar" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Reportar Problema</h3>
-                <button onclick="fecharModal('modalReportar')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <form id="formReportarProblema" onsubmit="enviarRelato(event)">
-                <div class="modal-body space-y-4">
-                    <div>
-                        <label for="reportTribunalSelect" class="block text-sm font-medium text-gray-300 mb-1">Tribunal:</label>
-                        <select id="reportTribunalSelect" name="tribunal" required class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Selecione um Tribunal</option>
-                            <!-- Opções carregadas via JS -->
-                        </select>
-                    </div>
-                    <div>
-                        <label for="reportTipoProblema" class="block text-sm font-medium text-gray-300 mb-1">Tipo de Problema:</label>
-                        <select id="reportTipoProblema" name="tipoProblema" required class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="">Selecione o Tipo</option>
-                            <option value="Fora do Ar">Fora do Ar</option>
-                            <option value="Lentidão">Lentidão</option>
-                            <option value="Falha no Login">Falha no Login</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="reportObservacao" class="block text-sm font-medium text-gray-300 mb-1">Observação (opcional):</label>
-                        <textarea id="reportObservacao" name="observacao" rows="3" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Descreva brevemente o problema..."></textarea>
-                    </div>
-                    <p id="reportStatus" class="text-sm font-semibold text-center"></p>
-                </div>
-                <div class="modal-footer flex justify-end">
-                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Enviar Relato</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Resumo de Relatos -->
-    <div id="modalResumoRelatos" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Resumo de Relatos Ativos</h3>
-                <button onclick="fecharModal('modalResumoRelatos')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <div class="modal-body space-y-3">
-                <p class="text-sm text-gray-400">Os dados abaixo refletem os relatos da comunidade nas últimas 12 horas. Após esse período, os relatos são automaticamente removidos.</p>
-                <div id="resumoRelatosConteudo" class="space-y-2">
-                    <!-- Relatos serão carregados aqui -->
-                </div>
-            </div>
-            <div class="modal-footer flex justify-between items-center">
-                <button onclick="gerarRelatorioRelatosPdf()" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white text-sm font-medium flex items-center gap-2">
-                    <i class="fa-solid fa-file-pdf"></i> Download Relatório
-                </button>
-                <button onclick="fecharModal('modalResumoRelatos')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium">Fechar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Otimizador de PDF -->
+    <!-- Modal para Otimizador de PDF -->
     <div id="modalPdfOptimizer" class="app-modal-backdrop hidden">
         <div class="modal-shell">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Ferramentas de PDF</h3>
-                <button onclick="fecharModal('modalPdfOptimizer')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+            <div class="modal-header flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 class="text-lg font-semibold text-gray-200">Ferramentas de PDF</h3>
+                <button onclick="fecharModal('modalPdfOptimizer')" class="text-gray-400 hover:text-gray-200 text-xl">&times;</button>
             </div>
-            <div class="modal-body space-y-4">
-                <p class="text-sm text-gray-300">
-                    Utilize as ferramentas abaixo para ajustar seus arquivos PDF.
+            <div class="modal-body p-4">
+                <p class="text-gray-300 mb-4">
+                    Seu PDF excede o limite de tamanho do tribunal? Use esta ferramenta para dividi-lo automaticamente em partes menores, mantendo cada arquivo dentro do limite que você definir.
                 </p>
-
-                <!-- Seção de Divisão Inteligente de PDF -->
-                <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 space-y-3">
-                    <h4 class="font-bold text-gray-200 flex items-center gap-2"><i class="fa-solid fa-scissors text-blue-400"></i> Dividir PDF por Tamanho</h4>
-                    <p class="text-xs text-gray-400">
-                        Seu PDF excede o limite de tamanho do tribunal? Divida-o automaticamente em partes menores, mantendo cada arquivo dentro do limite que você definir.
-                    </p>
+                <div class="space-y-4">
                     <div>
-                        <label for="pdfInput" class="block text-sm font-medium text-gray-300 mb-1">Selecione o arquivo PDF:</label>
-                        <input type="file" id="pdfInput" accept=".pdf" class="w-full text-sm text-gray-400
-                            file:mr-4 file:py-2 file:px-4
-                            file:rounded-full file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-blue-500 file:text-white
-                            hover:file:bg-blue-600 cursor-pointer" />
+                        <label for="pdfInput" class="block text-sm font-medium text-gray-400 mb-1">Selecione o arquivo PDF:</label>
+                        <input type="file" id="pdfInput" accept=".pdf" class="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <div>
-                        <label for="limiteMbInput" class="block text-sm font-medium text-gray-300 mb-1">Limite de tamanho por arquivo (MB):</label>
-                        <input type="number" id="limiteMbInput" value="10" min="1" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Ex: 10" />
+                        <label for="limiteMbInput" class="block text-sm font-medium text-gray-400 mb-1">Limite de tamanho por arquivo (MB):</label>
+                        <input type="number" id="limiteMbInput" value="10" min="1" class="w-full p-2 bg-gray-800 border border-gray-700 rounded-md text-gray-200 focus:ring-blue-500 focus:border-blue-500">
                     </div>
-                    <button onclick="dividirPdf()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-cut"></i> Dividir PDF
-                    </button>
+                    <p id="pdfOptimizerStatus" class="text-sm font-semibold mt-4"></p>
                 </div>
-
-                <!-- Seção de Otimização de Qualidade (Futura) -->
-                <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 space-y-3 opacity-50 cursor-not-allowed">
-                    <h4 class="font-bold text-gray-200 flex items-center gap-2"><i class="fa-solid fa-compress text-gray-400"></i> Otimizar Qualidade do PDF (Em Breve)</h4>
-                    <p class="text-xs text-gray-400">
-                        Reduza o tamanho do seu PDF diminuindo a qualidade de imagens (DPI), ideal para arquivos muito grandes que não precisam de alta resolução.
-                    </p>
-                    <button class="w-full px-4 py-2 bg-gray-700 rounded-lg text-gray-400 text-sm font-medium flex items-center justify-center gap-2" disabled>
-                        <i class="fa-solid fa-cog"></i> Otimizar PDF
-                    </button>
-                </div>
-
-                <p id="pdfOptimizerStatus" class="text-sm font-semibold text-center mt-4"></p>
             </div>
             <div class="modal-footer flex justify-end">
-                <button onclick="fecharModal('modalPdfOptimizer')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium">Fechar</button>
+                <button onclick="dividirPdf()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Dividir PDF</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Teste PJe Office Pro -->
+    <!-- Modal de Pré-Teste PJe Office -->
     <div id="modalPjeOfficePreTest" class="app-modal-backdrop hidden">
         <div class="modal-shell">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Teste PJe Office Pro</h3>
-                <button onclick="fecharModal('modalPjeOfficePreTest')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+            <div class="modal-header flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 class="text-lg font-semibold text-gray-200">Teste PJe Office Pro</h3>
+                <button onclick="fecharModal('modalPjeOfficePreTest')" class="text-gray-400 hover:text-gray-200 text-xl">&times;</button>
             </div>
-            <div class="modal-body">
-                <p class="text-gray-300">Este teste tentará se comunicar com o PJe Office Pro instalado em sua máquina para verificar se está ativo e respondendo.</p>
+            <div class="modal-body p-4">
+                <p class="text-gray-300">Este teste abrirá uma página externa do PJe Office para que você possa validar a instalação e o funcionamento do seu subsistema de assinatura.</p>
                 <p id="pjeOfficeTestStatus" class="text-sm font-semibold mt-4"></p>
             </div>
             <div class="modal-footer flex justify-between items-center">
-                <button onclick="abrirWhatsApp('pjeOffice')" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-medium flex items-center gap-2">
+                <button onclick="abrirWhatsApp('pjeoffice')" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-medium flex items-center gap-2">
                     <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
                 </button>
                 <button onclick="iniciarTestePjeOffice()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Iniciar Teste</button>
@@ -403,16 +309,14 @@
         </div>
     </div>
 
-    <!-- Modal Teste de Token/Certificado -->
+    <!-- Modal de Pré-Teste Token -->
     <div id="modalTokenPreTest" class="app-modal-backdrop hidden">
         <div class="modal-shell">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Teste de Token/Certificado</h3>
-                <button onclick="fecharModal('modalTokenPreTest')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
+            <div class="modal-header flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 class="text-lg font-semibold text-gray-200">Teste de Token OAB / Certificado Digital</h3>
+                <button onclick="fecharModal('modalTokenPreTest')" class="text-gray-400 hover:text-gray-200 text-xl">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body p-4">
                 <p class="text-gray-300">Este teste abrirá uma página externa da Certisign para que você possa validar a instalação e o funcionamento do seu Token OAB ou Certificado Digital.</p>
                 <p id="tokenTestStatus" class="text-sm font-semibold mt-4"></p>
             </div>
@@ -441,228 +345,200 @@
             { id: "stf", nome: "STF - Eletrônico", url: "https://portal.stf.jus.br/processos/listarProcessos.asp", grupo: "superiores", sub: "Supremo Tribunal Federal" },
             { id: "trt9_1g", nome: "TRT9 - PJe 1º Grau", url: "https://pje.trt9.jus.br/primeirograu/login.seam", grupo: "PR", sub: "PJe - Justiça do Trabalho" },
             { id: "trt9_2g", nome: "TRT9 - PJe 2º Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", grupo: "PR", sub: "PJe - Justiça do Trabalho" },
-            { id: "trf4_pr", nome: "TRF4 - Federal PR", url: "https://www.trf4.jus.br/trf4/controlador.php?acao=pagina_inicial", grupo: "PR", sub: "Tribunal Regional Federal" },
+            { id: "trf4_pr", nome: "TRF4 - Federal PR", url: "https://www.trf4.jus.br/trf4/controlador.php?acao=pagina_inicial", grupo: "PR", sub: "Tribunal Regional Federal da 4ª Região" },
             { id: "tjpr_projudi", nome: "TJPR - Projudi", url: "https://projudi.tjpr.jus.br/projudi_web/", grupo: "PR", sub: "Sistema Projudi" },
             { id: "domicilio_cnj", nome: "Domicílio Judicial Eletrônico", url: "https://domicilio-eletronico.pje.jus.br/", grupo: "nacionais", sub: "CNJ" }
         ];
 
+        // Mapeamento de grupos para nomes de exibição
         const NOME_EXIBICAO_ESTADO = {
             "superiores": "Tribunais Superiores",
             "nacionais": "Sistemas Nacionais",
-            "PR": "Paraná (PR)"
+            "PR": "Paraná (PR)",
+            "SP": "São Paulo (SP)"
         };
+
+        // Dados dos produtos (para o carrossel de equipamentos)
+        const produtosHomologados = [
+            {
+                nome: "Monitor Dell UltraSharp U2422H",
+                descricao: "Ergonomia e qualidade de imagem para longas horas de trabalho.",
+                preco: "R$ 1.899,00",
+                link: "https://www.dell.com/pt-br/shop/monitor-dell-ultrasharp-24-u2422h/apd/210-ayte/monitores-e-acess%C3%B3rios"
+            },
+            {
+                nome: "Teclado Mecânico HyperX Alloy Origins Core",
+                descricao: "Durabilidade e conforto para digitação intensa.",
+                preco: "R$ 499,00",
+                link: "https://www.hyperx.com/br/keyboards/alloy-origins-core-mechanical-gaming-keyboard"
+            },
+            {
+                nome: "Mouse Logitech MX Master 3S",
+                descricao: "Precisão e personalização para produtividade.",
+                preco: "R$ 599,00",
+                link: "https://www.logitech.com/pt-br/products/mice/mx-master-3s.910-006557.html"
+            },
+            {
+                nome: "Docking Station Dell WD19S",
+                descricao: "Conectividade completa com um único cabo.",
+                preco: "R$ 1.499,00",
+                link: "https://www.dell.com/pt-br/shop/dell-dock-wd19s-130w/apd/210-azbx/acess%C3%B3rios-para-pc"
+            },
+            {
+                nome: "Headset Jabra Evolve2 65",
+                descricao: "Áudio profissional para chamadas e reuniões online.",
+                preco: "R$ 1.299,00",
+                link: "https://www.jabra.com.br/business/headsets/jabra-evolve2/jabra-evolve2-65"
+            },
+            {
+                nome: "SSD Samsung 970 EVO Plus 1TB",
+                descricao: "Armazenamento rápido e confiável para seus arquivos.",
+                preco: "R$ 699,00",
+                link: "https://www.samsung.com/br/memory-storage/nvme-ssd/970-evo-plus-nvme-m-2-ssd-1tb-mz-v7s1t0bw/"
+            },
+            {
+                nome: "Notebook Dell XPS 15",
+                descricao: "Performance e design premium para o advogado moderno.",
+                preco: "R$ 9.999,00",
+                link: "https://www.dell.com/pt-br/shop/notebooks-dell/novo-xps-15/spd/xps-15-9530-laptop"
+            },
+            {
+                nome: "Impressora Multifuncional Brother MFC-L2720DW",
+                descricao: "Impressão, cópia, digitalização e fax com alta eficiência.",
+                preco: "R$ 2.199,00",
+                link: "https://www.brother.com.br/pt/products/all-printers/printers-for-business/mfc-l2720dw"
+            },
+            {
+                nome: "Câmera Logitech C920s Pro HD Webcam",
+                descricao: "Qualidade de vídeo Full HD para videoconferências.",
+                preco: "R$ 499,00",
+                link: "https://www.logitech.com/pt-br/products/webcams/c920s-pro-hd-webcam.960-001257.html"
+            },
+            {
+                nome: "Roteador Wi-Fi 6 TP-Link Archer AX55",
+                descricao: "Conexão ultrarrápida e estável para todo o escritório.",
+                preco: "R$ 799,00",
+                link: "https://www.tp-link.com/br/home-networking/wifi-router/archer-ax55/"
+            }
+        ];
+
 
         // Funções de Modal
         function abrirModal(id) {
             document.getElementById(id).classList.remove('hidden');
+            document.body.classList.add('overflow-hidden'); // Evita scroll do body
         }
 
         function fecharModal(id) {
             document.getElementById(id).classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
         }
 
-        // Função para abrir o WhatsApp
+        // Funções de Teste
+        function iniciarTestePjeOffice() {
+            document.getElementById('pjeOfficeTestStatus').textContent = 'Redirecionando para o teste do PJe Office...';
+            window.open('https://www.pje.jus.br/wiki/index.php/PJeOffice_Pro_-_Teste_de_Funcionamento', '_blank');
+            setTimeout(() => {
+                document.getElementById('pjeOfficeTestStatus').textContent = 'Verifique a nova aba para o resultado do teste.';
+            }, 2000);
+        }
+
+        function iniciarTesteToken() {
+            document.getElementById('tokenTestStatus').textContent = 'Redirecionando para o teste de Certificado Digital...';
+            window.open('https://www.certisign.com.br/duvidas-suporte/downloads/testar-certificado', '_blank');
+            setTimeout(() => {
+                document.getElementById('tokenTestStatus').textContent = 'Verifique a nova aba para o resultado do teste.';
+            }, 2000);
+        }
+
         function abrirWhatsApp(contexto) {
-            let mensagem = "Olá, preciso de suporte da ADVBR.info! ";
-            if (contexto === 'pjeOffice') {
-                mensagem += "Tive um problema ao testar o PJe Office Pro.";
+            let mensagem = '';
+            if (contexto === 'pjeoffice') {
+                mensagem = 'Olá! Estou com dificuldades no teste do PJe Office Pro e preciso de ajuda.';
             } else if (contexto === 'token') {
-                mensagem += "Tive um problema ao testar meu Token/Certificado Digital.";
+                mensagem = 'Olá! Estou com dificuldades no teste do meu Token OAB/Certificado Digital e preciso de ajuda.';
             } else if (contexto === 'relato') {
-                mensagem += "Estou com um problema em um portal e gostaria de relatar.";
+                mensagem = 'Olá! Estou com um problema em um portal jurídico e gostaria de relatar/obter suporte.';
+            } else {
+                mensagem = 'Olá! Preciso de suporte técnico.';
             }
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`, '_blank');
         }
 
-        // Funções de Reportar Problema
-        function carregarTribunaisReportar() {
-            const select = document.getElementById('reportTribunalSelect');
-            select.innerHTML = '<option value="">Selecione um Tribunal</option>'; // Limpa e adiciona opção padrão
-            dadosTribunaisFixo.forEach(tribunal => {
-                const option = document.createElement('option');
-                option.value = tribunal.id;
-                option.textContent = `${tribunal.nome} (${NOME_EXIBICAO_ESTADO[tribunal.grupo] || tribunal.grupo})`;
-                select.appendChild(option);
-            });
-        }
-
-        async function enviarRelato(event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
-            const form = event.target;
-            const tribunalId = form.elements.tribunal.value;
-            const tipoProblema = form.elements.tipoProblema.value;
-            const observacao = form.elements.observacao.value;
-            const reportStatus = document.getElementById('reportStatus');
-
-            reportStatus.textContent = 'Enviando relato...';
-            reportStatus.style.color = 'yellow';
-
-            if (!tribunalId || !tipoProblema) {
-                reportStatus.textContent = 'Por favor, selecione o tribunal e o tipo de problema.';
-                reportStatus.style.color = 'red';
-                return;
-            }
-
+        // Funções de Status e Relatos
+        async function carregarStatusDoCache() {
             try {
-                // Simulação de envio para uma API
-                // Em um ambiente real, você faria um fetch() para seu backend
-                console.log("Relato enviado:", { tribunalId, tipoProblema, observacao });
-                await new Promise(resolve => setTimeout(resolve, 1500)); // Simula delay da rede
-
-                // Atualiza os dados locais para refletir o relato
-                if (!relatosComunidade[tribunalId]) {
-                    relatosComunidade[tribunalId] = { total: 0, problemas: { 'Fora do Ar': 0, 'Lentidão': 0, 'Falha no Login': 0, 'Outro': 0 }, ultimoRelato: '' };
+                const response = await fetch('/api/status-cache'); // Endpoint da sua API
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                relatosComunidade[tribunalId].total++;
-                relatosComunidade[tribunalId].problemas[tipoProblema]++;
-                relatosComunidade[tribunalId].ultimoRelato = new Date().toLocaleTimeString();
-
-                reportStatus.textContent = 'Relato enviado com sucesso! Agradecemos sua contribuição.';
-                reportStatus.style.color = 'lightgreen';
-                setTimeout(() => {
-                    fecharModal('modalReportar');
-                    reportStatus.textContent = ''; // Limpa o status
-                    form.reset(); // Reseta o formulário
-                    carregarStatusDoCache(); // Atualiza as bolinhas e carrosséis
-                }, 2000);
-
+                const data = await response.json();
+                statusGerais = data.status || {};
+                relatosComunidade = data.relatos || {}; // Carrega os relatos da comunidade
+                renderizarCarrosselPrincipais();
+                atualizarBolinhasEstados();
             } catch (error) {
-                console.error('Erro ao enviar relato:', error);
-                reportStatus.textContent = `Erro ao enviar relato: ${error.message}`;
-                reportStatus.style.color = 'red';
+                console.error("Erro ao carregar status do cache:", error);
+                // Pode adicionar um feedback visual de erro na página se desejar
             }
-        }
-
-        // Funções de Teste PJe Office Pro
-        function iniciarTestePjeOffice() {
-            const statusElement = document.getElementById('pjeOfficeTestStatus');
-            statusElement.textContent = 'Iniciando teste...';
-            statusElement.style.color = 'yellow';
-
-            // Simulação de teste. Em um ambiente real, você tentaria se comunicar com o PJe Office Pro
-            // via uma URL local ou um plugin de navegador.
-            setTimeout(() => {
-                const sucesso = Math.random() > 0.3; // 70% de chance de sucesso
-                if (sucesso) {
-                    statusElement.textContent = 'PJe Office Pro detectado e respondendo! ✅';
-                    statusElement.style.color = 'lightgreen';
-                } else {
-                    statusElement.textContent = 'PJe Office Pro não detectado ou não respondendo. ❌';
-                    statusElement.style.color = 'red';
-                }
-                setTimeout(() => fecharModal('modalPjeOfficePreTest'), 3000); // Fecha o modal após 3 segundos
-            }, 2000);
-        }
-
-        // Funções de Teste de Token/Certificado
-        function iniciarTesteToken() {
-            const statusElement = document.getElementById('tokenTestStatus');
-            statusElement.textContent = 'Redirecionando para o teste da Certisign...';
-            statusElement.style.color = 'yellow';
-            // Abre a página de teste da Certisign em uma nova aba
-            window.open('https://www.certisign.com.br/duvidas-suporte/downloads/testar-certificado', '_blank');
-            statusElement.textContent = 'Teste iniciado em nova aba. Verifique a página da Certisign.';
-            statusElement.style.color = 'lightgreen';
-            setTimeout(() => fecharModal('modalTokenPreTest'), 3000); // Fecha o modal após 3 segundos
-        }
-        // ──────────────────────────────────────────────────────────────
-
-        function obterVisualStatus(statusStr) {
-            let dotClass = "bg-gray-600";
-            let badgeClass = "bg-gray-900 text-gray-500 border border-gray-800";
-
-            if (statusStr === "Online") {
-                dotClass = "bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]";
-                badgeClass = "bg-green-950 text-green-400 border border-green-800/40";
-            } else if (statusStr === "Lentidão") {
-                dotClass = "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]";
-                badgeClass = "bg-amber-950 text-amber-400 border border-amber-800/40";
-            } else if (statusStr === "Fora do Ar") {
-                dotClass = "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]";
-                badgeClass = "bg-red-950 text-red-400 border border-red-800/40";
-            }
-            return { dot: dotClass, badge: badgeClass };
         }
 
         async function carregarNoticiasRss() {
             try {
-                // Simulação de dados RSS
-                const noticiasSimuladas = [
-                    { texto: "Nova atualização no PJe do TRT9 - Fique atento!", url: "#" },
-                    { texto: "STJ divulga novas súmulas para 2026.", url: "#" },
-                    { texto: "TJPR implementa sistema de peticionamento eletrônico unificado.", url: "#" },
-                    { texto: "CNJ lança campanha de combate à morosidade judicial.", url: "#" },
-                    { texto: "Feriado forense em São Paulo na próxima semana.", url: "#" },
-                    { texto: "Alterações no Código de Processo Civil entram em vigor.", url: "#" },
-                    { texto: "Webinar gratuito sobre LGPD para advogados.", url: "#" },
-                    { texto: "Novas funcionalidades no eproc do TRF4.", url: "#" },
-                    { texto: "Prazo final para declaração de imposto de renda se aproxima.", url: "#" },
-                    { texto: "Congresso Nacional discute reforma tributária.", url: "#" }
-                ];
+                const response = await fetch('/api/noticias-rss'); // Endpoint da sua API
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const noticias = await response.json();
+                const ticker = document.getElementById('tickerNoticias');
+                ticker.innerHTML = ''; // Limpa o conteúdo existente
 
-                const container = document.getElementById('tickerNoticias');
-                if (container) {
-                    container.innerHTML = '';
-                    noticiasSimuladas.forEach(n => {
-                        container.innerHTML += `<div onclick="window.open('${n.url}','_blank')" class="ticker-item"><span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>${n.texto}</div>`;
+                if (noticias && noticias.length > 0) {
+                    noticias.forEach(noticia => {
+                        const tickerItem = document.createElement('div');
+                        tickerItem.className = 'ticker-item';
+                        tickerItem.innerHTML = `
+                            <span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span></span>
+                            <a href="${noticia.link}" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400">${noticia.title}</a>
+                        `;
+                        ticker.appendChild(tickerItem);
                     });
-                    // Duplica o conteúdo para garantir o efeito de ticker contínuo
-                    container.innerHTML += container.innerHTML;
+                } else {
+                    ticker.innerHTML = `
+                        <div class="ticker-item">
+                            <span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span></span>
+                            Nenhuma notícia disponível no momento.
+                        </div>
+                    `;
                 }
-            } catch(e) { console.error("Erro ao carregar notícias.", e); }
-        }
-
-        async function carregarStatusDoCache() {
-            try {
-                // Simulação de dados da API de status
-                const dadosSimulados = {
-                    "status_servidores": {
-                        "pje_cnj": { "status": "Online", "latenciaMs": 80 },
-                        "tjpr_eproc_1g": { "status": "Online", "latenciaMs": 120 },
-                        "tjsp_saj": { "status": "Lentidão", "latenciaMs": 450 },
-                        "stj": { "status": "Online", "latenciaMs": 90 },
-                        "stf": { "status": "Online", "latenciaMs": 70 },
-                        "trt9_1g": { "status": "Online", "latenciaMs": 110 },
-                        "trt9_2g": { "status": "Fora do Ar", "latenciaMs": null },
-                        "trf4_pr": { "status": "Online", "latenciaMs": 130 },
-                        "tjpr_projudi": { "status": "Online", "latenciaMs": 100 },
-                        "domicilio_cnj": { "status": "Online", "latenciaMs": 95 }
-                    },
-                    "relatos_comunidade": {
-                        "tjsp_saj": { "total": 5, "problemas": { "Fora do Ar": 0, "Lentidão": 5, "Falha no Login": 0, "Outro": 0 }, "ultimoRelato": "10:35" },
-                        "trt9_2g": { "total": 8, "problemas": { "Fora do Ar": 8, "Lentidão": 0, "Falha no Login": 0, "Outro": 0 }, "ultimoRelato": "10:40" }
-                    }
-                };
-
-                statusGerais = dadosSimulados.status_servidores || {};
-                relatosComunidade = dadosSimulados.relatos_comunidade || {};
-                renderizarCarrosselDinamicamente();
-                atualizarBolinhasEstados();
-                const modalAberto = !document.getElementById('modalEstado').classList.contains('hidden');
-                if (modalAberto) {
-                    const ufAtual = document.getElementById('estadoNome').innerText;
-                    let idGrupo = ufAtual;
-                    // Mapeia de volta para o ID do grupo se for um nome de exibição
-                    for (const key in NOME_EXIBICAO_ESTADO) {
-                        if (NOME_EXIBICAO_ESTADO[key] === ufAtual) {
-                            idGrupo = key;
-                            break;
-                        }
-                    }
-                    renderizarConteudoModal(idGrupo);
-                }
-            } catch(erro) {
-                console.error("Erro na leitura do Redis:", erro);
-                renderizarCarrosselDinamicamente();
+            } catch (error) {
+                console.error("Erro ao carregar notícias RSS:", error);
+                const ticker = document.getElementById('tickerNoticias');
+                ticker.innerHTML = `
+                    <div class="ticker-item">
+                        <span class="relative flex h-2 w-2 mr-1"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>
+                        Erro ao carregar notícias.
+                    </div>
+                `;
             }
         }
 
-        function renderizarCarrosselDinamicamente() {
+        function obterVisualStatus(status) {
+            switch (status) {
+                case "Online": return { dot: "bg-green-400", badge: "bg-green-900/50 text-green-400" };
+                case "Lentidão": return { dot: "bg-amber-400", badge: "bg-amber-900/50 text-amber-400" };
+                case "Fora do Ar": return { dot: "bg-red-400", badge: "bg-red-900/50 text-red-400" };
+                default: return { dot: "bg-gray-600", badge: "bg-gray-700 text-gray-400" };
+            }
+        }
+
+        function renderizarCarrosselPrincipais() {
             const container = document.getElementById('carrosselPrincipais');
-            if (!container) return;
-            container.innerHTML = '';
+            container.innerHTML = ''; // Limpa o conteúdo existente
+
+            // Define a ordem de exibição dos principais portais
             const ordemExibicao = [
-                { id: "pje_cnj",       label: "1. PJe - Nacional" },
+                { id: "pje_cnj",       label: "1. PJe - CNJ" },
                 { id: "tjpr_eproc_1g", label: "2. TJPR - eproc 1º Grau" },
                 { id: "tjsp_saj",      label: "3. TJSP - e-SAJ" },
                 { id: "stj",           label: "4. STJ - Processos" },
@@ -674,7 +550,7 @@
                 { id: "domicilio_cnj", label: "10. Domicílio Judicial Eletrônico" }
             ];
             ordemExibicao.forEach(itemConfig => {
-                const alvo = dadosTribunaisFixo.find(t => t.id === itemConfig.id) || { sub: "Barramento Central" };
+                const alvo = dadosTribunaisFixo.find(t => t.id === itemConfig.id) || { sub: "Barramento Central", url: "#" }; // Adicionado url padrão
                 const dadosApi = statusGerais[itemConfig.id];
                 const statusStr = dadosApi ? dadosApi.status : "Sem Varredura";
                 const visual = obterVisualStatus(statusStr); // Usando o helper
@@ -996,13 +872,103 @@
             }
         }
 
+        // Função para carregar os tribunais no select do modal de reportar
+        function carregarTribunaisReportar() {
+            const tribunalSelect = document.getElementById('tribunalSelect');
+            tribunalSelect.innerHTML = '<option value="">Selecione um tribunal</option>'; // Limpa e adiciona opção padrão
+
+            // Agrupa os tribunais por grupo/estado para melhor organização
+            const tribunaisAgrupados = {};
+            dadosTribunaisFixo.forEach(t => {
+                const grupoNome = NOME_EXIBICAO_ESTADO[t.grupo] || t.grupo;
+                if (!tribunaisAgrupados[grupoNome]) {
+                    tribunaisAgrupados[grupoNome] = [];
+                }
+                tribunaisAgrupados[grupoNome].push(t);
+            });
+
+            for (const grupoNome in tribunaisAgrupados) {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = grupoNome;
+                tribunaisAgrupados[grupoNome].forEach(t => {
+                    const option = document.createElement('option');
+                    option.value = t.id;
+                    option.textContent = t.nome;
+                    optgroup.appendChild(option);
+                });
+                tribunalSelect.appendChild(optgroup);
+            }
+        }
+
+        // Função para enviar o relato do problema
+        async function enviarRelato(event) {
+            event.preventDefault(); // Impede o recarregamento da página
+            const form = event.target;
+            const formData = new FormData(form);
+            const relatoData = Object.fromEntries(formData.entries());
+            const reportarStatus = document.getElementById('reportarStatus');
+
+            reportarStatus.textContent = 'Enviando relato...';
+            reportarStatus.style.color = 'yellow';
+
+            try {
+                const response = await fetch('/api/relatar-problema', { // Endpoint da sua API
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(relatoData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                reportarStatus.textContent = 'Relato enviado com sucesso! Agradecemos sua contribuição. ✅';
+                reportarStatus.style.color = 'lightgreen';
+                form.reset(); // Limpa o formulário
+                carregarStatusDoCache(); // Atualiza os relatos na página principal
+                setTimeout(() => fecharModal('modalReportar'), 2000); // Fecha o modal após 2 segundos
+            } catch (error) {
+                console.error('Erro ao enviar relato:', error);
+                reportarStatus.textContent = `Erro ao enviar relato: ${error.message} ❌`;
+                reportarStatus.style.color = 'red';
+            }
+        }
+
+        // Função para carregar os produtos no carrossel
+        function carregarProdutosHomologados() {
+            const container = document.getElementById('carrosselEquipamentos');
+            container.innerHTML = ''; // Limpa o conteúdo existente
+
+            produtosHomologados.forEach(produto => {
+                container.innerHTML += `
+                    <div class="card p-4 rounded-xl min-w-[280px] flex-shrink-0 space-y-2">
+                        <h3 class="font-semibold text-gray-100">${produto.nome}</h3>
+                        <p class="text-sm text-gray-400">${produto.descricao}</p>
+                        <p class="text-lg font-bold text-blue-400">${produto.preco}</p>
+                        <a href="${produto.link}" target="_blank" class="text-blue-500 hover:underline text-sm">Ver Produto <i class="fa-solid fa-external-link-alt ml-1"></i></a>
+                    </div>`;
+            });
+        }
+
 
         window.onload = function() {
+            // Adiciona o event listener para o formulário de relato
+            const formReportarProblema = document.getElementById('formReportarProblema');
+            if (formReportarProblema) {
+                formReportarProblema.addEventListener('submit', enviarRelato);
+            }
+
             carregarStatusDoCache();
             carregarNoticiasRss();
             carregarTribunaisReportar(); // Carrega as opções do select de reportar
-            setInterval(carregarStatusDoCache, 30000);
-            setInterval(carregarNoticiasRss, 300000);
+            carregarProdutosHomologados(); // Carrega os produtos no carrossel
+
+            // Define os intervalos de atualização
+            setInterval(carregarStatusDoCache, 30000); // A cada 30 segundos
+            setInterval(carregarNoticiasRss, 300000); // A cada 5 minutos
         }
     </script>
 </body>
