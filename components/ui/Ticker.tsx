@@ -10,7 +10,7 @@ export default function Ticker() {
     fetch('/api/noticias')
       .then((res) => res.json())
       .then((data) => {
-        // Garantindo unicidade absoluta
+        // Garantir que não haja duplicatas na fonte
         const unique = data.noticias.filter((v: any, i: any, a: any) => 
           a.findIndex((t: any) => t.texto === v.texto) === i
         );
@@ -22,12 +22,12 @@ export default function Ticker() {
   if (noticias.length === 0) return null;
 
   return (
-    <div className="w-full bg-slate-950 text-slate-300 py-3 overflow-hidden border-b border-slate-800 h-12 flex items-center">
+    <div className="w-full bg-slate-950 text-slate-300 py-3 overflow-hidden border-b border-slate-800 h-12 flex items-center relative">
       <motion.div 
         className="flex whitespace-nowrap"
-        // Aumentei a duração para 60 segundos para ficar lento e profissional
         animate={{ x: ["100%", "-100%"] }}
-        transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+        transition={{ repeat: Infinity, duration: 80, ease: "linear" }}
+        style={{ display: 'flex', flexWrap: 'nowrap' }}
       >
         {noticias.map((item, index) => (
           <a 
@@ -37,7 +37,7 @@ export default function Ticker() {
             rel="noopener noreferrer"
             className="flex items-center mx-10 hover:text-blue-400 transition-colors font-medium text-sm shrink-0"
           >
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-3" />
+            <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 shrink-0" />
             {item.texto}
           </a>
         ))}
