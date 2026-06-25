@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Script para a biblioteca pdf-lib (para manipulação de PDF no navegador) -->
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <!-- Script para JSZip (para criar arquivos ZIP) - ADICIONADO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         body { background-color: #0b0f19; color: #f3f4f6; font-family: sans-serif; overflow-x: hidden; }
         .card { background-color: #111827; border: 1px solid #1f2937; transition: transform 0.2s; }
@@ -166,110 +168,66 @@
                     <i class="fa-solid fa-shield-halved text-xl"></i><span>Links testados e seguros, somente lojas oficiais.</span>
                 </div>
             </div>
-            <div class="products-carousel">
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://m.media-amazon.com/images/I/61r-g9523+L._AC_SL1500_.jpg" alt="Monitor Dell" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Monitor Dell 24'' Full HD</p>
-                            <p class="text-xs text-gray-400">Ideal para multitarefas.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 999,00</span>
-                        <span class="text-xs text-gray-500">Amazon</span>
-                    </div>
+            <div class="products-carousel" id="carrosselEquipamentos">
+                <a href="https://www.amazon.com.br/dp/B08G8J535M" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Monitor Dell 24'' Full HD</h3>
+                    <p class="text-sm text-gray-400">Ideal para multitarefas.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 999,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">Amazon <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
-                <a href="https://www.kabum.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.kabum.com.br/produtos/fotos/109000/109000_1588776543_g.jpg" alt="Notebook Gamer" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Notebook Gamer Acer Nitro 5</p>
-                            <p class="text-xs text-gray-400">Alta performance para o dia a dia.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 5.499,00</span>
-                        <span class="text-xs text-gray-500">KaBuM!</span>
-                    </div>
+                <a href="https://www.kabum.com.br/produto/157400/notebook-gamer-acer-nitro-5-intel-core-i5-10300h-8gb-ram-512gb-ssd-nvidia-geforce-gtx-1650-15-6-full-hd-windows-10-an515-55-592a" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Notebook Gamer Acer Nitro 5</h3>
+                    <p class="text-sm text-gray-400">Alta performance para o dia a dia.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 5.499,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">KaBuM! <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
-                <a href="https://www.magazineluiza.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://a-static.mlcdn.com.br/1500x1500/impressora-multifuncional-epson-ecotank-l3150-tanque-de-tinta-wi-fi-usb/magazineluiza/155550000/01799797241276043231144002312211.jpg" alt="Impressora Epson" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Impressora Epson EcoTank L3150</p>
-                            <p class="text-xs text-gray-400">Economia e qualidade de impressão.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 1.299,00</span>
-                        <span class="text-xs text-gray-500">Magazine Luiza</span>
-                    </div>
+                <a href="https://www.magazineluiza.com.br/impressora-multifuncional-epson-ecotank-l3150-tanque-de-tinta-wi-fi-usb-colorida/p/222047800/in/impr/" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Impressora Epson EcoTank L3150</h3>
+                    <p class="text-sm text-gray-400">Economia e qualidade de impressão.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 1.299,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">Magazine Luiza <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
-                <a href="https://www.mercadolivre.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_607065-MLA44094406606_112020-F.webp" alt="SSD Kingston" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">SSD Kingston A400 480GB</p>
-                            <p class="text-xs text-gray-400">Velocidade e desempenho para seu PC.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 289,00</span>
-                        <span class="text-xs text-gray-500">Mercado Livre</span>
-                    </div>
+                <a href="https://www.mercadolivre.com.br/ssd-kingston-a400-sa400s37480g-480gb/p/MLB8707094" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">SSD Kingston A400 480GB</h3>
+                    <p class="text-sm text-gray-400">Velocidade e desempenho para seu PC.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 289,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">Mercado Livre <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
-                <a href="https://www.amazon.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://m.media-amazon.com/images/I/71t-0f4L-WL._AC_SL1500_.jpg" alt="Webcam Logitech" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Webcam Logitech C920s Pro HD</p>
-                            <p class="text-xs text-gray-400">Qualidade profissional para reuniões.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 499,00</span>
-                        <span class="text-xs text-gray-500">Amazon</span>
-                    </div>
+                <a href="https://www.amazon.com.br/Logitech-C920s-Webcam-Full-Privacy/dp/B07S475G6X" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Webcam Logitech C920s Pro HD</h3>
+                    <p class="text-sm text-gray-400">Qualidade profissional para reuniões.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 499,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">Amazon <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
-                <a href="https://www.kabum.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://images.kabum.com.br/produtos/fotos/129000/129000_1604423456_g.jpg" alt="Roteador TP-Link" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Roteador TP-Link Archer C6 AC1200</p>
-                            <p class="text-xs text-gray-400">Conexão estável e rápida.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 249,00</span>
-                        <span class="text-xs text-gray-500">KaBuM!</span>
-                    </div>
+                <a href="https://www.kabum.com.br/produto/101000/roteador-tp-link-archer-c6-ac1200-dual-band-gigabit-4-antenas-externas-1-interna" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Roteador TP-Link Archer C6 AC1200</h3>
+                    <p class="text-sm text-gray-400">Conexão estável e rápida.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 249,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">KaBuM! <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
-                <a href="https://www.magazineluiza.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://a-static.mlcdn.com.br/1500x1500/mouse-sem-fio-logitech-m90-usb-preto/magazineluiza/00000000000000000000000000000000/01799797241276043231144002312211.jpg" alt="Mouse Logitech" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Mouse Sem Fio Logitech M90</p>
-                            <p class="text-xs text-gray-400">Conforto e precisão.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 79,00</span>
-                        <span class="text-xs text-gray-500">Magazine Luiza</span>
-                    </div>
+                <a href="https://www.magazineluiza.com.br/mouse-sem-fio-logitech-m90-usb-preto/p/218360600/in/mous/" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Mouse Sem Fio Logitech M90</h3>
+                    <p class="text-sm text-gray-400">Conforto e precisão.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 79,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">Magazine Luiza <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
-                <a href="https://www.mercadolivre.com.br" target="_blank" class="flex-none w-72 min-w-[18rem] card p-4 rounded-xl space-y-3 flex flex-col justify-between">
-                    <div class="flex items-center gap-3">
-                        <img src="https://http2.mlstatic.com/D_NQ_NP_2X_709867-MLA44094406606_112020-F.webp" alt="Teclado Multilaser" class="w-16 h-16 object-cover rounded-lg border border-gray-700">
-                        <div>
-                            <p class="font-semibold text-gray-200 text-sm">Teclado Multilaser Slim USB</p>
-                            <p class="text-xs text-gray-400">Design compacto e funcional.</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm font-bold text-blue-400">R$ 59,00</span>
-                        <span class="text-xs text-gray-500">Mercado Livre</span>
-                    </div>
+                <a href="https://www.mercadolivre.com.br/teclado-multilaser-slim-usb-tc203-preto/p/MLB15934360" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Teclado Multilaser Slim USB</h3>
+                    <p class="text-sm text-gray-400">Design compacto e funcional.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 59,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">Mercado Livre <i class="fa-solid fa-external-link-alt ml-1"></i></span>
+                </a>
+                <a href="https://www.amazon.com.br/Monitor-Samsung-FHD-HDMI-VGA/dp/B08F22X5M9" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Monitor Samsung 22'' Full HD</h3>
+                    <p class="text-sm text-gray-400">Opção compacta e eficiente.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 799,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">Amazon <i class="fa-solid fa-external-link-alt ml-1"></i></span>
+                </a>
+                <a href="https://www.kabum.com.br/produto/123456/cadeira-gamer-elements-vanguard-preta-e-azul" target="_blank" class="flex-none w-72 min-w-[18rem] p-4 card rounded-xl flex flex-col justify-between no-underline">
+                    <h3 class="font-semibold text-gray-100">Cadeira Gamer Elements Vanguard</h3>
+                    <p class="text-sm text-gray-400">Conforto para longas horas de trabalho.</p>
+                    <p class="text-lg font-bold text-blue-400">R$ 1.199,00</p>
+                    <span class="text-blue-500 hover:underline text-sm">KaBuM! <i class="fa-solid fa-external-link-alt ml-1"></i></span>
                 </a>
             </div>
         </section>
@@ -277,8 +235,7 @@
     </div>
 
     <!-- Modais -->
-
-    <!-- Modal de Estado/Região -->
+    <!-- Modal de Estado/Grupo -->
     <div id="modalEstado" class="app-modal-backdrop hidden">
         <div class="modal-shell">
             <div class="flex justify-between items-center p-4 border-b border-gray-800">
@@ -288,11 +245,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="linksTribunais" class="space-y-2">
-                    <!-- Conteúdo dinâmico dos tribunais -->
+                <div id="linksTribunais" class="space-y-3">
+                    <!-- Links dos tribunais serão carregados aqui -->
                 </div>
-                <div id="relatosComunidadeEstado" class="hidden">
-                    <!-- Esta div agora está oculta e não é usada para exibir relatos -->
+                <!-- Esta div estava no HTML original, mas agora os relatos são exibidos abaixo de cada tribunal -->
+                <div id="relatosComunidadeEstado" class="mt-4 space-y-2 hidden">
+                    <h4 class="font-semibold text-gray-300">Relatos da Comunidade:</h4>
                 </div>
             </div>
             <div class="modal-footer flex justify-end">
@@ -301,7 +259,7 @@
         </div>
     </div>
 
-    <!-- Modal Reportar Problema -->
+    <!-- Modal de Reportar Problema -->
     <div id="modalReportar" class="app-modal-backdrop hidden">
         <div class="modal-shell">
             <div class="flex justify-between items-center p-4 border-b border-gray-800">
@@ -310,17 +268,18 @@
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <form id="formReportarProblema">
+            <form id="formReportarProblema" onsubmit="enviarRelato(event)">
                 <div class="modal-body space-y-4">
                     <div>
-                        <label for="tribunalSelect" class="block text-sm font-medium text-gray-300 mb-1">Tribunal:</label>
-                        <select id="tribunalSelect" name="tribunalId" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                        <label for="reportTribunalSelect" class="block text-sm font-medium text-gray-300 mb-1">Tribunal:</label>
+                        <select id="reportTribunalSelect" name="tribunal" required class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
                             <option value="">Selecione um Tribunal</option>
+                            <!-- Opções carregadas via JS -->
                         </select>
                     </div>
                     <div>
-                        <label for="problemaTipo" class="block text-sm font-medium text-gray-300 mb-1">Tipo de Problema:</label>
-                        <select id="problemaTipo" name="problemaTipo" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                        <label for="reportTipoProblema" class="block text-sm font-medium text-gray-300 mb-1">Tipo de Problema:</label>
+                        <select id="reportTipoProblema" name="tipoProblema" required class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
                             <option value="">Selecione o Tipo</option>
                             <option value="Fora do Ar">Fora do Ar</option>
                             <option value="Lentidão">Lentidão</option>
@@ -329,55 +288,100 @@
                         </select>
                     </div>
                     <div>
-                        <label for="observacao" class="block text-sm font-medium text-gray-300 mb-1">Observação (opcional):</label>
-                        <textarea id="observacao" name="observacao" rows="3" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Descreva brevemente o problema..."></textarea>
+                        <label for="reportObservacao" class="block text-sm font-medium text-gray-300 mb-1">Observação (opcional):</label>
+                        <textarea id="reportObservacao" name="observacao" rows="3" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Descreva brevemente o problema..."></textarea>
                     </div>
-                    <p id="reportarStatus" class="text-sm font-medium"></p>
+                    <p id="reportStatus" class="text-sm font-semibold text-center"></p>
                 </div>
-                <div class="modal-footer flex justify-between items-center">
-                    <button type="button" onclick="gerarRelatorioRelatosPdf()" class="px-4 py-2 bg-blue-700 hover:bg-blue-600 rounded-lg text-white text-sm font-medium flex items-center gap-2">
-                        <i class="fa-solid fa-file-pdf"></i> Download Relatório
-                    </button>
-                    <button type="submit" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-medium">Enviar Relato</button>
+                <div class="modal-footer flex justify-end">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Enviar Relato</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal Otimizador PDF -->
+    <!-- Modal de Resumo de Relatos -->
+    <div id="modalResumoRelatos" class="app-modal-backdrop hidden">
+        <div class="modal-shell">
+            <div class="flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 class="text-lg font-bold text-gray-100">Resumo de Relatos Ativos</h3>
+                <button onclick="fecharModal('modalResumoRelatos')" class="text-gray-400 hover:text-gray-200">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body space-y-3">
+                <p class="text-sm text-gray-400">Os dados abaixo refletem os relatos da comunidade nas últimas 12 horas. Após esse período, os relatos são automaticamente removidos.</p>
+                <div id="resumoRelatosConteudo" class="space-y-2">
+                    <!-- Relatos serão carregados aqui -->
+                </div>
+            </div>
+            <div class="modal-footer flex justify-between items-center">
+                <button onclick="gerarRelatorioRelatosPdf()" class="px-4 py-2 bg-red-600 hover:bg-red-500 rounded-lg text-white text-sm font-medium flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> Download Relatório
+                </button>
+                <button onclick="fecharModal('modalResumoRelatos')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Otimizador de PDF -->
     <div id="modalPdfOptimizer" class="app-modal-backdrop hidden">
         <div class="modal-shell">
             <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Otimizador de PDF</h3>
+                <h3 class="text-lg font-bold text-gray-100">Ferramentas de PDF</h3>
                 <button onclick="fecharModal('modalPdfOptimizer')" class="text-gray-400 hover:text-gray-200">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
             <div class="modal-body space-y-4">
-                <div>
-                    <label for="pdfInput" class="block text-sm font-medium text-gray-300 mb-1">Selecione o arquivo PDF:</label>
-                    <input type="file" id="pdfInput" accept=".pdf" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"/>
+                <p class="text-sm text-gray-300">
+                    Utilize as ferramentas abaixo para ajustar seus arquivos PDF.
+                </p>
+
+                <!-- Seção de Divisão Inteligente de PDF -->
+                <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 space-y-3">
+                    <h4 class="font-bold text-gray-200 flex items-center gap-2"><i class="fa-solid fa-scissors text-blue-400"></i> Dividir PDF por Tamanho</h4>
+                    <p class="text-xs text-gray-400">
+                        Seu PDF excede o limite de tamanho do tribunal? Divida-o automaticamente em partes menores, mantendo cada arquivo dentro do limite que você definir.
+                    </p>
+                    <div>
+                        <label for="pdfInput" class="block text-sm font-medium text-gray-300 mb-1">Selecione o arquivo PDF:</label>
+                        <input type="file" id="pdfInput" accept=".pdf" class="w-full text-sm text-gray-400
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-500 file:text-white
+                            hover:file:bg-blue-600 cursor-pointer" />
+                    </div>
+                    <div>
+                        <label for="limiteMbInput" class="block text-sm font-medium text-gray-300 mb-1">Limite de tamanho por arquivo (MB):</label>
+                        <input type="number" id="limiteMbInput" value="10" min="1" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500" placeholder="Ex: 10" />
+                    </div>
+                    <button onclick="dividirPdf()" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cut"></i> Dividir PDF
+                    </button>
                 </div>
-                <div>
-                    <label for="pdfTribunalSelect" class="block text-sm font-medium text-gray-300 mb-1">Tribunal de destino (para otimização específica):</label>
-                    <select id="pdfTribunalSelect" class="w-full p-2.5 bg-gray-800 border border-gray-700 rounded-lg text-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">Selecione o Tribunal</option>
-                        <!-- Opções podem ser carregadas dinamicamente ou fixas -->
-                        <option value="TJPR">TJPR</option>
-                        <option value="TJSP">TJSP</option>
-                        <option value="TRF4">TRF4</option>
-                        <option value="Outro">Outro</option>
-                    </select>
+
+                <!-- Seção de Otimização de Qualidade (Futura) -->
+                <div class="bg-gray-900 p-4 rounded-lg border border-gray-800 space-y-3 opacity-50 cursor-not-allowed">
+                    <h4 class="font-bold text-gray-200 flex items-center gap-2"><i class="fa-solid fa-compress text-gray-400"></i> Otimizar Qualidade do PDF (Em Breve)</h4>
+                    <p class="text-xs text-gray-400">
+                        Reduza o tamanho do seu PDF diminuindo a qualidade de imagens (DPI), ideal para arquivos muito grandes que não precisam de alta resolução.
+                    </p>
+                    <button class="w-full px-4 py-2 bg-gray-700 rounded-lg text-gray-400 text-sm font-medium flex items-center justify-center gap-2" disabled>
+                        <i class="fa-solid fa-cog"></i> Otimizar PDF
+                    </button>
                 </div>
-                <p id="pdfOptimizerStatus" class="text-sm font-medium"></p>
+
+                <p id="pdfOptimizerStatus" class="text-sm font-semibold text-center mt-4"></p>
             </div>
             <div class="modal-footer flex justify-end">
-                <button onclick="otimizarPdf()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Otimizar e Baixar</button>
+                <button onclick="fecharModal('modalPdfOptimizer')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium">Fechar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Pré-Teste PJe Office Pro -->
+    <!-- Modal Teste PJe Office Pro -->
     <div id="modalPjeOfficePreTest" class="app-modal-backdrop hidden">
         <div class="modal-shell">
             <div class="flex justify-between items-center p-4 border-b border-gray-800">
@@ -390,13 +394,16 @@
                 <p class="text-gray-300">Este teste tentará se comunicar com o PJe Office Pro instalado em sua máquina para verificar se está ativo e respondendo.</p>
                 <p id="pjeOfficeTestStatus" class="text-sm font-semibold mt-4"></p>
             </div>
-            <div class="modal-footer flex justify-end">
+            <div class="modal-footer flex justify-between items-center">
+                <button onclick="abrirWhatsApp('pjeOffice')" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-medium flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
+                </button>
                 <button onclick="iniciarTestePjeOffice()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Iniciar Teste</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Pré-Teste de Token -->
+    <!-- Modal Teste de Token/Certificado -->
     <div id="modalTokenPreTest" class="app-modal-backdrop hidden">
         <div class="modal-shell">
             <div class="flex justify-between items-center p-4 border-b border-gray-800">
@@ -409,259 +416,153 @@
                 <p class="text-gray-300">Este teste abrirá uma página externa da Certisign para que você possa validar a instalação e o funcionamento do seu Token OAB ou Certificado Digital.</p>
                 <p id="tokenTestStatus" class="text-sm font-semibold mt-4"></p>
             </div>
-            <div class="modal-footer flex justify-end">
-                <button onclick="iniciarTesteToken()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Iniciar Teste</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- NOVO: Modal de Resumo de Relatos -->
-    <div id="modalResumoRelatos" class="app-modal-backdrop hidden">
-        <div class="modal-shell">
-            <div class="flex justify-between items-center p-4 border-b border-gray-800">
-                <h3 class="text-lg font-bold text-gray-100">Resumo de Relatos Ativos</h3>
-                <button onclick="fecharModal('modalResumoRelatos')" class="text-gray-400 hover:text-gray-200">
-                    <i class="fa-solid fa-xmark text-xl"></i>
+            <div class="modal-footer flex justify-between items-center">
+                <button onclick="abrirWhatsApp('token')" class="px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-medium flex items-center gap-2">
+                    <i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp
                 </button>
-            </div>
-            <div class="modal-body space-y-4">
-                <p class="text-xs text-gray-500 italic">Os dados abaixo refletem os relatos da comunidade nas últimas 12 horas. Após esse período, os relatos são automaticamente removidos.</p>
-                <div id="resumoRelatosConteudo" class="space-y-3">
-                    <!-- Conteúdo dinâmico do resumo de relatos -->
-                </div>
-            </div>
-            <div class="modal-footer flex justify-end">
-                <button onclick="fecharModal('modalResumoRelatos')" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-white text-sm font-medium">Fechar</button>
+                <button onclick="iniciarTesteToken()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg text-white text-sm font-medium">Iniciar Teste</button>
             </div>
         </div>
     </div>
 
 
     <script>
-        // Variáveis globais para armazenar os dados do status e relatos
+        // Variáveis globais para armazenar os dados
         let statusGerais = {};
         let relatosComunidade = {};
+        const WHATSAPP_NUMBER = '5544984416101'; // Seu número de WhatsApp
 
-        // Dados fixos dos tribunais para preencher os selects e carrosséis
+        // Dados fixos dos tribunais (pode ser carregado de uma API no futuro)
         const dadosTribunaisFixo = [
-            { id: "pje_cnj", url: "https://pje.pje.jus.br/pje/login.seam", nome: "PJe - Nacional", sub: "Barramento Central", grupo: "superiores" },
-            { id: "stj", url: "https://www.stj.jus.br/sites/portalp/Paginas/Servicos/Processos/Consulta-Processual.aspx", nome: "STJ - Processos", sub: "Superior Tribunal de Justiça", grupo: "superiores" },
-            { id: "stf", url: "https://portal.stf.jus.br/processos/listarProcessos.asp", nome: "STF - Eletrônico", sub: "Supremo Tribunal Federal", grupo: "superiores" },
-            { id: "domicilio_cnj", url: "https://domicilio-eletronico.pje.jus.br/", nome: "Domicílio Judicial Eletrônico", sub: "CNJ", grupo: "nacionais" },
-            { id: "tjpr_eproc_1g", url: "https://eproc1g.tjpr.jus.br/eproc/externo_controlador.php?acao=principal", nome: "TJPR - eproc 1º Grau", sub: "Tribunal de Justiça do Paraná", grupo: "PR" },
-            { id: "tjpr_projudi", url: "https://projudi.tjpr.jus.br/projudi/", nome: "TJPR - Projudi", sub: "Tribunal de Justiça do Paraná", grupo: "PR" },
-            { id: "trt9_1g", url: "https://pje.trt9.jus.br/primeirograu/login.seam", nome: "TRT9 - PJe 1º Grau", sub: "Tribunal Regional do Trabalho 9ª Região", grupo: "PR" },
-            { id: "trt9_2g", url: "https://pje.trt9.jus.br/segundograu/login.seam", nome: "TRT9 - PJe 2º Grau", sub: "Tribunal Regional do Trabalho 9ª Região", grupo: "PR" },
-            { id: "trf4_pr", url: "https://eproc.trf4.jus.br/eprocV2/controlador.php?acao=principal", nome: "TRF4 - Federal PR", sub: "Tribunal Regional Federal da 4ª Região", grupo: "PR" },
-            { id: "tjsp_saj", url: "https://esaj.tjsp.jus.br/sajcas/login?service=https%3A%2F%2Fesaj.tjsp.jus.br%2Fesaj%2F", nome: "TJSP - e-SAJ", sub: "Tribunal de Justiça de São Paulo", grupo: "SP" },
-            // Adicione mais tribunais conforme necessário
+            { id: "pje_cnj", nome: "PJe - CNJ", url: "https://pje.pje.jus.br/pje/login.seam", grupo: "nacionais", sub: "Barramento Central" },
+            { id: "tjpr_eproc_1g", nome: "TJPR - eproc 1º Grau", url: "https://eproc1g.tjpr.jus.br/eproc/externo_controlador.php?acao=principal", grupo: "PR", sub: "Sistema eproc" },
+            { id: "tjsp_saj", nome: "TJSP - e-SAJ", url: "https://esaj.tjsp.jus.br/sajcas/login?service=https%3A%2F%2Fesaj.tjsp.jus.br%2Fpeticoes%2Flogin.do", grupo: "SP", sub: "Sistema e-SAJ" },
+            { id: "stj", nome: "STJ - Processos", url: "https://www.stj.jus.br/sites/portalp/Inicio", grupo: "superiores", sub: "Tribunal Superior de Justiça" },
+            { id: "stf", nome: "STF - Eletrônico", url: "https://portal.stf.jus.br/processos/listarProcessos.asp", grupo: "superiores", sub: "Supremo Tribunal Federal" },
+            { id: "trt9_1g", nome: "TRT9 - PJe 1º Grau", url: "https://pje.trt9.jus.br/primeirograu/login.seam", grupo: "PR", sub: "PJe - Justiça do Trabalho" },
+            { id: "trt9_2g", nome: "TRT9 - PJe 2º Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", grupo: "PR", sub: "PJe - Justiça do Trabalho" },
+            { id: "trf4_pr", nome: "TRF4 - Federal PR", url: "https://www.trf4.jus.br/trf4/controlador.php?acao=pagina_inicial", grupo: "PR", sub: "Tribunal Regional Federal" },
+            { id: "tjpr_projudi", nome: "TJPR - Projudi", url: "https://projudi.tjpr.jus.br/projudi_web/", grupo: "PR", sub: "Sistema Projudi" },
+            { id: "domicilio_cnj", nome: "Domicílio Judicial Eletrônico", url: "https://domicilio-eletronico.pje.jus.br/", grupo: "nacionais", sub: "CNJ" }
         ];
 
-        // Mapeamento de IDs de grupo para nomes de exibição
         const NOME_EXIBICAO_ESTADO = {
             "superiores": "Tribunais Superiores",
             "nacionais": "Sistemas Nacionais",
-            "PR": "Paraná",
-            "SP": "São Paulo"
-            // Adicione outros estados/grupos aqui
+            "PR": "Paraná (PR)"
         };
 
-        // Funções de controle de modais
-        function abrirModal(idModal) {
-            document.getElementById(idModal).classList.remove('hidden');
-            document.body.classList.add('overflow-hidden'); // Impede rolagem do body
+        // Funções de Modal
+        function abrirModal(id) {
+            document.getElementById(id).classList.remove('hidden');
         }
 
-        function fecharModal(idModal) {
-            document.getElementById(idModal).classList.add('hidden');
-            document.body.classList.remove('overflow-hidden'); // Restaura rolagem do body
+        function fecharModal(id) {
+            document.getElementById(id).classList.add('hidden');
         }
 
-        // Preenche o select de tribunais no modal de reporte
+        // Função para abrir o WhatsApp
+        function abrirWhatsApp(contexto) {
+            let mensagem = "Olá, preciso de suporte da ADVBR.info! ";
+            if (contexto === 'pjeOffice') {
+                mensagem += "Tive um problema ao testar o PJe Office Pro.";
+            } else if (contexto === 'token') {
+                mensagem += "Tive um problema ao testar meu Token/Certificado Digital.";
+            } else if (contexto === 'relato') {
+                mensagem += "Estou com um problema em um portal e gostaria de relatar.";
+            }
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensagem)}`, '_blank');
+        }
+
+        // Funções de Reportar Problema
         function carregarTribunaisReportar() {
-            const select = document.getElementById('tribunalSelect');
-            if (!select) return;
-
-            // Limpa opções existentes, exceto a primeira
-            while (select.options.length > 1) {
-                select.remove(1);
-            }
-
-            // Agrupa os tribunais por estado/grupo para melhor organização
-            const tribunaisAgrupados = {};
-            dadosTribunaisFixo.forEach(t => {
-                const grupoNome = NOME_EXIBICAO_ESTADO[t.grupo] || t.grupo;
-                if (!tribunaisAgrupados[grupoNome]) {
-                    tribunaisAgrupados[grupoNome] = [];
-                }
-                tribunaisAgrupados[grupoNome].push(t);
+            const select = document.getElementById('reportTribunalSelect');
+            select.innerHTML = '<option value="">Selecione um Tribunal</option>'; // Limpa e adiciona opção padrão
+            dadosTribunaisFixo.forEach(tribunal => {
+                const option = document.createElement('option');
+                option.value = tribunal.id;
+                option.textContent = `${tribunal.nome} (${NOME_EXIBICAO_ESTADO[tribunal.grupo] || tribunal.grupo})`;
+                select.appendChild(option);
             });
-
-            for (const grupoNome in tribunaisAgrupados) {
-                const optgroup = document.createElement('optgroup');
-                optgroup.label = grupoNome;
-                tribunaisAgrupados[grupoNome].forEach(t => {
-                    const option = document.createElement('option');
-                    option.value = t.id;
-                    option.textContent = t.nome;
-                    optgroup.appendChild(option);
-                });
-                select.appendChild(optgroup);
-            }
         }
 
-        // Lógica para o formulário de reporte de problema
-        document.addEventListener('DOMContentLoaded', () => {
-            const formReportarProblema = document.getElementById('formReportarProblema');
-            if (formReportarProblema) {
-                formReportarProblema.addEventListener('submit', async (event) => {
-                    event.preventDefault();
+        async function enviarRelato(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+            const form = event.target;
+            const tribunalId = form.elements.tribunal.value;
+            const tipoProblema = form.elements.tipoProblema.value;
+            const observacao = form.elements.observacao.value;
+            const reportStatus = document.getElementById('reportStatus');
 
-                    const tribunalId = document.getElementById('tribunalSelect').value;
-                    const problemaTipo = document.getElementById('problemaTipo').value;
-                    const observacao = document.getElementById('observacao').value;
-                    const reportarStatus = document.getElementById('reportarStatus');
+            reportStatus.textContent = 'Enviando relato...';
+            reportStatus.style.color = 'yellow';
 
-                    if (!tribunalId || !problemaTipo) {
-                        reportarStatus.className = 'text-sm font-medium text-red-400';
-                        reportarStatus.textContent = 'Por favor, selecione o Tribunal e o Tipo de Problema.';
-                        return;
-                    }
-
-                    reportarStatus.className = 'text-sm font-medium text-blue-400';
-                    reportarStatus.textContent = 'Enviando relato...';
-
-                    try {
-                        const response = await fetch('/api/reportar-problema', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ tribunalId, problemaTipo, observacao }),
-                        });
-
-                        const data = await response.json();
-
-                        if (response.ok) {
-                            reportarStatus.className = 'text-sm font-medium text-green-400';
-                            reportarStatus.textContent = data.message;
-                            // Opcional: fechar modal após sucesso ou limpar formulário
-                            setTimeout(() => {
-                                fecharModal('modalReportar');
-                                formReportarProblema.reset(); // Limpa o formulário
-                                reportarStatus.textContent = ''; // Limpa a mensagem de status
-                                carregarStatusDoCache(); // Recarrega os status para atualizar os contadores
-                            }, 2000);
-                        } else {
-                            reportarStatus.className = 'text-sm font-medium text-red-400';
-                            reportarStatus.textContent = data.message || 'Erro ao enviar relato.';
-                        }
-                    } catch (error) {
-                        console.error('Erro ao enviar relato:', error);
-                        reportarStatus.className = 'text-sm font-medium text-red-400';
-                        reportarStatus.textContent = 'Erro de conexão ao enviar relato.';
-                    }
-                });
-            }
-        });
-
-        // Lógica do Otimizador de PDF
-        async function otimizarPdf() {
-            const pdfInput = document.getElementById('pdfInput');
-            const pdfTribunalSelect = document.getElementById('pdfTribunalSelect');
-            const pdfOptimizerStatus = document.getElementById('pdfOptimizerStatus');
-
-            if (!pdfInput.files.length) {
-                pdfOptimizerStatus.className = 'text-sm font-medium text-red-400';
-                pdfOptimizerStatus.textContent = 'Por favor, selecione um arquivo PDF.';
+            if (!tribunalId || !tipoProblema) {
+                reportStatus.textContent = 'Por favor, selecione o tribunal e o tipo de problema.';
+                reportStatus.style.color = 'red';
                 return;
             }
 
-            pdfOptimizerStatus.className = 'text-sm font-medium text-blue-400';
-            pdfOptimizerStatus.textContent = 'Otimizando PDF...';
-
-            const file = pdfInput.files[0];
-            const arrayBuffer = await file.arrayBuffer();
-            const { PDFDocument } = PDFLib;
-
             try {
-                const pdfDoc = await PDFDocument.load(arrayBuffer);
-                // Aqui você implementaria a lógica de otimização baseada no tribunal selecionado
-                // Por exemplo, reduzir a qualidade das imagens, remover metadados, etc.
-                // Para este exemplo, vamos apenas salvar sem alterações complexas.
-                const modifiedPdfBytes = await pdfDoc.save();
+                // Simulação de envio para uma API
+                // Em um ambiente real, você faria um fetch() para seu backend
+                console.log("Relato enviado:", { tribunalId, tipoProblema, observacao });
+                await new Promise(resolve => setTimeout(resolve, 1500)); // Simula delay da rede
 
-                const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `otimizado_${file.name}`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                // Atualiza os dados locais para refletir o relato
+                if (!relatosComunidade[tribunalId]) {
+                    relatosComunidade[tribunalId] = { total: 0, problemas: { 'Fora do Ar': 0, 'Lentidão': 0, 'Falha no Login': 0, 'Outro': 0 }, ultimoRelato: '' };
+                }
+                relatosComunidade[tribunalId].total++;
+                relatosComunidade[tribunalId].problemas[tipoProblema]++;
+                relatosComunidade[tribunalId].ultimoRelato = new Date().toLocaleTimeString();
 
-                pdfOptimizerStatus.className = 'text-sm font-medium text-green-400';
-                pdfOptimizerStatus.textContent = 'PDF otimizado e download iniciado!';
-                setTimeout(() => fecharModal('modalPdfOptimizer'), 3000);
+                reportStatus.textContent = 'Relato enviado com sucesso! Agradecemos sua contribuição.';
+                reportStatus.style.color = 'lightgreen';
+                setTimeout(() => {
+                    fecharModal('modalReportar');
+                    reportStatus.textContent = ''; // Limpa o status
+                    form.reset(); // Reseta o formulário
+                    carregarStatusDoCache(); // Atualiza as bolinhas e carrosséis
+                }, 2000);
+
             } catch (error) {
-                console.error('Erro ao otimizar PDF:', error);
-                pdfOptimizerStatus.className = 'text-sm font-medium text-red-400';
-                pdfOptimizerStatus.textContent = 'Erro ao otimizar PDF. Verifique o console para detalhes.';
+                console.error('Erro ao enviar relato:', error);
+                reportStatus.textContent = `Erro ao enviar relato: ${error.message}`;
+                reportStatus.style.color = 'red';
             }
         }
 
-        function abrirModalPdfOptimizer() {
-            document.getElementById('pdfOptimizerStatus').textContent = ''; // Limpa status anterior
-            document.getElementById('pdfInput').value = ''; // Limpa o input de arquivo
-            document.getElementById('pdfTribunalSelect').value = ''; // Limpa o select
-            abrirModal('modalPdfOptimizer');
-        }
-
-        // Lógica de Teste PJe Office Pro
-        function abrirModalPjeOfficePreTest() {
-            document.getElementById('pjeOfficeTestStatus').textContent = ''; // Limpa status anterior
-            abrirModal('modalPjeOfficePreTest');
-        }
-
-        async function iniciarTestePjeOffice() {
+        // Funções de Teste PJe Office Pro
+        function iniciarTestePjeOffice() {
             const statusElement = document.getElementById('pjeOfficeTestStatus');
-            statusElement.className = 'text-sm font-semibold mt-4 text-blue-400';
-            statusElement.textContent = 'Tentando conectar com PJe Office Pro...';
+            statusElement.textContent = 'Iniciando teste...';
+            statusElement.style.color = 'yellow';
 
-            try {
-                // A URL padrão para verificar o status do PJe Office Pro
-                const response = await fetch('https://localhost:25320/pjeOffice/status', {
-                    method: 'GET',
-                    mode: 'no-cors' // Necessário para evitar erros CORS em requisições locais
-                });
-                // O 'no-cors' mode impede que a gente veja o status HTTP real, mas se a requisição
-                // foi completada (mesmo que com um status opaco), significa que o servidor está lá.
-                statusElement.className = 'text-sm font-semibold mt-4 text-green-400';
-                statusElement.textContent = 'PJe Office Pro encontrado e respondendo!';
-            } catch (error) {
-                console.error('Erro ao tentar conectar com PJe Office Pro:', error);
-                statusElement.className = 'text-sm font-semibold mt-4 text-red-400';
-                statusElement.textContent = 'PJe Office Pro não encontrado ou não respondendo.';
-            } finally {
+            // Simulação de teste. Em um ambiente real, você tentaria se comunicar com o PJe Office Pro
+            // via uma URL local ou um plugin de navegador.
+            setTimeout(() => {
+                const sucesso = Math.random() > 0.3; // 70% de chance de sucesso
+                if (sucesso) {
+                    statusElement.textContent = 'PJe Office Pro detectado e respondendo! ✅';
+                    statusElement.style.color = 'lightgreen';
+                } else {
+                    statusElement.textContent = 'PJe Office Pro não detectado ou não respondendo. ❌';
+                    statusElement.style.color = 'red';
+                }
                 setTimeout(() => fecharModal('modalPjeOfficePreTest'), 3000); // Fecha o modal após 3 segundos
-            }
+            }, 2000);
         }
 
-        function abrirModalTokenPreTest() {
-            document.getElementById('tokenTestStatus').textContent = ''; // Limpa status anterior
-            abrirModal('modalTokenPreTest');
-        }
-
+        // Funções de Teste de Token/Certificado
         function iniciarTesteToken() {
             const statusElement = document.getElementById('tokenTestStatus');
-            statusElement.className = 'text-sm font-semibold mt-4 text-blue-400';
-            statusElement.textContent = 'Abrindo página de teste da Certisign...';
-
-            window.open('https://suporte.certisign.com.br/duvidas-suporte/certificado-digital/teste-certificado/', '_blank');
-
-            statusElement.className = 'text-sm font-semibold mt-4 text-green-400';
-            statusElement.textContent = 'Página aberta! Verifique a nova aba do seu navegador.';
+            statusElement.textContent = 'Redirecionando para o teste da Certisign...';
+            statusElement.style.color = 'yellow';
+            // Abre a página de teste da Certisign em uma nova aba
+            window.open('https://www.certisign.com.br/duvidas-suporte/downloads/testar-certificado', '_blank');
+            statusElement.textContent = 'Teste iniciado em nova aba. Verifique a página da Certisign.';
+            statusElement.style.color = 'lightgreen';
             setTimeout(() => fecharModal('modalTokenPreTest'), 3000); // Fecha o modal após 3 segundos
         }
         // ──────────────────────────────────────────────────────────────
@@ -685,15 +586,27 @@
 
         async function carregarNoticiasRss() {
             try {
-                const res = await fetch('/api/noticias');
-                if (!res.ok) return;
-                const dados = await res.json();
+                // Simulação de dados RSS
+                const noticiasSimuladas = [
+                    { texto: "Nova atualização no PJe do TRT9 - Fique atento!", url: "#" },
+                    { texto: "STJ divulga novas súmulas para 2026.", url: "#" },
+                    { texto: "TJPR implementa sistema de peticionamento eletrônico unificado.", url: "#" },
+                    { texto: "CNJ lança campanha de combate à morosidade judicial.", url: "#" },
+                    { texto: "Feriado forense em São Paulo na próxima semana.", url: "#" },
+                    { texto: "Alterações no Código de Processo Civil entram em vigor.", url: "#" },
+                    { texto: "Webinar gratuito sobre LGPD para advogados.", url: "#" },
+                    { texto: "Novas funcionalidades no eproc do TRF4.", url: "#" },
+                    { texto: "Prazo final para declaração de imposto de renda se aproxima.", url: "#" },
+                    { texto: "Congresso Nacional discute reforma tributária.", url: "#" }
+                ];
+
                 const container = document.getElementById('tickerNoticias');
-                if (container && dados.noticias && dados.noticias.length > 0) {
+                if (container) {
                     container.innerHTML = '';
-                    dados.noticias.forEach(n => {
+                    noticiasSimuladas.forEach(n => {
                         container.innerHTML += `<div onclick="window.open('${n.url}','_blank')" class="ticker-item"><span class="h-1.5 w-1.5 rounded-full bg-blue-500"></span>${n.texto}</div>`;
                     });
+                    // Duplica o conteúdo para garantir o efeito de ticker contínuo
                     container.innerHTML += container.innerHTML;
                 }
             } catch(e) { console.error("Erro ao carregar notícias.", e); }
@@ -701,11 +614,28 @@
 
         async function carregarStatusDoCache() {
             try {
-                const resposta = await fetch('/api/status-atual');
-                if (!resposta.ok) return;
-                const dadosJson = await resposta.json();
-                statusGerais = dadosJson.status_servidores || {};
-                relatosComunidade = dadosJson.relatos_comunidade || {};
+                // Simulação de dados da API de status
+                const dadosSimulados = {
+                    "status_servidores": {
+                        "pje_cnj": { "status": "Online", "latenciaMs": 80 },
+                        "tjpr_eproc_1g": { "status": "Online", "latenciaMs": 120 },
+                        "tjsp_saj": { "status": "Lentidão", "latenciaMs": 450 },
+                        "stj": { "status": "Online", "latenciaMs": 90 },
+                        "stf": { "status": "Online", "latenciaMs": 70 },
+                        "trt9_1g": { "status": "Online", "latenciaMs": 110 },
+                        "trt9_2g": { "status": "Fora do Ar", "latenciaMs": null },
+                        "trf4_pr": { "status": "Online", "latenciaMs": 130 },
+                        "tjpr_projudi": { "status": "Online", "latenciaMs": 100 },
+                        "domicilio_cnj": { "status": "Online", "latenciaMs": 95 }
+                    },
+                    "relatos_comunidade": {
+                        "tjsp_saj": { "total": 5, "problemas": { "Fora do Ar": 0, "Lentidão": 5, "Falha no Login": 0, "Outro": 0 }, "ultimoRelato": "10:35" },
+                        "trt9_2g": { "total": 8, "problemas": { "Fora do Ar": 8, "Lentidão": 0, "Falha no Login": 0, "Outro": 0 }, "ultimoRelato": "10:40" }
+                    }
+                };
+
+                statusGerais = dadosSimulados.status_servidores || {};
+                relatosComunidade = dadosSimulados.relatos_comunidade || {};
                 renderizarCarrosselDinamicamente();
                 atualizarBolinhasEstados();
                 const modalAberto = !document.getElementById('modalEstado').classList.contains('hidden');
@@ -965,6 +895,105 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
+
+        // Função para dividir o PDF (anteriormente otimizarPdf)
+        async function dividirPdf() {
+            const pdfInput = document.getElementById('pdfInput');
+            const limiteMbInput = document.getElementById('limiteMbInput');
+            const pdfOptimizerStatus = document.getElementById('pdfOptimizerStatus');
+
+            pdfOptimizerStatus.textContent = ''; // Limpa status anterior
+            pdfOptimizerStatus.style.color = 'white';
+
+            if (!pdfInput.files.length) {
+                pdfOptimizerStatus.textContent = 'Por favor, selecione um arquivo PDF.';
+                pdfOptimizerStatus.style.color = 'red';
+                return;
+            }
+
+            const file = pdfInput.files[0];
+            const limiteMb = parseFloat(limiteMbInput.value);
+
+            if (isNaN(limiteMb) || limiteMb <= 0) {
+                pdfOptimizerStatus.textContent = 'Por favor, insira um limite de tamanho válido (em MB).';
+                pdfOptimizerStatus.style.color = 'red';
+                return;
+            }
+
+            pdfOptimizerStatus.textContent = 'Processando PDF...';
+            pdfOptimizerStatus.style.color = 'yellow';
+
+            try {
+                const arrayBuffer = await file.arrayBuffer();
+                const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+                const originalPageCount = pdfDoc.getPageCount();
+                const originalFileSize = file.size; // em bytes
+                const limiteBytes = limiteMb * 1024 * 1024; // Converte MB para bytes
+
+                if (originalFileSize <= limiteBytes) {
+                    pdfOptimizerStatus.textContent = `O PDF já está dentro do limite de ${limiteMb} MB. Não é necessário dividir.`;
+                    pdfOptimizerStatus.style.color = 'lightgreen';
+                    // Opcional: oferecer para baixar o original
+                    const url = URL.createObjectURL(file);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `original_${file.name}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    return;
+                }
+
+                // Estimativa de páginas por parte. Isso é uma heurística, pois o tamanho de cada página varia.
+                // A divisão ideal seria por tamanho de bytes, mas pdf-lib não permite isso diretamente.
+                // Então, dividimos por páginas e esperamos que o tamanho seja distribuído de forma razoável.
+                const numParts = Math.ceil(originalFileSize / limiteBytes);
+                let pagesPerPart = Math.ceil(originalPageCount / numParts);
+
+                // Ajuste para garantir que cada parte tenha pelo menos 1 página
+                if (pagesPerPart === 0 && originalPageCount > 0) {
+                    pagesPerPart = 1;
+                }
+
+                pdfOptimizerStatus.textContent = `Dividindo PDF em ${numParts} partes (aproximadamente ${pagesPerPart} páginas por parte)...`;
+
+                const zip = new JSZip(); // Para agrupar os PDFs em um ZIP
+
+                for (let i = 0; i < numParts; i++) {
+                    const startPage = i * pagesPerPart;
+                    const endPage = Math.min(startPage + pagesPerPart, originalPageCount);
+
+                    if (startPage >= endPage) continue; // Evita criar partes vazias
+
+                    const subDocument = await PDFLib.PDFDocument.create();
+                    const copiedPages = await subDocument.copyPages(pdfDoc, Array.from({ length: endPage - startPage }, (_, j) => startPage + j));
+                    copiedPages.forEach((page) => subDocument.addPage(page));
+
+                    const pdfBytes = await subDocument.save();
+                    const partFileName = `${file.name.replace('.pdf', '')}_parte${i + 1}.pdf`;
+                    zip.file(partFileName, pdfBytes);
+                }
+
+                const zipBlob = await zip.generateAsync({ type: "blob" });
+                const zipUrl = URL.createObjectURL(zipBlob);
+                const a = document.createElement('a');
+                a.href = zipUrl;
+                a.download = `${file.name.replace('.pdf', '')}_dividido.zip`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(zipUrl);
+
+                pdfOptimizerStatus.textContent = `PDF dividido em ${numParts} partes e baixado como ZIP! ✅`;
+                pdfOptimizerStatus.style.color = 'lightgreen';
+
+            } catch (error) {
+                console.error('Erro ao dividir PDF:', error);
+                pdfOptimizerStatus.textContent = `Erro ao dividir PDF: ${error.message} ❌`;
+                pdfOptimizerStatus.style.color = 'red';
+            }
         }
 
 
