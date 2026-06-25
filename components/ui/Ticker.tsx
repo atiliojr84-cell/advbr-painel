@@ -14,12 +14,8 @@ export default function Ticker() {
     fetch('/api/noticias')
       .then((res) => res.json())
       .then((data) => {
-        if (data.noticias && Array.isArray(data.noticias)) {
-          // Remove duplicatas caso a API retorne algo repetido
-          const unique = data.noticias.filter((v: any, i: any, a: any) => 
-            a.findIndex((t: any) => t.texto === v.texto) === i
-          );
-          setNoticias(unique);
+        if (data.noticias) {
+          setNoticias(data.noticias);
         }
       })
       .catch(() => console.error("Erro ao carregar notícias"));
@@ -31,8 +27,15 @@ export default function Ticker() {
     <div className="w-full bg-slate-950 text-slate-300 py-3 overflow-hidden border-b border-slate-800 h-12 flex items-center relative z-10">
       <motion.div 
         className="flex whitespace-nowrap"
-        animate={{ x: ["100%", "-100%"] }}
-        transition={{ repeat: Infinity, duration: 80, ease: "linear" }}
+        // Começa da direita (fora da tela) e vai até o final (totalmente à esquerda)
+        initial={{ x: "100%" }}
+        animate={{ x: "-100%" }}
+        transition={{ 
+          repeat: Infinity, 
+          duration: 100, // Aumentei para 100s para ficar bem lento e profissional
+          ease: "linear",
+          repeatType: "loop"
+        }}
       >
         {noticias.map((item, index) => (
           <a 
@@ -40,7 +43,7 @@ export default function Ticker() {
             href={item.url} 
             target="_blank" 
             rel="noopener noreferrer"
-            className="flex items-center mx-10 hover:text-blue-400 transition-colors font-medium text-sm shrink-0 cursor-pointer"
+            className="flex items-center px-10 hover:text-blue-400 transition-colors font-medium text-sm shrink-0"
           >
             <span className="w-2 h-2 bg-blue-500 rounded-full mr-3 shrink-0" />
             {item.texto}
