@@ -7,53 +7,39 @@ const FEEDS_RSS = [
   { fonte: "STJ", url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" },
   { fonte: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
   { fonte: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" }
-  // ... adicione os outros aqui
 ];
-
-function extrairDadosDoXml(xmlTexto: string, fonteNome: string) {
-  const itens: Array<{texto: string, url: string}> = [];
-  // Regex mais abrangente para capturar itens
-  const regexBlocos = /<(item|entry)[^>]*>([\s\S]*?)<\/(item|entry)>/g;
-  
-  let blocoMatch;
-  while ((blocoMatch = regexBlocos.exec(xmlTexto)) !== null) {
-    const bloco = blocoMatch[2];
-    const tituloMatch = /<(?:title|dc:title)[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/(?:title|dc:title)>/i.exec(bloco);
-    const linkMatch = /<(?:link)[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/(?:link)>/i.exec(bloco) || /<guid[^>]*>([\s\S]*?)<\/guid>/i.exec(bloco);
-    
-    if (tituloMatch) {
-      const titulo = tituloMatch[1].replace(/<[^>]*>/g, "").trim();
-      if (titulo.length > 10) {
-        itens.push({ texto: `[${fonteNome}] ${titulo}`, url: linkMatch ? linkMatch[1].trim() : "#" });
-      }
-    }
-    // Aumentei o limite de 2 para 5 notícias por fonte
-    if (itens.length >= 5) break; 
-  }
-  return itens;
-}
 
 export async function GET() {
   try {
-    // Para testar agora, comente a linha abaixo para ignorar o cache antigo
-    // const cacheNoticias = await kv.get('noticias_juridicas');
-    // if (cacheNoticias) return NextResponse.json({ noticias: cacheNoticias });
+    const resultadosTotais: Array<{texto: string, url: string}> = [];
 
-    const promessas = FEEDS_RSS.map(async (feed) => {
+    // Fazemos o fetch de forma sequencial ou paralela com proteção de erro individual
+    for (const feed of FEEDS_RSS) {
       try {
-        const res = await fetch(feed.url, { next: { revalidate: 300 } });
-        if (!res.ok) return [];
+        const res = await fetch(feed.url, { next: { revalidate: 60 } });
+        if (!res.ok) continue;
+        
         const xml = await res.text();
-        return extrairDadosDoXml(xml, feed.fonte);
-      } catch { return []; }
-    });
+        
+        // Regex simplificada e agressiva para extrair títulos e links
+        const matches = xml.matchAll(/<(item|entry)>[\s\S]*?<title[^>]*>([\s\S]*?)<\/title>[\s\S]*?<link[^>]*>(?:href=")?([^"<\s]+)(?:"| )/gi);
+        
+        for (const match of matches) {
+          const tituloRaw = match[2].replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').replace(/<[^>]+>/g, '').trim();
+          const link = match[3] || "#";
+          
+          if (tituloRaw.length > 10) {
+            resultadosTotais.push({ texto: `[${feed.fonte}] ${tituloRaw}`, url: link });
+          }
+          if (resultadosTotais.length >= 20) break; // Limite global para não travar o frontend
+        }
+      } catch (e) {
+        console.error(`Erro ao buscar ${feed.fonte}:`, e);
+      }
+    }
 
-    const resultados = await Promise.all(promessas);
-    const todasAsNoticias = resultados.flat().sort(() => Math.random() - 0.5); // Randomiza para variar
-
-    await kv.set('noticias_juridicas', todasAsNoticias, { ex: 300 });
-    return NextResponse.json({ noticias: todasAsNoticias });
-  } catch {
+    return NextResponse.json({ noticias: resultadosTotais });
+  } catch (error) {
     return NextResponse.json({ noticias: [] }, { status: 500 });
   }
 }
