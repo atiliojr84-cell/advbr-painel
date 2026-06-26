@@ -92,7 +92,7 @@ export default function PdfToolHub() {
               
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
-              {/* COMPRESSÃO - AVISO CLARO E FONTES AUMENTADAS */}
+              {/* COMPRESSÃO */}
               {selectedTool.id === "comprimir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
@@ -144,7 +144,7 @@ export default function PdfToolHub() {
                 </div>
               )}
 
-              {/* SENHA - FLUXO ESCLARECIDO */}
+              {/* SENHA */}
               {selectedTool.id === "senha" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Remover proteção do PDF:</label>
