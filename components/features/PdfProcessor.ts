@@ -17,7 +17,6 @@ export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint
   const pdf = await PDFDocument.load(arrayBuffer);
   const totalPages = pdf.getPageCount();
   const maxBytes = maxMB * 1024 * 1024;
-  
   const chunks: Uint8Array[] = [];
   let currentPdf = await PDFDocument.create();
 
@@ -25,7 +24,6 @@ export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint
     const [page] = await currentPdf.copyPages(pdf, [i]);
     currentPdf.addPage(page);
     const tempBytes = await currentPdf.save();
-    
     if (tempBytes.length > maxBytes && currentPdf.getPageCount() > 1) {
       chunks.push(tempBytes);
       currentPdf = await PDFDocument.create();
@@ -40,11 +38,7 @@ export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint
 export async function comprimirPorDPI(file: File, dpi: '600' | '200' | '100'): Promise<Uint8Array> {
   const arrayBuffer = await (file as any).arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
-  return await pdf.save({
-    useObjectStreams: true,
-    addDefaultPage: false,
-    updateMetadata: dpi === '600'
-  });
+  return await pdf.save({ useObjectStreams: true, addDefaultPage: false, updateMetadata: dpi === '600' });
 }
 
 export async function removerSenha(file: File, password: string): Promise<Uint8Array> {
