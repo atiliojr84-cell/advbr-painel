@@ -31,8 +31,9 @@ export default function PdfToolHub() {
   };
 
   const downloadFile = (data: Uint8Array, filename: string) => {
-    // Corrigido: Passando o Uint8Array diretamente, que é aceito como BlobPart
-    const blob = new Blob([data], { type: "application/pdf" });
+    // Correção final: converter para 'any' para evitar que o compilador da Vercel
+    // trave na verificação de tipo do buffer interno
+    const blob = new Blob([data as any], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
