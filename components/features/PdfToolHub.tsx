@@ -72,7 +72,8 @@ export default function PdfToolHub() {
   };
 
   const download = (data: Uint8Array, name: string, type: string) => {
-    const blob = new Blob([data], { type: type });
+    // Cast 'as any' para evitar erro de tipo no build do Vercel
+    const blob = new Blob([data as any], { type: type });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -118,7 +119,14 @@ export default function PdfToolHub() {
       {selectedTool && (
         <AnimatePresence>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTool(null)} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 10 }} transition={{ duration: 0.3, ease: "easeOut" }} onClick={(e) => e.stopPropagation()} className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 10 }} 
+              animate={{ opacity: 1, scale: 1, y: 0 }} 
+              exit={{ opacity: 0, scale: 0.95, y: 10 }} 
+              transition={{ duration: 0.3, ease: "easeOut" }} 
+              onClick={(e) => e.stopPropagation()} 
+              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
+            >
               <div className="flex items-center justify-between mb-6 shrink-0">
                 <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
                 <button onClick={() => setSelectedTool(null)} className="text-slate-500 hover:text-white">Fechar</button>
