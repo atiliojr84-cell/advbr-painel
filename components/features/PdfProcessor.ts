@@ -12,19 +12,31 @@ export async function unirPDFs(files: File[]): Promise<Uint8Array> {
   return await mergedPdf.save();
 }
 
-export async function dividirPDF(file: File): Promise<Uint8Array[]> {
+export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint8Array[]> {
   const arrayBuffer = await (file as any).arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
   const totalPages = pdf.getPageCount();
-  const result: Uint8Array[] = [];
+  const maxBytes = maxMB * 1024 * 1024;
+  
+  const chunks: Uint8Array[] = [];
+  let currentPdf = await PDFDocument.create();
 
   for (let i = 0; i < totalPages; i++) {
-    const newPdf = await PDFDocument.create();
-    const [copiedPage] = await newPdf.copyPages(pdf, [i]);
-    newPdf.addPage(copiedPage);
-    result.push(await newPdf.save());
+    const [page] = await currentPdf.copyPages(pdf, [i]);
+    currentPdf.addPage(page);
+    
+    // Calcula o tamanho aproximado
+    const tempBytes = await currentPdf.save();
+    
+    if (tempBytes.length > maxBytes && currentPdf.getPageCount() > 1) {
+      chunks.push(tempBytes);
+      currentPdf = await PDFDocument.create();
+      const [newPage] = await currentPdf.copyPages(pdf, [i]);
+      currentPdf.addPage(newPage);
+    }
   }
-  return result;
+  chunks.push(await currentPdf.save());
+  return chunks;
 }
 
 export async function removerSenha(file: File, password: string): Promise<Uint8Array> {
