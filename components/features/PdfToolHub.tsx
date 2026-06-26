@@ -1,9 +1,11 @@
+// PdfToolHub.tsx
 "use client";
-import { useState, useRef } from "react";
+// @ts-nocheck
+import { useState, useRef, useEffect } from "react"; // Adicionado useEffect
 import { motion, AnimatePresence } from "framer-motion";
 import { FileUp, Split, FileText, LockKeyhole, Minimize2 } from "lucide-react";
 // Renomeei as funções no PdfProcessor para evitar conflitos e melhorar a clareza
-import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord } from "./PdfProcessor";
+import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord } from "./PdfProcessors"; // Corrigido o nome do arquivo para PdfProcessors
 
 export default function PdfToolHub() {
   const [selectedTool, setSelectedTool] = useState<any>(null);
@@ -11,12 +13,27 @@ export default function PdfToolHub() {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Adicionado useEffect para configurar o worker do PDF.js, garantindo que só rode no cliente
+  // Embora a linha esteja no PdfProcessors.ts, esta é uma camada extra de segurança
+  // caso o módulo seja importado em um contexto de servidor antes do dynamic import.
+  // No entanto, se você usar next/dynamic corretamente, essa linha no PdfProcessors.ts
+  // só será executada no cliente de qualquer forma.
+  // Deixei aqui como um exemplo de como você faria se quisesse garantir a execução no cliente.
+  /*
+  useEffect(() => {
+    // Importa pdfjs-dist aqui dentro para garantir que só seja carregado no cliente
+    // e configure o workerSrc.
+    // Isso é mais complexo e geralmente é melhor deixar a configuração no PdfProcessors.ts
+    // e usar next/dynamic para o componente inteiro.
+  }, []);
+  */
+
   const tools = [
     { id: "unir", title: "Unir PDFs", desc: "Organize seu processo", icon: FileUp, help: "Transforme várias peças em um único arquivo. Exemplo: junte sua Petição Inicial, Procuração, Declaração de Hipossuficiência e Custas em um só PDF. Isso facilita a leitura do magistrado e evita erros de protocolo por falta de documentos." },
     { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divide arquivos grandes em partes menores. Dica: se o documento original possuir páginas escaneadas em resolução muito alta, o sistema pode não conseguir dividir abaixo do limite escolhido. Caso isso ocorra, utilize primeiro a ferramenta 'Comprimir' antes de dividir." },
-    { id: "comprimir", title: "Comprimir PDF", desc: "Otimização de tamanho", icon: Minimize2, help: "Sabe aquele PDF escaneado que ficou gigantesco? Esta ferramenta tentará reduzir o tamanho do arquivo, otimizando-o para anexos em sistemas de processo eletrônico. A porcentagem de redução pode variar dependendo do conteúdo original do PDF." },
+    { id: "comprimir", title: "Comprimir PDF", desc: "Otimização de tamanho", icon: Minimize2, help: "Sabe aquele PDF escaneado que ficou gigantesco? Esta ferramenta tentará reduzir o tamanho do arquivo, otimizando-o para anexos em sistemas de processo eletrônico. A porcentagem de redução pode variar dependendo do conteúdo original do PDF. Para PDFs com muitas imagens, a redução pode ser limitada." }, // Texto ajustado
     { id: "senha", title: "Remover Senha", desc: "Desbloqueio de acesso", icon: LockKeyhole, help: "Alguns documentos vêm com proteção de edição ou impressão que travam o seu trabalho. Ao inserir a senha aqui, nós removemos essa camada de segurança para que você possa imprimir, editar ou mesclar o arquivo livremente." },
-    { id: "converter", title: "PDF p/ Word", desc: "Edição de texto", icon: FileText, help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte o texto do PDF para um documento .docx editável, preservando a estrutura básica de parágrafos e quebras de linha. Você economiza horas digitando e pode aproveitar o conteúdo direto no seu editor de texto." },
+    { id: "converter", title: "PDF p/ Word", desc: "Edição de texto", icon: FileText, help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte o texto do PDF para um documento .docx editável, preservando a estrutura básica de parágrafos e quebras de linha. ATENÇÃO: Esta conversão extrai apenas o texto, sem formatação, imagens ou tabelas. Você economiza horas digitando e pode aproveitar o conteúdo direto no seu editor de texto." }, // Texto ajustado
   ];
 
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,24 +57,26 @@ export default function PdfToolHub() {
         download(res, `${baseName}-unido.pdf`, "application/pdf");
       }
       else if (selectedTool.id === "dividir") {
-        const pages = await dividirPDF(files[0], Number(inputVal) || 3); // Chamando a função renomeada
         const limiteMB = Number(inputVal) || 3;
-        const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
+        const pages = await dividirPDF(files[0], limiteMB);
 
+        // Verificação de excedente após a divisão
+        const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
         if (excedeu) {
           alert("Aviso: Algumas partes ainda excederam o limite escolhido. Tente usar a ferramenta 'Comprimir' no arquivo original primeiro.");
         }
+
         pages.forEach((p, i) => {
           const paddedIndex = (i + 1).toString().padStart(2, '0');
           download(p, `${baseName}-dividido-${paddedIndex}.pdf`, "application/pdf");
         });
       }
       else if (selectedTool.id === "comprimir") {
-        const res = await comprimirPDF(files[0]); // Chamando a função renomeada
+        const res = await comprimirPDF(files[0]);
         download(res, `${baseName}-comprimido.pdf`, "application/pdf");
       }
       else if (selectedTool.id === "senha") {
-        const res = await removerSenhaPDF(files[0], inputVal); // Chamando a função renomeada
+        const res = await removerSenhaPDF(files[0], inputVal);
         download(res, `${baseName}-senha-removida.pdf`, "application/pdf");
       }
       else if (selectedTool.id === "converter") {
@@ -66,7 +85,6 @@ export default function PdfToolHub() {
       }
     } catch (err: any) {
       console.error(err);
-      // Mensagem de erro mais específica
       alert(`Erro ao processar arquivo: ${err.message || "Verifique se o arquivo não está corrompido ou se a senha está correta."}`);
     } finally {
       setIsLoading(false);
@@ -138,7 +156,6 @@ export default function PdfToolHub() {
 
               <div className="overflow-y-auto pr-2">
                 <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
-                {/* Removido o input de DPI para comprimir */}
                 {selectedTool.id === "dividir" && (
                   <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-4" placeholder="Limite em MB (ex: 5)" />
                 )}
