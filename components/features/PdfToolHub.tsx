@@ -2,7 +2,8 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileUp, Split, FileText, LockKeyhole, Minimize2 } from "lucide-react";
-import { unirPDFs, comprimirPorDPI, dividirPorTamanho, removerSenha, converterParaWord } from "./PdfProcessor";
+// Renomeei as funções no PdfProcessor para evitar conflitos e melhorar a clareza
+import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord } from "./PdfProcessor";
 
 export default function PdfToolHub() {
   const [selectedTool, setSelectedTool] = useState<any>(null);
@@ -39,7 +40,7 @@ export default function PdfToolHub() {
         download(res, `${baseName}-unido.pdf`, "application/pdf");
       }
       else if (selectedTool.id === "dividir") {
-        const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3);
+        const pages = await dividirPDF(files[0], Number(inputVal) || 3); // Chamando a função renomeada
         const limiteMB = Number(inputVal) || 3;
         const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
 
@@ -52,20 +53,21 @@ export default function PdfToolHub() {
         });
       }
       else if (selectedTool.id === "comprimir") {
-        const res = await comprimirPorDPI(files[0]); // Não precisa mais do DPI como input
+        const res = await comprimirPDF(files[0]); // Chamando a função renomeada
         download(res, `${baseName}-comprimido.pdf`, "application/pdf");
       }
       else if (selectedTool.id === "senha") {
-        const res = await removerSenha(files[0], inputVal);
+        const res = await removerSenhaPDF(files[0], inputVal); // Chamando a função renomeada
         download(res, `${baseName}-senha-removida.pdf`, "application/pdf");
       }
       else if (selectedTool.id === "converter") {
         const res = await converterParaWord(files[0]);
         download(res, `${baseName}-convertido.docx`, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      alert("Erro ao processar arquivo. Verifique se o arquivo não está corrompido ou se a senha está correta.");
+      // Mensagem de erro mais específica
+      alert(`Erro ao processar arquivo: ${err.message || "Verifique se o arquivo não está corrompido ou se a senha está correta."}`);
     } finally {
       setIsLoading(false);
       setSelectedTool(null);
