@@ -17,7 +17,7 @@ export default function JurisdictionHub() {
 
   const handleOpenModal = (regiao: string) => {
     setActiveRegiao(regiao);
-    // Se clicou em federais, já vai direto para a tela de tribunais
+    // Se for federal, pula a view de estado e vai direto para tribunais
     setView(regiao === 'federais' ? 'tribunal' : 'estado');
     setIsOpen(true);
   };
@@ -55,15 +55,18 @@ export default function JurisdictionHub() {
             </div>
 
             <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
-              {/* Tela de Estados */}
-              {view === 'estado' && Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map(e => (
-                <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                  className="w-full p-5 bg-slate-900/50 rounded-2xl text-left text-white border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
-                  {e}
-                </button>
-              ))}
+              
+              {/* Seção de Estados (apenas para regiões geográficas) */}
+              {view === 'estado' && activeRegiao !== 'federais' && (
+                Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
+                  <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
+                    className="w-full p-5 bg-slate-900/50 rounded-2xl text-left text-white border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
+                    {e}
+                  </button>
+                ))
+              )}
 
-              {/* Tela de Tribunais */}
+              {/* Seção de Tribunais */}
               {view === 'tribunal' && (
                 activeRegiao === 'federais' 
                 ? jurisdictions.federais.map((t: any) => (
