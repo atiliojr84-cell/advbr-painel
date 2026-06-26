@@ -18,10 +18,10 @@ export default function PdfToolHub() {
     try {
       if (selectedTool.id === "unir") {
         result = await unirPDFs(files);
-        downloadFile(result, "documento_unido.pdf");
+        if (result) downloadFile(result, "documento_unido.pdf");
       } else if (selectedTool.id === "otimizar") {
         result = await otimizarPDF(files[0]);
-        downloadFile(result, "documento_otimizado.pdf");
+        if (result) downloadFile(result, "documento_otimizado.pdf");
       }
     } catch (error) {
       console.error("Erro ao processar PDF:", error);
@@ -31,8 +31,8 @@ export default function PdfToolHub() {
   };
 
   const downloadFile = (data: Uint8Array, filename: string) => {
-    // A correção definitiva: criar um Blob passando o buffer do Uint8Array diretamente
-    const blob = new Blob([data.buffer], { type: "application/pdf" });
+    // Corrigido: Passando o Uint8Array diretamente, que é aceito como BlobPart
+    const blob = new Blob([data], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
