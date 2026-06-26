@@ -32,7 +32,7 @@ export default function Home() {
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
           <h2 className="text-xl font-bold text-white mb-4">Mais de 20 anos de excelência em TI Jurídica</h2>
           <p className="leading-relaxed">
-            A ADVBR.INFO possui mais de 20 anos de excelência no mercado de tecnologia e segurança digital. 
+            A advBR.info possui mais de 20 anos de excelência no mercado de tecnologia e segurança digital. 
             Há mais de 15 anos, dedicamos nossa expertise exclusivamente às necessidades do ecossistema jurídico, 
             prestando serviços de infraestrutura de TI para grandes escritórios e entidades de classe, como a OAB Maringá. 
             Entendemos a urgência dos seus prazos e a criticidade do sigilo dos seus processos. 
