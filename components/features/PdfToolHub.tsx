@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { FileUp, FileSplit, FileText, LockKeyhole, Minimize2 } from "lucide-react";
+import { FileUp, Split, FileText, LockKeyhole, Minimize2 } from "lucide-react";
 import Modal from "../ui/Modal";
 import { unirPDFs, otimizarPDF } from "./PdfProcessor";
 
@@ -15,12 +15,16 @@ export default function PdfToolHub() {
     const files = Array.from(e.target.files);
     let result: Uint8Array;
 
-    if (selectedTool.id === "unir") {
-      result = await unirPDFs(files);
-      downloadFile(result, "documento_unido.pdf");
-    } else if (selectedTool.id === "otimizar") {
-      result = await otimizarPDF(files[0]);
-      downloadFile(result, "documento_otimizado.pdf");
+    try {
+      if (selectedTool.id === "unir") {
+        result = await unirPDFs(files);
+        downloadFile(result, "documento_unido.pdf");
+      } else if (selectedTool.id === "otimizar") {
+        result = await otimizarPDF(files[0]);
+        downloadFile(result, "documento_otimizado.pdf");
+      }
+    } catch (error) {
+      console.error("Erro ao processar PDF:", error);
     }
     
     setSelectedTool(null);
@@ -37,7 +41,7 @@ export default function PdfToolHub() {
 
   const tools = [
     { id: "unir", title: "Unir PDFs", icon: FileUp },
-    { id: "dividir", title: "Dividir PDF", icon: FileSplit },
+    { id: "dividir", title: "Dividir PDF", icon: Split },
     { id: "converter", title: "Converter", icon: FileText },
     { id: "senha", title: "Remover Senha", icon: LockKeyhole },
     { id: "otimizar", title: "Otimizar PDF", icon: Minimize2 },
@@ -59,7 +63,7 @@ export default function PdfToolHub() {
             <button key={tool.id} onClick={() => { setSelectedTool(tool); fileInputRef.current?.click(); }} 
               className="flex flex-col items-center justify-center p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-blue-500 transition-all">
               <tool.icon className="w-6 h-6 text-slate-400 mb-2" />
-              <span className="text-xs font-semibold text-slate-200">{tool.title}</span>
+              <span className="text-xs font-semibold text-slate-200">{tool.title.replace("PDF", "")}</span>
             </button>
           ))}
         </div>
