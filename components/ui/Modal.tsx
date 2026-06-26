@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: React.ReactNode; // Alterado de string para React.ReactNode
+  title: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -22,6 +22,7 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
     <AnimatePresence>
       {isOpen && (
         <>
+          {/* Backdrop com clique para fechar */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -36,8 +37,11 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             exit={{ opacity: 0, scale: 0.95 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
           >
-            {/* JANELA PRETA COM BORDA AZUL ELÉTRICO */}
-            <div className="bg-slate-950 border border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.3)] rounded-xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col">
+            {/* JANELA: Adicionado onClick com stopPropagation para não fechar ao clicar dentro */}
+            <div 
+              className="bg-slate-950 border border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.3)] rounded-xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col"
+              onClick={(e) => e.stopPropagation()} 
+            >
               <div className="flex justify-between items-center p-6 border-b border-blue-900/50">
                 <h2 className="text-xl font-bold text-white flex items-center">
                   {title}
