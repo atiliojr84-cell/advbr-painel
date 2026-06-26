@@ -92,7 +92,7 @@ export default function PdfToolHub() {
               
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
-              {/* COMPRESSÃO CUSTOMIZADA - FONTES AUMENTADAS */}
+              {/* COMPRESSÃO CUSTOMIZADA - AVISO CLARO E FONTES AUMENTADAS */}
               {selectedTool.id === "comprimir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
@@ -115,6 +115,11 @@ export default function PdfToolHub() {
                         <span className="text-[11px] text-slate-400 font-medium">{opt.desc}</span>
                       </button>
                     ))}
+                  </div>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-blue-900/30">
+                    <p className="text-[12px] text-slate-300 leading-relaxed">
+                      <strong className="text-blue-400">Atenção:</strong> Quanto maior a compressão, menor será o arquivo, mas também maior será a perda de qualidade visual. Escolha <strong>Máxima</strong> se precisar reduzir muito o tamanho, ou <strong>Mínima</strong> se a leitura e detalhes forem cruciais.
+                    </p>
                   </div>
                 </div>
               )}
