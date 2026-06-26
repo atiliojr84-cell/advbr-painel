@@ -74,6 +74,7 @@ export default function PdfToolHub() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onClick={() => setSelectedTool(null)}
             className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           >
             <motion.div
@@ -81,9 +82,14 @@ export default function PdfToolHub() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
             >
-              <h3 className="text-white text-xl font-bold mb-4">{selectedTool.title}</h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
+                <button onClick={() => setSelectedTool(null)} className="text-slate-500 hover:text-white">Fechar</button>
+              </div>
+              
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
               {selectedTool.id !== "unir" && selectedTool.id !== "converter" && (
@@ -96,10 +102,12 @@ export default function PdfToolHub() {
                 />
               )}
               
-              <div className="flex gap-4">
-                <button onClick={() => setSelectedTool(null)} className="flex-1 py-3 text-slate-400">Cancelar</button>
-                <button onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 bg-blue-600 rounded-xl font-bold text-white">Processar</button>
-              </div>
+              <button 
+                onClick={() => fileInputRef.current?.click()} 
+                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg"
+              >
+                Processar Arquivo
+              </button>
             </motion.div>
           </motion.div>
         </AnimatePresence>
