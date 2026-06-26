@@ -14,7 +14,7 @@ const portais = [
   { id: 7, name: "7. TRT9 PJe 1 Grau", url: "https://pje.trt9.jus.br/primeirograu/login.seam" },
   { id: 8, name: "8. TRT9 PJe 2 Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam" },
   { id: 9, name: "9. PJe TRF3 (SP/MS)", url: "https://pje1g.trf3.jus.br/pje/login.seam" },
-  { id: 10, name: "10. TJPR E-Proc 2 Grau", url: "https://eproc2g.tjpr.jus.br/eproc/" },
+  { id: 10, name: "10. PJe TRF4 (PR/SC/RS)", url: "https://eproc.trf4.jus.br/eproc2trf4/externo_controlador.php?acao=acesso_externo_principal" },
 ];
 
 export default function PortalCarousel() {
