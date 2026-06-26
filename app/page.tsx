@@ -22,11 +22,14 @@ export default function Home() {
             <PortalCarousel />
         </section>
 
-        {/* Módulo F: Serviços Corporativos */}
-        <ServiceGrid />
-
-        {/* Novo Módulo de Jurisdições */}
+        {/* Módulo B: Hub de Jurisdições (Movido para cima dos Serviços) */}
         <JurisdictionHub />
+
+        {/* Módulo C, D: Área reservada para Ferramentas (PDF e Diagnóstico) - Placeholder */}
+        {/* Adicionaremos aqui futuramente */}
+
+        {/* Módulo F: Serviços Corporativos ADVBR (Movido para baixo) */}
+        <ServiceGrid />
 
         {/* Seção Know-How Institucional */}
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
