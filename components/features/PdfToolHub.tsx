@@ -46,9 +46,12 @@ export default function PdfToolHub() {
     <section className="py-12 px-4 max-w-5xl mx-auto">
       <input type="file" ref={fileInputRef} className="hidden" multiple={selectedTool?.id === "unir"} onChange={handleProcess} />
       
-      {/* Título do Módulo */}
-      <div className="mb-8 flex items-center gap-3">
-        <div className="bg-red-600 p-2 rounded-lg"><FileType className="text-white w-8 h-8" /></div>
+      {/* Título do Módulo com o ícone customizado */}
+      <div className="mb-8 flex items-center gap-4">
+        <div className="relative w-12 h-14 bg-red-600 rounded-md flex flex-col items-center justify-center shadow-lg border-2 border-red-700">
+           <span className="text-[10px] font-black text-white tracking-tighter">PDF</span>
+           <span className="text-[6px] font-bold text-white mt-0.5">.doc</span>
+        </div>
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente de PDF</h2>
           <p className="text-slate-400 text-sm">Ferramentas essenciais para o dia a dia do seu escritório.</p>
