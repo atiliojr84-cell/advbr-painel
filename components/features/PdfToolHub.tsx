@@ -22,7 +22,7 @@ export default function PdfToolHub() {
       title: "Dividir PDF", 
       desc: "Adequação aos limites", 
       icon: Split, 
-      help: "Se o seu PDF tem mais de 5MB ou 10MB, o sistema do tribunal recusará o upload. Esta função divide o seu documento em partes menores automaticamente, garantindo que você consiga protocolar dentro do prazo sem dor de cabeça." 
+      help: "Divide arquivos grandes em partes menores. Dica: se o documento original possuir páginas escaneadas em resolução muito alta, o sistema pode não conseguir dividir abaixo do limite escolhido. Caso isso ocorra, utilize primeiro a ferramenta 'Comprimir' para reduzir o peso das páginas antes de dividir." 
     },
     { 
       id: "comprimir", 
@@ -50,7 +50,7 @@ export default function PdfToolHub() {
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
-    // TRAVA DE SEGURANÇA: Bloqueia qualquer arquivo que não seja PDF para Mac/Windows
+    // TRAVA DE SEGURANÇA: Bloqueia qualquer arquivo que não seja PDF
     const files = Array.from(e.target.files);
     const isAllPdf = files.every(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
     
@@ -68,6 +68,15 @@ export default function PdfToolHub() {
       }
       else if (tool.id === "dividir") { 
         const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3); 
+        
+        // AVISO PREVENTIVO: Caso as páginas individuais sejam muito pesadas
+        const limiteMB = Number(inputVal) || 3;
+        const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
+        
+        if (excedeu) {
+          alert("Aviso: Algumas partes ainda excederam o limite escolhido. Isso acontece quando o PDF possui páginas individuais muito pesadas. Tente usar a ferramenta 'Comprimir' no arquivo original primeiro.");
+        }
+
         pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`, "application/pdf")); 
       }
       else if (tool.id === "comprimir") { 
@@ -93,7 +102,6 @@ export default function PdfToolHub() {
   };
 
   const download = (data: Uint8Array, name: string, type: string) => {
-    // Conversão segura para ArrayBuffer para evitar erro de tipo no build
     const blob = new Blob([data.buffer as ArrayBuffer], { type: type });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
