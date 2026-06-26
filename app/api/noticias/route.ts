@@ -6,12 +6,14 @@ export async function GET() {
     { nome: "OAB-BR", url: "https://www.oab.org.br/rss" },
     { nome: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
     { nome: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" },
-    { nome: "STJ", url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" },
-    { nome: "TRF4", url: "https://www.trf4.jus.br/trf4/noticias.xml" },
-    { nome: "JUSTICA-FOCO", url: "https://www.justicaemfoco.com.br/feed.xml" }
+    { nome: "JUSTICA-FOCO", url: "https://www.justicaemfoco.com.br/feed.xml" },
+    { nome: "STJ-NOT", url: "https://res.stj.jus.br/hrestp-c-portalp/RSS.xml" },
+    { nome: "STJ-PESQ", url: "https://scon.stj.jus.br/SCON/PesquisaProntaFeed" },
+    { nome: "STJ-TESES", url: "https://scon.stj.jus.br/SCON/JurisprudenciaEmTesesFeed" },
+    { nome: "STJ-INF", url: "https://processo.stj.jus.br/jurisprudencia/externo/InformativoFeed" }
   ];
 
-  const todasNoticias: Array<{texto: string, url: string}> = [];
+  let todasNoticias: Array<{texto: string, url: string}> = [];
 
   for (const fonte of fontes) {
     try {
@@ -21,7 +23,6 @@ export async function GET() {
       });
       
       const arrayBuffer = await res.arrayBuffer();
-      // O TextDecoder padrão lida com UTF-8, que é a norma dos feeds modernos
       const xml = new TextDecoder('utf-8').decode(arrayBuffer)
                 .replace(/Ã©/g, 'é').replace(/Ã£/g, 'ã').replace(/Ã§/g, 'ç')
                 .replace(/Ã³/g, 'ó').replace(/Ãª/g, 'ê').replace(/Ã­/g, 'í')
@@ -39,5 +40,12 @@ export async function GET() {
     } catch (e) { continue; }
   }
 
-  return NextResponse.json({ noticias: todasNoticias.sort(() => Math.random() - 0.5) });
+  // Lógica de "Embaralhamento Furioso"
+  // Fisher-Yates Shuffle para garantir que não haja repetição de fonte próxima
+  for (let i = todasNoticias.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [todasNoticias[i], todasNoticias[j]] = [todasNoticias[j], todasNoticias[i]];
+  }
+
+  return NextResponse.json({ noticias: todasNoticias });
 }
