@@ -117,7 +117,6 @@ export default function PdfToolHub() {
 
   return (
     <section className="py-12 px-4 max-w-5xl mx-auto">
-      {/* INPUT FILTRADO PARA MAC E WINDOWS */}
       <input 
         type="file" 
         ref={fileInputRef} 
@@ -136,8 +135,13 @@ export default function PdfToolHub() {
         
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
-          <div className="flex items-center gap-1.5 text-emerald-400 mt-1">
-            <p className="text-[11px] font-medium tracking-wide uppercase">Processamento 100% local (Seguro e Privado)</p>
+          <div className="flex flex-col gap-0.5 mt-1">
+            <p className="text-[11px] font-bold text-emerald-400 tracking-wide uppercase">
+              PROCESSAMENTO 100% LOCAL (SEGURO E PRIVADO)
+            </p>
+            <p className="text-[10px] text-slate-400">
+              Processamento 100% na sua máquina, visando a segurança e privacidade.
+            </p>
           </div>
         </div>
       </div>
