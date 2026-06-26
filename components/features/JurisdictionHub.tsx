@@ -68,8 +68,11 @@ export default function JurisdictionHub() {
             {view === 'estado' && activeRegiao !== 'federais' && (
               <div className="grid grid-cols-2 gap-3">
                 {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
-                  <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                    className="p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-600 transition-all text-white font-medium text-sm">
+                  <button 
+                    key={e} 
+                    onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
+                    className="p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-600 transition-all text-white font-medium text-sm"
+                  >
                     {e}
                   </button>
                 ))}
@@ -83,8 +86,11 @@ export default function JurisdictionHub() {
                   ? jurisdictions.federais 
                   : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
                 )?.map((t: any) => (
-                  <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
-                    className="w-full p-4 bg-slate-900/50 rounded-xl flex items-center justify-between border border-slate-800 hover:border-blue-600 transition-all">
+                  <button 
+                    key={t.name} 
+                    onClick={() => window.open(t.url, "_blank")} 
+                    className="w-full p-4 bg-slate-900/50 rounded-xl flex items-center justify-between border border-slate-800 hover:border-blue-600 transition-all"
+                  >
                     <span className="text-white text-sm font-medium">{t.name}</span>
                     <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
                   </button>
