@@ -118,14 +118,34 @@ export default function PdfToolHub() {
                 </div>
               )}
               
-              {/* INPUTS GERAIS (DIVIDIR/SENHA) */}
-              {(selectedTool.id === "dividir" || selectedTool.id === "senha") && (
+              {/* DIVIDIR PDF EXPLICADO */}
+              {selectedTool.id === "dividir" && (
+                <div className="mb-6">
+                  <label className="block text-slate-400 text-sm mb-3">Defina o tamanho limite:</label>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-4">
+                    <p className="text-[12px] text-slate-300 leading-relaxed">
+                      <strong>Como funciona:</strong> O sistema dividirá seu PDF em vários arquivos menores, garantindo que cada parte não ultrapasse o limite de tamanho (MB) que você definir abaixo. Ideal para cumprir normas de tribunais.
+                    </p>
+                  </div>
+                  <input 
+                    type="number" 
+                    value={inputVal} 
+                    onChange={(e) => setInputVal(e.target.value)} 
+                    className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" 
+                    placeholder="Ex: 5 (limite em MB)" 
+                  />
+                  <p className="text-[10px] text-slate-500 mt-2">Dica: A maioria dos sistemas aceita arquivos de até 5MB a 10MB.</p>
+                </div>
+              )}
+
+              {/* SENHA */}
+              {selectedTool.id === "senha" && (
                 <input 
-                  type={selectedTool.id === "senha" ? "password" : "text"} 
+                  type="password" 
                   value={inputVal} 
                   onChange={(e) => setInputVal(e.target.value)} 
                   className="w-full p-4 mb-6 bg-slate-950 text-white rounded-xl border border-slate-700" 
-                  placeholder={selectedTool.id === "dividir" ? "Tamanho máximo (MB)" : "Senha do documento"} 
+                  placeholder="Senha do documento" 
                 />
               )}
               
