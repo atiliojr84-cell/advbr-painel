@@ -4,11 +4,9 @@ export async function GET() {
   const fontes = [
     { nome: "OAB-PR", url: "https://www.oabpr.org.br/feed/" },
     { nome: "OAB-BR", url: "https://www.oab.org.br/rss" },
-    { nome: "CONJUR", url: "https://www.conjur.com.br/rss.xml" },
-    { nome: "MIGALHAS", url: "https://www.migalhas.com.br/arquivos/rss/rss_migalhas.xml" },
+    { nome: "CONJUR", url: "https://www.conjur.com.br/rss.xml" }
     { nome: "STJ", url: "https://www.stj.jus.br/sites/portalp/Noticias?format=rss" },
-    { nome: "TRF4", url: "https://www.trf4.jus.br/trf4/noticias.xml" },
-    { nome: "JUSTICA-FOCO", url: "https://www.justicaemfoco.com.br/feed" }
+    { nome: "JUSTICA-FOCO", url: "https://www.justicaemfoco.com.br/feed.xml" },
   ];
 
   const todasNoticias: Array<{texto: string, url: string}> = [];
