@@ -9,48 +9,22 @@ export default function PdfToolHub() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const tools = [
-    { 
-      id: "unir", title: "Unir", desc: "Juntar arquivos", icon: FileUp,
-      help: "Esta ferramenta combina múltiplos arquivos PDF em um único documento sequencial. Ideal para organizar petições e anexos em um só lugar."
-    },
-    { 
-      id: "dividir", title: "Dividir", desc: "Fatiar por MB", icon: Split,
-      help: "Divide arquivos grandes em partes menores com um limite de peso definido. Essencial para contornar restrições de tamanho em portais de tribunais."
-    },
-    { 
-      id: "comprimir", title: "Comprimir", desc: "Otimizar DPI", icon: Minimize2,
-      help: "Reduz o peso do arquivo mantendo a legibilidade. Otimiza a estrutura do PDF garantindo que textos e assinaturas permaneçam nítidos."
-    },
-    { 
-      id: "senha", title: "Senha", desc: "Remover proteção", icon: LockKeyhole,
-      help: "Remove a camada de proteção de PDFs bloqueados. Utilize esta ferramenta apenas para documentos onde você possui a autorização de acesso."
-    },
-    { 
-      id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText,
-      help: "Extrai o conteúdo do seu PDF para um formato editável (.doc). Facilita a reutilização de textos e dados processuais no Microsoft Word."
-    },
+    { id: "unir", title: "Unir", desc: "Juntar arquivos", icon: FileUp, help: "Esta ferramenta combina múltiplos arquivos PDF em um único documento sequencial." },
+    { id: "dividir", title: "Dividir", desc: "Fatiar por MB", icon: Split, help: "Divide arquivos grandes em partes menores com um limite de peso definido." },
+    { id: "comprimir", title: "Comprimir", desc: "Otimizar DPI", icon: Minimize2, help: "Reduz o peso do arquivo mantendo a legibilidade." },
+    { id: "senha", title: "Senha", desc: "Remover proteção", icon: LockKeyhole, help: "Remove a camada de proteção de PDFs bloqueados." },
+    { id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText, help: "Extrai o conteúdo do seu PDF para um formato editável (.doc)." },
   ];
 
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const files = Array.from(e.target.files);
     try {
-      if (selectedTool.id === "unir") {
-        const res = await unirPDFs(files);
-        download(res, "unido.pdf");
-      } else if (selectedTool.id === "dividir") {
-        const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3);
-        pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`));
-      } else if (selectedTool.id === "comprimir") {
-        const res = await comprimirPorDPI(files[0], (inputVal as any) || '200');
-        download(res, "otimizado.pdf");
-      } else if (selectedTool.id === "senha") {
-        const res = await removerSenha(files[0], inputVal);
-        download(res, "desbloqueado.pdf");
-      } else if (selectedTool.id === "converter") {
-        const res = await converterParaWord(files[0]);
-        download(res, "convertido.doc");
-      }
+      if (selectedTool.id === "unir") { const res = await unirPDFs(files); download(res, "unido.pdf"); }
+      else if (selectedTool.id === "dividir") { const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3); pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`)); }
+      else if (selectedTool.id === "comprimir") { const res = await comprimirPorDPI(files[0], (inputVal as any) || '200'); download(res, "otimizado.pdf"); }
+      else if (selectedTool.id === "senha") { const res = await removerSenha(files[0], inputVal); download(res, "desbloqueado.pdf"); }
+      else if (selectedTool.id === "converter") { const res = await converterParaWord(files[0]); download(res, "convertido.doc"); }
     } catch { alert("Erro ao processar arquivo."); }
     setSelectedTool(null); setInputVal("");
   };
@@ -77,8 +51,12 @@ export default function PdfToolHub() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
         {tools.map((t) => (
-          <button key={t.id} onClick={() => { setSelectedTool(t); if(t.id === "unir") fileInputRef.current?.click(); }} 
-            className="flex flex-col items-center p-4 bg-slate-900 border border-slate-800 rounded-2xl hover:border-blue-500 transition-all">
+          <button 
+            key={t.id} 
+            onClick={() => { setSelectedTool(t); if(t.id === "unir") fileInputRef.current?.click(); }} 
+            /* AQUI A MUDANÇA: Substituí as classes de borda pela classe global glow-effect */
+            className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect"
+          >
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400">
               <t.icon className="w-8 h-8" />
             </div>
@@ -92,11 +70,7 @@ export default function PdfToolHub() {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl">
             <h3 className="text-white text-xl font-bold mb-4">{selectedTool.title}</h3>
-            
-            {/* Descrição padronizada e alinhada com o restante do site */}
-            <p className="text-slate-300 leading-relaxed mb-6">
-              {selectedTool.help}
-            </p>
+            <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
             
             {selectedTool.id !== "unir" && selectedTool.id !== "converter" && (
               <input type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} 
