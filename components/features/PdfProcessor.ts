@@ -4,7 +4,7 @@ import { PDFDocument } from 'pdf-lib';
 export async function unirPDFs(files: File[]): Promise<Uint8Array> {
   const mergedPdf = await PDFDocument.create();
   for (const file of files) {
-    const arrayBuffer = await (file as any).arrayBuffer();
+    const arrayBuffer = await file.arrayBuffer();
     const pdf = await PDFDocument.load(arrayBuffer);
     const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
     copiedPages.forEach((page) => mergedPdf.addPage(page));
@@ -13,7 +13,7 @@ export async function unirPDFs(files: File[]): Promise<Uint8Array> {
 }
 
 export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint8Array[]> {
-  const arrayBuffer = await (file as any).arrayBuffer();
+  const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
   const totalPages = pdf.getPageCount();
   const maxBytes = maxMB * 1024 * 1024;
@@ -35,19 +35,21 @@ export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint
   return chunks;
 }
 
-export async function comprimirPorDPI(file: File, dpi: '350' | '200' | '150'): Promise<Uint8Array> {
-  const arrayBuffer = await (file as any).arrayBuffer();
+export async function comprimirPorDPI(file: File, dpi: string): Promise<Uint8Array> {
+  const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
-  return await pdf.save({ useObjectStreams: true, addDefaultPage: false, updateMetadata: dpi === '350' });
+  return await pdf.save({ useObjectStreams: true });
 }
 
 export async function removerSenha(file: File, password: string): Promise<Uint8Array> {
-  const arrayBuffer = await (file as any).arrayBuffer();
+  const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer, { password: password });
   return await pdf.save();
 }
 
+// NOTA: Para converter PDF p/ Word de verdade, seria necessária uma API externa ou biblioteca complexa.
+// Este código apenas simula a chamada para não quebrar o build.
 export async function converterParaWord(file: File): Promise<Uint8Array> {
-  const arrayBuffer = await (file as any).arrayBuffer();
-  return new Uint8Array(arrayBuffer);
+  const arrayBuffer = await file.arrayBuffer();
+  return new Uint8Array(arrayBuffer); 
 }
