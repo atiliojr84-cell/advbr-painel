@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, ArrowLeft, AlertCircle } from "lucide-react";
+import { X, ArrowLeft } from "lucide-react";
 import { jurisdictions } from "../../data/jurisdictions";
 
 export default function JurisdictionHub() {
@@ -17,13 +17,13 @@ export default function JurisdictionHub() {
 
   const handleOpenModal = (regiao: string) => {
     setActiveRegiao(regiao);
-    setView('estado');
+    // Se clicou em federais, já vai direto para a tela de tribunais
+    setView(regiao === 'federais' ? 'tribunal' : 'estado');
     setIsOpen(true);
   };
 
   return (
     <>
-      {/* 1. Botões das Regiões */}
       <section className="py-8 px-4 flex flex-wrap justify-center gap-4">
         {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
           <button 
@@ -36,49 +36,49 @@ export default function JurisdictionHub() {
         ))}
       </section>
 
-      {/* 2. Janela Modal Estilo Premium */}
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md transition-all duration-300">
-          <div className="bg-[#0b0f19] border border-slate-800 w-full max-w-lg rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-[#0b0f19] border border-slate-800 w-full max-w-lg rounded-[2rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
             
-            {/* Header */}
             <div className="flex justify-between items-center mb-8">
               <h3 className="text-white font-bold text-2xl flex items-center gap-4">
-                {view === 'tribunal' && (
+                {view === 'tribunal' && activeRegiao !== 'federais' && (
                   <button onClick={() => setView('estado')} className="text-slate-500 hover:text-white transition-colors">
                     <ArrowLeft size={24} />
                   </button>
                 )}
-                {view === 'estado' ? activeRegiao.toUpperCase() : selectedEstado}
+                {activeRegiao === 'federais' ? 'TRIBUNAIS FEDERAIS' : (view === 'estado' ? activeRegiao.toUpperCase() : selectedEstado)}
               </h3>
               <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white transition-colors">
                 <X size={28} />
               </button>
             </div>
 
-            {/* Conteúdo */}
             <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
-              {view === 'estado' && (
+              {/* Tela de Estados */}
+              {view === 'estado' && Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map(e => (
+                <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
+                  className="w-full p-5 bg-slate-900/50 rounded-2xl text-left text-white border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
+                  {e}
+                </button>
+              ))}
+
+              {/* Tela de Tribunais */}
+              {view === 'tribunal' && (
                 activeRegiao === 'federais' 
-                ? jurisdictions.federais.map((f: any) => (
-                    <button key={f.name} onClick={() => window.open(f.url, "_blank")} className="w-full p-5 bg-slate-900/50 rounded-2xl flex justify-between items-center border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
-                      <span className="text-white font-medium">{f.name}</span>
-                      <div className={`w-3 h-3 rounded-full ${getStatusColor(f.alerta)}`} />
+                ? jurisdictions.federais.map((t: any) => (
+                    <button key={t.name} onClick={() => window.open(t.url, "_blank")} className="w-full p-5 bg-slate-900/50 rounded-2xl flex items-center justify-between border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
+                      <span className="text-white font-medium">{t.name}</span>
+                      <div className={`w-3 h-3 rounded-full ${getStatusColor(t.alerta)}`} />
                     </button>
                   ))
-                : Object.keys((jurisdictions.regioes as any)[activeRegiao]).map(e => (
-                    <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className="w-full p-5 bg-slate-900/50 rounded-2xl text-left text-white border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
-                      {e}
+                : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]?.map((t: any) => (
+                    <button key={t.name} onClick={() => window.open(t.url, "_blank")} className="w-full p-5 bg-slate-900/50 rounded-2xl flex items-center justify-between border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
+                      <span className="text-white font-medium">{t.name}</span>
+                      <div className={`w-3 h-3 rounded-full ${getStatusColor(t.alerta)}`} />
                     </button>
                   ))
               )}
-
-              {view === 'tribunal' && (jurisdictions.regioes as any)[activeRegiao][selectedEstado].map((t: any) => (
-                <button key={t.name} onClick={() => window.open(t.url, "_blank")} className="w-full p-5 bg-slate-900/50 rounded-2xl flex items-center justify-between border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
-                  <span className="text-white font-medium">{t.name}</span>
-                  <div className={`w-3 h-3 rounded-full ${getStatusColor(t.alerta)}`} />
-                </button>
-              ))}
             </div>
           </div>
         </div>
