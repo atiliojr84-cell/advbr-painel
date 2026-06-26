@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Modal from "./ui/Modal";
+import { motion, AnimatePresence } from "framer-motion";
 
 const services = [
   { id: 1, title: "Adequação LGPD", desc: "Proteção estrutural e criptografia para dados sensíveis de clientes." },
@@ -30,12 +30,9 @@ export default function ServiceGrid() {
             <button 
               key={s.id}
               onClick={() => setSelectedService(s)}
-              /* Aplicando o glow-effect e removendo a borda estática */
               className="p-6 bg-slate-900 rounded-xl glow-effect text-left"
             >
-              <h3 className="font-bold text-lg text-white">
-                {s.title}
-              </h3>
+              <h3 className="font-bold text-lg text-white">{s.title}</h3>
               <p className="text-slate-400 text-sm mt-2 leading-relaxed">{s.desc}</p>
             </button>
           ))}
@@ -43,25 +40,38 @@ export default function ServiceGrid() {
       </div>
 
       {selectedService && (
-        <Modal 
-          isOpen={!!selectedService} 
-          onClose={() => setSelectedService(null)} 
-          title={selectedService.title}
-        >
-          <div className="space-y-6">
-            <p className="text-slate-300 leading-relaxed">
-              O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
-              Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
-            </p>
-            
-            <button 
-              onClick={() => handleWhatsApp(selectedService.title)}
-              className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center gap-2"
+        <AnimatePresence>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
             >
-              Falar com Especialista no WhatsApp
-            </button>
-          </div>
-        </Modal>
+              <h3 className="text-white text-xl font-bold mb-4">{selectedService.title}</h3>
+              <p className="text-slate-300 leading-relaxed mb-6">
+                O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
+                Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
+              </p>
+              
+              <div className="flex gap-4">
+                <button onClick={() => setSelectedService(null)} className="flex-1 py-3 text-slate-400 font-medium">Cancelar</button>
+                <button 
+                  onClick={() => handleWhatsApp(selectedService.title)}
+                  className="flex-[2] py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg"
+                >
+                  Falar no WhatsApp
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        </AnimatePresence>
       )}
     </section>
   );
