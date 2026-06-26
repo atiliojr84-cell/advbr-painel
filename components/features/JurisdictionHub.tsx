@@ -33,13 +33,12 @@ export default function JurisdictionHub() {
     setIsOpen(true);
   };
 
-  // Classe padronizada para botões que reagem com borda azul e glow
-  const btnStyle = "bg-slate-900 border border-slate-800 transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)]";
+  // REMOVEMOS O 'border border-slate-800' PARA O GLOW FICAR FORTE E PURO
+  const btnStyle = "bg-slate-900 rounded-xl glow-effect";
 
   return (
     <>
       <section className="py-8 px-4 text-center">
-        {/* Espaçamento aumentado para mb-12 para dar o respiro solicitado */}
         <h2 className="text-xl font-bold text-white mb-12">Monitoramento de Tribunais em Tempo Real</h2>
         
         <div className="flex flex-wrap justify-center gap-4">
@@ -79,14 +78,13 @@ export default function JurisdictionHub() {
             exit={{ opacity: 0, x: -10 }}
             transition={{ duration: 0.2 }}
           >
-            {/* VIEW: SELEÇÃO DE ESTADOS */}
             {view === 'estado' && (
               <div className="grid grid-cols-2 gap-3">
                 {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
                   <button 
                     key={e} 
                     onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                    className={`p-4 rounded-xl text-white font-medium text-sm text-left ${btnStyle}`}
+                    className={`p-4 text-white font-medium text-sm text-left ${btnStyle}`}
                   >
                     {e}
                   </button>
@@ -94,7 +92,6 @@ export default function JurisdictionHub() {
               </div>
             )}
 
-            {/* VIEW: LISTA DE TRIBUNAIS */}
             {view === 'tribunal' && (
               <div className="space-y-3">
                 {(activeRegiao === 'federais' 
@@ -106,7 +103,7 @@ export default function JurisdictionHub() {
                     : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
                   ).map((t: any) => (
                     <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
-                      className={`w-full p-4 rounded-xl flex items-center justify-between ${btnStyle}`}>
+                      className={`w-full p-4 flex items-center justify-between ${btnStyle}`}>
                       <span className="text-white text-sm font-medium">{t.name}</span>
                       <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
                     </button>
