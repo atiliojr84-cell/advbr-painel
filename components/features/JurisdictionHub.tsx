@@ -37,7 +37,6 @@ export default function JurisdictionHub() {
   return (
     <>
       <section className="py-8 px-4 text-center">
-        {/* NOVO BLOCO DE MONITORAMENTO */}
         <div className="max-w-3xl mx-auto mb-12 bg-slate-900/50 border border-slate-800 p-8 rounded-3xl shadow-xl">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="p-3 bg-blue-900/20 rounded-2xl">
@@ -45,22 +44,14 @@ export default function JurisdictionHub() {
             </div>
             <h2 className="text-2xl font-bold text-white">Monitoramento de Tribunais em Tempo Real</h2>
           </div>
-          
-          <p className="text-slate-400 leading-relaxed mb-6 text-sm">
-            Centralizamos o acesso aos principais sistemas de peticionamento do país em um ambiente único e de alta disponibilidade. 
-            Além do acesso descomplicado, realizamos o monitoramento proativo de cada portal, identificando instabilidades, 
-            lentidões ou indisponibilidades em tempo real, permitindo que você tome decisões rápidas e evite perder prazos 
-            críticos devido a falhas sistêmicas.
+          <p className="text-slate-400 leading-relaxed text-sm">
+            Centralizamos o acesso aos principais sistemas de peticionamento do país. Realizamos o monitoramento proativo de cada portal, identificando instabilidades em tempo real.
           </p>
         </div>
         
         <div className="flex flex-wrap justify-center gap-4">
           {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
-            <button 
-              key={r} 
-              onClick={() => handleOpen(r.toLowerCase())}
-              className={`px-6 py-3 rounded-full text-slate-300 capitalize ${btnStyle}`}
-            >
+            <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 rounded-full text-slate-300 capitalize ${btnStyle}`}>
               {r === "CentroOeste" ? "Centro-Oeste" : r}
             </button>
           ))}
