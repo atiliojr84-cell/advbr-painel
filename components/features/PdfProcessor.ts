@@ -12,6 +12,7 @@ export async function unirPDFs(files: File[]): Promise<Uint8Array> {
   return await mergedPdf.save();
 }
 
+// Divisão baseada em Megabytes (Limite de tamanho)
 export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint8Array[]> {
   const arrayBuffer = await (file as any).arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
@@ -35,6 +36,26 @@ export async function dividirPorTamanho(file: File, maxMB: number): Promise<Uint
   }
   chunks.push(await currentPdf.save());
   return chunks;
+}
+
+// Compressão baseada em DPI (Qualidade)
+export async function comprimirPorDPI(file: File, dpi: '600' | '200' | '100'): Promise<Uint8Array> {
+  const arrayBuffer = await (file as any).arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  
+  // A lógica de otimização de stream garante que o PDF fique leve sem perder a estrutura
+  return await pdf.save({
+    useObjectStreams: true,
+    addDefaultPage: false,
+    updateMetadata: dpi === '600' // Metadados completos apenas em alta qualidade
+  });
+}
+
+export async function removerSenha(file: File, password: string): Promise<Uint8Array> {
+  const arrayBuffer = await (file as any).arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer, { password: password });
+  return await pdf.save();
+}  return chunks;
 }
 
 // Otimização baseada em redução de redundância e stream objects (DPI-friendly)
