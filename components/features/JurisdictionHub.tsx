@@ -4,7 +4,6 @@ import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { jurisdictions } from "../../data/jurisdictions";
-import Modal from "../ui/Modal";
 
 export default function JurisdictionHub() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +32,6 @@ export default function JurisdictionHub() {
     setIsOpen(true);
   };
 
-  // REMOVEMOS O 'border border-slate-800' PARA O GLOW FICAR FORTE E PURO
   const btnStyle = "bg-slate-900 rounded-xl glow-effect";
 
   return (
@@ -54,68 +52,67 @@ export default function JurisdictionHub() {
         </div>
       </section>
 
-      <Modal 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)} 
-        title={
-          <div className="flex items-center gap-3">
-            {view === 'tribunal' && activeRegiao !== 'federais' && (
-              <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
-                <ArrowLeft size={20} />
-              </button>
-            )}
-            <span className="uppercase text-sm tracking-widest">
-              {activeRegiao === 'federais' ? 'TRIBUNAIS FEDERAIS' : (view === 'estado' ? activeRegiao : selectedEstado)}
-            </span>
-          </div>
-        }
-      >
-        <AnimatePresence mode="wait">
+      {isOpen && (
+        <AnimatePresence>
           <motion.div
-            key={view + activeRegiao + selectedEstado}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           >
-            {view === 'estado' && (
-              <div className="grid grid-cols-2 gap-3">
-                {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
-                  <button 
-                    key={e} 
-                    onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                    className={`p-4 text-white font-medium text-sm text-left ${btnStyle}`}
-                  >
-                    {e}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                {view === 'tribunal' && activeRegiao !== 'federais' && (
+                  <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
+                    <ArrowLeft size={20} />
                   </button>
-                ))}
-              </div>
-            )}
-
-            {view === 'tribunal' && (
-              <div className="space-y-3">
-                {(activeRegiao === 'federais' 
-                  ? jurisdictions.federais 
-                  : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
-                )?.length > 0 ? (
-                  (activeRegiao === 'federais' 
-                    ? jurisdictions.federais 
-                    : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
-                  ).map((t: any) => (
-                    <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
-                      className={`w-full p-4 flex items-center justify-between ${btnStyle}`}>
-                      <span className="text-white text-sm font-medium">{t.name}</span>
-                      <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
-                    </button>
-                  ))
-                ) : (
-                  <p className="text-slate-500 text-center py-4">Nenhum tribunal disponível para este estado no momento.</p>
                 )}
+                <span className="uppercase text-sm tracking-widest text-white">
+                  {activeRegiao === 'federais' ? 'TRIBUNAIS FEDERAIS' : (view === 'estado' ? activeRegiao : selectedEstado)}
+                </span>
+                <button onClick={() => setIsOpen(false)} className="ml-auto text-slate-500 hover:text-white">Fechar</button>
               </div>
-            )}
+
+              <div className="overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={view + activeRegiao + selectedEstado}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {view === 'estado' ? (
+                      <div className="grid grid-cols-2 gap-3">
+                        {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
+                          <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className={`p-4 text-white font-medium text-sm text-left ${btnStyle}`}>
+                            {e}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-3">
+                        {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
+                          <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${btnStyle}`}>
+                            <span className="text-white text-sm font-medium">{t.name}</span>
+                            <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
-      </Modal>
+      )}
     </>
   );
 }
