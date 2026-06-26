@@ -14,7 +14,7 @@ export default function PdfToolHub() {
     { id: "dividir", title: "Dividir", desc: "Fatiar por MB", icon: Split, help: "Divide arquivos grandes em partes menores com um limite de tamanho definido." },
     { id: "comprimir", title: "Comprimir", desc: "Otimizar DPI", icon: Minimize2, help: "Reduz o tamanho do arquivo mantendo a legibilidade." },
     { id: "senha", title: "Senha", desc: "Remover proteção", icon: LockKeyhole, help: "Remove a camada de proteção de PDFs bloqueados." },
-    { id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText, help: "Extrai o conteúdo do seu PDF para um formato editável (.doc)." },
+    { id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText, help: "Extrai o conteúdo do seu PDF para um formato editável (.docx)." },
   ];
 
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +25,7 @@ export default function PdfToolHub() {
       else if (selectedTool.id === "dividir") { const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3); pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`)); }
       else if (selectedTool.id === "comprimir") { const res = await comprimirPorDPI(files[0], (inputVal as any) || '200'); download(res, "otimizado.pdf"); }
       else if (selectedTool.id === "senha") { const res = await removerSenha(files[0], inputVal); download(res, "desbloqueado.pdf"); }
-      else if (selectedTool.id === "converter") { const res = await converterParaWord(files[0]); download(res, "convertido.doc"); }
+      else if (selectedTool.id === "converter") { const res = await converterParaWord(files[0]); download(res, "convertido.docx"); }
     } catch { alert("Erro ao processar arquivo."); }
     setSelectedTool(null); setInputVal("");
   };
@@ -45,6 +45,7 @@ export default function PdfToolHub() {
            <div className="absolute top-0 right-0 w-3 h-3 bg-red-600 rounded-bl-sm" />
            <span className="text-[10px] font-black text-white mt-1">PDF</span>
         </div>
+        
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
           <p className="text-slate-400 text-sm">Ferramentas essenciais para o seu escritório.</p>
@@ -91,7 +92,7 @@ export default function PdfToolHub() {
               
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
-              {/* COMPRESSÃO CUSTOMIZADA */}
+              {/* COMPRESSÃO - AVISO CLARO E FONTES AUMENTADAS */}
               {selectedTool.id === "comprimir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
@@ -123,7 +124,7 @@ export default function PdfToolHub() {
                 </div>
               )}
               
-              {/* DIVIDIR PDF */}
+              {/* DIVIDIR */}
               {selectedTool.id === "dividir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Defina o tamanho limite:</label>
