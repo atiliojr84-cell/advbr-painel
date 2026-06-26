@@ -7,7 +7,7 @@ import { X } from "lucide-react";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title: React.ReactNode; // Alterado de string para React.ReactNode
   children: React.ReactNode;
 }
 
@@ -39,7 +39,9 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             {/* JANELA PRETA COM BORDA AZUL ELÉTRICO */}
             <div className="bg-slate-950 border border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.3)] rounded-xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col">
               <div className="flex justify-between items-center p-6 border-b border-blue-900/50">
-                <h2 className="text-xl font-bold text-white">{title}</h2>
+                <h2 className="text-xl font-bold text-white flex items-center">
+                  {title}
+                </h2>
                 <button 
                   onClick={onClose}
                   className="p-1 hover:bg-blue-900/30 rounded-full transition-colors text-white"
