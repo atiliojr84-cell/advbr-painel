@@ -9,7 +9,7 @@ import Modal from "../ui/Modal";
 export default function JurisdictionHub() {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<'estado' | 'tribunal'>('estado');
-  const [activeRegiao, setActiveRegiao] = useState<string>(''); // Nome formatado para o objeto
+  const [activeRegiao, setActiveRegiao] = useState<string>('');
   const [selectedEstado, setSelectedEstado] = useState<string>('');
 
   const getStatusColor = (alerta: string | null) => {
@@ -17,7 +17,6 @@ export default function JurisdictionHub() {
     return alerta.toLowerCase().includes("grave") ? "bg-red-500" : "bg-yellow-500";
   };
 
-  // Mapeamento para garantir que o clique bata com a chave do objeto
   const regiaoMap: { [key: string]: string } = {
     federais: "federais",
     sul: "Sul",
@@ -34,6 +33,9 @@ export default function JurisdictionHub() {
     setIsOpen(true);
   };
 
+  // Classe padrão para todos os botões (Regiões, Estados, Tribunais)
+  const btnClass = "p-4 bg-slate-900 border border-slate-800 rounded-xl transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] text-left";
+
   return (
     <>
       <section className="py-8 px-4 text-center">
@@ -43,7 +45,7 @@ export default function JurisdictionHub() {
             <button 
               key={r} 
               onClick={() => handleOpen(r.toLowerCase())}
-              className="px-6 py-3 bg-slate-900 border border-slate-800 rounded-full text-slate-300 hover:border-blue-500 hover:bg-slate-800 transition-all capitalize"
+              className="px-6 py-3 bg-slate-900 border border-slate-800 rounded-full text-slate-300 transition-all hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] capitalize"
             >
               {r === "CentroOeste" ? "Centro-Oeste" : r}
             </button>
@@ -82,7 +84,7 @@ export default function JurisdictionHub() {
                   <button 
                     key={e} 
                     onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                    className="p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-600 transition-all text-white font-medium text-sm text-left"
+                    className={`${btnClass} text-white font-medium text-sm`}
                   >
                     {e}
                   </button>
@@ -102,7 +104,7 @@ export default function JurisdictionHub() {
                     : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
                   ).map((t: any) => (
                     <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
-                      className="w-full p-4 bg-slate-900/50 rounded-xl flex items-center justify-between border border-slate-800 hover:border-blue-600 transition-all">
+                      className={`${btnClass} w-full flex items-center justify-between`}>
                       <span className="text-white text-sm font-medium">{t.name}</span>
                       <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
                     </button>
