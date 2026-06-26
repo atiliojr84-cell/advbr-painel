@@ -64,7 +64,7 @@ export async function dividirPDF(file: File, maxMB: number): Promise<Uint8Array[
 export async function comprimirPDF(file: File): Promise<Uint8Array> { // Removido o parâmetro dpi
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
-  // Apenas salva o PDF novamente com otimizações padrão da pdf-lib
+  // Apenas salva o PDF novamente com useObjectStreams: true para otimização
   return await pdf.save({ useObjectStreams: true });
 }
 
@@ -72,25 +72,20 @@ export async function removerSenhaPDF(file: File, password: string): Promise<Uin
   const arrayBuffer = await file.arrayBuffer();
   try {
     const pdf = await PDFDocument.load(arrayBuffer, { password: password });
-    // Se chegou aqui, a senha estava correta.
-    // Tenta salvar o PDF sem criptografia.
-    // A pdf-lib não tem um método direto para "remover senha",
-    // mas salvar um PDF carregado com senha geralmente o salva sem a proteção.
+    // Se carregou com sucesso, a senha foi aceita. Salvar sem senha.
     return await pdf.save();
   } catch (error: any) {
     // Captura erros específicos da pdf-lib para senhas
     if (error.message && error.message.includes('Incorrect password')) {
       throw new Error('Senha incorreta. Por favor, verifique a senha e tente novamente.');
     }
-    // Outros erros
-    throw new Error(`Não foi possível remover a senha: ${error.message || 'Erro desconhecido.'}`);
+    throw new Error(`Falha ao remover senha: ${error.message || 'Erro desconhecido.'}`);
   }
 }
 
 /**
  * Converte um arquivo PDF para um formato legível pelo Microsoft Word (.docx)
- * Extrai o texto de forma 100% local e monta a estrutura XML OpenXML necessária,
- * empacotando-a em um arquivo .docx válido usando JSZip.
+ * Extrai o texto de forma 100% local e monta a estrutura XML OpenXML necessária.
  */
 export async function converterParaWord(file: File): Promise<Uint8Array> {
   const arrayBuffer = await file.arrayBuffer();
@@ -99,31 +94,33 @@ export async function converterParaWord(file: File): Promise<Uint8Array> {
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   let docxParagraphs: string[] = [];
 
+  // Percorre todas as páginas extraindo as cadeias de texto correspondentes
   for (let i = 1; i <= pdf.numPages; i++) {
     const page = await pdf.getPage(i);
     const textContent = await page.getTextContent();
-
-    let lastY = -1;
     let currentParagraph = "";
-    const lineThreshold = 2; // Heurística para nova linha (distância vertical)
+    let lastY = -1; // Posição Y da última linha processada
+    let lastFontSize = -1; // Tamanho da fonte da última linha processada
 
-    for (const item of textContent.items) {
-      if ('str' in item && item.str.trim() !== '') { // Verifica se é um item de texto não vazio
-        const currentY = item.transform[5]; // Posição Y do texto
-        const fontSize = item.height; // Altura da fonte (aproximada)
+    for (const item of textContent.items as any[]) { // Cast para any[] para acessar propriedades como 'str', 'transform', 'fontHeight'
+      const currentY = item.transform[5];
+      const currentFontSize = item.fontHeight;
 
-        // Se a diferença de Y for grande, consideramos uma nova linha ou parágrafo.
-        if (lastY !== -1 && Math.abs(lastY - currentY) > fontSize * lineThreshold) {
-          if (currentParagraph.trim() !== "") {
-            docxParagraphs.push(currentParagraph.trim());
-          }
-          currentParagraph = item.str;
-        } else {
-          // Continua o parágrafo, adicionando espaço se necessário
-          currentParagraph += (currentParagraph === "" ? "" : " ") + item.str;
+      // Heurística para detectar novas linhas ou parágrafos
+      // Se a posição Y mudou significativamente (mais que 1.5x o tamanho da fonte)
+      // ou se o tamanho da fonte mudou drasticamente, consideramos uma nova linha/parágrafo.
+      // Ajuste os valores de threshold conforme necessário para melhor detecção
+      if (lastY !== -1 && (Math.abs(currentY - lastY) > (lastFontSize * 1.5) || Math.abs(currentFontSize - lastFontSize) > 1)) {
+        if (currentParagraph.trim() !== "") {
+          docxParagraphs.push(currentParagraph.trim());
         }
-        lastY = currentY;
+        currentParagraph = item.str;
+      } else {
+        // Se for a mesma linha ou continuação de parágrafo, adiciona o texto
+        currentParagraph += (currentParagraph === "" ? "" : " ") + item.str;
       }
+      lastY = currentY;
+      lastFontSize = currentFontSize;
     }
     if (currentParagraph.trim() !== "") {
       docxParagraphs.push(currentParagraph.trim());
