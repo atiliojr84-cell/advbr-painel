@@ -1,6 +1,7 @@
 import Header from "../components/ui/Header";
 import Ticker from "../components/ui/Ticker";
 import ServiceGrid from "../components/ServiceGrid";
+import PortalCarousel from "../components/features/PortalCarousel";
 
 export default function Home() {
   return (
@@ -9,8 +10,16 @@ export default function Home() {
       <Ticker />
       
       <main className="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
-        {/* Cabeçalho */}
+        {/* Cabeçalho com Botões de Ação */}
         <Header />
+
+        {/* Hub de Peticionamento: 10 portais principais */}
+        <section>
+            <h2 className="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
+                <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
+            </h2>
+            <PortalCarousel />
+        </section>
 
         {/* Módulo F: Serviços Corporativos */}
         <ServiceGrid />
@@ -26,8 +35,6 @@ export default function Home() {
             Não somos apenas suporte técnico, somos parceiros estratégicos do seu escritório.
           </p>
         </section>
-
-        {/* Aqui entrarão os próximos módulos (Módulo A, B, C, D, E) */}
       </main>
     </div>
   );
