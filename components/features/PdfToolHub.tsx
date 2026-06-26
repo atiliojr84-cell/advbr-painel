@@ -72,25 +72,36 @@ export default function PdfToolHub() {
         ))}
       </div>
 
-      {/* Modal de Ajustes */}
+      {{/* Modal Inteligente de Ajustes */}
       {selectedTool && selectedTool.id !== "unir" && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md">
-            <h3 className="text-white text-xl font-bold mb-2">Ajustes para {selectedTool.title}</h3>
+          <div className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl">
+            <h3 className="text-white text-xl font-bold mb-2">
+              {selectedTool.id === "senha" ? "Remover Senha" : 
+               selectedTool.id === "dividir" ? "Dividir PDF" :
+               selectedTool.id === "comprimir" ? "Comprimir PDF" : "Converter para Word"}
+            </h3>
+            
             <p className="text-slate-400 mb-6 text-sm">
-              {selectedTool.id === "dividir" ? "Defina o limite de tamanho (MB) para cada arquivo fatiado." : 
-               selectedTool.id === "comprimir" ? "Escolha a resolução DPI (600, 200 ou 100)." : 
-               "Digite a senha do documento para desbloqueá-lo."}
+              {selectedTool.id === "senha" ? "Digite a senha do arquivo para desbloqueá-lo:" : 
+               selectedTool.id === "dividir" ? "Informe o tamanho máximo (MB) por arquivo:" :
+               selectedTool.id === "comprimir" ? "Escolha a qualidade (600, 200 ou 100 DPI):" :
+               "O arquivo será convertido para o formato .docx (Word). Confirme para iniciar:"}
             </p>
-            <input type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} 
-              className="w-full p-4 mb-6 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Ex: 3" />
+
+            {/* O campo de input só aparece se não for conversão simples */}
+            {selectedTool.id !== "converter" && (
+              <input type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} 
+                className="w-full p-4 mb-6 bg-slate-950 text-white rounded-xl border border-slate-700" 
+                placeholder={selectedTool.id === "senha" ? "Senha" : "Ex: 3"} />
+            )}
+
             <div className="flex gap-4">
-              <button onClick={() => setSelectedTool(null)} className="flex-1 py-3 text-slate-400">Cancelar</button>
-              <button onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 bg-blue-600 rounded-xl font-bold text-white">Processar</button>
+              <button onClick={() => setSelectedTool(null)} className="flex-1 py-3 text-slate-400 hover:text-white transition-colors">Cancelar</button>
+              <button onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 bg-blue-600 rounded-xl font-bold text-white hover:bg-blue-500 transition-all">
+                {selectedTool.id === "converter" ? "Iniciar Conversão" : "Processar"}
+              </button>
             </div>
           </div>
         </div>
       )}
-    </section>
-  );
-}
