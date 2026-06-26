@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { FileUp, Split, FileText, LockKeyhole, Minimize2 } from "lucide-react";
-import { unirPDFs, comprimirPorDPI, dividirPorTamanho, removerSenha } from "./PdfProcessor";
+import { unirPDFs, comprimirPorDPI, dividirPorTamanho, removerSenha, converterParaWord } from "./PdfProcessor";
 
 export default function PdfToolHub() {
   const [selectedTool, setSelectedTool] = useState<any>(null);
@@ -47,6 +47,9 @@ export default function PdfToolHub() {
       } else if (selectedTool.id === "senha") {
         const res = await removerSenha(files[0], inputVal);
         download(res, "desbloqueado.pdf");
+      } else if (selectedTool.id === "converter") {
+        const res = await converterParaWord(files[0]);
+        download(res, "convertido.doc");
       }
     } catch { alert("Erro ao processar arquivo."); }
     setSelectedTool(null); setInputVal("");
@@ -88,8 +91,10 @@ export default function PdfToolHub() {
       {selectedTool && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl">
-            <h3 className="text-white text-xl font-bold mb-2">{selectedTool.title}</h3>
-            <p className="text-blue-400 text-xs italic mb-6 bg-slate-950 p-3 rounded-lg border border-slate-800">
+            <h3 className="text-white text-xl font-bold mb-4">{selectedTool.title}</h3>
+            
+            {/* Descrição padronizada e alinhada com o restante do site */}
+            <p className="text-slate-300 leading-relaxed mb-6">
               {selectedTool.help}
             </p>
             
