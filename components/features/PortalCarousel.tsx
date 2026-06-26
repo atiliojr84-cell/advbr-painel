@@ -5,16 +5,16 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Lista atualizada com os 10 selecionados
 const portais = [
-  { id: 1, name: "PJe Nacional", url: "https://www.pje.jus.br" },
-  { id: 2, name: "TJPR E-Proc 1 Grau", url: "https://eproc.tjpr.jus.br" },
-  { id: 3, name: "TJSP E-SAJ", url: "https://esaj.tjsp.jus.br" },
-  { id: 4, name: "TJPR Projudi", url: "https://projudi.tjpr.jus.br" },
-  { id: 5, name: "STF Eletrônico", url: "https://portal.stf.jus.br" },
-  { id: 6, name: "STJ Processos", url: "https://scon.stj.jus.br" },
-  { id: 7, name: "TRT9 PJe 1 Grau", url: "https://pje.trt9.jus.br" },
-  { id: 8, name: "E-SAJ Nacional", url: "https://esaj.jus.br" },
-  { id: 9, name: "PDPJ Hub CNJ", url: "https://pdpj.jus.br" },
-  { id: 10, name: "TRT9 PJe 2 Grau", url: "https://pje2g.trt9.jus.br" },
+  { id: 1, name: "1. PJe Nacional", url: "https://pje.jus.br" },
+  { id: 2, name: "2. TJPR E-Proc 1 Grau", url: "https://eproc1g.tjpr.jus.br/eproc/" },
+  { id: 3, name: "3. TJSP E-SAJ", url: "https://esaj.tjsp.jus.br" },
+  { id: 4, name: "4. TJPR Projudi", url: "https://projudi.tjpr.jus.br" },
+  { id: 5, name: "5. STF Eletrônico", url: "https://portal.stf.jus.br" },
+  { id: 6, name: "6. STJ Processos", url: "https://scon.stj.jus.br" },
+  { id: 7, name: "7. TRT9 PJe 1 Grau", url: "https://pje.trt9.jus.br/pje/pje-presente.html" },
+  { id: 8, name: "8. E-SAJ Nacional", url: "https://esaj.jus.br" },
+  { id: 9, name: "9. PDPJ Hub CNJ", url: "https://pdpj.jus.br" },
+  { id: 10, name: "10. TRT9 PJe 2 Grau", url: "https://pje2g.trt9.jus.br/pje2g/pje-presente.html" },
 ];
 
 export default function PortalCarousel() {
