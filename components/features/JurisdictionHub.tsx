@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Activity } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { jurisdictions } from "../../data/jurisdictions";
 
@@ -37,7 +37,22 @@ export default function JurisdictionHub() {
   return (
     <>
       <section className="py-8 px-4 text-center">
-        <h2 className="text-xl font-bold text-white mb-12">Monitoramento de Tribunais em Tempo Real</h2>
+        {/* NOVO BLOCO DE MONITORAMENTO */}
+        <div className="max-w-3xl mx-auto mb-12 bg-slate-900/50 border border-slate-800 p-8 rounded-3xl shadow-xl">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="p-3 bg-blue-900/20 rounded-2xl">
+              <Activity className="w-8 h-8 text-blue-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-white">Monitoramento de Tribunais em Tempo Real</h2>
+          </div>
+          
+          <p className="text-slate-400 leading-relaxed mb-6 text-sm">
+            Centralizamos o acesso aos principais sistemas de peticionamento do país em um ambiente único e de alta disponibilidade. 
+            Além do acesso descomplicado, realizamos o monitoramento proativo de cada portal, identificando instabilidades, 
+            lentidões ou indisponibilidades em tempo real, permitindo que você tome decisões rápidas e evite perder prazos 
+            críticos devido a falhas sistêmicas.
+          </p>
+        </div>
         
         <div className="flex flex-wrap justify-center gap-4">
           {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
