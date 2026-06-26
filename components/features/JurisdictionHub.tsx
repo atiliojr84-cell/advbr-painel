@@ -9,7 +9,7 @@ import Modal from "../ui/Modal";
 export default function JurisdictionHub() {
   const [isOpen, setIsOpen] = useState(false);
   const [view, setView] = useState<'estado' | 'tribunal'>('estado');
-  const [activeRegiao, setActiveRegiao] = useState<string>('');
+  const [activeRegiao, setActiveRegiao] = useState<string>(''); // Nome formatado para o objeto
   const [selectedEstado, setSelectedEstado] = useState<string>('');
 
   const getStatusColor = (alerta: string | null) => {
@@ -17,9 +17,20 @@ export default function JurisdictionHub() {
     return alerta.toLowerCase().includes("grave") ? "bg-red-500" : "bg-yellow-500";
   };
 
-  const handleOpen = (regiao: string) => {
-    setActiveRegiao(regiao);
-    setView(regiao === 'federais' ? 'tribunal' : 'estado');
+  // Mapeamento para garantir que o clique bata com a chave do objeto
+  const regiaoMap: { [key: string]: string } = {
+    federais: "federais",
+    sul: "Sul",
+    sudeste: "Sudeste",
+    centrooeste: "CentroOeste",
+    nordeste: "Nordeste",
+    norte: "Norte"
+  };
+
+  const handleOpen = (regiaoSlug: string) => {
+    const key = regiaoMap[regiaoSlug];
+    setActiveRegiao(key);
+    setView(key === 'federais' ? 'tribunal' : 'estado');
     setIsOpen(true);
   };
 
@@ -65,13 +76,13 @@ export default function JurisdictionHub() {
             transition={{ duration: 0.2 }}
           >
             {/* VIEW: SELEÇÃO DE ESTADOS */}
-            {view === 'estado' && activeRegiao !== 'federais' && (
+            {view === 'estado' && (
               <div className="grid grid-cols-2 gap-3">
                 {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
                   <button 
                     key={e} 
                     onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                    className="p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-600 transition-all text-white font-medium text-sm"
+                    className="p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-600 transition-all text-white font-medium text-sm text-left"
                   >
                     {e}
                   </button>
@@ -85,16 +96,20 @@ export default function JurisdictionHub() {
                 {(activeRegiao === 'federais' 
                   ? jurisdictions.federais 
                   : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
-                )?.map((t: any) => (
-                  <button 
-                    key={t.name} 
-                    onClick={() => window.open(t.url, "_blank")} 
-                    className="w-full p-4 bg-slate-900/50 rounded-xl flex items-center justify-between border border-slate-800 hover:border-blue-600 transition-all"
-                  >
-                    <span className="text-white text-sm font-medium">{t.name}</span>
-                    <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
-                  </button>
-                ))}
+                )?.length > 0 ? (
+                  (activeRegiao === 'federais' 
+                    ? jurisdictions.federais 
+                    : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
+                  ).map((t: any) => (
+                    <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
+                      className="w-full p-4 bg-slate-900/50 rounded-xl flex items-center justify-between border border-slate-800 hover:border-blue-600 transition-all">
+                      <span className="text-white text-sm font-medium">{t.name}</span>
+                      <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
+                    </button>
+                  ))
+                ) : (
+                  <p className="text-slate-500 text-center py-4">Nenhum tribunal disponível para este estado no momento.</p>
+                )}
               </div>
             )}
           </motion.div>
