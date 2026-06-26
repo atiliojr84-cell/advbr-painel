@@ -56,7 +56,8 @@ export default function PdfToolHub() {
         {tools.map((t) => (
           <button 
             key={t.id} 
-            onClick={() => { setSelectedTool(t); if(t.id === "unir") fileInputRef.current?.click(); }} 
+            // CORRIGIDO: Agora todos apenas selecionam a ferramenta, sem disparar o input antes
+            onClick={() => setSelectedTool(t)} 
             className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect"
           >
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400">
