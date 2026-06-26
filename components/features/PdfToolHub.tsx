@@ -56,8 +56,7 @@ export default function PdfToolHub() {
         {tools.map((t) => (
           <button 
             key={t.id} 
-            // CORRIGIDO: Agora todos apenas selecionam a ferramenta, sem disparar o input antes
-            onClick={() => setSelectedTool(t)} 
+            onClick={() => { setSelectedTool(t); setInputVal(""); }} 
             className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect"
           >
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400">
@@ -93,13 +92,40 @@ export default function PdfToolHub() {
               
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
-              {selectedTool.id !== "unir" && selectedTool.id !== "converter" && (
+              {/* COMPRESSÃO CUSTOMIZADA */}
+              {selectedTool.id === "comprimir" && (
+                <div className="mb-6">
+                  <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
+                  <div className="grid grid-cols-3 gap-2 mb-4">
+                    {[
+                      { label: "Mínima", val: "350", desc: "Qualidade Máxima" },
+                      { label: "Média", val: "200", desc: "Equilibrado" },
+                      { label: "Máxima", val: "150", desc: "Menor arquivo" }
+                    ].map((opt) => (
+                      <button
+                        key={opt.val}
+                        onClick={() => setInputVal(opt.val)}
+                        className={`p-3 rounded-xl text-xs font-bold transition-all border ${
+                          inputVal === opt.val 
+                          ? "bg-blue-600 border-blue-500 text-white" 
+                          : "bg-slate-950 border-slate-700 text-slate-400 hover:border-slate-500"
+                        }`}
+                      >
+                        {opt.label}<br/><span className="text-[9px] opacity-70">{opt.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* INPUTS GERAIS (DIVIDIR/SENHA) */}
+              {(selectedTool.id === "dividir" || selectedTool.id === "senha") && (
                 <input 
-                  type="text" 
+                  type={selectedTool.id === "senha" ? "password" : "text"} 
                   value={inputVal} 
                   onChange={(e) => setInputVal(e.target.value)} 
                   className="w-full p-4 mb-6 bg-slate-950 text-white rounded-xl border border-slate-700" 
-                  placeholder={selectedTool.id === "dividir" ? "Tamanho (MB)" : selectedTool.id === "comprimir" ? "DPI (600/200/100)" : "Senha"} 
+                  placeholder={selectedTool.id === "dividir" ? "Tamanho máximo (MB)" : "Senha do documento"} 
                 />
               )}
               
