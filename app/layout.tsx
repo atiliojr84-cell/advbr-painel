@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Painel AdvBR",
+  title: "Painel advBR.info",
   description: "Hub de ferramentas jurídicas",
   icons: {
     icon: "/favicon.ico",
