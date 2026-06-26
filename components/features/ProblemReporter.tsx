@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Megaphone } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import Modal from "../ui/Modal";
 
 const portais = ["PJe", "e-Proc", "Projudi", "e-SAJ", "PJe Office", "Certisign"];
@@ -19,9 +19,9 @@ export default function ProblemReporter() {
       <div className="flex flex-col gap-2">
         <button 
           onClick={() => setModalOpen(true)}
-          className="flex items-center justify-center gap-2 bg-black border border-white text-white px-4 py-2 rounded hover:bg-red-500 transition-all font-bold text-sm"
+          className="flex items-center justify-center gap-2 bg-black border border-red-500/50 text-red-500 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-all font-bold text-sm"
         >
-          <Megaphone className="w-4 h-4" /> Estou com problema!
+          <AlertCircle className="w-4 h-4" /> Reportar Falha de Acesso
         </button>
         <button className="text-xs text-slate-400 hover:text-white underline text-right transition-colors">
           Ver Relatório de Falhas
