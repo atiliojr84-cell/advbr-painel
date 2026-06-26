@@ -11,10 +11,10 @@ const portais = [
   { id: 4, name: "4. TJPR Projudi", url: "https://projudi.tjpr.jus.br" },
   { id: 5, name: "5. STF Eletrônico", url: "https://portal.stf.jus.br" },
   { id: 6, name: "6. STJ Processos", url: "https://scon.stj.jus.br" },
-  { id: 7, name: "7. TRT9 PJe 1 Grau", url: "https://pje.trt9.jus.br/pje/pje-presente.html" },
+  { id: 7, name: "7. TRT9 PJe 1 Grau", url: "https://pje.trt9.jus.br/primeirograu/login.seam" },
   { id: 8, name: "8. E-SAJ Nacional", url: "https://esaj.jus.br" },
   { id: 9, name: "9. PDPJ Hub CNJ", url: "https://pdpj.jus.br" },
-  { id: 10, name: "10. TRT9 PJe 2 Grau", url: "https://pje2g.trt9.jus.br/pje2g/pje-presente.html" },
+  { id: 10, name: "10. TRT9 PJe 2 Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam" },
 ];
 
 export default function PortalCarousel() {
