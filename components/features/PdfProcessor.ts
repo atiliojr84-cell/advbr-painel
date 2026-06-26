@@ -1,9 +1,14 @@
+// PdfProcessors.ts
 // @ts-nocheck
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'; // Adicionado StandardFonts para fontes
 import * as pdfjsLib from 'pdfjs-dist';
-import JSZip from 'jszip'; // Importa JSZip
+import JSZip from 'jszip';
 
 // Configura o worker do PDF.js através de CDN para funcionar diretamente no ambiente do navegador
+// Esta linha é executada no ambiente onde o módulo é importado.
+// Para Client Components, isso é no navegador. Para Server Components, isso pode causar problemas.
+// A solução mais robusta para Next.js é garantir que pdfjs-dist seja carregado apenas no cliente.
+// No PdfToolHub.tsx, usaremos next/dynamic para isso.
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export async function unirPDFs(files: File[]): Promise<Uint8Array> {
@@ -61,11 +66,38 @@ export async function dividirPDF(file: File, maxMB: number): Promise<Uint8Array[
   return chunks;
 }
 
-export async function comprimirPDF(file: File): Promise<Uint8Array> { // Removido o parâmetro dpi
+export async function comprimirPDF(file: File): Promise<Uint8Array> {
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
-  // Apenas salva o PDF novamente com useObjectStreams: true para otimização
-  return await pdf.save({ useObjectStreams: true });
+
+  // Tenta otimizar o PDF salvando com useObjectStreams e flatten
+  // Isso ajuda a remover objetos não utilizados e a "achatar" o PDF,
+  // mas não comprime imagens de forma agressiva.
+  const compressedPdfBytes = await pdf.save({
+    useObjectStreams: true,
+    // flatten: true // 'flatten' pode remover interatividade, usar com cautela
+  });
+
+  // Para uma compressão mais agressiva (especialmente para imagens),
+  // seria necessário renderizar páginas em canvas, comprimir imagens e recriar o PDF.
+  // Isso é complexo e pode ser lento no navegador.
+  // A abordagem abaixo é um placeholder para uma compressão mais avançada,
+  // que idealmente seria feita em um servidor.
+
+  // Exemplo de como você poderia tentar reduzir a qualidade de imagens
+  // (Isso é um pseudo-código e exigiria muito mais implementação e dependências)
+  /*
+  const newPdf = await PDFDocument.create();
+  const pages = pdf.getPages();
+  for (const page of pages) {
+    const newPage = newPdf.addPage([page.getWidth(), page.getHeight()]);
+    // Aqui você precisaria extrair imagens, comprimir e adicionar à newPage
+    // Isso não é trivial com pdf-lib no frontend.
+  }
+  return await newPdf.save();
+  */
+
+  return compressedPdfBytes;
 }
 
 export async function removerSenhaPDF(file: File, password: string): Promise<Uint8Array> {
@@ -84,8 +116,10 @@ export async function removerSenhaPDF(file: File, password: string): Promise<Uin
 }
 
 /**
- * Converte um arquivo PDF para um formato legível pelo Microsoft Word (.docx)
- * Extrai o texto de forma 100% local e monta a estrutura XML OpenXML necessária.
+ * Converte um arquivo PDF para um formato legível pelo Microsoft Word (.docx).
+ * ATENÇÃO: Esta função extrai APENAS O TEXTO do PDF e tenta preservar a estrutura básica de parágrafos.
+ * Não há suporte para formatação (negrito, itálico, fontes, cores), imagens, tabelas ou outros elementos complexos.
+ * Para uma conversão de alta fidelidade, um serviço de API externo ou uma solução de backend robusta é recomendada.
  */
 export async function converterParaWord(file: File): Promise<Uint8Array> {
   const arrayBuffer = await file.arrayBuffer();
@@ -102,7 +136,7 @@ export async function converterParaWord(file: File): Promise<Uint8Array> {
     let lastY = -1; // Posição Y da última linha processada
     let lastFontSize = -1; // Tamanho da fonte da última linha processada
 
-    for (const item of textContent.items as any[]) { // Cast para any[] para acessar propriedades como 'str', 'transform', 'fontHeight'
+    for (const item of textContent.items as any[]) {
       const currentY = item.transform[5];
       const currentFontSize = item.fontHeight;
 
