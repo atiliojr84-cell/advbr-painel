@@ -39,10 +39,13 @@ export default function PdfToolHub() {
       <input type="file" ref={fileInputRef} className="hidden" multiple={selectedTool?.id === "unir"} onChange={handleProcess} />
       
       <div className="mb-8 flex items-center gap-4">
-        <div className="w-12 h-14 bg-red-600 rounded-md flex flex-col items-center justify-center shadow-lg border-2 border-red-700">
-           <span className="text-[10px] font-black text-white">PDF</span>
-           <span className="text-[6px] font-bold text-white">.doc</span>
+        {/* Ícone Estilo Documento Dobrado */}
+        <div className="relative w-12 h-14 bg-red-600 rounded-md flex flex-col items-center justify-center shadow-lg border-2 border-red-700">
+           <div className="absolute top-0 right-0 w-4 h-4 bg-red-800 rounded-bl-lg" />
+           <div className="absolute top-0 right-0 w-3 h-3 bg-red-600 rounded-bl-sm" />
+           <span className="text-[10px] font-black text-white mt-1">PDF</span>
         </div>
+        
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
           <p className="text-slate-400 text-sm">Ferramentas essenciais para o seu escritório.</p>
@@ -54,7 +57,6 @@ export default function PdfToolHub() {
           <button 
             key={t.id} 
             onClick={() => { setSelectedTool(t); if(t.id === "unir") fileInputRef.current?.click(); }} 
-            /* AQUI A MUDANÇA: Substituí as classes de borda pela classe global glow-effect */
             className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect"
           >
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400">
