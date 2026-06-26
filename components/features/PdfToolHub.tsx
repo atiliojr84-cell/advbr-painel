@@ -20,19 +20,49 @@ export default function PdfToolHub() {
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const files = Array.from(e.target.files);
+    const tool = selectedTool;
+    
     try {
-      if (selectedTool.id === "unir") { const res = await unirPDFs(files); download(res, "unido.pdf"); }
-      else if (selectedTool.id === "dividir") { const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3); pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`)); }
-      else if (selectedTool.id === "comprimir") { const res = await comprimirPorDPI(files[0], (inputVal as any) || '200'); download(res, "otimizado.pdf"); }
-      else if (selectedTool.id === "senha") { const res = await removerSenha(files[0], inputVal); download(res, "desbloqueado.pdf"); }
-      else if (selectedTool.id === "converter") { const res = await converterParaWord(files[0]); download(res, "convertido.docx"); }
-    } catch { alert("Erro ao processar arquivo."); }
-    setSelectedTool(null); setInputVal("");
+      if (tool.id === "unir") { 
+        const res = await unirPDFs(files); 
+        download(res, "unido.pdf", "application/pdf"); 
+      }
+      else if (tool.id === "dividir") { 
+        const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3); 
+        pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`, "application/pdf")); 
+      }
+      else if (tool.id === "comprimir") { 
+        const res = await comprimirPorDPI(files[0], inputVal || '200'); 
+        download(res, "otimizado.pdf", "application/pdf"); 
+      }
+      else if (tool.id === "senha") { 
+        const res = await removerSenha(files[0], inputVal); 
+        download(res, "desbloqueado.pdf", "application/pdf"); 
+      }
+      else if (tool.id === "converter") { 
+        const res = await converterParaWord(files[0]); 
+        download(res, "convertido.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"); 
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao processar arquivo. Verifique se o arquivo não está corrompido ou se a senha está correta.");
+    } finally {
+      setSelectedTool(null); 
+      setInputVal("");
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   };
 
-  const download = (data: Uint8Array, name: string) => {
-    const url = URL.createObjectURL(new Blob([data as any]));
-    const a = document.createElement("a"); a.href = url; a.download = name; a.click();
+  const download = (data: Uint8Array, name: string, type: string) => {
+    const blob = new Blob([data], { type: type });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
   };
 
   return (
@@ -48,14 +78,11 @@ export default function PdfToolHub() {
         
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
-          {/* AVISO DE PRIVACIDADE E SEGURANÇA */}
           <div className="flex items-center gap-1.5 text-emerald-400 mt-1">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
-            <p className="text-[11px] font-medium tracking-wide uppercase">
-              Processamento 100% local (Seguro e Privado)
-            </p>
+            <p className="text-[11px] font-medium tracking-wide uppercase">Processamento 100% local (Seguro e Privado)</p>
           </div>
         </div>
       </div>
@@ -84,52 +111,29 @@ export default function PdfToolHub() {
               </div>
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
-              {/* COMPRESSÃO */}
               {selectedTool.id === "comprimir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
                   <div className="grid grid-cols-3 gap-3 mb-4">
-                    {[{ label: "Mínima", val: "350", desc: "Qualidade Máxima" }, { label: "Média", val: "200", desc: "Equilibrado" }, { label: "Máxima", val: "150", desc: "Menor arquivo" }].map((opt) => (
+                    {[{ label: "Mínima", val: "350" }, { label: "Média", val: "200" }, { label: "Máxima", val: "150" }].map((opt) => (
                       <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`p-5 rounded-xl transition-all border-2 flex flex-col items-center justify-center ${inputVal === opt.val ? "bg-blue-600 border-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.5)]" : "bg-slate-950 border-slate-700 hover:border-slate-500"}`}>
                         <span className="text-lg font-bold text-white mb-1">{opt.label}</span>
-                        <span className="text-[11px] text-slate-400 font-medium">{opt.desc}</span>
                       </button>
                     ))}
                   </div>
-                  <div className="bg-slate-950 p-4 rounded-xl border border-blue-900/30">
-                    <p className="text-[12px] text-slate-300 leading-relaxed"><strong className="text-blue-400">Atenção:</strong> Quanto maior a compressão, menor será o arquivo, mas também maior será a perda de qualidade visual. Escolha <strong>Máxima</strong> se precisar reduzir muito o tamanho, ou <strong>Mínima</strong> se a leitura e detalhes forem cruciais.</p>
-                  </div>
                 </div>
               )}
               
-              {/* DIVIDIR */}
               {selectedTool.id === "dividir" && (
                 <div className="mb-6">
-                  <label className="block text-slate-400 text-sm mb-3">Defina o tamanho limite:</label>
-                  <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-4">
-                    <p className="text-[12px] text-slate-300 leading-relaxed"><strong>Como funciona:</strong> O sistema dividirá seu PDF em vários arquivos menores, garantindo que cada parte não ultrapasse o limite de tamanho (MB) que você definir abaixo. Ideal para cumprir normas de tribunais.</p>
-                  </div>
-                  <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Ex: 5 (limite em MB)" />
-                  <p className="text-[10px] text-slate-500 mt-2">Dica: A maioria dos sistemas aceita arquivos de até 5MB a 10MB.</p>
+                  <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Limite em MB (ex: 5)" />
                 </div>
               )}
 
-              {/* SENHA */}
               {selectedTool.id === "senha" && (
                 <div className="mb-6">
-                  <label className="block text-slate-400 text-sm mb-3">Remover proteção do PDF:</label>
-                  <div className="bg-slate-950 p-4 rounded-xl border border-blue-900/30 mb-4">
-                    <p className="text-[12px] text-slate-300 leading-relaxed"><strong>Como funciona:</strong> Para remover a restrição, insira abaixo a <strong>senha atual</strong> do documento e clique em "Processar Arquivo" para fazer o upload e desbloqueá-lo.</p>
-                  </div>
-                  <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 focus:border-blue-500 outline-none" placeholder="Digite a senha atual do PDF aqui..." />
+                  <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Senha do PDF..." />
                 </div>
-              )}
-              
-              {/* CONVERTER */}
-              {selectedTool.id === "converter" && (
-                 <div className="mb-6 bg-slate-950 p-4 rounded-xl border border-blue-900/30">
-                    <p className="text-[13px] text-slate-300 leading-relaxed"><strong>Como funciona:</strong> Esta ferramenta extrai todo o conteúdo do seu arquivo PDF e o converte para um formato <strong>.docx</strong>, permitindo que você edite o texto livremente no Microsoft Word.</p>
-                 </div>
               )}
               
               <button onClick={() => fileInputRef.current?.click()} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg">Processar Arquivo</button>
