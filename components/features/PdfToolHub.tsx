@@ -134,7 +134,7 @@ export default function PdfToolHub() {
         </div>
         
         <div>
-          <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
+          <h2 className="text-2xl font-bold text-white">Otimizador Inteligente de PDF</h2>
           <div className="flex flex-col gap-0.5 mt-1">
             <p className="text-[11px] font-bold text-emerald-400 tracking-wide uppercase">
               PROCESSAMENTO 100% LOCAL (SEGURO E PRIVADO)
