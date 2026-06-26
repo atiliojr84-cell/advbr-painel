@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// Lista atualizada com os 10 selecionados
 const portais = [
   { id: 1, name: "1. PJe Nacional", url: "https://www.pje.jus.br" },
   { id: 2, name: "2. TJPR E-Proc 1 Grau", url: "https://eproc1g.tjpr.jus.br/eproc/" },
@@ -32,10 +31,11 @@ export default function PortalCarousel() {
         <ChevronLeft size={18} />
       </button>
 
-      <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-none py-4 px-2">
+      {/* Aplicado 'overscroll-elastic' para o efeito de geleia que pedimos antes */}
+      <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide py-4 px-2 overscroll-elastic">
         {portais.map((p) => (
           <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer"
-             className="flex-none w-64 p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-blue-600 transition-all cursor-pointer flex justify-between items-center group">
+             className="flex-none w-64 p-4 bg-slate-900 rounded-xl glow-effect cursor-pointer flex justify-between items-center group">
             <div className="overflow-hidden">
               <p className="text-sm font-bold text-white truncate">{p.name}</p>
               <p className="text-[10px] text-slate-400">Clique para acessar</p>
