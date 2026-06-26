@@ -1,91 +1,94 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle } from "lucide-react";
+import { X, ArrowLeft, AlertCircle } from "lucide-react";
 import { jurisdictions } from "../../data/jurisdictions";
 
 export default function JurisdictionHub() {
-  const [regiaoAtiva, setRegiaoAtiva] = useState<string>("federais");
-  const [estadoAtivo, setEstadoAtivo] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [view, setView] = useState<'estado' | 'tribunal'>('estado');
+  const [activeRegiao, setActiveRegiao] = useState<string>('');
+  const [selectedEstado, setSelectedEstado] = useState<string>('');
 
   const getStatusColor = (alerta: string | null) => {
     if (!alerta) return "bg-green-500";
     return alerta.toLowerCase().includes("grave") ? "bg-red-500" : "bg-yellow-500";
   };
 
+  const handleOpenModal = (regiao: string) => {
+    setActiveRegiao(regiao);
+    setView('estado');
+    setIsOpen(true);
+  };
+
   return (
-    <section className="py-8 px-4 bg-slate-950">
-      <h2 className="text-xl font-bold text-white mb-8 text-center">Hub de Peticionamento Nacional</h2>
-      
-      {/* Abas das Regiões - Estilo Arredondado */}
-      <div className="flex flex-wrap justify-center gap-3 mb-10">
+    <>
+      {/* 1. Botões das Regiões (Fixos na sua HomePage) */}
+      <section className="py-8 px-4 flex flex-wrap justify-center gap-4">
         <button 
-          onClick={() => { setRegiaoAtiva("federais"); setEstadoAtivo(null); }}
-          className={`px-6 py-2 rounded-full border transition-all ${regiaoAtiva === "federais" ? "bg-blue-600 border-blue-500 text-white" : "bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600"}`}
+          onClick={() => handleOpenModal("federais")}
+          className="px-6 py-3 bg-slate-900 border border-slate-700 rounded-full text-slate-300 hover:border-blue-500 transition-all"
         >
           Federais
         </button>
         {Object.keys(jurisdictions.regioes).map((regiao) => (
           <button 
-            key={regiao}
-            onClick={() => { setRegiaoAtiva(regiao); setEstadoAtivo(null); }}
-            className={`px-6 py-2 rounded-full border capitalize transition-all ${regiaoAtiva === regiao ? "bg-blue-600 border-blue-500 text-white" : "bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600"}`}
+            key={regiao} 
+            onClick={() => handleOpenModal(regiao)}
+            className="px-6 py-3 bg-slate-900 border border-slate-700 rounded-full text-slate-300 hover:border-blue-500 transition-all capitalize"
           >
             {regiao}
           </button>
         ))}
-      </div>
+      </section>
 
-      <div className="max-w-4xl mx-auto min-h-[200px]">
-        {regiaoAtiva === "federais" ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-in fade-in duration-500">
-            {jurisdictions.federais.map((f) => (
-              <button key={f.name} onClick={() => window.open(f.url, "_blank")} className="p-4 bg-slate-900 border border-slate-800 rounded-2xl hover:border-blue-500 text-white text-sm flex items-center justify-between transition-all group">
-                {f.name}
-                <div className={`w-3 h-3 rounded-full ${getStatusColor(f.alerta)}`} />
+      {/* 2. Janela Modal (O Pop-up elegante com transição) */}
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="bg-[#0b0f19] border border-slate-800 w-full max-w-lg rounded-3xl p-6 shadow-2xl animate-in zoom-in-95 duration-300">
+            
+            {/* Header da Janela */}
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-white font-bold text-lg flex items-center gap-3">
+                {view === 'tribunal' && (
+                  <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white">
+                    <ArrowLeft size={20} />
+                  </button>
+                )}
+                {view === 'estado' ? activeRegiao : selectedEstado}
+              </h3>
+              <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white">
+                <X size={24} />
               </button>
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-8 animate-in fade-in duration-500">
-            {/* Lista de Estados */}
-            <div className="flex flex-wrap gap-3 justify-center">
-              {Object.keys((jurisdictions.regioes as any)[regiaoAtiva]).map((estado) => (
-                <button 
-                  key={estado}
-                  onClick={() => setEstadoAtivo(estado)}
-                  className={`px-5 py-2 text-sm rounded-full border transition-all ${estadoAtivo === estado ? "bg-slate-700 border-slate-600 text-white" : "bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-600"}`}
-                >
-                  {estado}
+            </div>
+
+            {/* Conteúdo com transição interna */}
+            <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-2 animate-in fade-in duration-500">
+              {view === 'estado' && (
+                activeRegiao === 'federais' 
+                ? jurisdictions.federais.map((f: any) => (
+                    <button key={f.name} onClick={() => window.open(f.url, "_blank")} className="w-full p-4 bg-slate-900 rounded-2xl flex justify-between items-center border border-slate-800 hover:border-blue-500">
+                      <span className="text-white">{f.name}</span>
+                      <div className={`w-3 h-3 rounded-full ${getStatusColor(f.alerta)}`} />
+                    </button>
+                  ))
+                : Object.keys((jurisdictions.regioes as any)[activeRegiao]).map(e => (
+                    <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className="w-full p-4 bg-slate-900 rounded-2xl text-left text-white border border-slate-800 hover:border-blue-500 transition-all">
+                      {e}
+                    </button>
+                  ))
+              )}
+
+              {view === 'tribunal' && (jurisdictions.regioes as any)[activeRegiao][selectedEstado].map((t: any) => (
+                <button key={t.name} onClick={() => window.open(t.url, "_blank")} className="w-full p-4 bg-slate-900 rounded-2xl flex items-center justify-between border border-slate-800 hover:border-blue-500 transition-all">
+                  <span className="text-white">{t.name}</span>
+                  <div className={`w-3 h-3 rounded-full ${getStatusColor(t.alerta)}`} />
                 </button>
               ))}
             </div>
-
-            {/* Tribunais do Estado */}
-            {estadoAtivo && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 animate-in slide-in-from-bottom-4 duration-300">
-                {(jurisdictions.regioes as any)[regiaoAtiva][estadoAtivo].map((t: any) => (
-                  <button 
-                    key={t.name} 
-                    onClick={() => window.open(t.url, "_blank")}
-                    className="p-4 bg-slate-900 border border-slate-800 rounded-2xl hover:border-blue-500 transition-all flex flex-col gap-2 group"
-                  >
-                    <div className="flex justify-between items-center w-full">
-                      <span className="text-white font-medium text-sm">{t.name}</span>
-                      <div className={`w-3 h-3 rounded-full ${getStatusColor(t.alerta)}`} title={t.alerta || "Online"} />
-                    </div>
-                    {t.alerta && (
-                      <div className="text-[10px] text-red-400 flex items-center gap-1">
-                        <AlertCircle size={10} /> {t.alerta}
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
-        )}
-      </div>
-    </section>
+        </div>
+      )}
+    </>
   );
 }
