@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Modal from "./ui/Modal";
 
+// Mantemos a estrutura de dados definida no documento inicial
 const services = [
   { id: 1, title: "Adequação LGPD", desc: "Infraestrutura e governança de dados." },
   { id: 2, title: "Segurança e Backup", desc: "Blindagem de dados críticos." },
@@ -19,18 +20,24 @@ export default function ServiceGrid() {
   };
 
   return (
-    <section className="py-12 px-4 bg-slate-50">
+    // Alterado de bg-slate-50 para bg-slate-950 (fundo escuro unificado)
+    <section className="py-12 px-4 bg-slate-950">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-slate-800 mb-8 text-center">Soluções Corporativas em TI Jurídica</h2>
+        <h2 className="text-2xl font-bold text-white mb-8 text-center">
+          Soluções Corporativas em TI Jurídica
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {services.map((s) => (
             <button 
               key={s.id}
               onClick={() => setSelectedService(s)}
-              className="p-6 bg-white border border-slate-200 rounded-lg hover:border-blue-500 hover:shadow-md transition-all text-left"
+              // Ajuste dos cards para fundo escuro com borda suave
+              className="p-6 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all text-left group"
             >
-              <h3 className="font-bold text-lg text-slate-700">{s.title}</h3>
-              <p className="text-slate-500 text-sm">{s.desc}</p>
+              <h3 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors">
+                {s.title}
+              </h3>
+              <p className="text-slate-400 text-sm mt-1">{s.desc}</p>
             </button>
           ))}
         </div>
