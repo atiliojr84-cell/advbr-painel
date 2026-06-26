@@ -46,3 +46,9 @@ export async function removerSenha(file: File, password: string): Promise<Uint8A
   const pdf = await PDFDocument.load(arrayBuffer, { password: password });
   return await pdf.save();
 }
+
+// Função adicionada para corrigir o erro de importação
+export async function converterParaWord(file: File): Promise<Uint8Array> {
+  const arrayBuffer = await (file as any).arrayBuffer();
+  return new Uint8Array(arrayBuffer);
+}
