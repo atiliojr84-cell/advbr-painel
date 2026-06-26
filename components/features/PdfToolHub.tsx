@@ -9,11 +9,26 @@ export default function PdfToolHub() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const tools = [
-    { id: "unir", title: "Unir", desc: "Juntar arquivos", icon: FileUp },
-    { id: "dividir", title: "Dividir", desc: "Fatiar por MB", icon: Split },
-    { id: "comprimir", title: "Comprimir", desc: "Otimizar DPI", icon: Minimize2 },
-    { id: "senha", title: "Senha", desc: "Remover proteção", icon: LockKeyhole },
-    { id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText },
+    { 
+      id: "unir", title: "Unir", desc: "Juntar arquivos", icon: FileUp,
+      help: "Esta ferramenta combina múltiplos arquivos PDF em um único documento sequencial. Ideal para organizar petições e anexos em um só lugar."
+    },
+    { 
+      id: "dividir", title: "Dividir", desc: "Fatiar por MB", icon: Split,
+      help: "Divide arquivos grandes em partes menores com um limite de peso definido. Essencial para contornar restrições de tamanho em portais de tribunais."
+    },
+    { 
+      id: "comprimir", title: "Comprimir", desc: "Otimizar DPI", icon: Minimize2,
+      help: "Reduz o peso do arquivo mantendo a legibilidade. Otimiza a estrutura do PDF garantindo que textos e assinaturas permaneçam nítidos."
+    },
+    { 
+      id: "senha", title: "Senha", desc: "Remover proteção", icon: LockKeyhole,
+      help: "Remove a camada de proteção de PDFs bloqueados. Utilize esta ferramenta apenas para documentos onde você possui a autorização de acesso."
+    },
+    { 
+      id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText,
+      help: "Extrai o conteúdo do seu PDF para um formato editável (.doc). Facilita a reutilização de textos e dados processuais no Microsoft Word."
+    },
   ];
 
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,16 +85,20 @@ export default function PdfToolHub() {
         ))}
       </div>
 
-      {selectedTool && selectedTool.id !== "unir" && (
+      {selectedTool && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl">
-            <h3 className="text-white text-xl font-bold mb-6">
-              {selectedTool.id === "senha" ? "Remover Senha" : selectedTool.id === "dividir" ? "Dividir PDF" : selectedTool.id === "comprimir" ? "Comprimir" : "Converter"}
-            </h3>
-            {selectedTool.id !== "converter" && (
+            <h3 className="text-white text-xl font-bold mb-2">{selectedTool.title}</h3>
+            <p className="text-blue-400 text-xs italic mb-6 bg-slate-950 p-3 rounded-lg border border-slate-800">
+              {selectedTool.help}
+            </p>
+            
+            {selectedTool.id !== "unir" && selectedTool.id !== "converter" && (
               <input type="text" value={inputVal} onChange={(e) => setInputVal(e.target.value)} 
-                className="w-full p-4 mb-6 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Ex: 3" />
+                className="w-full p-4 mb-6 bg-slate-950 text-white rounded-xl border border-slate-700" 
+                placeholder={selectedTool.id === "dividir" ? "Tamanho (MB)" : selectedTool.id === "comprimir" ? "DPI (600/200/100)" : "Senha"} />
             )}
+            
             <div className="flex gap-4">
               <button onClick={() => setSelectedTool(null)} className="flex-1 py-3 text-slate-400">Cancelar</button>
               <button onClick={() => fileInputRef.current?.click()} className="flex-1 py-3 bg-blue-600 rounded-xl font-bold text-white">Processar</button>
