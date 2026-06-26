@@ -98,7 +98,8 @@ export default function PdfToolHub() {
   };
 
   const download = (data: Uint8Array, name: string, type: string) => {
-    const blob = new Blob([data.buffer as ArrayBuffer], { type: type });
+    // Correção: Passando o Uint8Array puro para o Blob
+    const blob = new Blob([data], { type: type });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -144,38 +145,51 @@ export default function PdfToolHub() {
       {selectedTool && (
         <AnimatePresence>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTool(null)} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 10 }} transition={{ duration: 0.3, ease: "easeOut" }} onClick={(e) => e.stopPropagation()} className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl">
-              <div className="flex items-center justify-between mb-6">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 10 }} 
+              animate={{ opacity: 1, scale: 1, y: 0 }} 
+              exit={{ opacity: 0, scale: 0.95, y: 10 }} 
+              transition={{ duration: 0.3, ease: "easeOut" }} 
+              onClick={(e) => e.stopPropagation()} 
+              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
+            >
+              <div className="flex items-center justify-between mb-6 shrink-0">
                 <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
                 <button onClick={() => setSelectedTool(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
-              <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
-              
-              {selectedTool.id === "comprimir" && (
-                <div className="mb-6 space-y-3">
-                  <label className="text-slate-400 text-sm block">Selecione o objetivo da compressão:</label>
-                  {[
-                    { label: "Alta Qualidade (350 DPI)", val: "350", desc: "Ideal para laudos e provas." },
-                    { label: "Equilibrado (200 DPI)", val: "200", desc: "Perfeito para petições padrão." },
-                    { label: "Arquivo Leve (150 DPI)", val: "150", desc: "Focado em uploads urgentes." }
-                  ].map((opt) => (
-                    <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`w-full p-4 rounded-xl border-2 text-left transition-all ${inputVal === opt.val ? "bg-blue-600 border-blue-400" : "bg-slate-950 border-slate-700"}`}>
-                      <span className="block font-bold text-white">{opt.label}</span>
-                      <span className="text-[11px] text-slate-300">{opt.desc}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-              
-              {selectedTool.id === "dividir" && (
-                <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Limite em MB (ex: 5)" />
-              )}
 
-              {selectedTool.id === "senha" && (
-                <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Senha do PDF..." />
-              )}
+              {/* Scroll vertical aplicado aqui */}
+              <div className="overflow-y-auto pr-2">
+                <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
+                
+                {selectedTool.id === "comprimir" && (
+                  <div className="mb-6 space-y-3">
+                    <label className="text-slate-400 text-sm block">Selecione o objetivo da compressão:</label>
+                    {[
+                      { label: "Alta Qualidade (350 DPI)", val: "350", desc: "Ideal para laudos e provas." },
+                      { label: "Equilibrado (200 DPI)", val: "200", desc: "Perfeito para petições padrão." },
+                      { label: "Arquivo Leve (150 DPI)", val: "150", desc: "Focado em uploads urgentes." }
+                    ].map((opt) => (
+                      <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`w-full p-4 rounded-xl border-2 text-left transition-all ${inputVal === opt.val ? "bg-blue-600 border-blue-400" : "bg-slate-950 border-slate-700"}`}>
+                        <span className="block font-bold text-white">{opt.label}</span>
+                        <span className="text-[11px] text-slate-300">{opt.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                
+                {selectedTool.id === "dividir" && (
+                  <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-4" placeholder="Limite em MB (ex: 5)" />
+                )}
+
+                {selectedTool.id === "senha" && (
+                  <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-4" placeholder="Senha do PDF..." />
+                )}
+              </div>
               
-              <button onClick={() => fileInputRef.current?.click()} className="w-full mt-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg">Processar Arquivo</button>
+              <button onClick={() => fileInputRef.current?.click()} className="w-full mt-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shrink-0">
+                Processar Arquivo
+              </button>
             </motion.div>
           </motion.div>
         </AnimatePresence>
