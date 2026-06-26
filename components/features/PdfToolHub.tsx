@@ -10,17 +10,47 @@ export default function PdfToolHub() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const tools = [
-    { id: "unir", title: "Unir", desc: "Juntar arquivos", icon: FileUp, help: "Esta ferramenta combina múltiplos arquivos PDF em um único documento sequencial." },
-    { id: "dividir", title: "Dividir", desc: "Fatiar por MB", icon: Split, help: "Divide arquivos grandes em partes menores com um limite de tamanho definido." },
-    { id: "comprimir", title: "Comprimir", desc: "Otimizar DPI", icon: Minimize2, help: "Reduz o tamanho do arquivo mantendo a legibilidade." },
-    { id: "senha", title: "Senha", desc: "Remover proteção", icon: LockKeyhole, help: "Remove a camada de proteção de PDFs bloqueados." },
-    { id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText, help: "Extrai o conteúdo do seu PDF para um formato editável (.docx), preservando a estrutura para edição." },
+    { 
+      id: "unir", 
+      title: "Unir PDFs", 
+      desc: "Organize seu processo", 
+      icon: FileUp, 
+      help: "Transforme várias peças em um único arquivo. Exemplo: junte sua Petição Inicial, Procuração, Declaração de Hipossuficiência e Custas em um só PDF. Isso facilita a leitura do magistrado e evita erros de protocolo por falta de documentos." 
+    },
+    { 
+      id: "dividir", 
+      title: "Dividir PDF", 
+      desc: "Adequação aos limites", 
+      icon: Split, 
+      help: "Se o seu PDF tem mais de 5MB ou 10MB, o sistema do tribunal recusará o upload. Esta função divide o seu documento em partes menores automaticamente, garantindo que você consiga protocolar dentro do prazo sem dor de cabeça." 
+    },
+    { 
+      id: "comprimir", 
+      title: "Comprimir PDF", 
+      desc: "Otimização de tamanho", 
+      icon: Minimize2, 
+      help: "Sabe aquele PDF escaneado que ficou gigantesco? A compressão reduz o peso do arquivo mantendo a qualidade de leitura, ideal para quando você precisa anexar provas e laudos sem estourar a capacidade do sistema." 
+    },
+    { 
+      id: "senha", 
+      title: "Remover Senha", 
+      desc: "Desbloqueio de acesso", 
+      icon: LockKeyhole, 
+      help: "Alguns documentos vêm com proteção de edição ou impressão que travam o seu trabalho. Ao inserir a senha aqui, nós removemos essa camada de segurança para que você possa imprimir, editar ou mesclar o arquivo livremente." 
+    },
+    { 
+      id: "converter", 
+      title: "PDF p/ Word", 
+      desc: "Edição de texto", 
+      icon: FileText, 
+      help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte a estrutura do PDF para um documento .docx editável. Você economiza horas digitando e pode aproveitar o conteúdo direto no seu editor de texto." 
+    },
   ];
 
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
-    // TRAVA DE SEGURANÇA: Bloqueia qualquer arquivo que não seja PDF
+    // TRAVA DE SEGURANÇA: Bloqueia qualquer arquivo que não seja PDF para Mac/Windows
     const files = Array.from(e.target.files);
     const isAllPdf = files.every(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
     
@@ -63,6 +93,7 @@ export default function PdfToolHub() {
   };
 
   const download = (data: Uint8Array, name: string, type: string) => {
+    // Conversão segura para ArrayBuffer para evitar erro de tipo no build
     const blob = new Blob([data.buffer as ArrayBuffer], { type: type });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
