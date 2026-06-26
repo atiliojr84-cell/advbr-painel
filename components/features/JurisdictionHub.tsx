@@ -33,19 +33,21 @@ export default function JurisdictionHub() {
     setIsOpen(true);
   };
 
-  // Classe padrão para todos os botões (Regiões, Estados, Tribunais)
-  const btnClass = "p-4 bg-slate-900 border border-slate-800 rounded-xl transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] text-left";
+  // Classe padronizada para botões que reagem com borda azul e glow
+  const btnStyle = "bg-slate-900 border border-slate-800 transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)]";
 
   return (
     <>
       <section className="py-8 px-4 text-center">
-        <h2 className="text-xl font-bold text-white mb-6">Monitoramento de Tribunais em Tempo Real</h2>
+        {/* Espaçamento aumentado para mb-12 para dar o respiro solicitado */}
+        <h2 className="text-xl font-bold text-white mb-12">Monitoramento de Tribunais em Tempo Real</h2>
+        
         <div className="flex flex-wrap justify-center gap-4">
           {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
             <button 
               key={r} 
               onClick={() => handleOpen(r.toLowerCase())}
-              className="px-6 py-3 bg-slate-900 border border-slate-800 rounded-full text-slate-300 transition-all hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] capitalize"
+              className={`px-6 py-3 rounded-full text-slate-300 capitalize ${btnStyle}`}
             >
               {r === "CentroOeste" ? "Centro-Oeste" : r}
             </button>
@@ -84,7 +86,7 @@ export default function JurisdictionHub() {
                   <button 
                     key={e} 
                     onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                    className={`${btnClass} text-white font-medium text-sm`}
+                    className={`p-4 rounded-xl text-white font-medium text-sm text-left ${btnStyle}`}
                   >
                     {e}
                   </button>
@@ -104,7 +106,7 @@ export default function JurisdictionHub() {
                     : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
                   ).map((t: any) => (
                     <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
-                      className={`${btnClass} w-full flex items-center justify-between`}>
+                      className={`w-full p-4 rounded-xl flex items-center justify-between ${btnStyle}`}>
                       <span className="text-white text-sm font-medium">{t.name}</span>
                       <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
                     </button>
