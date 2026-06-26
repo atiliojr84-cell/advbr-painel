@@ -13,15 +13,13 @@ export async function GET() {
     { nome: "STJ-INF", url: "https://processo.stj.jus.br/jurisprudencia/externo/InformativoFeed" }
   ];
 
-  let todasNoticias: Array<{texto: string, url: string}> = [];
-
-  for (const fonte of fontes) {
+  // Dispara todas as requisições simultaneamente (Promise.all)
+  const promessas = fontes.map(async (fonte) => {
     try {
       const res = await fetch(fonte.url, { 
         next: { revalidate: 3600 },
         headers: { 'User-Agent': 'Mozilla/5.0' } 
       });
-      
       const arrayBuffer = await res.arrayBuffer();
       const xml = new TextDecoder('utf-8').decode(arrayBuffer)
                 .replace(/Ã©/g, 'é').replace(/Ã£/g, 'ã').replace(/Ã§/g, 'ç')
@@ -31,17 +29,20 @@ export async function GET() {
       const regex = /<item>[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<link>([\s\S]*?)<\/link>/gi;
       let match;
       let count = 0;
+      let noticias: any[] = [];
       
       while ((match = regex.exec(xml)) !== null && count < 3) {
-        let titulo = match[1].replace(/<!\[CDATA\[|\]\]>|<\/?[^>]+(>|$)/g, "").trim();
-        todasNoticias.push({ texto: `[${fonte.nome}] ${titulo}`, url: match[2].trim() });
+        noticias.push({ texto: `[${fonte.nome}] ${match[1].replace(/<!\[CDATA\[|\]\]>|<\/?[^>]+(>|$)/g, "").trim()}`, url: match[2].trim() });
         count++;
       }
-    } catch (e) { continue; }
-  }
+      return noticias;
+    } catch { return []; }
+  });
 
-  // Lógica de "Embaralhamento Furioso"
-  // Fisher-Yates Shuffle para garantir que não haja repetição de fonte próxima
+  const resultados = await Promise.all(promessas);
+  let todasNoticias = resultados.flat();
+
+  // Embaralhamento (Fisher-Yates)
   for (let i = todasNoticias.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [todasNoticias[i], todasNoticias[j]] = [todasNoticias[j], todasNoticias[i]];
