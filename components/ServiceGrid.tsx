@@ -30,9 +30,10 @@ export default function ServiceGrid() {
             <button 
               key={s.id}
               onClick={() => setSelectedService(s)}
-              className="p-6 bg-slate-900 border border-slate-800 rounded-xl transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] text-left group"
+              /* Aplicando o glow-effect e removendo a borda estática */
+              className="p-6 bg-slate-900 rounded-xl glow-effect text-left"
             >
-              <h3 className="font-bold text-lg text-white transition-colors">
+              <h3 className="font-bold text-lg text-white">
                 {s.title}
               </h3>
               <p className="text-slate-400 text-sm mt-2 leading-relaxed">{s.desc}</p>
