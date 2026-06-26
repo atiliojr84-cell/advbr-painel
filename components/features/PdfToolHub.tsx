@@ -45,7 +45,6 @@ export default function PdfToolHub() {
            <div className="absolute top-0 right-0 w-3 h-3 bg-red-600 rounded-bl-sm" />
            <span className="text-[10px] font-black text-white mt-1">PDF</span>
         </div>
-        
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
           <p className="text-slate-400 text-sm">Ferramentas essenciais para o seu escritório.</p>
@@ -92,7 +91,7 @@ export default function PdfToolHub() {
               
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
-              {/* COMPRESSÃO CUSTOMIZADA - AVISO CLARO E FONTES AUMENTADAS */}
+              {/* COMPRESSÃO CUSTOMIZADA */}
               {selectedTool.id === "comprimir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
@@ -124,7 +123,7 @@ export default function PdfToolHub() {
                 </div>
               )}
               
-              {/* DIVIDIR PDF EXPLICADO */}
+              {/* DIVIDIR PDF */}
               {selectedTool.id === "dividir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Defina o tamanho limite:</label>
@@ -144,15 +143,23 @@ export default function PdfToolHub() {
                 </div>
               )}
 
-              {/* SENHA */}
+              {/* SENHA - FLUXO ESCLARECIDO */}
               {selectedTool.id === "senha" && (
-                <input 
-                  type="password" 
-                  value={inputVal} 
-                  onChange={(e) => setInputVal(e.target.value)} 
-                  className="w-full p-4 mb-6 bg-slate-950 text-white rounded-xl border border-slate-700" 
-                  placeholder="Senha do documento" 
-                />
+                <div className="mb-6">
+                  <label className="block text-slate-400 text-sm mb-3">Remover proteção do PDF:</label>
+                  <div className="bg-slate-950 p-4 rounded-xl border border-blue-900/30 mb-4">
+                    <p className="text-[12px] text-slate-300 leading-relaxed">
+                      <strong>Como funciona:</strong> Para remover a restrição, insira abaixo a <strong>senha atual</strong> do documento e clique em "Processar Arquivo" para fazer o upload e desbloqueá-lo.
+                    </p>
+                  </div>
+                  <input 
+                    type="password" 
+                    value={inputVal} 
+                    onChange={(e) => setInputVal(e.target.value)} 
+                    className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 focus:border-blue-500 outline-none" 
+                    placeholder="Digite a senha atual do PDF aqui..." 
+                  />
+                </div>
               )}
               
               <button 
