@@ -92,11 +92,11 @@ export default function PdfToolHub() {
               
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
-              {/* COMPRESSÃO CUSTOMIZADA */}
+              {/* COMPRESSÃO CUSTOMIZADA - FONTES AUMENTADAS */}
               {selectedTool.id === "comprimir" && (
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
-                  <div className="grid grid-cols-3 gap-2 mb-4">
+                  <div className="grid grid-cols-3 gap-3 mb-4">
                     {[
                       { label: "Mínima", val: "350", desc: "Qualidade Máxima" },
                       { label: "Média", val: "200", desc: "Equilibrado" },
@@ -105,13 +105,14 @@ export default function PdfToolHub() {
                       <button
                         key={opt.val}
                         onClick={() => setInputVal(opt.val)}
-                        className={`p-3 rounded-xl text-xs font-bold transition-all border ${
+                        className={`p-5 rounded-xl transition-all border-2 flex flex-col items-center justify-center ${
                           inputVal === opt.val 
-                          ? "bg-blue-600 border-blue-500 text-white" 
-                          : "bg-slate-950 border-slate-700 text-slate-400 hover:border-slate-500"
+                          ? "bg-blue-600 border-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.5)]" 
+                          : "bg-slate-950 border-slate-700 hover:border-slate-500"
                         }`}
                       >
-                        {opt.label}<br/><span className="text-[9px] opacity-70">{opt.desc}</span>
+                        <span className="text-lg font-bold text-white mb-1">{opt.label}</span>
+                        <span className="text-[11px] text-slate-400 font-medium">{opt.desc}</span>
                       </button>
                     ))}
                   </div>
