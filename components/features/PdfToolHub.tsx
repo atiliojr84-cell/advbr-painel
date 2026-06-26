@@ -32,7 +32,8 @@ export default function PdfToolHub() {
         pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`, "application/pdf")); 
       }
       else if (tool.id === "comprimir") { 
-        const res = await comprimirPorDPI(files[0], inputVal || '200'); 
+        // Tipagem forçada para satisfazer o build da Vercel
+        const res = await comprimirPorDPI(files[0], (inputVal as "350" | "200" | "150") || '200'); 
         download(res, "otimizado.pdf", "application/pdf"); 
       }
       else if (tool.id === "senha") { 
@@ -54,15 +55,18 @@ export default function PdfToolHub() {
   };
 
   const download = (data: Uint8Array, name: string, type: string) => {
-    const blob = new Blob([data], { type: type });
+    // Conversão segura para ArrayBuffer para evitar erro de tipo no build
+    const blob = new Blob([data.buffer as ArrayBuffer], { type: type });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = name;
     document.body.appendChild(a);
     a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 100);
   };
 
   return (
@@ -79,9 +83,6 @@ export default function PdfToolHub() {
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
           <div className="flex items-center gap-1.5 text-emerald-400 mt-1">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
             <p className="text-[11px] font-medium tracking-wide uppercase">Processamento 100% local (Seguro e Privado)</p>
           </div>
         </div>
@@ -113,11 +114,10 @@ export default function PdfToolHub() {
               
               {selectedTool.id === "comprimir" && (
                 <div className="mb-6">
-                  <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
-                  <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="grid grid-cols-3 gap-3">
                     {[{ label: "Mínima", val: "350" }, { label: "Média", val: "200" }, { label: "Máxima", val: "150" }].map((opt) => (
-                      <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`p-5 rounded-xl transition-all border-2 flex flex-col items-center justify-center ${inputVal === opt.val ? "bg-blue-600 border-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.5)]" : "bg-slate-950 border-slate-700 hover:border-slate-500"}`}>
-                        <span className="text-lg font-bold text-white mb-1">{opt.label}</span>
+                      <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`p-5 rounded-xl border-2 ${inputVal === opt.val ? "bg-blue-600 border-blue-400" : "bg-slate-950 border-slate-700"}`}>
+                        <span className="text-lg font-bold text-white">{opt.label}</span>
                       </button>
                     ))}
                   </div>
@@ -125,18 +125,14 @@ export default function PdfToolHub() {
               )}
               
               {selectedTool.id === "dividir" && (
-                <div className="mb-6">
-                  <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Limite em MB (ex: 5)" />
-                </div>
+                <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Limite em MB (ex: 5)" />
               )}
 
               {selectedTool.id === "senha" && (
-                <div className="mb-6">
-                  <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Senha do PDF..." />
-                </div>
+                <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Senha do PDF..." />
               )}
               
-              <button onClick={() => fileInputRef.current?.click()} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg">Processar Arquivo</button>
+              <button onClick={() => fileInputRef.current?.click()} className="w-full mt-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg">Processar Arquivo</button>
             </motion.div>
           </motion.div>
         </AnimatePresence>
