@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <header className="border-b border-slate-800 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
       <div>
-        <h1 className="text-2xl font-bold text-white flex items-center gap-1">
+        <h1 className="text-2xl font-bold text-white flex items-center tracking-tight whitespace-nowrap">
           adv<span className="text-blue-500">BR</span>.info
         </h1>
         <p className="text-sm text-slate-400">Suporte Tecnológico Integrado para Profissionais do Direito</p>
