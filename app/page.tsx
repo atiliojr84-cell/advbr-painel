@@ -14,24 +14,24 @@ export default function Home() {
         {/* Cabeçalho com Botões de Ação */}
         <Header />
 
-        {/* Hub de Peticionamento: 10 portais principais */}
+        {/* Módulo A: Carrossel de Portais */}
         <section>
-            <h2 className="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-                <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
-            </h2>
-            <PortalCarousel />
+          <h2 className="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
+            <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
+          </h2>
+          <PortalCarousel />
         </section>
 
-        {/* Módulo B: Hub de Jurisdições (Movido para cima dos Serviços) */}
+        {/* Módulo B: Hub de Jurisdições (Monitoramento em tempo real) */}
         <JurisdictionHub />
 
-        {/* Módulo C, D: Área reservada para Ferramentas (PDF e Diagnóstico) - Placeholder */}
-        {/* Adicionaremos aqui futuramente */}
+        {/* Módulo C e D (Reservados para futuras ferramentas de PDF e Diagnóstico) */}
+        <div id="ferramentas-placeholder"></div>
 
-        {/* Módulo F: Serviços Corporativos ADVBR (Movido para baixo) */}
+        {/* Módulo F: Serviços Corporativos ADVBR (O fim do funil) */}
         <ServiceGrid />
 
-        {/* Seção Know-How Institucional */}
+        {/* Seção Know-How Institucional (Autoridade Final) */}
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
           <h2 className="text-xl font-bold text-white mb-4">Mais de 20 anos de excelência em TI Jurídica</h2>
           <p className="leading-relaxed">
