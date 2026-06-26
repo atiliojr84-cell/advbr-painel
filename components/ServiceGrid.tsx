@@ -20,7 +20,6 @@ export default function ServiceGrid() {
   };
 
   return (
-    // Alterado de bg-slate-50 para bg-slate-950 (fundo escuro unificado)
     <section className="py-12 px-4 bg-slate-950">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold text-white mb-8 text-center">
@@ -31,10 +30,10 @@ export default function ServiceGrid() {
             <button 
               key={s.id}
               onClick={() => setSelectedService(s)}
-              // Ajuste dos cards para fundo escuro com borda suave
-              className="p-6 bg-slate-900 border border-slate-800 rounded-lg hover:border-blue-500 hover:shadow-lg transition-all text-left group"
+              className="p-6 bg-slate-900 border border-slate-800 rounded-lg transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.3)] text-left group"
             >
-              <h3 className="font-bold text-lg text-white group-hover:text-blue-400 transition-colors">
+              {/* Mantivemos text-white fixo para não mudar a cor no hover */}
+              <h3 className="font-bold text-lg text-white transition-colors">
                 {s.title}
               </h3>
               <p className="text-slate-400 text-sm mt-1">{s.desc}</p>
