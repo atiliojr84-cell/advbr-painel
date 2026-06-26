@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { jurisdictions } from "../../data/jurisdictions";
-import Modal from "../ui/Modal"; // Importando seu padrão oficial
+import Modal from "../ui/Modal";
 
 export default function JurisdictionHub() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function JurisdictionHub() {
     return alerta.toLowerCase().includes("grave") ? "bg-red-500" : "bg-yellow-500";
   };
 
-  const handleOpenModal = (regiao: string) => {
+  const handleOpen = (regiao: string) => {
     setActiveRegiao(regiao);
     setView(regiao === 'federais' ? 'tribunal' : 'estado');
     setIsOpen(true);
@@ -24,16 +25,19 @@ export default function JurisdictionHub() {
 
   return (
     <>
-      <section className="py-8 px-4 flex flex-wrap justify-center gap-4">
-        {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
-          <button 
-            key={r} 
-            onClick={() => handleOpenModal(r.toLowerCase())}
-            className="px-6 py-3 bg-slate-900 border border-slate-800 rounded-full text-slate-300 hover:border-blue-500 hover:bg-slate-800 transition-all capitalize"
-          >
-            {r === "CentroOeste" ? "Centro-Oeste" : r}
-          </button>
-        ))}
+      <section className="py-8 px-4 text-center">
+        <h2 className="text-xl font-bold text-white mb-6">Monitoramento de Tribunais em Tempo Real</h2>
+        <div className="flex flex-wrap justify-center gap-4">
+          {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
+            <button 
+              key={r} 
+              onClick={() => handleOpen(r.toLowerCase())}
+              className="px-6 py-3 bg-slate-900 border border-slate-800 rounded-full text-slate-300 hover:border-blue-500 hover:bg-slate-800 transition-all capitalize"
+            >
+              {r === "CentroOeste" ? "Centro-Oeste" : r}
+            </button>
+          ))}
+        </div>
       </section>
 
       <Modal 
@@ -42,37 +46,53 @@ export default function JurisdictionHub() {
         title={
           <div className="flex items-center gap-3">
             {view === 'tribunal' && activeRegiao !== 'federais' && (
-              <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white">
+              <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
                 <ArrowLeft size={20} />
               </button>
             )}
-            {activeRegiao === 'federais' ? 'TRIBUNAIS FEDERAIS' : (view === 'estado' ? activeRegiao.toUpperCase() : selectedEstado)}
+            <span className="uppercase text-sm tracking-widest">
+              {activeRegiao === 'federais' ? 'TRIBUNAIS FEDERAIS' : (view === 'estado' ? activeRegiao : selectedEstado)}
+            </span>
           </div>
         }
       >
-        <div className="space-y-3">
-          {view === 'estado' && activeRegiao !== 'federais' && (
-            Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
-              <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
-                className="w-full p-4 bg-slate-900/50 rounded-xl text-left text-white border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all font-medium">
-                {e}
-              </button>
-            ))
-          )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={view + activeRegiao + selectedEstado}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -10 }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* VIEW: SELEÇÃO DE ESTADOS */}
+            {view === 'estado' && activeRegiao !== 'federais' && (
+              <div className="grid grid-cols-2 gap-3">
+                {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
+                  <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
+                    className="p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-600 transition-all text-white font-medium text-sm">
+                    {e}
+                  </button>
+                ))}
+              </div>
+            )}
 
-          {view === 'tribunal' && (
-            (activeRegiao === 'federais' 
-              ? jurisdictions.federais 
-              : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
-            )?.map((t: any) => (
-              <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
-                className="w-full p-4 bg-slate-900/50 rounded-xl flex items-center justify-between border border-slate-800 hover:border-blue-600 hover:bg-slate-800 transition-all">
-                <span className="text-white font-medium">{t.name}</span>
-                <div className={`w-3 h-3 rounded-full ${getStatusColor(t.alerta)}`} />
-              </button>
-            ))
-          )}
-        </div>
+            {/* VIEW: LISTA DE TRIBUNAIS */}
+            {view === 'tribunal' && (
+              <div className="space-y-3">
+                {(activeRegiao === 'federais' 
+                  ? jurisdictions.federais 
+                  : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado]
+                )?.map((t: any) => (
+                  <button key={t.name} onClick={() => window.open(t.url, "_blank")} 
+                    className="w-full p-4 bg-slate-900/50 rounded-xl flex items-center justify-between border border-slate-800 hover:border-blue-600 transition-all">
+                    <span className="text-white text-sm font-medium">{t.name}</span>
+                    <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
+                  </button>
+                ))}
+              </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </Modal>
     </>
   );
