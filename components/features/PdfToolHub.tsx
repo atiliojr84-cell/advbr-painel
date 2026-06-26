@@ -14,7 +14,7 @@ export default function PdfToolHub() {
     { id: "dividir", title: "Dividir", desc: "Fatiar por MB", icon: Split, help: "Divide arquivos grandes em partes menores com um limite de tamanho definido." },
     { id: "comprimir", title: "Comprimir", desc: "Otimizar DPI", icon: Minimize2, help: "Reduz o tamanho do arquivo mantendo a legibilidade." },
     { id: "senha", title: "Senha", desc: "Remover proteção", icon: LockKeyhole, help: "Remove a camada de proteção de PDFs bloqueados." },
-    { id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText, help: "Extrai o conteúdo do seu PDF para um formato editável (.docx)." },
+    { id: "converter", title: "Converter", desc: "PDF p/ Word", icon: FileText, help: "Extrai o conteúdo do seu PDF para um formato editável (.docx), preservando a estrutura para edição." },
   ];
 
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +45,6 @@ export default function PdfToolHub() {
            <div className="absolute top-0 right-0 w-3 h-3 bg-red-600 rounded-bl-sm" />
            <span className="text-[10px] font-black text-white mt-1">PDF</span>
         </div>
-        
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente</h2>
           <p className="text-slate-400 text-sm">Ferramentas essenciais para o seu escritório.</p>
@@ -59,9 +58,7 @@ export default function PdfToolHub() {
             onClick={() => { setSelectedTool(t); setInputVal(""); }} 
             className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect"
           >
-            <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400">
-              <t.icon className="w-8 h-8" />
-            </div>
+            <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400"><t.icon className="w-8 h-8" /></div>
             <span className="font-bold text-white mb-1">{t.title}</span>
             <span className="text-[10px] text-slate-500 text-center">{t.desc}</span>
           </button>
@@ -70,26 +67,12 @@ export default function PdfToolHub() {
 
       {selectedTool && (
         <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setSelectedTool(null)}
-            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
-            >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTool(null)} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 10 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 10 }} transition={{ duration: 0.3, ease: "easeOut" }} onClick={(e) => e.stopPropagation()} className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
                 <button onClick={() => setSelectedTool(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
-              
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
               {/* COMPRESSÃO */}
@@ -97,29 +80,15 @@ export default function PdfToolHub() {
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Escolha o nível de compressão:</label>
                   <div className="grid grid-cols-3 gap-3 mb-4">
-                    {[
-                      { label: "Mínima", val: "350", desc: "Qualidade Máxima" },
-                      { label: "Média", val: "200", desc: "Equilibrado" },
-                      { label: "Máxima", val: "150", desc: "Menor arquivo" }
-                    ].map((opt) => (
-                      <button
-                        key={opt.val}
-                        onClick={() => setInputVal(opt.val)}
-                        className={`p-5 rounded-xl transition-all border-2 flex flex-col items-center justify-center ${
-                          inputVal === opt.val 
-                          ? "bg-blue-600 border-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.5)]" 
-                          : "bg-slate-950 border-slate-700 hover:border-slate-500"
-                        }`}
-                      >
+                    {[{ label: "Mínima", val: "350", desc: "Qualidade Máxima" }, { label: "Média", val: "200", desc: "Equilibrado" }, { label: "Máxima", val: "150", desc: "Menor arquivo" }].map((opt) => (
+                      <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`p-5 rounded-xl transition-all border-2 flex flex-col items-center justify-center ${inputVal === opt.val ? "bg-blue-600 border-blue-400 shadow-[0_0_15px_rgba(37,99,235,0.5)]" : "bg-slate-950 border-slate-700 hover:border-slate-500"}`}>
                         <span className="text-lg font-bold text-white mb-1">{opt.label}</span>
                         <span className="text-[11px] text-slate-400 font-medium">{opt.desc}</span>
                       </button>
                     ))}
                   </div>
                   <div className="bg-slate-950 p-4 rounded-xl border border-blue-900/30">
-                    <p className="text-[12px] text-slate-300 leading-relaxed">
-                      <strong className="text-blue-400">Atenção:</strong> Quanto maior a compressão, menor será o arquivo, mas também maior será a perda de qualidade visual. Escolha <strong>Máxima</strong> se precisar reduzir muito o tamanho, ou <strong>Mínima</strong> se a leitura e detalhes forem cruciais.
-                    </p>
+                    <p className="text-[12px] text-slate-300 leading-relaxed"><strong className="text-blue-400">Atenção:</strong> Quanto maior a compressão, menor será o arquivo, mas também maior será a perda de qualidade visual. Escolha <strong>Máxima</strong> se precisar reduzir muito o tamanho, ou <strong>Mínima</strong> se a leitura e detalhes forem cruciais.</p>
                   </div>
                 </div>
               )}
@@ -129,17 +98,9 @@ export default function PdfToolHub() {
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Defina o tamanho limite:</label>
                   <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-4">
-                    <p className="text-[12px] text-slate-300 leading-relaxed">
-                      <strong>Como funciona:</strong> O sistema dividirá seu PDF em vários arquivos menores, garantindo que cada parte não ultrapasse o limite de tamanho (MB) que você definir abaixo. Ideal para cumprir normas de tribunais.
-                    </p>
+                    <p className="text-[12px] text-slate-300 leading-relaxed"><strong>Como funciona:</strong> O sistema dividirá seu PDF em vários arquivos menores, garantindo que cada parte não ultrapasse o limite de tamanho (MB) que você definir abaixo. Ideal para cumprir normas de tribunais.</p>
                   </div>
-                  <input 
-                    type="number" 
-                    value={inputVal} 
-                    onChange={(e) => setInputVal(e.target.value)} 
-                    className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" 
-                    placeholder="Ex: 5 (limite em MB)" 
-                  />
+                  <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700" placeholder="Ex: 5 (limite em MB)" />
                   <p className="text-[10px] text-slate-500 mt-2">Dica: A maioria dos sistemas aceita arquivos de até 5MB a 10MB.</p>
                 </div>
               )}
@@ -149,26 +110,20 @@ export default function PdfToolHub() {
                 <div className="mb-6">
                   <label className="block text-slate-400 text-sm mb-3">Remover proteção do PDF:</label>
                   <div className="bg-slate-950 p-4 rounded-xl border border-blue-900/30 mb-4">
-                    <p className="text-[12px] text-slate-300 leading-relaxed">
-                      <strong>Como funciona:</strong> Para remover a restrição, insira abaixo a <strong>senha atual</strong> do documento e clique em "Processar Arquivo" para fazer o upload e desbloqueá-lo.
-                    </p>
+                    <p className="text-[12px] text-slate-300 leading-relaxed"><strong>Como funciona:</strong> Para remover a restrição, insira abaixo a <strong>senha atual</strong> do documento e clique em "Processar Arquivo" para fazer o upload e desbloqueá-lo.</p>
                   </div>
-                  <input 
-                    type="password" 
-                    value={inputVal} 
-                    onChange={(e) => setInputVal(e.target.value)} 
-                    className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 focus:border-blue-500 outline-none" 
-                    placeholder="Digite a senha atual do PDF aqui..." 
-                  />
+                  <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 focus:border-blue-500 outline-none" placeholder="Digite a senha atual do PDF aqui..." />
                 </div>
               )}
               
-              <button 
-                onClick={() => fileInputRef.current?.click()} 
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg"
-              >
-                Processar Arquivo
-              </button>
+              {/* CONVERTER */}
+              {selectedTool.id === "converter" && (
+                 <div className="mb-6 bg-slate-950 p-4 rounded-xl border border-blue-900/30">
+                    <p className="text-[13px] text-slate-300 leading-relaxed"><strong>Como funciona:</strong> Esta ferramenta extrai todo o conteúdo do seu arquivo PDF e o converte para um formato <strong>.docx</strong>, permitindo que você edite o texto livremente no Microsoft Word.</p>
+                 </div>
+              )}
+              
+              <button onClick={() => fileInputRef.current?.click()} className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg">Processar Arquivo</button>
             </motion.div>
           </motion.div>
         </AnimatePresence>
