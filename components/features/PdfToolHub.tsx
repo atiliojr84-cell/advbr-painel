@@ -50,7 +50,6 @@ export default function PdfToolHub() {
   const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     
-    // TRAVA DE SEGURANÇA: Bloqueia qualquer arquivo que não seja PDF
     const files = Array.from(e.target.files);
     const isAllPdf = files.every(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
     
@@ -68,15 +67,12 @@ export default function PdfToolHub() {
       }
       else if (tool.id === "dividir") { 
         const pages = await dividirPorTamanho(files[0], Number(inputVal) || 3); 
-        
-        // AVISO PREVENTIVO: Caso as páginas individuais sejam muito pesadas
         const limiteMB = Number(inputVal) || 3;
         const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
         
         if (excedeu) {
           alert("Aviso: Algumas partes ainda excederam o limite escolhido. Isso acontece quando o PDF possui páginas individuais muito pesadas. Tente usar a ferramenta 'Comprimir' no arquivo original primeiro.");
         }
-
         pages.forEach((p, i) => download(p, `parte_${i + 1}.pdf`, "application/pdf")); 
       }
       else if (tool.id === "comprimir") { 
@@ -117,14 +113,7 @@ export default function PdfToolHub() {
 
   return (
     <section className="py-12 px-4 max-w-5xl mx-auto">
-      <input 
-        type="file" 
-        ref={fileInputRef} 
-        className="hidden" 
-        multiple={selectedTool?.id === "unir"} 
-        accept="application/pdf" 
-        onChange={handleProcess} 
-      />
+      <input type="file" ref={fileInputRef} className="hidden" multiple={selectedTool?.id === "unir"} accept="application/pdf" onChange={handleProcess} />
       
       <div className="mb-8 flex items-center gap-4">
         <div className="relative w-12 h-14 bg-red-600 rounded-md flex flex-col items-center justify-center shadow-lg border-2 border-red-700">
@@ -136,23 +125,15 @@ export default function PdfToolHub() {
         <div>
           <h2 className="text-2xl font-bold text-white">Otimizador Inteligente de PDF</h2>
           <div className="flex flex-col gap-0.5 mt-1">
-            <p className="text-[11px] font-bold text-emerald-400 tracking-wide uppercase">
-              PROCESSAMENTO 100% LOCAL (SEGURO E PRIVADO)
-            </p>
-            <p className="text-[10px] text-slate-400">
-              Processamento 100% na sua máquina, visando a segurança e privacidade.
-            </p>
+            <p className="text-[11px] font-bold text-emerald-400 tracking-wide uppercase">PROCESSAMENTO 100% LOCAL (SEGURO E PRIVADO)</p>
+            <p className="text-[10px] text-slate-400">Processamento 100% na sua máquina, visando a segurança e privacidade.</p>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
         {tools.map((t) => (
-          <button 
-            key={t.id} 
-            onClick={() => { setSelectedTool(t); setInputVal(""); }} 
-            className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect"
-          >
+          <button key={t.id} onClick={() => { setSelectedTool(t); setInputVal(""); }} className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect">
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400"><t.icon className="w-8 h-8" /></div>
             <span className="font-bold text-white mb-1">{t.title}</span>
             <span className="text-[10px] text-slate-500 text-center">{t.desc}</span>
@@ -171,14 +152,18 @@ export default function PdfToolHub() {
               <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
               
               {selectedTool.id === "comprimir" && (
-                <div className="mb-6">
-                  <div className="grid grid-cols-3 gap-3">
-                    {[{ label: "Mínima", val: "350" }, { label: "Média", val: "200" }, { label: "Máxima", val: "150" }].map((opt) => (
-                      <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`p-5 rounded-xl border-2 ${inputVal === opt.val ? "bg-blue-600 border-blue-400" : "bg-slate-950 border-slate-700"}`}>
-                        <span className="text-lg font-bold text-white">{opt.label}</span>
-                      </button>
-                    ))}
-                  </div>
+                <div className="mb-6 space-y-3">
+                  <label className="text-slate-400 text-sm block">Selecione o objetivo da compressão:</label>
+                  {[
+                    { label: "Alta Qualidade (350 DPI)", val: "350", desc: "Ideal para laudos e provas." },
+                    { label: "Equilibrado (200 DPI)", val: "200", desc: "Perfeito para petições padrão." },
+                    { label: "Arquivo Leve (150 DPI)", val: "150", desc: "Focado em uploads urgentes." }
+                  ].map((opt) => (
+                    <button key={opt.val} onClick={() => setInputVal(opt.val)} className={`w-full p-4 rounded-xl border-2 text-left transition-all ${inputVal === opt.val ? "bg-blue-600 border-blue-400" : "bg-slate-950 border-slate-700"}`}>
+                      <span className="block font-bold text-white">{opt.label}</span>
+                      <span className="text-[11px] text-slate-300">{opt.desc}</span>
+                    </button>
+                  ))}
                 </div>
               )}
               
