@@ -13,7 +13,7 @@ export default function PdfToolHub() {
     if (!e.target.files || e.target.files.length === 0) return;
     
     const files = Array.from(e.target.files);
-    let result: Uint8Array;
+    let result: Uint8Array | null = null;
 
     try {
       if (selectedTool.id === "unir") {
@@ -31,12 +31,14 @@ export default function PdfToolHub() {
   };
 
   const downloadFile = (data: Uint8Array, filename: string) => {
-    const blob = new Blob([data], { type: "application/pdf" });
+    // A correção definitiva: criar um Blob passando o buffer do Uint8Array diretamente
+    const blob = new Blob([data.buffer], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = filename;
     a.click();
+    URL.revokeObjectURL(url);
   };
 
   const tools = [
@@ -63,7 +65,7 @@ export default function PdfToolHub() {
             <button key={tool.id} onClick={() => { setSelectedTool(tool); fileInputRef.current?.click(); }} 
               className="flex flex-col items-center justify-center p-4 bg-slate-950 border border-slate-800 rounded-xl hover:border-blue-500 transition-all">
               <tool.icon className="w-6 h-6 text-slate-400 mb-2" />
-              <span className="text-xs font-semibold text-slate-200">{tool.title.replace("PDF", "")}</span>
+              <span className="text-xs font-semibold text-slate-200">{tool.title.replace("PDF", "").trim()}</span>
             </button>
           ))}
         </div>
