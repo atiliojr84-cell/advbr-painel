@@ -1,6 +1,17 @@
-// Adicione estas funções abaixo da função 'unirPDFs' no seu PdfProcessor.ts
+// @ts-nocheck
+import { PDFDocument } from 'pdf-lib';
 
-// Função para Dividir PDF (retorna um array de Uint8Arrays, uma página por arquivo)
+export async function unirPDFs(files: File[]): Promise<Uint8Array> {
+  const mergedPdf = await PDFDocument.create();
+  for (const file of files) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await PDFDocument.load(arrayBuffer);
+    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    copiedPages.forEach((page) => mergedPdf.addPage(page));
+  }
+  return await mergedPdf.save();
+}
+
 export async function dividirPDF(file: File): Promise<Uint8Array[]> {
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(arrayBuffer);
@@ -16,10 +27,14 @@ export async function dividirPDF(file: File): Promise<Uint8Array[]> {
   return result;
 }
 
-// Função para Remover Senha
 export async function removerSenha(file: File, password: string): Promise<Uint8Array> {
   const arrayBuffer = await file.arrayBuffer();
-  // A pdf-lib permite carregar com a senha fornecida
   const pdf = await PDFDocument.load(arrayBuffer, { password: password });
   return await pdf.save();
+}
+
+export async function otimizarPDF(file: File): Promise<Uint8Array> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  return await pdf.save({ useObjectStreams: true });
 }
