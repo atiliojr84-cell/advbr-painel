@@ -2,6 +2,7 @@ import Header from "../components/ui/Header";
 import Ticker from "../components/ui/Ticker";
 import ServiceGrid from "../components/ServiceGrid";
 import PortalCarousel from "../components/features/PortalCarousel";
+import JurisdictionHub from "../components/features/JurisdictionHub";
 
 export default function Home() {
   return (
@@ -23,6 +24,9 @@ export default function Home() {
 
         {/* Módulo F: Serviços Corporativos */}
         <ServiceGrid />
+
+        {/* Novo Módulo de Jurisdições */}
+        <JurisdictionHub />
 
         {/* Seção Know-How Institucional */}
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
