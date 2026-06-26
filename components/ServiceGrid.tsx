@@ -45,6 +45,7 @@ export default function ServiceGrid() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onClick={() => setSelectedService(null)}
             className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           >
             <motion.div
@@ -52,9 +53,14 @@ export default function ServiceGrid() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
             >
-              <h3 className="text-white text-xl font-bold mb-4">{selectedService.title}</h3>
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-white text-xl font-bold">{selectedService.title}</h3>
+                <button onClick={() => setSelectedService(null)} className="text-slate-500 hover:text-white">Fechar</button>
+              </div>
+
               <p className="text-slate-300 leading-relaxed mb-6">
                 O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
                 Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
