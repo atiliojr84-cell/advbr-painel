@@ -3,10 +3,10 @@ import Ticker from "../components/ui/Ticker";
 import ServiceGrid from "../components/ServiceGrid";
 import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
-// import PdfToolHub from "../components/features/PdfToolHub"; // <-- REMOVA ESTA LINHA
+import DiagnosticHub from "../components/features/DiagnosticHub"; // <-- IMPORT ADICIONADO AQUI
 
-import dynamic from 'next/dynamic'; // <-- ADICIONE ESTA LINHA
-import { Loader2 } from 'lucide-react'; // <-- ADICIONE ESTA LINHA (ou outro ícone de carregamento de sua preferência)
+import dynamic from 'next/dynamic'; 
+import { Loader2 } from 'lucide-react'; 
 
 // Importa PdfToolHub dinamicamente, garantindo que ele só seja carregado no cliente
 const DynamicPdfToolHub = dynamic(() => import('../components/features/PdfToolHub'), {
@@ -35,9 +35,13 @@ export default function Home() {
 
         <JurisdictionHub />
 
-        {/* Use o componente dinâmico aqui */}
+        {/* Módulo de PDF */}
         <DynamicPdfToolHub /> 
 
+        {/* NOVO MÓDULO DE DIAGNÓSTICO (Token e PJe Office) */}
+        <DiagnosticHub />
+
+        {/* Módulo de Serviços Corporativos */}
         <ServiceGrid />
 
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
