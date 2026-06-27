@@ -40,10 +40,10 @@ export const jurisdictions = {
       "Mato Grosso do Sul": [{ name: "TJMS", url: "https://www.tjms.jus.br/", alerta: null }, { name: "e-SAJ MS", url: "https://esaj.tjms.jus.br/", alerta: null }, { name: "TRT24", url: "https://pje.trt24.jus.br/", alerta: null }, { name: "TRE-MS", url: "https://www.tre-ms.jus.br/", alerta: null }]
     },
     Sudeste: {
-      "São Paulo": [{ name: "TJSP", url: "https://www.tjsp.jus.br/", alerta: null }, { name: "e-SAJ SP", url: "https://esaj.tjsp.jus.br/", alerta: null }, { name: "TRT2", url: "https://pje.trtsp.jus.br/", alerta: null }, { name: "TRE-SP", url: "https://www.tre-sp.jus.br/", alerta: null }],
+      "São Paulo": [{ name: "TJSP", url: "https://www.tjsp.jus.br/", alerta: null }, { name: "e-SAJ SP", url: "https://esaj.tjsp.jus.br/", alerta: null }, { name: "TRT2", url: "https://pje.trt2.jus.br/primeirograu/login.seam", alerta: null }, { name: "TRE-SP", url: "https://www.tre-sp.jus.br/", alerta: null }],
       "Rio de Janeiro": [{ name: "TJRJ", url: "https://www.tjrj.jus.br/", alerta: null }, { name: "e-JUD RJ", url: "https://www.tjrj.jus.br/", alerta: null }, { name: "TRT1", url: "https://pje.trt1.jus.br/", alerta: null }, { name: "TRE-RJ", url: "https://www.tre-rj.jus.br/", alerta: null }],
       "Minas Gerais": [{ name: "TJMG", url: "https://www.tjmg.jus.br/", alerta: null }, { name: "PJe TJMG", url: "https://pje.tjmg.jus.br/", alerta: null }, { name: "TRT3", url: "https://pje.trt3.jus.br/", alerta: null }, { name: "TRE-MG", url: "https://www.tre-mg.jus.br/", alerta: null }],
-      "Espírito Santo": [{ name: "TJES", url: "https://www.tjes.jus.br/", alerta: null }, { name: "PJe TJES", url: "https://pje.tjes.jus.br/", alerta: null }, { name: "TRT17", url: "https://pje.trt17.jus.br/", alerta: null }, { name: "TRE-ES", url: "https://www.tre-es.jus.br/", alerta: null }]
+      "Espírito Santo": [{ name: "TJES", url: "https://www.tjes.jus.br/", alerta: null }, { name: "PJe TJES", url: "https://pje.tjes.jus.br/pje/login.seam", alerta: null }, { name: "TRT17", url: "https://pje.trt17.jus.br/", alerta: null }, { name: "TRE-ES", url: "https://www.tre-es.jus.br/", alerta: null }]
     },
     Sul: {
       Paraná: [{ name: "TJPR", url: "https://www.tjpr.jus.br/", alerta: null }, { name: "E-proc TJPR", url: "https://eproc1g.tjpr.jus.br/", alerta: null }, { name: "TRT9", url: "https://pje.trt9.jus.br/", alerta: null }, { name: "TRE-PR", url: "https://www.tre-pr.jus.br/", alerta: null }],
