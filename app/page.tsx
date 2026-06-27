@@ -4,16 +4,18 @@ import ServiceGrid from "../components/ServiceGrid";
 import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
 import DiagnosticHub from "../components/features/DiagnosticHub";
-import { kv } from '@vercel/kv'; // <-- 1. IMPORTAMOS O BANCO DE DADOS AQUI
+import { kv } from '@vercel/kv'; 
 
-import dynamic from 'next/dynamic'; 
+// 1. MUDAMOS O NOME AQUI PARA 'nextDynamic' PARA EVITAR CONFLITO
+import nextDynamic from 'next/dynamic'; 
 import { Loader2 } from 'lucide-react'; 
 
-// 2. FORÇAMOS A PÁGINA A SEMPRE PEGAR O DADO MAIS NOVO (SEM CACHE)
+// 2. A REGRA DE CACHE CONTINUA INTACTA
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const DynamicPdfToolHub = dynamic(() => import('../components/features/PdfToolHub'), {
+// 3. USAMOS O NOVO NOME 'nextDynamic' AQUI
+const DynamicPdfToolHub = nextDynamic(() => import('../components/features/PdfToolHub'), {
   ssr: false, 
   loading: () => (
     <div className="flex justify-center items-center h-40 text-white">
@@ -22,9 +24,7 @@ const DynamicPdfToolHub = dynamic(() => import('../components/features/PdfToolHu
   ),
 });
 
-// 3. TRANSFORMAMOS A FUNÇÃO EM 'ASYNC' PARA LER O BANCO
 export default async function Home() {
-  // 4. PUXAMOS OS STATUS REAIS DOS ROBÔS
   const statuses = await kv.get('court_statuses') || {};
 
   return (
@@ -38,7 +38,6 @@ export default async function Home() {
           <h2 className="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
             <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
           </h2>
-          {/* 5. INJETAMOS OS STATUS DIRETAMENTE NO CARROSSEL */}
           <PortalCarousel statuses={statuses as Record<string, string>} />
         </section>
 
