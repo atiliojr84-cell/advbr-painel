@@ -48,7 +48,7 @@ export default function JurisdictionHub() {
             Centralizamos o acesso aos principais sistemas de peticionamento do país. Realizamos o monitoramento proativo de cada portal, identificando instabilidades em tempo real.
           </p>
         </div>
-        
+
         <div className="flex flex-wrap justify-center gap-4">
           {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
             <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 rounded-full text-slate-300 capitalize ${btnStyle}`}>
@@ -58,9 +58,10 @@ export default function JurisdictionHub() {
         </div>
       </section>
 
-      {isOpen && (
-        <AnimatePresence>
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
+            key="modal-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -68,26 +69,28 @@ export default function JurisdictionHub() {
             className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              key="modal-content"
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
+              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
             >
-              <div className="flex items-center gap-3 mb-6">
+              {/* CABEÇALHO FIXO */}
+              <div className="flex items-center gap-3 mb-6 shrink-0">
                 {view === 'tribunal' && activeRegiao !== 'federais' && (
                   <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
                     <ArrowLeft size={20} />
                   </button>
                 )}
-                <span className="uppercase text-sm tracking-widest text-white">
+                <span className="uppercase text-sm tracking-widest text-white font-semibold">
                   {activeRegiao === 'federais' ? 'TRIBUNAIS FEDERAIS' : (view === 'estado' ? activeRegiao : selectedEstado)}
                 </span>
-                <button onClick={() => setIsOpen(false)} className="ml-auto text-slate-500 hover:text-white">Fechar</button>
+                <button onClick={() => setIsOpen(false)} className="ml-auto text-slate-500 hover:text-white font-medium">Fechar</button>
               </div>
 
-              <div className="overflow-hidden">
+              {/* ÁREA DE SCROLL COM EFEITO GELEIA */}
+              <div className="overflow-y-auto overscroll-contain max-h-[60vh] pr-2 -mr-2 custom-scrollbar scroll-smooth">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={view + activeRegiao + selectedEstado}
@@ -97,7 +100,7 @@ export default function JurisdictionHub() {
                     transition={{ duration: 0.2 }}
                   >
                     {view === 'estado' ? (
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-2 gap-3 pb-4">
                         {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
                           <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className={`p-4 text-white font-medium text-sm text-left ${btnStyle}`}>
                             {e}
@@ -105,11 +108,11 @@ export default function JurisdictionHub() {
                         ))}
                       </div>
                     ) : (
-                      <div className="space-y-3">
+                      <div className="space-y-3 pb-4">
                         {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
                           <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${btnStyle}`}>
                             <span className="text-white text-sm font-medium">{t.name}</span>
-                            <div className={`w-2.5 h-2.5 rounded-full ${getStatusColor(t.alerta)}`} />
+                            <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${getStatusColor(t.alerta)}`} />
                           </button>
                         ))}
                       </div>
@@ -119,8 +122,8 @@ export default function JurisdictionHub() {
               </div>
             </motion.div>
           </motion.div>
-        </AnimatePresence>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 }
