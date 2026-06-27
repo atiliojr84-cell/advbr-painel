@@ -28,7 +28,7 @@ export async function GET() {
       const timeoutId = setTimeout(() => controller.abort(), 45000); 
       const start = Date.now();
 
-      const rebeldes = ["TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
+      const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
       const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
