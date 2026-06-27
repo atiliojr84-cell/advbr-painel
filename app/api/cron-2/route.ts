@@ -20,22 +20,22 @@ export async function GET() {
     }
   }
 
+  // Robô 2 pega do item 40 ao 80
   const mySlice = allTribunals.slice(40, 80);
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 55000); 
+      const timeoutId = setTimeout(() => controller.abort(), 45000); 
       const start = Date.now();
 
-      // PJe TJBA adicionado na lista VIP
-      const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "PJe TJBA"];
+      const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
       const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
       if (rebeldes.includes(trib.name)) {
-        targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&country_code=br&url=${encodeURIComponent(trib.url)}`;
+        targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&url=${encodeURIComponent(trib.url)}`;
       }
 
       const response = await fetch(targetUrl, { 
@@ -57,7 +57,9 @@ export async function GET() {
       const time = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[trib.name] = time > 5000 ? 'instavel' : 'online';
+        // NOVA REGRA DE LATÊNCIA: 15s para rebeldes, 5s para normais
+        const tempoLimite = rebeldes.includes(trib.name) ? 15000 : 5000;
+        statuses[trib.name] = time > tempoLimite ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
