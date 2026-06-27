@@ -38,16 +38,18 @@ export async function GET() {
           'Connection': 'close',
           'Cache-Control': 'no-cache'
         },
+        redirect: 'manual', // TÁTICA NOVA: Não entra no loop infinito do PJe Nacional
         signal: controller.signal,
         cache: 'no-store' 
       });
       clearTimeout(timeoutId);
 
-      await response.arrayBuffer(); 
+      await response.arrayBuffer().catch(() => {}); 
 
       const time = Date.now() - start;
 
-      if (response.ok) {
+      // Se deu 200 (OK) ou 30x (Redirecionamento), o site está online!
+      if (response.ok || (response.status >= 300 && response.status < 400)) {
         statuses[trib.name] = time > 5000 ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
@@ -55,8 +57,6 @@ export async function GET() {
       }
     } catch (error: any) {
       statuses[trib.name] = 'offline';
-
-      // O RAIO-X: Captura o código exato do erro de rede
       let cause = 'Desconhecida';
       if (error.cause) {
         cause = error.cause.code || error.cause.message || JSON.stringify(error.cause);
