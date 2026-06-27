@@ -10,7 +10,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
-  let debugInfo: Record<string, string> = {}; // Nosso espião
+  let debugInfo: Record<string, string> = {}; 
 
   const testUrl = async (name: string, url: string) => {
     try {
@@ -25,7 +25,7 @@ export async function GET() {
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
           'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
           'Accept-Encoding': 'gzip, deflate, br',
-          'Connection': 'keep-alive'
+          'Connection': 'close' // Tática nova: fecha a porta imediatamente para não acionar o firewall
         },
         signal: controller.signal,
         cache: 'no-store' 
@@ -38,14 +38,12 @@ export async function GET() {
         statuses[name] = time > 4000 ? 'instavel' : 'online';
       } else {
         statuses[name] = 'offline';
-        // Se falhar e tiver "PJe" no nome, o espião anota o erro do servidor
         if (name.toLowerCase().includes('pje')) {
           debugInfo[name] = `Erro HTTP: ${response.status} - ${response.statusText}`;
         }
       }
     } catch (error: any) {
       statuses[name] = 'offline';
-      // Se falhar por lentidão/bloqueio, o espião anota o motivo
       if (name.toLowerCase().includes('pje')) {
         debugInfo[name] = `Falha: ${error.message || error.name}`;
       }
@@ -67,15 +65,16 @@ export async function GET() {
     }
   }
 
-  const batchSize = 10;
+  // Lotes de 5 para passar totalmente despercebido
+  const batchSize = 5;
   for (let i = 0; i < tasks.length; i += batchSize) {
     const batch = tasks.slice(i, i + batchSize);
     await Promise.allSettled(batch.map(task => task()));
+    await new Promise(resolve => setTimeout(resolve, 200)); // Pausa rápida
   }
 
   await kv.set('court_statuses', statuses);
 
-  // Agora ele devolve o sucesso E o relatório do espião
   return NextResponse.json({ 
     success: true, 
     total: Object.keys(statuses).length,
