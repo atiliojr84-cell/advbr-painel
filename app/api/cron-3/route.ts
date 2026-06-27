@@ -20,16 +20,15 @@ export async function GET() {
     }
   }
 
+  // Robô 3 pega do item 80 até o final da lista
   const mySlice = allTribunals.slice(80);
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      // Tempo aumentado para 55 segundos
-      const timeoutId = setTimeout(() => controller.abort(), 55000); 
+      const timeoutId = setTimeout(() => controller.abort(), 45000); 
       const start = Date.now();
 
-      // Lista padronizada com os outros robôs
       const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
       const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
@@ -58,7 +57,9 @@ export async function GET() {
       const time = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[trib.name] = time > 5000 ? 'instavel' : 'online';
+        // NOVA REGRA DE LATÊNCIA: 15s para rebeldes, 5s para normais
+        const tempoLimite = rebeldes.includes(trib.name) ? 15000 : 5000;
+        statuses[trib.name] = time > tempoLimite ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
@@ -78,5 +79,5 @@ export async function GET() {
 
   await kv.set('court_statuses', statuses);
 
-  return NextResponse.json({ success: true, robo: "Robo 3 (80 ao fim)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 3 (80 em diante)", debug: debugInfo });
 }
