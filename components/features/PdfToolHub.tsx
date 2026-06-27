@@ -1,11 +1,11 @@
 // PdfToolHub.tsx
 "use client";
 // @ts-nocheck
-import { useState, useRef, useEffect } from "react"; // Adicionado useEffect
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileUp, Split, FileText, LockKeyhole, Minimize2 } from "lucide-react";
-// Renomeei as funções no PdfProcessor para evitar conflitos e melhorar a clareza
-import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord } from "./PdfProcessors"; // Corrigido o nome do arquivo para PdfProcessors
+// CORREÇÃO: O nome do arquivo é PdfProcessor.ts (sem 's' no final)
+import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord } from "./PdfProcessor";
 
 export default function PdfToolHub() {
   const [selectedTool, setSelectedTool] = useState<any>(null);
