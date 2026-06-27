@@ -31,8 +31,8 @@ export default function PdfToolHub() {
   ];
 
   const download = (data: Uint8Array, filename: string, type: string) => {
-    // Cria uma nova ArrayBuffer a partir do Uint8Array para compatibilidade com Blob
-    const blob = new Blob([data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)], { type: type });
+    // CORREÇÃO AQUI: Passar o Uint8Array diretamente para o Blob
+    const blob = new Blob([data], { type: type }); // <--- ALTERADO
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -50,95 +50,7 @@ export default function PdfToolHub() {
     const isAllPdf = files.every(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
 
     if (!isAllPdf) {
-      alert("Por favor, selecione apenas arquivos PDF.");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      return;
-    }
-
-    const baseName = files[0].name.replace(/\.[^/.]+$/, "");
-    setIsLoading(true);
-
-    try {
-      if (selectedTool.id === "unir") {
-        const res = await unirPDFs(files);
-        download(res, `${baseName}-unido.pdf`, "application/pdf");
-      }
-      else if (selectedTool.id === "dividir") {
-        let pages: Uint8Array[] = [];
-        if (divisionType === 'mb') {
-          const limiteMB = Number(inputVal) || 3;
-          pages = await dividirPDF(files[0], limiteMB); // Usando a função existente
-          const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
-          if (excedeu) {
-            alert("Aviso: Algumas partes ainda excederam o limite de MB escolhido. Isso pode ocorrer com páginas muito densas ou imagens de alta resolução. Considere dividir por número de páginas ou usar um limite maior.");
-          }
-        } else { // divisionType === 'pages'
-          const limitePaginas = Number(inputVal) || 10;
-          pages = await dividirPDFPorPaginas(files[0], limitePaginas);
-        }
-
-        pages.forEach((p, i) => {
-          const paddedIndex = (i + 1).toString().padStart(2, '0');
-          download(p, `${baseName}-dividido-${paddedIndex}.pdf`, "application/pdf");
-        });
-      }
-      else if (selectedTool.id === "converter") {
-        const res = await converterParaWord(files[0]);
-        download(res, `${baseName}.docx`, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-      }
-    } catch (error: any) {
-      console.error("Erro ao processar PDF:", error);
-      alert(`Ocorreu um erro: ${error.message || "Erro desconhecido"}`);
-    } finally {
-      setIsLoading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      setSelectedTool(null); // Fecha o modal após o processamento
-    }
-  };
-
-  return (
-    <section className="relative z-10 py-16 px-4 md:px-8 bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center">
-      <div className="flex justify-center mb-8">
-        <div className="flex items-center gap-4">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M14 2V8H20" stroke="#EF4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white">Otimizador Inteligente de PDF</h2>
-        </div>
-      </div>
-
-      <p className="text-slate-400 text-center max-w-2xl mx-auto">
-        Ferramentas essenciais para advogados: una, divida e converta PDFs com facilidade, otimizando seu tempo e garantindo a conformidade com os requisitos dos tribunais.
-      </p>
-
-      <div className="flex justify-center flex-wrap gap-6 mb-12"> {/* Centraliza os botões */}
-        {tools.map((tool) => (
-          <button
-            key={tool.id}
-            onClick={() => setSelectedTool(tool)}
-            className="w-40 h-40 bg-slate-800 hover:bg-slate-700 rounded-2xl shadow-xl flex flex-col items-center justify-center text-white text-center p-4 transition-all duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 border border-slate-700"
-          >
-            <tool.icon size={36} className="mb-3 text-blue-400" />
-            <span className="font-semibold text-lg">{tool.title}</span>
-            <span className="text-sm text-slate-400 mt-1">{tool.desc}</span>
-          </button>
-        ))}
-      </div>
-
-      {selectedTool && (
-        <AnimatePresence>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTool(null)} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
-            >
-              <div className="flex items-center justify-between mb-6 shrink-0">
-                <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
+      alert("Por favor, selecione apenas arqu..       <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
                 <button onClick={() => setSelectedTool(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
