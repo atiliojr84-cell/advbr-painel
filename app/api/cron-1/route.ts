@@ -56,7 +56,9 @@ export async function GET() {
       const time = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[trib.name] = time > 5000 ? 'instavel' : 'online';
+        // NOVA REGRA DE LATÊNCIA: 15s para rebeldes, 5s para normais
+        const tempoLimite = rebeldes.includes(trib.name) ? 15000 : 5000;
+        statuses[trib.name] = time > tempoLimite ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
