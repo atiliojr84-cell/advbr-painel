@@ -16,7 +16,6 @@ export async function GET() {
       const timeoutId = setTimeout(() => controller.abort(), 6000); 
       const start = Date.now();
 
-      // Aqui está a mágica: método GET e a "máscara" de navegador
       const response = await fetch(url, { 
         method: 'GET', 
         headers: {
@@ -41,22 +40,29 @@ export async function GET() {
     }
   };
 
-  const promises = [];
+  // Prepara a lista de tarefas (sem executar ainda)
+  const tasks: (() => Promise<void>)[] = [];
 
   for (const trib of jurisdictions.federais) {
-    promises.push(testUrl(trib.name, trib.url));
+    tasks.push(() => testUrl(trib.name, trib.url));
   }
 
   for (const regiao in jurisdictions.regioes) {
     const estados = (jurisdictions.regioes as any)[regiao];
     for (const estado in estados) {
       for (const trib of estados[estado]) {
-        promises.push(testUrl(trib.name, trib.url));
+        tasks.push(() => testUrl(trib.name, trib.url));
       }
     }
   }
 
-  await Promise.allSettled(promises);
+  // MÁGICA AQUI: Executa em lotes de 15 para não ativar o Anti-DDoS do governo
+  const batchSize = 15;
+  for (let i = 0; i < tasks.length; i += batchSize) {
+    const batch = tasks.slice(i, i + batchSize);
+    await Promise.allSettled(batch.map(task => task()));
+  }
+
   await kv.set('court_statuses', statuses);
 
   return NextResponse.json({ success: true, total: Object.keys(statuses).length });
