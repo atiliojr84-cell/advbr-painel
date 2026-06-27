@@ -4,7 +4,6 @@ import { jurisdictions } from '../../../data/jurisdictions';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-// Usando o poder do Plano Pro: 5 minutos de limite!
 export const maxDuration = 300; 
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -26,11 +25,9 @@ export async function GET() {
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      // Aumentamos a paciência para 15 segundos!
       const timeoutId = setTimeout(() => controller.abort(), 15000); 
       const start = Date.now();
 
-      // Truque Anti-Firewall: Adiciona um número aleatório no final do link
       const bypassUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
       const response = await fetch(bypassUrl, { 
@@ -58,10 +55,15 @@ export async function GET() {
       }
     } catch (error: any) {
       statuses[trib.name] = 'offline';
-      debugInfo[trib.name] = `Falha: ${error.message}`;
+
+      // O RAIO-X: Captura o código exato do erro de rede
+      let cause = 'Desconhecida';
+      if (error.cause) {
+        cause = error.cause.code || error.cause.message || JSON.stringify(error.cause);
+      }
+      debugInfo[trib.name] = `Falha: ${error.message} | Causa: ${cause}`;
     }
 
-    // Pausa de meio segundo para ser ainda mais discreto
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
