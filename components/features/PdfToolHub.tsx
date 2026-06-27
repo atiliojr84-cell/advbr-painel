@@ -4,10 +4,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileUp, Split, FileText } from "lucide-react";
-// REMOVER ESTA LINHA: import * as pdfjsLib from 'pdfjs-dist'; // <--- ESTA LINHA DEVE SER REMOVIDA
 
 // Importações das funções do PdfProcessor.ts
-// Certifique-se de que todas as funções necessárias estão aqui, incluindo dividirPDFPorPaginas
 import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord, dividirPDFPorPaginas } from "./PdfProcessor";
 
 export default function PdfToolHub() {
@@ -17,13 +15,6 @@ export default function PdfToolHub() {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // REMOVER ESTE useEffect:
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-  //   }
-  // }, []);
-
   const tools = [
     { id: "unir", title: "Unir PDFs", desc: "Organize seu processo", icon: FileUp, help: "Transforme várias peças em um único arquivo. Exemplo: junte sua Petição Inicial, Procuração, Declaração de Hipossuficiência e Custas em um só PDF. Isso facilita a leitura do magistrado e evita erros de protocolo por falta de documentos." },
     { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divida arquivos grandes em partes menores, respeitando os limites dos sistemas de processo eletrônico. Escolha entre dividir por tamanho (MB) ou por número de páginas." }, // Texto de ajuda atualizado
@@ -31,8 +22,7 @@ export default function PdfToolHub() {
   ];
 
   const download = (data: Uint8Array, filename: string, type: string) => {
-    // CORREÇÃO AQUI: Passar o Uint8Array diretamente para o Blob
-    const blob = new Blob([data], { type: type }); // <--- ALTERADO
+    const blob = new Blob([data], { type: type }); // Corrigido para passar Uint8Array diretamente
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -50,7 +40,91 @@ export default function PdfToolHub() {
     const isAllPdf = files.every(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
 
     if (!isAllPdf) {
-      alert("Por favor, selecione apenas arqu..       <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
+      // CORREÇÃO AQUI: Garante que a string do alert esteja completa e sem caracteres estranhos
+      alert("Por favor, selecione apenas arquivos PDF."); 
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    const baseName = files[0].name.replace(/\.[^/.]+$/, "");
+    setIsLoading(true);
+
+    try {
+      if (selectedTool.id === "unir") {
+        const res = await unirPDFs(files);
+        download(res, `${baseName}-unido.pdf`, "application/pdf");
+      }
+      else if (selectedTool.id === "dividir") {
+        let pages: Uint8Array[] = [];
+        if (divisionType === 'mb') {
+          const limiteMB = Number(inputVal) || 3;
+          pages = await dividirPDF(files[0], limiteMB); // Usando a função existente
+          const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
+          if (excedeu) {
+            alert("Atenção: Um ou mais arquivos resultantes excederam o limite de MB definido. Isso pode ocorrer com PDFs muito densos ou imagens de alta resolução. Considere dividir por número de páginas ou usar um limite maior.");
+          }
+        } else { // divisionType === 'pages'
+          const limitePaginas = Number(inputVal) || 50;
+          pages = await dividirPDFPorPaginas(files[0], limitePaginas);
+        }
+
+        if (pages.length > 0) {
+          pages.forEach((p, i) => {
+            download(p, `${baseName}-parte-${i + 1}.pdf`, "application/pdf");
+          });
+        } else {
+          alert("Nenhuma parte foi gerada. Verifique o arquivo e os limites.");
+        }
+      }
+      else if (selectedTool.id === "converter") {
+        const res = await converterParaWord(files[0]);
+        download(res, `${baseName}.docx`, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+      }
+      // Adicione aqui outras ferramentas conforme necessário
+    } catch (error) {
+      console.error("Erro ao processar PDF:", error);
+      alert("Ocorreu um erro ao processar o arquivo. Por favor, tente novamente.");
+    } finally {
+      setIsLoading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      setSelectedTool(null); // Fecha o modal após o processamento
+    }
+  };
+
+  return (
+    <section className="w-full py-12 bg-slate-950 text-white flex flex-col items-center justify-center min-h-[60vh] px-4">
+      <h2 className="text-4xl font-extrabold mb-8 text-center">Ferramentas PDF para Advogados</h2>
+      <p className="text-lg text-slate-400 mb-12 text-center max-w-2xl">
+        Simplifique sua rotina jurídica com nossas ferramentas de PDF. Unir, dividir e converter documentos nunca foi tão fácil.
+      </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full">
+        {tools.map((tool) => (
+          <button
+            key={tool.id}
+            onClick={() => setSelectedTool(tool)}
+            className="flex flex-col items-center p-6 bg-slate-900 rounded-2xl border border-slate-800 hover:border-blue-600 hover:shadow-lg transition-all duration-300"
+          >
+            <tool.icon className="w-10 h-10 text-blue-500 mb-3" />
+            <span className="text-xl font-bold text-white">{tool.title}</span>
+            <span className="text-sm text-slate-400 mt-1">{tool.desc}</span>
+          </button>
+        ))}
+      </div>
+
+      {selectedTool && (
+        <AnimatePresence>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTool(null)} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
+            >
+              <div className="flex items-center justify-between mb-6 shrink-0">
+                <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
                 <button onClick={() => setSelectedTool(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
