@@ -25,10 +25,12 @@ export async function GET() {
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 45000); 
+      // Tempo aumentado para 55 segundos
+      const timeoutId = setTimeout(() => controller.abort(), 55000); 
       const start = Date.now();
 
-      const rebeldes = ["TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
+      // Lista padronizada com os outros robôs
+      const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
       const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
