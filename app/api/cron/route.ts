@@ -10,11 +10,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
+  let debugInfo: Record<string, string> = {}; // Nosso espião
 
   const testUrl = async (name: string, url: string) => {
     try {
       const controller = new AbortController();
-      // Aumentamos a paciência para 8 segundos (PJe costuma ser pesado)
       const timeoutId = setTimeout(() => controller.abort(), 8000); 
       const start = Date.now();
 
@@ -24,7 +24,7 @@ export async function GET() {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
           'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-          'Accept-Encoding': 'gzip, deflate, br', // Truque novo: aceita compressão como um humano
+          'Accept-Encoding': 'gzip, deflate, br',
           'Connection': 'keep-alive'
         },
         signal: controller.signal,
@@ -38,9 +38,17 @@ export async function GET() {
         statuses[name] = time > 4000 ? 'instavel' : 'online';
       } else {
         statuses[name] = 'offline';
+        // Se falhar e tiver "PJe" no nome, o espião anota o erro do servidor
+        if (name.toLowerCase().includes('pje')) {
+          debugInfo[name] = `Erro HTTP: ${response.status} - ${response.statusText}`;
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       statuses[name] = 'offline';
+      // Se falhar por lentidão/bloqueio, o espião anota o motivo
+      if (name.toLowerCase().includes('pje')) {
+        debugInfo[name] = `Falha: ${error.message || error.name}`;
+      }
     }
   };
 
@@ -59,7 +67,6 @@ export async function GET() {
     }
   }
 
-  // Lotes de 10: Discreto o suficiente para o governo, rápido o suficiente para a Vercel
   const batchSize = 10;
   for (let i = 0; i < tasks.length; i += batchSize) {
     const batch = tasks.slice(i, i + batchSize);
@@ -68,5 +75,10 @@ export async function GET() {
 
   await kv.set('court_statuses', statuses);
 
-  return NextResponse.json({ success: true, total: Object.keys(statuses).length });
+  // Agora ele devolve o sucesso E o relatório do espião
+  return NextResponse.json({ 
+    success: true, 
+    total: Object.keys(statuses).length,
+    debug: debugInfo
+  });
 }
