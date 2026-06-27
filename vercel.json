@@ -1,6 +1,8 @@
 {
   "crons": [
-    { "path": "/api/monitor?lote=1", "schedule": "*/5 * * * *" },
-    { "path": "/api/monitor?lote=2", "schedule": "*/5 * * * *" }
+    {
+      "path": "/api/cron",
+      "schedule": "*/10 * * * *"
+    }
   ]
 }
