@@ -36,7 +36,7 @@ export const jurisdictions = {
     CentroOeste: {
       "Distrito Federal": [{ name: "TJDFT", url: "https://www.tjdft.jus.br/", alerta: null }, { name: "PJe TJDFT", url: "https://pje.tjdft.jus.br/pje/login.seam", alerta: null }, { name: "TRT10", url: "https://pje.trt10.jus.br/", alerta: null }, { name: "TRE-DF", url: "https://www.tre-df.jus.br/", alerta: null }],
       Goiás: [{ name: "TJGO", url: "https://www.tjgo.jus.br/", alerta: null }, { name: "Projudi TJGO", url: "https://projudi.tjgo.jus.br/", alerta: null }, { name: "TRT18", url: "https://pje.trt18.jus.br/", alerta: null }, { name: "TRE-GO", url: "https://www.tre-go.jus.br/", alerta: null }],
-      "Mato Grosso": [{ name: "TJMT", url: "https://www.tjmt.jus.br/", alerta: null }, { name: "e-SAJ MT", url: "https://esaj.tjmt.jus.br/", alerta: null }, { name: "TRT23", url: "https://pje.trt23.jus.br/", alerta: null }, { name: "TRE-MT", url: "https://www.tre-mt.jus.br/", alerta: null }],
+      "Mato Grosso": [{ name: "TJMT", url: "https://www.tjmt.jus.br/", alerta: null }, { name: "TRT23", url: "https://pje.trt23.jus.br/", alerta: null }, { name: "TRE-MT", url: "https://www.tre-mt.jus.br/", alerta: null }],
       "Mato Grosso do Sul": [{ name: "TJMS", url: "https://www.tjms.jus.br/", alerta: null }, { name: "e-SAJ MS", url: "https://esaj.tjms.jus.br/", alerta: null }, { name: "TRT24", url: "https://pje.trt24.jus.br/", alerta: null }, { name: "TRE-MS", url: "https://www.tre-ms.jus.br/", alerta: null }]
     },
     Sudeste: {
