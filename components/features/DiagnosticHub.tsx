@@ -93,7 +93,7 @@ export default function DiagnosticHub() {
               onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col"
             >
-              {/* Cabeçalho do Modal idêntico ao do PDF */}
+              {/* Cabeçalho do Modal */}
               <div className="flex items-center justify-between mb-6 shrink-0">
                 <h3 className="text-white text-xl font-bold">
                   {activeModal === 'token' ? 'Diagnóstico de Token' : 'Diagnóstico PJe Office Pro'}
@@ -110,11 +110,12 @@ export default function DiagnosticHub() {
                       Doutor(a), o teste de comunicação do seu Certificado Digital é realizado em um ambiente externo seguro fornecido pela Certisign.
                     </p>
 
+                    {/* BOTÃO AZUL PADRONIZADO */}
                     <a 
                       href="https://suporte.certisign.com.br/duvidas-suporte/certificado-digital/teste-certificado/" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="w-full py-4 rounded-xl shadow-lg shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-colors mb-6 block"
+                      className="w-full py-4 rounded-xl shadow-lg shrink-0 bg-blue-600 hover:bg-blue-700 text-white font-bold transition-colors mb-6 block"
                     >
                       Iniciar Teste (Nova Aba)
                     </a>
