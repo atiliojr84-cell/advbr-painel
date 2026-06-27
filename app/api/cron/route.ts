@@ -12,7 +12,8 @@ export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let debugInfo: Record<string, string> = {}; 
 
-  const testUrl = async (name: string, url: string) => {
+  // Adicionamos o parâmetro "attempt" para contar as tentativas
+  const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 8000); 
@@ -25,7 +26,7 @@ export async function GET() {
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
           'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
           'Accept-Encoding': 'gzip, deflate, br',
-          'Connection': 'close' // Tática nova: fecha a porta imediatamente para não acionar o firewall
+          'Connection': 'close'
         },
         signal: controller.signal,
         cache: 'no-store' 
@@ -43,9 +44,15 @@ export async function GET() {
         }
       }
     } catch (error: any) {
+      // SISTEMA DE TEIMOSIA: Se a conexão cair na 1ª tentativa, tenta de novo!
+      if (attempt === 1 && error.message === 'fetch failed') {
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Espera 1 segundo
+        return testUrl(name, url, 2); // Tenta a 2ª vez
+      }
+
       statuses[name] = 'offline';
       if (name.toLowerCase().includes('pje')) {
-        debugInfo[name] = `Falha: ${error.message || error.name}`;
+        debugInfo[name] = `Falha (Tentativa ${attempt}): ${error.message || error.name}`;
       }
     }
   };
@@ -65,12 +72,11 @@ export async function GET() {
     }
   }
 
-  // Lotes de 5 para passar totalmente despercebido
   const batchSize = 5;
   for (let i = 0; i < tasks.length; i += batchSize) {
     const batch = tasks.slice(i, i + batchSize);
     await Promise.allSettled(batch.map(task => task()));
-    await new Promise(resolve => setTimeout(resolve, 200)); // Pausa rápida
+    await new Promise(resolve => setTimeout(resolve, 200)); 
   }
 
   await kv.set('court_statuses', statuses);
