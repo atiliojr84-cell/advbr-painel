@@ -32,11 +32,11 @@ export default function JurisdictionHub() {
     setIsOpen(true);
   };
 
-  // Estilo dos botões da página principal
+  // Estilo dos botões da página principal (mantido igual aos cards de fora)
   const mainBtnStyle = "bg-slate-800 hover:bg-slate-700 rounded-xl shadow-lg transition-colors duration-200";
 
-  // Estilo dos botões de dentro da janela (Estados e Tribunais)
-  const modalBtnStyle = "bg-slate-800 hover:bg-slate-700 border border-slate-700/50 rounded-xl transition-colors duration-200";
+  // NOVO ESTILO: Botões internos usando bg-slate-950 (Azul bem escuro) para dar o mesmo contraste do PDF
+  const modalBtnStyle = "bg-slate-950 hover:bg-slate-800 border border-slate-800 rounded-xl transition-colors duration-200";
 
   return (
     <>
@@ -78,9 +78,9 @@ export default function JurisdictionHub() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh]"
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
             >
-              {/* CABEÇALHO PADRONIZADO (Igual PDF e Testes) */}
+              {/* CABEÇALHO */}
               <div className="flex items-center justify-between mb-6 shrink-0">
                 <div className="flex items-center gap-3">
                   {view === 'tribunal' && activeRegiao !== 'federais' && (
@@ -95,7 +95,7 @@ export default function JurisdictionHub() {
                 <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
-              {/* ÁREA DE SCROLL COM EFEITO GELEIA */}
+              {/* ÁREA DE SCROLL */}
               <div className="overflow-y-auto overscroll-contain max-h-[60vh] pr-2 -mr-2 custom-scrollbar scroll-smooth">
                 <AnimatePresence mode="wait">
                   <motion.div
