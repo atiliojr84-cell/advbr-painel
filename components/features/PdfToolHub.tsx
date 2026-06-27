@@ -1,244 +1,224 @@
-// PdfToolHub.tsx
-"use client";
+// PdfProcessor.ts
 // @ts-nocheck
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FileUp, Split, FileText } from "lucide-react";
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 // REMOVER ESTA LINHA: import * as pdfjsLib from 'pdfjs-dist';
+import JSZip from 'jszip';
 
-// Importações das funções do PdfProcessor.ts
-import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord, dividirPDFPorPaginas } from "./PdfProcessor";
+// REMOVER ESTA LINHA:
+// pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
-export default function PdfToolHub() {
-  const [selectedTool, setSelectedTool] = useState<any>(null);
-  const [inputVal, setInputVal] = useState(""); // Valor para MB ou Páginas
-  const [divisionType, setDivisionType] = useState<'mb' | 'pages'>('mb'); // Novo estado para tipo de divisão
-  const [isLoading, setIsLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+export async function unirPDFs(files: File[]): Promise<Uint8Array> {
+  const mergedPdf = await PDFDocument.create();
+  for (const file of files) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await PDFDocument.load(arrayBuffer);
+    const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    copiedPages.forEach((page) => mergedPdf.addPage(page));
+  }
+  return await mergedPdf.save();
+}
 
-  // REMOVER ESTE useEffect:
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-  //   }
-  // }, []);
+export async function dividirPDF(file: File, maxMB: number): Promise<Uint8Array[]> {
+  const arrayBuffer = await file.arrayBuffer();
+  const originalPdf = await PDFDocument.load(arrayBuffer);
+  const totalPages = originalPdf.getPageCount();
+  const maxBytes = maxMB * 1024 * 1024; // Converte MB para bytes
 
-  const tools = [
-    { id: "unir", title: "Unir PDFs", desc: "Organize seu processo", icon: FileUp, help: "Transforme várias peças em um único arquivo. Exemplo: junte sua Petição Inicial, Procuração, Declaração de Hipossuficiência e Custas em um só PDF. Isso facilita a leitura do magistrado e evita erros de protocolo por falta de documentos." },
-    { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divida arquivos grandes em partes menores, respeitando os limites dos sistemas de processo eletrônico. Escolha entre dividir por tamanho (MB) ou por número de páginas." }, // Texto de ajuda atualizado
-    { id: "converter", title: "PDF p/ Word", desc: "Edição de texto", icon: FileText, help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte o texto do PDF para um documento .docx editável, preservando a estrutura básica de parágrafos e quebras de linha. ATENÇÃO: Esta conversão extrai apenas o texto, sem formatação, imagens ou tabelas. Você economiza horas digitando e pode aproveitar o conteúdo direto no seu editor de texto." },
-  ];
+  const chunks: Uint8Array[] = [];
+  let currentChunkPdf = await PDFDocument.create();
+  let currentPageIndexInChunk = 0;
 
-  const handleProcess = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
+  for (let i = 0; i < totalPages; i++) {
+    const [page] = await currentChunkPdf.copyPages(originalPdf, [i]);
+    currentChunkPdf.addPage(page);
+    currentPageIndexInChunk++;
 
-    const files = Array.from(e.target.files);
-    const isAllPdf = files.every(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
-
-    if (!isAllPdf) {
-      alert("Por favor, selecione apenas arquivos PDF.");
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      return;
-    }
-
-    const baseName = files[0].name.replace(/\.[^/.]+$/, "");
-    setIsLoading(true);
-
+    let tempBytes: Uint8Array;
     try {
-      if (selectedTool.id === "unir") {
-        const res = await unirPDFs(files);
-        download(res, `${baseName}-unido.pdf`, "application/pdf");
+      tempBytes = await currentChunkPdf.save();
+    } catch (e) {
+      console.error("Erro ao salvar PDF temporário para verificação de tamanho:", e);
+      if (currentPageIndexInChunk > 1) {
+        const previousPdf = await PDFDocument.create();
+        const pagesToCopy = await previousPdf.copyPages(currentChunkPdf, Array.from({ length: currentPageIndexInChunk - 1 }, (_, k) => k));
+        pagesToCopy.forEach(p => previousPdf.addPage(p));
+        chunks.push(await previousPdf.save());
       }
-      else if (selectedTool.id === "dividir") {
-        let pages: Uint8Array[] = [];
-        if (divisionType === 'mb') {
-          const limiteMB = Number(inputVal) || 3;
-          pages = await dividirPDF(files[0], limiteMB); // Usando a função existente
-          const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
-          if (excedeu) {
-            alert("Aviso: Algumas partes ainda excederam o limite de MB escolhido. Isso pode ocorrer com páginas muito densas ou imagens de alta resolução. Considere dividir por número de páginas ou usar um limite maior.");
-          }
-        } else { // divisionType === 'pages'
-          const limitePaginas = Number(inputVal) || 10;
-          pages = await dividirPDFPorPaginas(files[0], limitePaginas);
-        }
-
-        pages.forEach((p, i) => {
-          const paddedIndex = (i + 1).toString().padStart(2, '0');
-          download(p, `${baseName}-dividido-${paddedIndex}.pdf`, "application/pdf");
-        });
-      }
-      else if (selectedTool.id === "converter") {
-        const res = await converterParaWord(files[0]);
-        download(res, `${baseName}-convertido.docx`, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-      }
-    } catch (err: any) {
-      console.error(err);
-      alert(`Erro ao processar arquivo: ${err.message || "Verifique se o arquivo não está corrompido ou se a senha está correta."}`);
-    } finally {
-      setIsLoading(false);
-      setSelectedTool(null);
-      setInputVal("");
-      setDivisionType('mb'); // Resetar para o padrão
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      currentChunkPdf = await PDFDocument.create();
+      currentPageIndexInChunk = 0;
+      continue;
     }
-  };
 
-  const download = (data: Uint8Array, filename: string, type: string) => {
-    const blob = new Blob([data], { type: type });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+    if (tempBytes.length > maxBytes && currentPageIndexInChunk > 1) {
+      const previousPdf = await PDFDocument.create();
+      const pagesToCopy = await previousPdf.copyPages(currentChunkPdf, Array.from({ length: currentPageIndexInChunk - 1 }, (_, k) => k));
+      pagesToCopy.forEach(p => previousPdf.addPage(p));
+      chunks.push(await previousPdf.save());
 
-  return (
-    <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl space-y-8">
-      <div className="flex justify-center"> {/* Centraliza o cabeçalho */}
-        <div className="flex items-center gap-4 text-red-500">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="48"
-            height="48"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-file-text"
-          >
-            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
-            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-            <path d="M10 9H8" />
-            <path d="M16 13H8" />
-            <path d="M16 17H8" />
-          </svg>
-          <h2 className="text-3xl font-bold text-white">Otimizador Inteligente de PDF</h2>
-        </div>
-      </div>
+      currentChunkPdf = await PDFDocument.create();
+      const [currentPage] = await currentChunkPdf.copyPages(originalPdf, [i]);
+      currentChunkPdf.addPage(currentPage);
+      currentPageIndexInChunk = 1;
+    } else if (tempBytes.length > maxBytes && currentPageIndexInChunk === 1) {
+      chunks.push(tempBytes);
+      currentChunkPdf = await PDFDocument.create();
+      currentPageIndexInChunk = 0;
+    }
+  }
 
-      <p className="text-slate-400 text-center max-w-2xl mx-auto">
-        Ferramentas essenciais para advogados: una, divida e converta PDFs com facilidade, otimizando seu tempo e garantindo a conformidade com os requisitos dos tribunais.
-      </p>
+  if (currentPageIndexInChunk > 0) {
+    chunks.push(await currentChunkPdf.save());
+  }
 
-      <div className="flex justify-center flex-wrap gap-6 mb-12"> {/* Centraliza os botões */}
-        {tools.map((tool) => (
-          <button
-            key={tool.id}
-            onClick={() => setSelectedTool(tool)}
-            className="w-40 h-40 bg-slate-800 hover:bg-slate-700 rounded-2xl shadow-xl flex flex-col items-center justify-center text-white text-center p-4 transition-all duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-105 border border-slate-700"
-          >
-            <tool.icon size={36} className="mb-3 text-blue-400" />
-            <span className="font-semibold text-lg">{tool.title}</span>
-            <span className="text-sm text-slate-400 mt-1">{tool.desc}</span>
-          </button>
-        ))}
-      </div>
+  return chunks;
+}
 
-      {selectedTool && (
-        <AnimatePresence>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTool(null)} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
-            >
-              <div className="flex items-center justify-between mb-6 shrink-0">
-                <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
-                <button onClick={() => setSelectedTool(null)} className="text-slate-500 hover:text-white">Fechar</button>
-              </div>
+export async function dividirPDFPorPaginas(file: File, maxPagesPerChunk: number): Promise<Uint8Array[]> {
+  // Importação dinâmica de pdfjs-dist aqui
+  const pdfjsLib = await import('pdfjs-dist');
+  // Configuração do workerSrc aqui, garantindo que só ocorre no cliente
+  if (typeof window !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+  }
 
-              <div className="overflow-y-auto pr-2">
-                <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
+  const arrayBuffer = await file.arrayBuffer();
+  const originalPdf = await PDFDocument.load(arrayBuffer); // pdf-lib não precisa de workerSrc
+  const totalPages = originalPdf.getPageCount();
+  const chunks: Uint8Array[] = [];
 
-                {selectedTool.id === "dividir" && (
-                  <>
-                    <h4 className="text-white text-lg font-bold mb-3">Defina o Limite para Divisão</h4>
-                    <div className="flex gap-2 mb-4">
-                      <button
-                        onClick={() => { setDivisionType('mb'); setInputVal(""); }}
-                        className={`px-4 py-2 rounded-lg text-sm font-semibold ${divisionType === 'mb' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
-                      >
-                        Por Tamanho (MB)
-                      </button>
-                      <button
-                        onClick={() => { setDivisionType('pages'); setInputVal(""); }}
-                        className={`px-4 py-2 rounded-lg text-sm font-semibold ${divisionType === 'pages' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
-                      >
-                        Por Páginas
-                      </button>
-                    </div>
+  for (let i = 0; i < totalPages; i += maxPagesPerChunk) {
+    const chunkPdf = await PDFDocument.create();
+    const pagesToCopy = [];
+    for (let j = 0; j < maxPagesPerChunk && (i + j) < totalPages; j++) {
+      pagesToCopy.push(i + j);
+    }
+    const copiedPages = await chunkPdf.copyPages(originalPdf, pagesToCopy);
+    copiedPages.forEach(page => chunkPdf.addPage(page));
+    chunks.push(await chunkPdf.save());
+  }
+  return chunks;
+}
 
-                    {divisionType === 'mb' && (
-                      <>
-                        <input
-                          type="number"
-                          value={inputVal}
-                          onChange={(e) => setInputVal(e.target.value)}
-                          className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-3"
-                          placeholder="Ex: 3 (para 3 MB)"
-                        />
-                        <div className="flex gap-2 mb-4">
-                          {[3, 5, 10].map(mb => (
-                            <button
-                              key={mb}
-                              onClick={() => setInputVal(mb.toString())}
-                              className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600"
-                            >
-                              {mb} MB
-                            </button>
-                          ))}
-                        </div>
-                        <p className="text-slate-400 text-sm mb-4">
-                          Defina o tamanho máximo de cada arquivo PDF resultante em Megabytes. Essencial para sistemas de processo eletrônico com limites de upload.
-                        </p>
-                      </>
-                    )}
 
-                    {divisionType === 'pages' && (
-                      <>
-                        <input
-                          type="number"
-                          value={inputVal}
-                          onChange={(e) => setInputVal(e.target.value)}
-                          className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-3"
-                          placeholder="Ex: 50 (para 50 páginas)"
-                        />
-                        <div className="flex gap-2 mb-4">
-                          {[20, 50, 100].map(pages => (
-                            <button
-                              key={pages}
-                              onClick={() => setInputVal(pages.toString())}
-                              className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600"
-                            >
-                              {pages} Páginas
-                            </button>
-                          ))}
-                        </div>
-                        <p className="text-slate-400 text-sm mb-4">
-                          Defina o número máximo de páginas para cada arquivo PDF resultante. Útil para sistemas que limitam a quantidade de páginas por documento.
-                        </p>
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
+export async function comprimirPDF(file: File): Promise<Uint8Array> {
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFDocument.load(arrayBuffer);
+  const compressedPdfBytes = await pdf.save({
+    useObjectStreams: true,
+  });
+  return compressedPdfBytes;
+}
 
-              <button disabled={isLoading} onClick={() => fileInputRef.current?.click()} className={`w-full mt-6 py-4 rounded-xl shadow-lg shrink-0 ${isLoading ? 'bg-slate-600 cursor-wait' : 'bg-blue-600 hover:bg-blue-700'} text-white font-bold`}>
-                {isLoading ? "Processando..." : "Processar Arquivo"}
-              </button>
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
-      )}
-    </section>
-  );
+export async function removerSenhaPDF(file: File, password: string): Promise<Uint8Array> {
+  const arrayBuffer = await file.arrayBuffer();
+  try {
+    const pdf = await PDFDocument.load(arrayBuffer, { password: password });
+    return await pdf.save();
+  } catch (error: any) {
+    if (error.message && error.message.includes('Incorrect password')) {
+      throw new Error('Senha incorreta. Por favor, verifique a senha e tente novamente.');
+    }
+    throw new Error(`Falha ao remover senha: ${error.message || 'Erro desconhecido.'}`);
+  }
+}
+
+export async function converterParaWord(file: File): Promise<Uint8Array> {
+  // Importação dinâmica de pdfjs-dist aqui
+  const pdfjsLib = await import('pdfjs-dist');
+  // Configuração do workerSrc aqui, garantindo que só ocorre no cliente
+  if (typeof window !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+  }
+
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  let docxParagraphs: string[] = [];
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+    let currentParagraph = "";
+    let lastY = -1;
+    let lastFontSize = -1;
+    let lastX = -1;
+
+    for (const item of textContent.items as any[]) {
+      const currentY = item.transform[5];
+      const currentFontSize = item.fontHeight;
+      const currentX = item.transform[4];
+
+      const isNewParagraph = lastY !== -1 && (
+        Math.abs(currentY - lastY) > (lastFontSize * 1.5) ||
+        Math.abs(currentFontSize - lastFontSize) > 1 ||
+        (currentX - lastX > (lastFontSize * 2) && currentY === lastY)
+      );
+
+      if (isNewParagraph) {
+        if (currentParagraph.trim() !== "") {
+          docxParagraphs.push(currentParagraph.trim());
+        }
+        currentParagraph = item.str;
+      } else {
+        currentParagraph += (currentParagraph === "" ? "" : " ") + item.str;
+      }
+      lastY = currentY;
+      lastFontSize = currentFontSize;
+      lastX = currentX + item.width;
+    }
+    if (currentParagraph.trim() !== "") {
+      docxParagraphs.push(currentParagraph.trim());
+    }
+    if (i < pdf.numPages) {
+      docxParagraphs.push("<w:br w:type=\"page\"/>");
+    }
+  }
+
+  const escapedParagraphs = docxParagraphs.map(p => {
+    if (p === "<w:br w:type=\"page\"/>") return p;
+    return p
+      .replace(/&/g, '&')
+      .replace(/</g, '<')
+      .replace(/>/g, '>')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  });
+
+  const wordBodyContent = escapedParagraphs.map(line => {
+    if (line === "<w:br w:type=\"page\"/>") {
+      return `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`;
+    }
+    return `<w:p><w:r><w:t>${line}</w:t></w:r></w:p>`;
+  }).join('');
+
+  const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture" xmlns:ns0="http://schemas.openxmlformats.org/package/2006/relationships">
+  <w:body>
+    ${wordBodyContent}
+    <w:sectPr w:rsidR="007F0723" w:rsidSect="007F0723">
+      <w:pgSz w:w="12240" w:h="15840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/>
+      <w:cols w:space="720"/>
+      <w:docGrid w:type="lines" w:linePitch="360"/>
+    </w:sectPr>
+  </w:body>
+</w:document>`;
+
+  const zip = new JSZip();
+  zip.file("word/document.xml", documentXml);
+  zip.file("[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>`);
+  zip.file("_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`);
+  zip.file("word/_rels/document.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+</Relationships>`);
+
+  const docxBlob = await zip.generateAsync({ type: "uint8array" });
+  return docxBlob;
 }
