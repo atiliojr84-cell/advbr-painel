@@ -20,18 +20,24 @@ export async function GET() {
     }
   }
 
-  // ROBÔ 3: Pega a fatia do 80 até o final
   const mySlice = allTribunals.slice(80);
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); 
+      const timeoutId = setTimeout(() => controller.abort(), 45000); 
       const start = Date.now();
 
-      const bypassUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+      const rebeldes = ["TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
+      const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
-      const response = await fetch(bypassUrl, { 
+      let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+
+      if (rebeldes.includes(trib.name)) {
+        targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&url=${encodeURIComponent(trib.url)}`;
+      }
+
+      const response = await fetch(targetUrl, { 
         method: 'GET', 
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
