@@ -5,6 +5,9 @@ import { jurisdictions } from '../../../data/jurisdictions';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+// MÁGICA 1: Aumenta o tempo de vida do robô na Vercel de 10s para 60s
+export const maxDuration = 60;
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET() {
@@ -40,7 +43,6 @@ export async function GET() {
     }
   };
 
-  // Prepara a lista de tarefas (sem executar ainda)
   const tasks: (() => Promise<void>)[] = [];
 
   for (const trib of jurisdictions.federais) {
@@ -56,11 +58,14 @@ export async function GET() {
     }
   }
 
-  // MÁGICA AQUI: Executa em lotes de 15 para não ativar o Anti-DDoS do governo
-  const batchSize = 15;
+  // MÁGICA 2: Lotes bem pequenos (5 por vez)
+  const batchSize = 5;
   for (let i = 0; i < tasks.length; i += batchSize) {
     const batch = tasks.slice(i, i + batchSize);
     await Promise.allSettled(batch.map(task => task()));
+
+    // MÁGICA 3: Pausa de 300 milissegundos entre os lotes para não irritar o firewall
+    await new Promise(resolve => setTimeout(resolve, 300));
   }
 
   await kv.set('court_statuses', statuses);
