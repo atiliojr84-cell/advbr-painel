@@ -46,7 +46,14 @@ export const jurisdictions = {
       "Espírito Santo": [{ name: "TJES", url: "https://www.tjes.jus.br/", alerta: null }, { name: "PJe TJES", url: "https://sso.cloud.pje.jus.br/auth/realms/pje/protocol/openid-connect/auth?response_type=code&client_id=pje-tjes-1g&redirect_uri=https%3A%2F%2Fpje.tjes.jus.br%2Fpje%2Flogin.seam", alerta: null }, { name: "TRT17", url: "https://pje.trt17.jus.br/", alerta: null }, { name: "TRE-ES", url: "https://www.tre-es.jus.br/", alerta: null }]
     },
     Sul: {
-      Paraná: [{ name: "TJPR", url: "https://www.tjpr.jus.br/", alerta: null }, { name: "E-proc TJPR", url: "https://eproc1g.tjpr.jus.br/", alerta: null }, { name: "TRT9", url: "https://pje.trt9.jus.br/", alerta: null }, { name: "TRE-PR", url: "https://www.tre-pr.jus.br/", alerta: null }],
+      Paraná: [
+        { name: "TJPR", url: "https://www.tjpr.jus.br/", alerta: null }, 
+        { name: "E-proc TJPR", url: "https://eproc1g.tjpr.jus.br/", alerta: null }, 
+        { name: "Projudi TJPR", url: "https://projudi.tjpr.jus.br/", alerta: null },
+        { name: "TRT9", url: "https://pje.trt9.jus.br/primeirograu/login.seam", alerta: null }, 
+        { name: "TRT9 2º Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", alerta: null },
+        { name: "TRE-PR", url: "https://www.tre-pr.jus.br/", alerta: null }
+      ],
       "Santa Catarina": [{ name: "TJSC", url: "https://www.tjsc.jus.br/", alerta: null }, { name: "E-proc TJSC", url: "https://eproc1g.tjsc.jus.br/", alerta: null }, { name: "TRT12", url: "https://pje.trt12.jus.br/", alerta: null }, { name: "TRE-SC", url: "https://www.tre-sc.jus.br/", alerta: null }],
       "Rio Grande do Sul": [{ name: "TJRS", url: "https://www.tjrs.jus.br/", alerta: null }, { name: "E-proc TJRS", url: "https://eproc1g.tjrs.jus.br/eproc/", alerta: null }, { name: "TRT4", url: "https://pje.trt4.jus.br/", alerta: null }, { name: "TRE-RS", url: "https://www.tre-rs.jus.br/", alerta: null }]
     }
