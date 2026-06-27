@@ -32,7 +32,11 @@ export default function JurisdictionHub() {
     setIsOpen(true);
   };
 
-  const btnStyle = "bg-slate-900 rounded-xl glow-effect";
+  // Estilo dos botões da página principal
+  const mainBtnStyle = "bg-slate-800 hover:bg-slate-700 rounded-xl shadow-lg transition-colors duration-200";
+
+  // Estilo dos botões de dentro da janela (Estados e Tribunais)
+  const modalBtnStyle = "bg-slate-800 hover:bg-slate-700 border border-slate-700/50 rounded-xl transition-colors duration-200";
 
   return (
     <>
@@ -51,7 +55,7 @@ export default function JurisdictionHub() {
 
         <div className="flex flex-wrap justify-center gap-4">
           {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
-            <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 rounded-full text-slate-300 capitalize ${btnStyle}`}>
+            <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 text-slate-300 capitalize font-medium ${mainBtnStyle}`}>
               {r === "CentroOeste" ? "Centro-Oeste" : r}
             </button>
           ))}
@@ -66,7 +70,7 @@ export default function JurisdictionHub() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
           >
             <motion.div
               key="modal-content"
@@ -74,19 +78,21 @@ export default function JurisdictionHub() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh]"
             >
-              {/* CABEÇALHO FIXO */}
-              <div className="flex items-center gap-3 mb-6 shrink-0">
-                {view === 'tribunal' && activeRegiao !== 'federais' && (
-                  <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
-                    <ArrowLeft size={20} />
-                  </button>
-                )}
-                <span className="uppercase text-sm tracking-widest text-white font-semibold">
-                  {activeRegiao === 'federais' ? 'TRIBUNAIS FEDERAIS' : (view === 'estado' ? activeRegiao : selectedEstado)}
-                </span>
-                <button onClick={() => setIsOpen(false)} className="ml-auto text-slate-500 hover:text-white font-medium">Fechar</button>
+              {/* CABEÇALHO PADRONIZADO (Igual PDF e Testes) */}
+              <div className="flex items-center justify-between mb-6 shrink-0">
+                <div className="flex items-center gap-3">
+                  {view === 'tribunal' && activeRegiao !== 'federais' && (
+                    <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
+                      <ArrowLeft size={24} />
+                    </button>
+                  )}
+                  <h3 className="text-white text-xl font-bold">
+                    {activeRegiao === 'federais' ? 'Tribunais Federais' : (view === 'estado' ? activeRegiao : selectedEstado)}
+                  </h3>
+                </div>
+                <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
               {/* ÁREA DE SCROLL COM EFEITO GELEIA */}
@@ -102,7 +108,7 @@ export default function JurisdictionHub() {
                     {view === 'estado' ? (
                       <div className="grid grid-cols-2 gap-3 pb-4">
                         {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
-                          <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className={`p-4 text-white font-medium text-sm text-left ${btnStyle}`}>
+                          <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className={`p-4 text-white font-medium text-sm text-left ${modalBtnStyle}`}>
                             {e}
                           </button>
                         ))}
@@ -110,7 +116,7 @@ export default function JurisdictionHub() {
                     ) : (
                       <div className="space-y-3 pb-4">
                         {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
-                          <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${btnStyle}`}>
+                          <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${modalBtnStyle}`}>
                             <span className="text-white text-sm font-medium">{t.name}</span>
                             <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${getStatusColor(t.alerta)}`} />
                           </button>
