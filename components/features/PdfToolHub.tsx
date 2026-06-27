@@ -22,7 +22,10 @@ export default function PdfToolHub() {
   ];
 
   const download = (data: Uint8Array, filename: string, type: string) => {
-    const blob = new Blob([data], { type: type }); // Corrigido para passar Uint8Array diretamente
+    // CORREÇÃO: Cria uma nova ArrayBuffer a partir do Uint8Array para compatibilidade com Blob
+    // Isso garante que estamos passando um ArrayBuffer "puro" e não um SharedArrayBuffer
+    const arrayBuffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
+    const blob = new Blob([arrayBuffer], { type: type });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -40,8 +43,7 @@ export default function PdfToolHub() {
     const isAllPdf = files.every(file => file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
 
     if (!isAllPdf) {
-      // CORREÇÃO AQUI: Garante que a string do alert esteja completa e sem caracteres estranhos
-      alert("Por favor, selecione apenas arquivos PDF."); 
+      alert("Por favor, selecione apenas arquivos PDF.");
       if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
@@ -57,14 +59,10 @@ export default function PdfToolHub() {
       else if (selectedTool.id === "dividir") {
         let pages: Uint8Array[] = [];
         if (divisionType === 'mb') {
-          const limiteMB = Number(inputVal) || 3;
-          pages = await dividirPDF(files[0], limiteMB); // Usando a função existente
-          const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
-          if (excedeu) {
-            alert("Atenção: Um ou mais arquivos resultantes excederam o limite de MB definido. Isso pode ocorrer com PDFs muito densos ou imagens de alta resolução. Considere dividir por número de páginas ou usar um limite maior.");
-          }
-        } else { // divisionType === 'pages'
-          const limitePaginas = Number(inputVal) || 50;
+          const limiteMB = Number(inputVal) || 5; // Padrão de 5MB se não especificado
+          pages = await dividirPDF(files[0], limiteMB);
+        } else if (divisionType === 'pages') {
+          const limitePaginas = Number(inputVal) || 50; // Padrão de 50 páginas se não especificado
           pages = await dividirPDFPorPaginas(files[0], limitePaginas);
         }
 
@@ -92,32 +90,43 @@ export default function PdfToolHub() {
   };
 
   return (
-    <section className="w-full py-12 bg-slate-950 text-white flex flex-col items-center justify-center min-h-[60vh] px-4">
-      <h2 className="text-4xl font-extrabold mb-8 text-center">Ferramentas PDF para Advogados</h2>
-      <p className="text-lg text-slate-400 mb-12 text-center max-w-2xl">
-        Simplifique sua rotina jurídica com nossas ferramentas de PDF. Unir, dividir e converter documentos nunca foi tão fácil.
+    <section className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white p-4">
+      <h1 className="text-5xl font-extrabold mb-8 text-center leading-tight">
+        Ferramentas <span className="text-blue-500">PDF</span> para Advogados
+      </h1>
+      <p className="text-xl text-slate-300 mb-12 text-center max-w-2xl">
+        Simplifique sua rotina jurídica com ferramentas eficientes e seguras.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full">
         {tools.map((tool) => (
-          <button
+          <motion.div
             key={tool.id}
+            className="bg-slate-800 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center cursor-pointer hover:bg-slate-700 transition-colors duration-200"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedTool(tool)}
-            className="flex flex-col items-center p-6 bg-slate-900 rounded-2xl border border-slate-800 hover:border-blue-600 hover:shadow-lg transition-all duration-300"
           >
-            <tool.icon className="w-10 h-10 text-blue-500 mb-3" />
-            <span className="text-xl font-bold text-white">{tool.title}</span>
-            <span className="text-sm text-slate-400 mt-1">{tool.desc}</span>
-          </button>
+            <tool.icon className="w-12 h-12 text-blue-400 mb-4" />
+            <h2 className="text-2xl font-bold mb-2">{tool.title}</h2>
+            <p className="text-slate-400">{tool.desc}</p>
+          </motion.div>
         ))}
       </div>
 
       {selectedTool && (
         <AnimatePresence>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setSelectedTool(null)} className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50"
+            onClick={() => setSelectedTool(null)}
+          >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
+              initial={{ scale: 0.95, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
