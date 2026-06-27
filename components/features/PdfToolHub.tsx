@@ -104,6 +104,12 @@ export default function PdfToolHub() {
         accept=".pdf" 
       />
 
+      {/* NOVO TÍTULO COM ÍCONE VERMELHO */}
+      <div className="w-full max-w-6xl mb-8 flex items-center justify-center gap-3">
+        <FileText className="w-8 h-8 text-red-500" />
+        <h2 className="text-3xl font-bold text-white">Edição de PDF</h2>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
         {tools.map((tool) => (
           <motion.div
