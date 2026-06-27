@@ -13,17 +13,9 @@ export default function PdfToolHub() {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // O useEffect comentado para pdfjs-dist foi removido para manter o código mais limpo,
-  // já que a configuração do worker está no PdfProcessor.ts e a solução para o deploy
-  // será via next/dynamic na importação do componente.
-
   const tools = [
     { id: "unir", title: "Unir PDFs", desc: "Organize seu processo", icon: FileUp, help: "Transforme várias peças em um único arquivo. Exemplo: junte sua Petição Inicial, Procuração, Declaração de Hipossuficiência e Custas em um só PDF. Isso facilita a leitura do magistrado e evita erros de protocolo por falta de documentos." },
     { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divide arquivos grandes em partes menores. Dica: se o documento original possuir páginas escaneadas em resolução muito alta, o sistema pode não conseguir dividir abaixo do limite escolhido. Caso isso ocorra, utilize primeiro a ferramenta 'Comprimir' antes de dividir." },
-    // Removido o botão de Comprimir PDF
-    // { id: "comprimir", title: "Comprimir PDF", desc: "Otimização de tamanho", icon: Minimize2, help: "Sabe aquele PDF escaneado que ficou gigantesco? Esta ferramenta tentará reduzir o tamanho do arquivo, otimizando-o para anexos em sistemas de processo eletrônico. A porcentagem de redução pode variar dependendo do conteúdo original do PDF. Para PDFs com muitas imagens, a redução pode ser limitada." },
-    // Removido o botão de Remover Senha
-    // { id: "senha", title: "Remover Senha", desc: "Desbloqueio de acesso", icon: LockKeyhole, help: "Alguns documentos vêm com proteção de edição ou impressão que travam o seu trabalho. Ao inserir a senha aqui, nós removemos essa camada de segurança para que você possa imprimir, editar ou mesclar o arquivo livremente." },
     { id: "converter", title: "PDF p/ Word", desc: "Edição de texto", icon: FileText, help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte o texto do PDF para um documento .docx editável, preservando a estrutura básica de parágrafos e quebras de linha. ATENÇÃO: Esta conversão extrai apenas o texto, sem formatação, imagens ou tabelas. Você economiza horas digitando e pode aproveitar o conteúdo direto no seu editor de texto." },
   ];
 
@@ -62,16 +54,6 @@ export default function PdfToolHub() {
           download(p, `${baseName}-dividido-${paddedIndex}.pdf`, "application/pdf");
         });
       }
-      // Removida a lógica para comprimir PDF
-      // else if (selectedTool.id === "comprimir") {
-      //   const res = await comprimirPDF(files[0]);
-      //   download(res, `${baseName}-comprimido.pdf`, "application/pdf");
-      // }
-      // Removida a lógica para remover senha
-      // else if (selectedTool.id === "senha") {
-      //   const res = await removerSenhaPDF(files[0], inputVal);
-      //   download(res, `${baseName}-senha-removida.pdf`, "application/pdf");
-      // }
       else if (selectedTool.id === "converter") {
         const res = await converterParaWord(files[0]);
         download(res, `${baseName}-convertido.docx`, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -121,9 +103,10 @@ export default function PdfToolHub() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+      {/* AQUI ESTÁ A MUDANÇA PARA CENTRALIZAR OS BOTÕES */}
+      <div className="flex justify-center flex-wrap gap-6">
         {tools.map((t) => (
-          <button key={t.id} onClick={() => { setSelectedTool(t); setInputVal(""); }} className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect">
+          <button key={t.id} onClick={() => { setSelectedTool(t); setInputVal(""); }} className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect w-40"> {/* Adicionei w-40 para dar uma largura fixa aos botões */}
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400"><t.icon className="w-8 h-8" /></div>
             <span className="font-bold text-white mb-1">{t.title}</span>
             <span className="text-[10px] text-slate-500 text-center">{t.desc}</span>
@@ -152,10 +135,6 @@ export default function PdfToolHub() {
                 {selectedTool.id === "dividir" && (
                   <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-4" placeholder="Limite em MB (ex: 5)" />
                 )}
-                {/* Removido o input de senha */}
-                {/* {selectedTool.id === "senha" && (
-                  <input type="password" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-4" placeholder="Senha do PDF..." />
-                )} */}
               </div>
 
               <button disabled={isLoading} onClick={() => fileInputRef.current?.click()} className={`w-full mt-6 py-4 rounded-xl shadow-lg shrink-0 ${isLoading ? 'bg-slate-600 cursor-wait' : 'bg-blue-600 hover:bg-blue-700'} text-white font-bold`}>
