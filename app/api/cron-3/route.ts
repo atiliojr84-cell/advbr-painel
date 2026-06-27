@@ -4,7 +4,7 @@ import { jurisdictions } from '../../../data/jurisdictions';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-export const maxDuration = 60; 
+export const maxDuration = 300; 
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -20,44 +20,52 @@ export async function GET() {
     }
   }
 
-  // ROBÔ 3: Pega a fatia do 80 até o final da lista
+  // ROBÔ 3: Pega a fatia do 80 até o final
   const mySlice = allTribunals.slice(80);
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000); 
+      const timeoutId = setTimeout(() => controller.abort(), 15000); 
       const start = Date.now();
 
-      const response = await fetch(trib.url, { 
+      const bypassUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+
+      const response = await fetch(bypassUrl, { 
         method: 'GET', 
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept': '*/*',
+          'Connection': 'close',
+          'Cache-Control': 'no-cache'
         },
+        redirect: 'manual',
         signal: controller.signal,
         cache: 'no-store' 
       });
       clearTimeout(timeoutId);
 
-      // Consome o corpo da resposta para fechar a porta e evitar o "fetch failed"
-      await response.arrayBuffer(); 
+      await response.arrayBuffer().catch(() => {}); 
 
       const time = Date.now() - start;
 
-      if (response.ok) {
-        statuses[trib.name] = time > 4000 ? 'instavel' : 'online';
+      if (response.ok || (response.status >= 300 && response.status < 400)) {
+        statuses[trib.name] = time > 5000 ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
       statuses[trib.name] = 'offline';
-      debugInfo[trib.name] = `Falha: ${error.message}`;
+
+      let cause = 'Desconhecida';
+      if (error.cause) {
+        cause = error.cause.code || error.cause.message || JSON.stringify(error.cause);
+      }
+      debugInfo[trib.name] = `Falha: ${error.message} | Causa: ${cause}`;
     }
 
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   await kv.set('court_statuses', statuses);
