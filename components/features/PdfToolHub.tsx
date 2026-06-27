@@ -1,29 +1,27 @@
 // PdfToolHub.tsx
 "use client";
 // @ts-nocheck
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileUp, Split, FileText } from "lucide-react";
 
 // Importações das funções do PdfProcessor.ts
-import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord, dividirPDFPorPaginas } from "./PdfProcessor";
+import { unirPDFs, dividirPDF, converterParaWord, dividirPDFPorPaginas } from "./PdfProcessor";
 
 export default function PdfToolHub() {
   const [selectedTool, setSelectedTool] = useState<any>(null);
-  const [inputVal, setInputVal] = useState(""); // Valor para MB ou Páginas
-  const [divisionType, setDivisionType] = useState<'mb' | 'pages'>('mb'); // Novo estado para tipo de divisão
+  const [inputVal, setInputVal] = useState(""); 
+  const [divisionType, setDivisionType] = useState<'mb' | 'pages'>('mb'); 
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const tools = [
     { id: "unir", title: "Unir PDFs", desc: "Organize seu processo", icon: FileUp, help: "Transforme várias peças em um único arquivo. Exemplo: junte sua Petição Inicial, Procuração, Declaração de Hipossuficiência e Custas em um só PDF. Isso facilita a leitura do magistrado e evita erros de protocolo por falta de documentos." },
-    { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divida arquivos grandes em partes menores, respeitando os limites dos sistemas de processo eletrônico. Escolha entre dividir por tamanho (MB) ou por número de páginas." }, // Texto de ajuda atualizado
-    { id: "converter", title: "PDF p/ Word", desc: "Edição de texto", icon: FileText, help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte o texto do PDF para um documento .docx editável, preservando a estrutura básica de parágrafos e quebras de linha. ATENÇÃO: Esta conversão extrai apenas o texto, sem formatação, imagens ou tabelas. Você economiza horas digitando e pode aproveitar o conteúdo direto no seu editor de texto." },
+    { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divida arquivos grandes em partes menores, respeitando os limites dos sistemas de processo eletrônico. Escolha entre dividir por tamanho (MB) ou por número de páginas." }, 
+    { id: "converter", title: "PDF p/ Word", desc: "Edição de texto", icon: FileText, help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte o texto do PDF para um documento .docx editável, preservando a estrutura básica de parágrafos e quebras de linha." },
   ];
 
   const download = (data: Uint8Array, filename: string, type: string) => {
-    // Cria uma nova Uint8Array a partir dos dados para garantir compatibilidade com Blob
-    // Isso evita problemas de tipo com SharedArrayBuffer
     const dataToBlob = new Uint8Array(data);
     const blob = new Blob([dataToBlob], { type: type });
     const url = URL.createObjectURL(blob);
@@ -55,7 +53,8 @@ export default function PdfToolHub() {
       if (selectedTool.id === "unir") {
         const mergedPdf = await unirPDFs(files);
         download(mergedPdf, `${baseName}-unido.pdf`, "application/pdf");
-      } else if (selectedTool.id === "dividir") {
+      } 
+      else if (selectedTool.id === "dividir") {
         let pages: Uint8Array[] = [];
         const limite = parseInt(inputVal);
 
@@ -84,14 +83,13 @@ export default function PdfToolHub() {
         const res = await converterParaWord(files[0]);
         download(res, `${baseName}.docx`, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
       }
-      // Adicione aqui outras ferramentas conforme necessário
     } catch (error) {
       console.error("Erro ao processar PDF:", error);
-      alert("Ocorreu um erro ao processar o arquivo. Por favor, tente novamente.");
+      alert("Ocorreu um erro ao processar o arquivo. Verifique se o arquivo não está corrompido.");
     } finally {
       setIsLoading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
-      setSelectedTool(null); // Fecha o modal após o processamento
+      setSelectedTool(null); 
     }
   };
 
@@ -103,7 +101,7 @@ export default function PdfToolHub() {
         onChange={handleProcess}
         className="hidden"
         multiple={selectedTool?.id === "unir"}
-        accept={selectedTool?.id === "converter" ? ".pdf" : ".pdf"} // Aceita apenas PDF para todas as ferramentas por enquanto
+        accept=".pdf" 
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
@@ -182,9 +180,6 @@ export default function PdfToolHub() {
                             </button>
                           ))}
                         </div>
-                        <p className="text-slate-400 text-sm mb-4">
-                          Defina o tamanho máximo de cada arquivo PDF resultante em Megabytes. Essencial para sistemas de processo eletrônico com limites de upload.
-                        </p>
                       </>
                     )}
 
@@ -208,9 +203,6 @@ export default function PdfToolHub() {
                             </button>
                           ))}
                         </div>
-                        <p className="text-slate-400 text-sm mb-4">
-                          Defina o número máximo de páginas para cada arquivo PDF resultante. Útil para sistemas que limitam a quantidade de páginas por documento.
-                        </p>
                       </>
                     )}
                   </>
