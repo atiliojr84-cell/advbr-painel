@@ -8,11 +8,11 @@ const portais = [
   { id: 1, name: "1. PJe Nacional", url: "https://www.pje.jus.br", statusKey: "PJe Nacional" },
   { id: 2, name: "2. TJPR E-Proc 1 Grau", url: "https://eproc1g.tjpr.jus.br/eproc/", statusKey: "E-proc TJPR" },
   { id: 3, name: "3. TJSP E-SAJ Peticionamento", url: "https://esaj.tjsp.jus.br/sajcas/login?service=https%3A%2F%2Fesaj.tjsp.jus.br%2Fpetpg%2Fj_spring_cas_security_check#aba-cpf", statusKey: "e-SAJ SP" },
-  { id: 4, name: "4. TJPR Projudi", url: "https://projudi.tjpr.jus.br", statusKey: "TJPR" }, // Espelhado no TJPR principal
+  { id: 4, name: "4. TJPR Projudi", url: "https://projudi.tjpr.jus.br", statusKey: "Projudi TJPR" }, // <-- NOME ATUALIZADO
   { id: 5, name: "5. STF Eletrônico", url: "https://portal.stf.jus.br", statusKey: "STF" },
   { id: 6, name: "6. STJ Processos", url: "https://scon.stj.jus.br", statusKey: "STJ" },
   { id: 7, name: "7. TRT9 PJe 1 Grau", url: "https://pje.trt9.jus.br/primeirograu/login.seam", statusKey: "TRT9" },
-  { id: 8, name: "8. TRT9 PJe 2 Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", statusKey: "TRT9" }, // Espelhado no TRT9 principal
+  { id: 8, name: "8. TRT9 PJe 2 Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", statusKey: "TRT9 2º Grau" }, // <-- NOME ATUALIZADO
   { id: 9, name: "9. PJe TRF3 (SP/MS)", url: "https://pje1g.trf3.jus.br/pje/login.seam", statusKey: "TRF3" },
   { id: 10, name: "10. PJe TRF4 (PR/SC/RS)", url: "https://eproc.trf4.jus.br/eproc2trf4/externo_controlador.php?acao=acesso_externo_principal", statusKey: "TRF4" },
 ];
