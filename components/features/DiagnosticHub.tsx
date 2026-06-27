@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BadgeCheck, MonitorCheck, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { Usb, MonitorCheck, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 
 export default function DiagnosticHub() {
   const [activeModal, setActiveModal] = useState<'token' | 'pje' | null>(null);
@@ -58,8 +58,8 @@ export default function DiagnosticHub() {
           onClick={() => setActiveModal('token')}
           className="bg-slate-800 p-6 rounded-xl shadow-lg cursor-pointer hover:bg-slate-700 transition-colors duration-200 flex flex-col items-center text-center"
         >
-          {/* ÍCONE SELO DE CERTIFICADO EM AZUL */}
-          <BadgeCheck className="w-12 h-12 text-blue-400 mb-4" />
+          {/* ÍCONE USB DE VOLTA, EM AZUL */}
+          <Usb className="w-12 h-12 text-blue-400 mb-4" />
           <h3 className="text-white text-xl font-bold mb-2">Teste de Token</h3>
           <p className="text-slate-400 text-sm">Verifique a comunicação do seu Certificado Digital</p>
         </motion.div>
@@ -106,8 +106,8 @@ export default function DiagnosticHub() {
                 {/* CONTEÚDO MODAL TOKEN */}
                 {activeModal === 'token' && (
                   <div className="flex flex-col items-center text-center">
-                    {/* ÍCONE SELO DE CERTIFICADO EM AZUL NO MODAL */}
-                    <BadgeCheck className="w-12 h-12 text-blue-400 mb-4" />
+                    {/* ÍCONE USB DE VOLTA, EM AZUL NO MODAL */}
+                    <Usb className="w-12 h-12 text-blue-400 mb-4" />
                     <p className="text-slate-300 mb-6 leading-relaxed">
                       Doutor(a), o teste de comunicação do seu Certificado Digital é realizado em um ambiente externo seguro fornecido pela Certisign.
                     </p>
