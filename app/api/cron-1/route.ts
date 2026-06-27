@@ -25,12 +25,19 @@ export async function GET() {
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); 
+      const timeoutId = setTimeout(() => controller.abort(), 45000); 
       const start = Date.now();
 
-      const bypassUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+      const rebeldes = ["TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
+      const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
-      const response = await fetch(bypassUrl, { 
+      let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+
+      if (rebeldes.includes(trib.name)) {
+        targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&url=${encodeURIComponent(trib.url)}`;
+      }
+
+      const response = await fetch(targetUrl, { 
         method: 'GET', 
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -38,7 +45,7 @@ export async function GET() {
           'Connection': 'close',
           'Cache-Control': 'no-cache'
         },
-        redirect: 'manual', // TÁTICA NOVA: Não entra no loop infinito do PJe Nacional
+        redirect: 'manual',
         signal: controller.signal,
         cache: 'no-store' 
       });
@@ -48,7 +55,6 @@ export async function GET() {
 
       const time = Date.now() - start;
 
-      // Se deu 200 (OK) ou 30x (Redirecionamento), o site está online!
       if (response.ok || (response.status >= 300 && response.status < 400)) {
         statuses[trib.name] = time > 5000 ? 'instavel' : 'online';
       } else {
@@ -57,6 +63,7 @@ export async function GET() {
       }
     } catch (error: any) {
       statuses[trib.name] = 'offline';
+
       let cause = 'Desconhecida';
       if (error.cause) {
         cause = error.cause.code || error.cause.message || JSON.stringify(error.cause);
