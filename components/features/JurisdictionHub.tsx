@@ -41,7 +41,8 @@ export default function JurisdictionHub() {
     if (!isOpen) return;
     const fetchStatuses = async () => {
       try {
-        const res = await fetch('/api/get-status');
+        // O parâmetro ?t= e o cache: 'no-store' forçam o navegador a pegar dados novos
+        const res = await fetch(`/api/get-status?t=${Date.now()}`, { cache: 'no-store' });
         const data = await res.json();
         setLiveStatus(data);
       } catch (error) {
