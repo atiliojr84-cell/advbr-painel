@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
 import { jurisdictions } from '../../../data/jurisdictions';
 
-// Estas duas linhas proíbem o Next.js de fazer cache da rota
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -17,9 +16,14 @@ export async function GET() {
       const timeoutId = setTimeout(() => controller.abort(), 6000); 
       const start = Date.now();
 
-      // O cache: 'no-store' obriga a bater no servidor do tribunal de verdade
+      // Aqui está a mágica: método GET e a "máscara" de navegador
       const response = await fetch(url, { 
-        method: 'HEAD', 
+        method: 'GET', 
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+        },
         signal: controller.signal,
         cache: 'no-store' 
       });
