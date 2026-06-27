@@ -11,7 +11,6 @@ export default function JurisdictionHub() {
   const [activeRegiao, setActiveRegiao] = useState<string>('');
   const [selectedEstado, setSelectedEstado] = useState<string>('');
 
-  // Estado para guardar o status em tempo real de cada tribunal
   const [liveStatus, setLiveStatus] = useState<Record<string, string>>({});
 
   const regiaoMap: { [key: string]: string } = {
@@ -30,43 +29,30 @@ export default function JurisdictionHub() {
     setIsOpen(true);
   };
 
-  // Função que busca a cor da bolinha baseada no teste em tempo real
   const getStatusColor = (nomeTribunal: string) => {
     const status = liveStatus[nomeTribunal];
-    if (status === 'online') return "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"; // Verde brilhante
-    if (status === 'instavel') return "bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]"; // Amarelo
-    if (status === 'offline') return "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]"; // Vermelho
-    return "bg-slate-600 animate-pulse"; // Cinza piscando (Testando...)
+    if (status === 'online') return "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]";
+    if (status === 'instavel') return "bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]";
+    if (status === 'offline') return "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]";
+    return "bg-slate-600 animate-pulse"; 
   };
 
-  // Efeito que dispara o teste assim que a lista de tribunais aparece na tela
   useEffect(() => {
-    if (!isOpen || view !== 'tribunal') return;
-
-    const tribunais = activeRegiao === 'federais' 
-      ? jurisdictions.federais 
-      : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado] || [];
-
-    tribunais.forEach(async (t: any) => {
-      // Se já testou, não testa de novo para economizar rede
-      if (liveStatus[t.name]) return; 
-
+    if (!isOpen) return;
+    const fetchStatuses = async () => {
       try {
-        const res = await fetch('/api/check-status', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: t.url })
-        });
+        const res = await fetch('/api/get-status');
         const data = await res.json();
-        setLiveStatus(prev => ({ ...prev, [t.name]: data.status }));
+        setLiveStatus(data);
       } catch (error) {
-        setLiveStatus(prev => ({ ...prev, [t.name]: 'offline' }));
+        console.error("Erro ao buscar status", error);
       }
-    });
-  }, [isOpen, view, activeRegiao, selectedEstado]);
+    };
+    fetchStatuses();
+  }, [isOpen]);
 
-  const btnStyle = "bg-slate-900 rounded-xl glow-effect";
-  const modalBtnStyle = "bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors border border-slate-700/50";
+  const mainBtnStyle = "bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg";
+  const modalBtnStyle = "bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800";
 
   return (
     <>
@@ -78,16 +64,17 @@ export default function JurisdictionHub() {
             </div>
             <h2 className="text-2xl font-bold text-white">Monitoramento de Tribunais em Tempo Real</h2>
           </div>
-          <p className="text-slate-400 mb-8">Acompanhe a disponibilidade dos sistemas de processo eletrônico em todo o Brasil.</p>
+          <p className="text-slate-400 leading-relaxed text-sm">
+            Centralizamos o acesso aos principais sistemas de peticionamento do país. Realizamos o monitoramento proativo de cada portal, identificando instabilidades em tempo real.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <button onClick={() => handleOpen('federais')} className={`p-4 text-white font-semibold ${btnStyle}`}>Federais</button>
-            <button onClick={() => handleOpen('sul')} className={`p-4 text-white font-semibold ${btnStyle}`}>Sul</button>
-            <button onClick={() => handleOpen('sudeste')} className={`p-4 text-white font-semibold ${btnStyle}`}>Sudeste</button>
-            <button onClick={() => handleOpen('centrooeste')} className={`p-4 text-white font-semibold ${btnStyle}`}>Centro-Oeste</button>
-            <button onClick={() => handleOpen('nordeste')} className={`p-4 text-white font-semibold ${btnStyle}`}>Nordeste</button>
-            <button onClick={() => handleOpen('norte')} className={`p-4 text-white font-semibold ${btnStyle}`}>Norte</button>
-          </div>
+        <div className="flex flex-wrap justify-center gap-4">
+          {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
+            <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 text-slate-300 capitalize font-medium ${mainBtnStyle}`}>
+              {r === "CentroOeste" ? "Centro-Oeste" : r}
+            </button>
+          ))}
         </div>
       </section>
 
@@ -145,7 +132,6 @@ export default function JurisdictionHub() {
                         {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
                           <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${modalBtnStyle}`}>
                             <span className="text-white text-sm font-medium">{t.name}</span>
-                            {/* AQUI ESTÁ A BOLINHA MÁGICA */}
                             <div className={`w-3 h-3 rounded-full shrink-0 transition-colors duration-500 ${getStatusColor(t.name)}`} />
                           </button>
                         ))}
