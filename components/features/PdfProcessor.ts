@@ -1,13 +1,11 @@
 // PdfProcessor.ts
 // @ts-nocheck
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-import * as pdfjsLib from 'pdfjs-dist'; // Manter a importação
+// REMOVER ESTA LINHA: import * as pdfjsLib from 'pdfjs-dist';
 import JSZip from 'jszip';
 
-// REMOVER ESTA LINHA:
-// pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// As funções unirPDFs, comprimirPDF, removerSenhaPDF não usam pdfjs-dist, então permanecem inalteradas.
 
-// O restante do código permanece o mesmo
 export async function unirPDFs(files: File[]): Promise<Uint8Array> {
   const mergedPdf = await PDFDocument.create();
   for (const file of files) {
@@ -75,8 +73,15 @@ export async function dividirPDF(file: File, maxMB: number): Promise<Uint8Array[
 }
 
 export async function dividirPDFPorPaginas(file: File, maxPagesPerChunk: number): Promise<Uint8Array[]> {
+  // Importação dinâmica de pdfjs-dist aqui
+  const pdfjsLib = await import('pdfjs-dist');
+  // Configuração do workerSrc aqui, garantindo que só ocorre no cliente
+  if (typeof window !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+  }
+
   const arrayBuffer = await file.arrayBuffer();
-  const originalPdf = await PDFDocument.load(arrayBuffer);
+  const originalPdf = await PDFDocument.load(arrayBuffer); // pdf-lib não precisa de workerSrc
   const totalPages = originalPdf.getPageCount();
   const chunks: Uint8Array[] = [];
 
@@ -117,8 +122,14 @@ export async function removerSenhaPDF(file: File, password: string): Promise<Uin
 }
 
 export async function converterParaWord(file: File): Promise<Uint8Array> {
-  const arrayBuffer = await file.arrayBuffer();
+  // Importação dinâmica de pdfjs-dist aqui
+  const pdfjsLib = await import('pdfjs-dist');
+  // Configuração do workerSrc aqui, garantindo que só ocorre no cliente
+  if (typeof window !== 'undefined') {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+  }
 
+  const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   let docxParagraphs: string[] = [];
 
