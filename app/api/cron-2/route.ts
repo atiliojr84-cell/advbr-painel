@@ -25,18 +25,17 @@ export async function GET() {
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      // Aumentamos o tempo de espera para 55 segundos para a API ter tempo de resolver o CAPTCHA
       const timeoutId = setTimeout(() => controller.abort(), 55000); 
       const start = Date.now();
 
-      // Lista atualizada idêntica à do Robô 1
-      const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
+      // PJe TJBA adicionado na lista VIP
+      const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "PJe TJBA"];
       const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
       if (rebeldes.includes(trib.name)) {
-        targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&url=${encodeURIComponent(trib.url)}`;
+        targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&country_code=br&url=${encodeURIComponent(trib.url)}`;
       }
 
       const response = await fetch(targetUrl, { 
