@@ -3,8 +3,7 @@
 // @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FileUp, Split, FileText } from "lucide-react"; // Removido LockKeyhole e Minimize2
-// CORREÇÃO: O nome do arquivo é PdfProcessor.ts (sem 's' no final)
+import { FileUp, Split, FileText } from "lucide-react";
 import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord } from "./PdfProcessor";
 
 export default function PdfToolHub() {
@@ -43,7 +42,6 @@ export default function PdfToolHub() {
         const limiteMB = Number(inputVal) || 3;
         const pages = await dividirPDF(files[0], limiteMB);
 
-        // Verificação de excedente após a divisão
         const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
         if (excedeu) {
           alert("Aviso: Algumas partes ainda excederam o limite escolhido. Tente usar a ferramenta 'Comprimir' no arquivo original primeiro.");
@@ -87,26 +85,28 @@ export default function PdfToolHub() {
     <section className="py-12 px-4 max-w-5xl mx-auto">
       <input type="file" ref={fileInputRef} className="hidden" multiple={selectedTool?.id === "unir"} accept="application/pdf" onChange={handleProcess} />
 
-      <div className="mb-8 flex items-center gap-4">
-        <div className="relative w-12 h-14 bg-red-600 rounded-md flex flex-col items-center justify-center shadow-lg border-2 border-red-700">
-           <div className="absolute top-0 right-0 w-4 h-4 bg-red-800 rounded-bl-lg" />
-           <div className="absolute top-0 right-0 w-3 h-3 bg-red-600 rounded-bl-sm" />
-           <span className="text-[10px] font-black text-white mt-1">PDF</span>
-        </div>
+      {/* AQUI ESTÁ A MUDANÇA PARA CENTRALIZAR O ÍCONE E O TÍTULO */}
+      <div className="mb-8 flex justify-center"> {/* Adicionado flex justify-center */}
+        <div className="flex items-center gap-4">
+          <div className="relative w-12 h-14 bg-red-600 rounded-md flex flex-col items-center justify-center shadow-lg border-2 border-red-700">
+             <div className="absolute top-0 right-0 w-4 h-4 bg-red-800 rounded-bl-lg" />
+             <div className="absolute top-0 right-0 w-3 h-3 bg-red-600 rounded-bl-sm" />
+             <span className="text-[10px] font-black text-white mt-1">PDF</span>
+          </div>
 
-        <div>
-          <h2 className="text-2xl font-bold text-white">Otimizador Inteligente de PDF</h2>
-          <div className="flex flex-col gap-0.5 mt-1">
-            <p className="text-[11px] font-bold text-emerald-400 tracking-wide uppercase">PROCESSAMENTO 100% LOCAL (SEGURO E PRIVADO)</p>
-            <p className="text-[10px] text-slate-400">Processamento 100% na sua máquina, visando a segurança e privacidade.</p>
+          <div>
+            <h2 className="text-2xl font-bold text-white">Otimizador Inteligente de PDF</h2>
+            <div className="flex flex-col gap-0.5 mt-1">
+              <p className="text-[11px] font-bold text-emerald-400 tracking-wide uppercase">PROCESSAMENTO 100% LOCAL (SEGURO E PRIVADO)</p>
+              <p className="text-[10px] text-slate-400">Processamento 100% na sua máquina, visando a segurança e privacidade.</p>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* AQUI ESTÁ A MUDANÇA PARA CENTRALIZAR OS BOTÕES */}
       <div className="flex justify-center flex-wrap gap-6">
         {tools.map((t) => (
-          <button key={t.id} onClick={() => { setSelectedTool(t); setInputVal(""); }} className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect w-40"> {/* Adicionei w-40 para dar uma largura fixa aos botões */}
+          <button key={t.id} onClick={() => { setSelectedTool(t); setInputVal(""); }} className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect w-40">
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400"><t.icon className="w-8 h-8" /></div>
             <span className="font-bold text-white mb-1">{t.title}</span>
             <span className="text-[10px] text-slate-500 text-center">{t.desc}</span>
