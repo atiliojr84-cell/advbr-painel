@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
 import { jurisdictions } from '../../../data/jurisdictions';
 
+// Estas duas linhas proíbem o Next.js de fazer cache da rota
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET() {
@@ -13,7 +17,12 @@ export async function GET() {
       const timeoutId = setTimeout(() => controller.abort(), 6000); 
       const start = Date.now();
 
-      const response = await fetch(url, { method: 'HEAD', signal: controller.signal });
+      // O cache: 'no-store' obriga a bater no servidor do tribunal de verdade
+      const response = await fetch(url, { 
+        method: 'HEAD', 
+        signal: controller.signal,
+        cache: 'no-store' 
+      });
       clearTimeout(timeoutId);
 
       const time = Date.now() - start;
