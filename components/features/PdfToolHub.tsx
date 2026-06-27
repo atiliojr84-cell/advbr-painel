@@ -126,18 +126,23 @@ export default function PdfToolHub() {
         ))}
       </div>
 
-      {selectedTool && (
-        <AnimatePresence>
+      {/* AnimatePresence CORRIGIDO: Agora envolve a condição */}
+      <AnimatePresence>
+        {selectedTool && (
           <motion.div
+            key="modal-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"
+            onClick={() => setSelectedTool(null)} // Fecha ao clicar fora
           >
             <motion.div
+              key="modal-content"
               initial={{ y: -50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()} // Evita fechar ao clicar dentro
               className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col"
             >
               <div className="flex items-center justify-between mb-6 shrink-0">
@@ -220,8 +225,8 @@ export default function PdfToolHub() {
               </button>
             </motion.div>
           </motion.div>
-        </AnimatePresence>
-      )}
+        )}
+      </AnimatePresence>
     </section>
   );
 }
