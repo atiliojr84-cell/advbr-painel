@@ -22,10 +22,10 @@ export default function PdfToolHub() {
   ];
 
   const download = (data: Uint8Array, filename: string, type: string) => {
-    // CORREÇÃO: Cria uma nova ArrayBuffer a partir do Uint8Array para compatibilidade com Blob
-    // Isso garante que estamos passando um ArrayBuffer "puro" e não um SharedArrayBuffer
-    const arrayBuffer = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
-    const blob = new Blob([arrayBuffer], { type: type });
+    // Cria uma nova Uint8Array a partir dos dados para garantir compatibilidade com Blob
+    // Isso evita problemas de tipo com SharedArrayBuffer
+    const dataToBlob = new Uint8Array(data);
+    const blob = new Blob([dataToBlob], { type: type });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -53,17 +53,23 @@ export default function PdfToolHub() {
 
     try {
       if (selectedTool.id === "unir") {
-        const res = await unirPDFs(files);
-        download(res, `${baseName}-unido.pdf`, "application/pdf");
-      }
-      else if (selectedTool.id === "dividir") {
+        const mergedPdf = await unirPDFs(files);
+        download(mergedPdf, `${baseName}-unido.pdf`, "application/pdf");
+      } else if (selectedTool.id === "dividir") {
         let pages: Uint8Array[] = [];
+        const limite = parseInt(inputVal);
+
+        if (isNaN(limite) || limite <= 0) {
+          alert("Por favor, insira um valor válido para o limite.");
+          setIsLoading(false);
+          if (fileInputRef.current) fileInputRef.current.value = "";
+          return;
+        }
+
         if (divisionType === 'mb') {
-          const limiteMB = Number(inputVal) || 5; // Padrão de 5MB se não especificado
-          pages = await dividirPDF(files[0], limiteMB);
+          pages = await dividirPDF(files[0], limite);
         } else if (divisionType === 'pages') {
-          const limitePaginas = Number(inputVal) || 50; // Padrão de 50 páginas se não especificado
-          pages = await dividirPDFPorPaginas(files[0], limitePaginas);
+          pages = await dividirPDFPorPaginas(files[0], limite);
         }
 
         if (pages.length > 0) {
@@ -90,26 +96,28 @@ export default function PdfToolHub() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white p-4">
-      <h1 className="text-5xl font-extrabold mb-8 text-center leading-tight">
-        Ferramentas <span className="text-blue-500">PDF</span> para Advogados
-      </h1>
-      <p className="text-xl text-slate-300 mb-12 text-center max-w-2xl">
-        Simplifique sua rotina jurídica com ferramentas eficientes e seguras.
-      </p>
+    <section className="relative w-full h-full flex flex-col items-center justify-center p-4">
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleProcess}
+        className="hidden"
+        multiple={selectedTool?.id === "unir"}
+        accept={selectedTool?.id === "converter" ? ".pdf" : ".pdf"} // Aceita apenas PDF para todas as ferramentas por enquanto
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
         {tools.map((tool) => (
           <motion.div
             key={tool.id}
-            className="bg-slate-800 p-8 rounded-2xl shadow-lg flex flex-col items-center text-center cursor-pointer hover:bg-slate-700 transition-colors duration-200"
-            whileHover={{ scale: 1.03 }}
+            className="bg-slate-800 p-6 rounded-xl shadow-lg cursor-pointer hover:bg-slate-700 transition-colors duration-200 flex flex-col items-center text-center"
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => setSelectedTool(tool)}
           >
             <tool.icon className="w-12 h-12 text-blue-400 mb-4" />
-            <h2 className="text-2xl font-bold mb-2">{tool.title}</h2>
-            <p className="text-slate-400">{tool.desc}</p>
+            <h3 className="text-white text-xl font-bold mb-2">{tool.title}</h3>
+            <p className="text-slate-400 text-sm">{tool.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -120,17 +128,13 @@ export default function PdfToolHub() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50"
-            onClick={() => setSelectedTool(null)}
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"
           >
             <motion.div
-              initial={{ scale: 0.95, y: 10 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl flex flex-col max-h-[90vh]"
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col"
             >
               <div className="flex items-center justify-between mb-6 shrink-0">
                 <h3 className="text-white text-xl font-bold">{selectedTool.title}</h3>
