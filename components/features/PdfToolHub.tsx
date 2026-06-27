@@ -8,13 +8,14 @@ import { unirPDFs, comprimirPDF, dividirPDF, removerSenhaPDF, converterParaWord 
 
 export default function PdfToolHub() {
   const [selectedTool, setSelectedTool] = useState<any>(null);
-  const [inputVal, setInputVal] = useState("");
+  const [inputVal, setInputVal] = useState(""); // Valor para MB ou Páginas
+  const [divisionType, setDivisionType] = useState<'mb' | 'pages'>('mb'); // Novo estado para tipo de divisão
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const tools = [
     { id: "unir", title: "Unir PDFs", desc: "Organize seu processo", icon: FileUp, help: "Transforme várias peças em um único arquivo. Exemplo: junte sua Petição Inicial, Procuração, Declaração de Hipossuficiência e Custas em um só PDF. Isso facilita a leitura do magistrado e evita erros de protocolo por falta de documentos." },
-    { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divide arquivos grandes em partes menores. Dica: se o documento original possuir páginas escaneadas em resolução muito alta, o sistema pode não conseguir dividir abaixo do limite escolhido. Caso isso ocorra, utilize primeiro a ferramenta 'Comprimir' antes de dividir." },
+    { id: "dividir", title: "Dividir PDF", desc: "Adequação aos limites", icon: Split, help: "Divida arquivos grandes em partes menores, respeitando os limites dos sistemas de processo eletrônico. Escolha entre dividir por tamanho (MB) ou por número de páginas." }, // Texto de ajuda atualizado
     { id: "converter", title: "PDF p/ Word", desc: "Edição de texto", icon: FileText, help: "Precisa extrair o texto de uma decisão ou contrato em PDF? Esta ferramenta converte o texto do PDF para um documento .docx editável, preservando a estrutura básica de parágrafos e quebras de linha. ATENÇÃO: Esta conversão extrai apenas o texto, sem formatação, imagens ou tabelas. Você economiza horas digitando e pode aproveitar o conteúdo direto no seu editor de texto." },
   ];
 
@@ -39,12 +40,20 @@ export default function PdfToolHub() {
         download(res, `${baseName}-unido.pdf`, "application/pdf");
       }
       else if (selectedTool.id === "dividir") {
-        const limiteMB = Number(inputVal) || 3;
-        const pages = await dividirPDF(files[0], limiteMB);
-
-        const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
-        if (excedeu) {
-          alert("Aviso: Algumas partes ainda excederam o limite escolhido. Tente usar a ferramenta 'Comprimir' no arquivo original primeiro.");
+        let pages: Uint8Array[] = [];
+        if (divisionType === 'mb') {
+          const limiteMB = Number(inputVal) || 3;
+          pages = await dividirPDF(files[0], limiteMB); // Usando a função existente
+          const excedeu = pages.some(p => (p.length / (1024 * 1024)) > limiteMB);
+          if (excedeu) {
+            alert("Aviso: Algumas partes ainda excederam o limite de MB escolhido. Isso pode ocorrer com páginas muito densas ou imagens de alta resolução. Considere dividir por número de páginas ou usar um limite maior.");
+          }
+        } else { // divisionType === 'pages'
+          const limitePaginas = Number(inputVal) || 10;
+          // Precisamos de uma nova função no PdfProcessor para dividir por páginas
+          // Por enquanto, vamos simular ou usar uma versão simplificada
+          // VOU ADICIONAR ESSA FUNÇÃO NO PdfProcessor.ts
+          pages = await dividirPDFPorPaginas(files[0], limitePaginas);
         }
 
         pages.forEach((p, i) => {
@@ -63,6 +72,7 @@ export default function PdfToolHub() {
       setIsLoading(false);
       setSelectedTool(null);
       setInputVal("");
+      setDivisionType('mb'); // Resetar para o padrão
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
@@ -85,8 +95,7 @@ export default function PdfToolHub() {
     <section className="py-12 px-4 max-w-5xl mx-auto">
       <input type="file" ref={fileInputRef} className="hidden" multiple={selectedTool?.id === "unir"} accept="application/pdf" onChange={handleProcess} />
 
-      {/* AQUI ESTÁ A MUDANÇA PARA CENTRALIZAR O ÍCONE E O TÍTULO */}
-      <div className="mb-8 flex justify-center"> {/* Adicionado flex justify-center */}
+      <div className="mb-8 flex justify-center">
         <div className="flex items-center gap-4">
           <div className="relative w-12 h-14 bg-red-600 rounded-md flex flex-col items-center justify-center shadow-lg border-2 border-red-700">
              <div className="absolute top-0 right-0 w-4 h-4 bg-red-800 rounded-bl-lg" />
@@ -106,7 +115,7 @@ export default function PdfToolHub() {
 
       <div className="flex justify-center flex-wrap gap-6">
         {tools.map((t) => (
-          <button key={t.id} onClick={() => { setSelectedTool(t); setInputVal(""); }} className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect w-40">
+          <button key={t.id} onClick={() => { setSelectedTool(t); setInputVal(""); setDivisionType('mb'); }} className="flex flex-col items-center p-4 bg-slate-900 rounded-2xl glow-effect w-40">
             <div className="p-3 bg-slate-950 rounded-full mb-3 text-slate-400"><t.icon className="w-8 h-8" /></div>
             <span className="font-bold text-white mb-1">{t.title}</span>
             <span className="text-[10px] text-slate-500 text-center">{t.desc}</span>
@@ -132,8 +141,65 @@ export default function PdfToolHub() {
 
               <div className="overflow-y-auto pr-2">
                 <p className="text-slate-300 leading-relaxed mb-6">{selectedTool.help}</p>
+
                 {selectedTool.id === "dividir" && (
-                  <input type="number" value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-4" placeholder="Limite em MB (ex: 5)" />
+                  <>
+                    <h4 className="text-white text-lg font-bold mb-3">Defina o Limite para Divisão</h4>
+                    <div className="flex gap-2 mb-4">
+                      <button
+                        onClick={() => { setDivisionType('mb'); setInputVal(""); }}
+                        className={`px-4 py-2 rounded-lg text-sm font-semibold ${divisionType === 'mb' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                      >
+                        Por Tamanho (MB)
+                      </button>
+                      <button
+                        onClick={() => { setDivisionType('pages'); setInputVal(""); }}
+                        className={`px-4 py-2 rounded-lg text-sm font-semibold ${divisionType === 'pages' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300 hover:bg-slate-600'}`}
+                      >
+                        Por Páginas
+                      </button>
+                    </div>
+
+                    {divisionType === 'mb' && (
+                      <>
+                        <input
+                          type="number"
+                          value={inputVal}
+                          onChange={(e) => setInputVal(e.target.value)}
+                          className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-3"
+                          placeholder="Ex: 3 (para 3 MB)"
+                        />
+                        <div className="flex gap-2 mb-4">
+                          <button onClick={() => setInputVal("3")} className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600">3 MB</button>
+                          <button onClick={() => setInputVal("5")} className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600">5 MB</button>
+                          <button onClick={() => setInputVal("10")} className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600">10 MB</button>
+                        </div>
+                        <p className="text-slate-400 text-sm mb-4">
+                          Defina o tamanho máximo de cada arquivo PDF resultante em Megabytes. Essencial para sistemas de processo eletrônico com limites de upload.
+                        </p>
+                      </>
+                    )}
+
+                    {divisionType === 'pages' && (
+                      <>
+                        <input
+                          type="number"
+                          value={inputVal}
+                          onChange={(e) => setInputVal(e.target.value)}
+                          className="w-full p-4 bg-slate-950 text-white rounded-xl border border-slate-700 mb-3"
+                          placeholder="Ex: 50 (para 50 páginas)"
+                        />
+                        <div className="flex gap-2 mb-4">
+                          <button onClick={() => setInputVal("20")} className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600">20 Páginas</button>
+                          <button onClick={() => setInputVal("50")} className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600">50 Páginas</button>
+                          <button onClick={() => setInputVal("100")} className="px-3 py-1 rounded-md bg-slate-700 text-slate-300 text-sm hover:bg-slate-600">100 Páginas</button>
+                        </div>
+                        <p className="text-slate-400 text-sm mb-4">
+                          Defina o número máximo de páginas para cada arquivo PDF resultante. Útil para sistemas que limitam a quantidade de páginas por documento.
+                        </p>
+                      </>
+                    )}
+                  </>
                 )}
               </div>
 
