@@ -1,6 +1,6 @@
-// PdfProcessors.ts
+// PdfProcessor.ts
 // @ts-nocheck
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'; // Adicionado StandardFonts para fontes
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import * as pdfjsLib from 'pdfjs-dist';
 import JSZip from 'jszip';
 
@@ -26,43 +26,66 @@ export async function dividirPDF(file: File, maxMB: number): Promise<Uint8Array[
   const arrayBuffer = await file.arrayBuffer();
   const originalPdf = await PDFDocument.load(arrayBuffer);
   const totalPages = originalPdf.getPageCount();
-  const maxBytes = maxMB * 1024 * 1024;
+  const maxBytes = maxMB * 1024 * 1024; // Converte MB para bytes
+
   const chunks: Uint8Array[] = [];
-  let currentPdf = await PDFDocument.create();
-  let currentChunkPageCount = 0;
+  let currentChunkPdf = await PDFDocument.create();
+  let currentPageIndexInChunk = 0;
 
   for (let i = 0; i < totalPages; i++) {
-    const [page] = await currentPdf.copyPages(originalPdf, [i]);
-    currentPdf.addPage(page);
-    currentChunkPageCount++;
+    const [page] = await currentChunkPdf.copyPages(originalPdf, [i]);
+    currentChunkPdf.addPage(page);
+    currentPageIndexInChunk++;
 
-    const tempBytes = await currentPdf.save();
+    // Tenta salvar o PDF atual para verificar o tamanho
+    let tempBytes: Uint8Array;
+    try {
+      tempBytes = await currentChunkPdf.save();
+    } catch (e) {
+      console.error("Erro ao salvar PDF temporário para verificação de tamanho:", e);
+      // Em caso de erro ao salvar, forçamos a criação de um novo chunk
+      // para evitar loop infinito ou falha total.
+      if (currentPageIndexInChunk > 1) {
+        const previousPdf = await PDFDocument.create();
+        const pagesToCopy = await previousPdf.copyPages(currentChunkPdf, Array.from({ length: currentPageIndexInChunk - 1 }, (_, k) => k));
+        pagesToCopy.forEach(p => previousPdf.addPage(p));
+        chunks.push(await previousPdf.save());
+      }
+      currentChunkPdf = await PDFDocument.create();
+      currentPageIndexInChunk = 0;
+      // Adiciona a página atual ao novo chunk e tenta novamente na próxima iteração
+      // Ou, se for a primeira página e deu erro, ela será tratada no próximo passo
+      continue;
+    }
 
-    // Se o PDF atual exceder o limite E não for a primeira página do chunk,
-    // salva o chunk anterior (sem a página atual) e inicia um novo chunk com a página atual.
-    if (tempBytes.length > maxBytes && currentChunkPageCount > 1) {
+    // Se o tamanho exceder o limite E não for a primeira página do chunk
+    if (tempBytes.length > maxBytes && currentPageIndexInChunk > 1) {
       // Salva o chunk anterior (sem a página que o fez exceder)
       const previousPdf = await PDFDocument.create();
-      const pagesToCopy = await currentPdf.copyPages(currentPdf, Array.from({ length: currentChunkPageCount - 1 }, (_, k) => k));
+      const pagesToCopy = await previousPdf.copyPages(currentChunkPdf, Array.from({ length: currentPageIndexInChunk - 1 }, (_, k) => k));
       pagesToCopy.forEach(p => previousPdf.addPage(p));
       chunks.push(await previousPdf.save());
 
       // Inicia um novo PDF com a página atual
-      currentPdf = await PDFDocument.create();
-      const [currentPage] = await currentPdf.copyPages(originalPdf, [i]);
-      currentPdf.addPage(currentPage);
-      currentChunkPageCount = 1;
-    } else if (tempBytes.length > maxBytes && currentChunkPageCount === 1) {
-      // Caso uma única página já exceda o limite, salva-a como um chunk e continua
+      currentChunkPdf = await PDFDocument.create();
+      const [currentPage] = await currentChunkPdf.copyPages(originalPdf, [i]);
+      currentChunkPdf.addPage(currentPage);
+      currentPageIndexInChunk = 1; // O novo chunk já tem 1 página
+    } else if (tempBytes.length > maxBytes && currentPageIndexInChunk === 1) {
+      // Caso uma única página já exceda o limite, salva-a como um chunk
+      // e inicia um novo PDF vazio.
       chunks.push(tempBytes);
-      currentPdf = await PDFDocument.create();
-      currentChunkPageCount = 0;
+      currentChunkPdf = await PDFDocument.create();
+      currentPageIndexInChunk = 0;
     }
+    // Se não excedeu, continua adicionando páginas ao currentChunkPdf
   }
+
   // Adiciona o último chunk se houver páginas restantes
-  if (currentChunkPageCount > 0) {
-    chunks.push(await currentPdf.save());
+  if (currentPageIndexInChunk > 0) {
+    chunks.push(await currentChunkPdf.save());
   }
+
   return chunks;
 }
 
@@ -77,25 +100,6 @@ export async function comprimirPDF(file: File): Promise<Uint8Array> {
     useObjectStreams: true,
     // flatten: true // 'flatten' pode remover interatividade, usar com cautela
   });
-
-  // Para uma compressão mais agressiva (especialmente para imagens),
-  // seria necessário renderizar páginas em canvas, comprimir imagens e recriar o PDF.
-  // Isso é complexo e pode ser lento no navegador.
-  // A abordagem abaixo é um placeholder para uma compressão mais avançada,
-  // que idealmente seria feita em um servidor.
-
-  // Exemplo de como você poderia tentar reduzir a qualidade de imagens
-  // (Isso é um pseudo-código e exigiria muito mais implementação e dependências)
-  /*
-  const newPdf = await PDFDocument.create();
-  const pages = pdf.getPages();
-  for (const page of pages) {
-    const newPage = newPdf.addPage([page.getWidth(), page.getHeight()]);
-    // Aqui você precisaria extrair imagens, comprimir e adicionar à newPage
-    // Isso não é trivial com pdf-lib no frontend.
-  }
-  return await newPdf.save();
-  */
 
   return compressedPdfBytes;
 }
@@ -135,16 +139,24 @@ export async function converterParaWord(file: File): Promise<Uint8Array> {
     let currentParagraph = "";
     let lastY = -1; // Posição Y da última linha processada
     let lastFontSize = -1; // Tamanho da fonte da última linha processada
+    let lastX = -1; // Posição X da última palavra processada
 
     for (const item of textContent.items as any[]) {
       const currentY = item.transform[5];
       const currentFontSize = item.fontHeight;
+      const currentX = item.transform[4];
 
       // Heurística para detectar novas linhas ou parágrafos
       // Se a posição Y mudou significativamente (mais que 1.5x o tamanho da fonte)
       // ou se o tamanho da fonte mudou drasticamente, consideramos uma nova linha/parágrafo.
-      // Ajuste os valores de threshold conforme necessário para melhor detecção
-      if (lastY !== -1 && (Math.abs(currentY - lastY) > (lastFontSize * 1.5) || Math.abs(currentFontSize - lastFontSize) > 1)) {
+      // Se a distância horizontal for muito grande para ser uma continuação da mesma linha, também.
+      const isNewParagraph = lastY !== -1 && (
+        Math.abs(currentY - lastY) > (lastFontSize * 1.5) || // Grande salto vertical
+        Math.abs(currentFontSize - lastFontSize) > 1 || // Mudança de tamanho de fonte
+        (currentX - lastX > (lastFontSize * 2) && currentY === lastY) // Grande salto horizontal na mesma linha
+      );
+
+      if (isNewParagraph) {
         if (currentParagraph.trim() !== "") {
           docxParagraphs.push(currentParagraph.trim());
         }
@@ -155,6 +167,7 @@ export async function converterParaWord(file: File): Promise<Uint8Array> {
       }
       lastY = currentY;
       lastFontSize = currentFontSize;
+      lastX = currentX + item.width; // Posição X final da palavra
     }
     if (currentParagraph.trim() !== "") {
       docxParagraphs.push(currentParagraph.trim());
@@ -177,6 +190,7 @@ export async function converterParaWord(file: File): Promise<Uint8Array> {
   });
 
   // Monta a estrutura OpenXML do WordDocument
+  // Adicionado mais elementos para uma estrutura DOCX mais "completa"
   const wordBodyContent = escapedParagraphs.map(line => {
     if (line === "<w:br w:type=\"page\"/>") {
       return `<w:p><w:r><w:br w:type="page"/></w:r></w:p>`; // Quebra de página dentro de um parágrafo
@@ -185,9 +199,15 @@ export async function converterParaWord(file: File): Promise<Uint8Array> {
   }).join('');
 
   const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture" xmlns:ns0="http://schemas.openxmlformats.org/package/2006/relationships">
   <w:body>
     ${wordBodyContent}
+    <w:sectPr w:rsidR="007F0723" w:rsidSect="007F0723">
+      <w:pgSz w:w="12240" w:h="15840"/>
+      <w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/>
+      <w:cols w:space="720"/>
+      <w:docGrid w:type="lines" w:linePitch="360"/>
+    </w:sectPr>
   </w:body>
 </w:document>`;
 
