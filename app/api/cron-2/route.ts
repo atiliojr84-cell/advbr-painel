@@ -22,7 +22,6 @@ export async function GET() {
   }
 
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
-
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
   const mySlice = normais.slice(Math.ceil(normais.length / 2));
 
@@ -50,11 +49,19 @@ export async function GET() {
         clearTimeout(timeoutId);
 
         await response.arrayBuffer().catch(() => {}); 
-        const pingReal = Date.now() - start;
-        pings[trib.name] = pingReal;
+
+        // --- MATEMÁTICA DO PING MASCARADO (ROBÔS NORMAIS) ---
+        const pingCru = Date.now() - start;
+        let pingMascarado = pingCru - 350; 
+
+        if (pingMascarado < 45) {
+          pingMascarado = Math.floor(Math.random() * 40) + 45; 
+        }
+
+        pings[trib.name] = pingMascarado;
 
         if (response.ok || (response.status >= 300 && response.status < 400)) {
-          statuses[trib.name] = pingReal > 4000 ? 'instavel' : 'online';
+          statuses[trib.name] = pingMascarado > 4000 ? 'instavel' : 'online';
           break; 
         } else {
           statuses[trib.name] = 'offline';
@@ -80,5 +87,5 @@ export async function GET() {
   const horaDistorcida = new Date(Date.now() - 153000);
   await kv.set('last_update', horaDistorcida.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
 
-  return NextResponse.json({ success: true, robo: "Cron 2 (Normais Parte 2)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 2 (Mascarado)", debug: debugInfo });
 }
