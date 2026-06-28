@@ -140,13 +140,13 @@ export default function JurisdictionHub() {
                           <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${modalBtnStyle}`}>
                             <span className="text-white text-sm font-medium">{t.name}</span>
 
-                            {/* Container do Ping + Bolinha */}
+                            {/* Container do Ping + Bolinha CORRIGIDO */}
                             <div className="flex items-center gap-3">
-                              {livePings[t.name] > 0 && (
+                              {livePings[t.name] ? (
                                 <span className="text-xs text-slate-400 font-mono">
                                   {livePings[t.name]}ms
                                 </span>
-                              )}
+                              ) : null}
                               <div className={`w-3 h-3 rounded-full shrink-0 transition-colors duration-500 ${getStatusColor(t.name)}`} />
                             </div>
 
