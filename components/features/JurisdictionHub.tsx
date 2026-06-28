@@ -1,87 +1,165 @@
-import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
-import { jurisdictions } from '../../../data/jurisdictions';
+"use client";
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const maxDuration = 300;
+import { useState, useEffect } from "react";
+import { ArrowLeft, Activity } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { jurisdictions } from "../../data/jurisdictions";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+export default function JurisdictionHub() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [view, setView] = useState<'estado' | 'tribunal'>('estado');
+  const [activeRegiao, setActiveRegiao] = useState<string>('');
+  const [selectedEstado, setSelectedEstado] = useState<string>('');
 
-export async function GET() {
-  let statuses: Record<string, string> = await kv.get('court_statuses') || {};
-  let pings: Record<string, number> = await kv.get('court_pings') || {};
-  let debugInfo: Record<string, string> = {};
+  const [liveStatus, setLiveStatus] = useState<Record<string, string>>({});
+  const [livePings, setLivePings] = useState<Record<string, number>>({});
 
-  const allTribunals = [...jurisdictions.federais];
-  for (const regiao in jurisdictions.regioes) {
-    const estados = (jurisdictions.regioes as any)[regiao];
-    for (const estado in estados) {
-      allTribunals.push(...estados[estado]);
-    }
-  }
-
-  const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
-  const mySlice = allTribunals.filter(t => rebeldes.includes(t.name));
-
-  const testRebelde = async (trib: any, attempt = 1): Promise<void> => {
-    try {
-      const controller = new AbortController();
-      // Timeout individual de 45s para cada site
-      const timeoutId = setTimeout(() => controller.abort(), 45000);
-      const start = Date.now();
-
-      let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-
-      const response = await fetch('https://api.brightdata.com/request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer e230c289-93b8-4529-b3e2-66e978776893'
-        },
-        body: JSON.stringify({
-          zone: 'web_unlocker1',
-          url: targetUrl,
-          format: 'raw'
-        }),
-        signal: controller.signal,
-        cache: 'no-store'
-      });
-
-      clearTimeout(timeoutId);
-
-      await response.arrayBuffer().catch(() => {});
-      const time = Date.now() - start;
-
-      if (response.ok) {
-        statuses[trib.name] = 'online';
-        pings[trib.name] = Math.floor(Math.random() * 100) + 120;
-      } else {
-        if (attempt === 1 && response.status === 403) {
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          return testRebelde(trib, 2);
-        }
-        statuses[trib.name] = 'offline';
-        pings[trib.name] = 0;
-        debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
-      }
-    } catch (error: any) {
-      if (attempt === 1) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        return testRebelde(trib, 2);
-      }
-      statuses[trib.name] = 'offline';
-      pings[trib.name] = 0;
-      debugInfo[trib.name] = `Falha (Tentativa ${attempt}): ${error.message}`;
-    }
+  const regiaoMap: { [key: string]: string } = {
+    federais: "federais",
+    sul: "Sul",
+    sudeste: "Sudeste",
+    centrooeste: "CentroOeste",
+    nordeste: "Nordeste",
+    norte: "Norte"
   };
 
-  // MÁGICA AQUI: Dispara todos os 11 testes ao mesmo tempo (Paralelo)
-  const tasks = mySlice.map(trib => testRebelde(trib));
-  await Promise.allSettled(tasks);
+  const handleOpen = (regiaoSlug: string) => {
+    const key = regiaoMap[regiaoSlug];
+    setActiveRegiao(key);
+    setView(key === 'federais' ? 'tribunal' : 'estado');
+    setIsOpen(true);
+  };
 
-  await kv.set('court_statuses', statuses);
-  await kv.set('court_pings', pings);
+  const getStatusColor = (nomeTribunal: string) => {
+    const status = liveStatus[nomeTribunal];
+    if (status === 'online') return "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]";
+    if (status === 'instavel') return "bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]";
+    if (status === 'offline') return "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]";
+    return "bg-slate-600 animate-pulse";
+  };
 
-  return NextResponse.json({ success: true, robo: "Robo 3 (Bright Data Paralelo)", debug: debugInfo });
+  useEffect(() => {
+    if (!isOpen) return;
+    const fetchStatuses = async () => {
+      try {
+        const res = await fetch(`/api/get-status?t=${Date.now()}`, { cache: 'no-store' });
+        const data = await res.json();
+
+        if (data.statuses) {
+          setLiveStatus(data.statuses);
+          setLivePings(data.pings || {});
+        } else {
+          setLiveStatus(data);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar status", error);
+      }
+    };
+    fetchStatuses();
+  }, [isOpen]);
+
+  const mainBtnStyle = "bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg";
+  const modalBtnStyle = "bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800";
+
+  return (
+    <>
+      <section className="py-8 px-4 text-center">
+        <div className="max-w-3xl mx-auto mb-12 bg-slate-900/50 border border-slate-800 p-8 rounded-3xl shadow-xl">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="p-3 bg-blue-900/20 rounded-2xl">
+              <Activity className="w-8 h-8 text-blue-500" />
+            </div>
+            <h2 className="text-2xl font-bold text-white">Monitoramento de Tribunais em Tempo Real</h2>
+          </div>
+          <p className="text-slate-400 leading-relaxed text-sm">
+            Centralizamos o acesso aos principais sistemas de peticionamento do país. Realizamos o monitoramento proativo de cada portal, identificando instabilidades em tempo real.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4">
+          {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
+            <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 text-slate-300 capitalize font-medium ${mainBtnStyle}`}>
+              {r === "CentroOeste" ? "Centro-Oeste" : r}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            key="modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              key="modal-content"
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
+            >
+              <div className="flex items-center justify-between mb-6 shrink-0">
+                <div className="flex items-center gap-3">
+                  {view === 'tribunal' && activeRegiao !== 'federais' && (
+                    <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
+                      <ArrowLeft size={24} />
+                    </button>
+                  )}
+                  <h3 className="text-white text-xl font-bold">
+                    {activeRegiao === 'federais' ? 'Tribunais Federais' : (view === 'estado' ? activeRegiao : selectedEstado)}
+                  </h3>
+                </div>
+                <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white">Fechar</button>
+              </div>
+
+              <div className="overflow-y-auto overscroll-contain max-h-[60vh] pr-2 -mr-2 custom-scrollbar scroll-smooth">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={view + activeRegiao + selectedEstado}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {view === 'estado' ? (
+                      <div className="grid grid-cols-2 gap-3 pb-4">
+                        {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
+                          <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className={`p-4 text-white font-medium text-sm text-left ${modalBtnStyle}`}>
+                            {e}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-3 pb-4">
+                        {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
+                          <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${modalBtnStyle}`}>
+                            <span className="text-white text-sm font-medium">{t.name}</span>
+
+                            <div className="flex items-center gap-3">
+                              {livePings[t.name] ? (
+                                <span className="text-xs text-slate-400 font-mono">
+                                  {livePings[t.name]}ms
+                                </span>
+                              ) : null}
+                              <div className={`w-3 h-3 rounded-full shrink-0 transition-colors duration-500 ${getStatusColor(t.name)}`} />
+                            </div>
+
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }
