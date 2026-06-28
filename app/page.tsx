@@ -4,16 +4,16 @@ import ServiceGrid from "../components/ServiceGrid";
 import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
 import DiagnosticHub from "../components/features/DiagnosticHub";
-import { kv } from '@vercel/kv'; 
+import { kv } from '@vercel/kv';
 
-import nextDynamic from 'next/dynamic'; 
-import { Loader2 } from 'lucide-react'; 
+import nextDynamic from 'next/dynamic';
+import { Loader2 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 const DynamicPdfToolHub = nextDynamic(() => import('../components/features/PdfToolHub'), {
-  ssr: false, 
+  ssr: false,
   loading: () => (
     <div className="flex justify-center items-center h-40 text-white">
       <Loader2 className="animate-spin text-blue-500" size={32} /> Carregando Ferramentas PDF...
@@ -25,6 +25,28 @@ export default async function Home() {
   const statuses = await kv.get('court_statuses') || {};
   const pings = await kv.get('court_pings') || {};
   const lastUpdate = await kv.get('last_update') || 'Aguardando robôs...';
+
+  // Lógica para formatar a data para exibir apenas a hora
+  let formattedTime = 'Aguardando robôs...';
+  if (lastUpdate && lastUpdate !== 'Aguardando robôs...') {
+    try {
+      const dateObject = new Date(lastUpdate as string);
+      // Verifica se a data é válida antes de formatar
+      if (!isNaN(dateObject.getTime())) {
+        formattedTime = dateObject.toLocaleTimeString('pt-BR', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false, // Para formato 24 horas
+          timeZone: 'America/Sao_Paulo' // Garante que a hora seja exibida no fuso horário correto
+        });
+      } else {
+        formattedTime = 'Data inválida';
+      }
+    } catch (e) {
+      console.error("Erro ao formatar lastUpdate em page.tsx:", e);
+      formattedTime = 'Erro na data';
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#0b0f19]">
@@ -39,19 +61,19 @@ export default async function Home() {
               <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
             </h2>
             <p className="text-xs text-slate-400 bg-slate-800/50 px-3 py-1 rounded-full border border-slate-700">
-              Última verificação: {lastUpdate as string}
+              Última verificação: {formattedTime}
             </p>
           </div>
-          <PortalCarousel 
-            statuses={statuses as Record<string, string>} 
-            pings={pings as Record<string, number>} 
+          <PortalCarousel
+            statuses={statuses as Record<string, string>}
+            pings={pings as Record<string, number>}
           />
         </section>
 
         {/* Componente atualizado: agora ele busca os dados sozinho */}
         <JurisdictionHub />
 
-        <DynamicPdfToolHub /> 
+        <DynamicPdfToolHub />
 
         <DiagnosticHub />
 
