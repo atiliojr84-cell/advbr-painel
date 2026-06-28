@@ -21,8 +21,11 @@ export async function GET() {
     }
   }
 
-  // Robô 1 pega apenas do item 0 ao 40
-  const mySlice = allTribunals.slice(0, 40);
+  const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
+  const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
+
+  // Robô 1 pega a primeira metade dos sites normais (sem custo)
+  const mySlice = normais.slice(0, 40);
 
   const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
@@ -78,5 +81,5 @@ export async function GET() {
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Robo 1 (0 a 40)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 1 (Normais 1)", debug: debugInfo });
 }
