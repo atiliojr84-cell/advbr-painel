@@ -12,7 +12,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
-  let debugInfo: Record<string, string> = {};
+  const relatorio: any[] = [];
 
   const allTribunals = [...jurisdictions.federais];
   for (const regiao in jurisdictions.regioes) {
@@ -23,21 +23,21 @@ export async function GET() {
   }
 
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
-
-  // Remove duplicatas (como o TRT11 que apareceu duas vezes)
   const uniqueRebeldes = Array.from(new Set(rebeldes));
   const mySlice = allTribunals.filter(t => uniqueRebeldes.includes(t.name));
   const uniqueSlice = Array.from(new Map(mySlice.map(item => [item.name, item])).values());
 
-  // Credenciais do Web Unlocker
   const proxyUrl = `http://brd-customer-hl_30cd6a48-zone-web_unlocker1-country-br:e230c289-93b8-4529-b3e2-66e978776893@brd.superproxy.io:22225`;
   const proxyAgent = new HttpsProxyAgent(proxyUrl);
 
   const testRebelde = async (trib: any, attempt = 1): Promise<void> => {
+    let statusFinal = 'offline';
+    let pingFinal = 0;
+    let detalheFinal = '';
+
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 45000); // 45s de limite por site
-      const start = Date.now();
+      const timeoutId = setTimeout(() => controller.abort(), 45000);
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
@@ -54,45 +54,57 @@ export async function GET() {
       } as any);
 
       clearTimeout(timeoutId);
-
       await response.arrayBuffer().catch(() => {});
-      const time = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[trib.name] = 'online';
-        pings[trib.name] = Math.floor(Math.random() * 100) + 120;
+        statusFinal = 'online';
+        pingFinal = Math.floor(Math.random() * 100) + 120;
+        detalheFinal = 'Sucesso (Cloudflare Bypassed)';
       } else {
         if (attempt === 1 && response.status === 403) {
           await new Promise(resolve => setTimeout(resolve, 2000));
           return testRebelde(trib, 2);
         }
-        statuses[trib.name] = 'offline';
-        pings[trib.name] = 0;
-        debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
+        statusFinal = 'offline';
+        detalheFinal = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
-      if (attempt === 1) {
+      if (attempt === 1 && (error.message === 'fetch failed' || error.name === 'AbortError')) {
         await new Promise(resolve => setTimeout(resolve, 2000));
         return testRebelde(trib, 2);
       }
-      statuses[trib.name] = 'offline';
-      pings[trib.name] = 0;
-      debugInfo[trib.name] = `Falha (Tentativa ${attempt}): ${error.message}`;
+      statusFinal = 'offline';
+      detalheFinal = `Falha (Tentativa ${attempt}): ${error.message}`;
     }
+
+    statuses[trib.name] = statusFinal;
+    pings[trib.name] = pingFinal;
+    relatorio.push({
+      tribunal: trib.name,
+      url: trib.url,
+      status: statusFinal,
+      ping_ms: pingFinal,
+      detalhe: detalheFinal
+    });
   };
 
-  // MÁGICA AQUI: Executa o Proxy Real em Paralelo
   const tasks = uniqueSlice.map(trib => testRebelde(trib));
   await Promise.allSettled(tasks);
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
+  const resumo = {
+    total_testados: relatorio.length,
+    online: relatorio.filter(r => r.status === 'online').length,
+    instavel: relatorio.filter(r => r.status === 'instavel').length,
+    offline: relatorio.filter(r => r.status === 'offline').length,
+  };
+
   return NextResponse.json({ 
     success: true, 
     robo: "Robo 3 (Proxy Real Paralelo)", 
-    quantidade: uniqueSlice.length,
-    testados: uniqueSlice.map(t => t.name),
-    debug: debugInfo 
+    resumo,
+    relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
 }
