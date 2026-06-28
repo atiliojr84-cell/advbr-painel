@@ -4,7 +4,7 @@ import { jurisdictions } from '../../../data/jurisdictions';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-export const maxDuration = 300;
+export const maxDuration = 60;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -27,7 +27,6 @@ export async function GET() {
   const testRebelde = async (trib: any, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
-      // Timeout individual de 45s para cada site
       const timeoutId = setTimeout(() => controller.abort(), 45000);
       const start = Date.now();
 
@@ -76,12 +75,17 @@ export async function GET() {
     }
   };
 
-  // MÁGICA AQUI: Dispara todos os 11 testes ao mesmo tempo (Paralelo)
   const tasks = mySlice.map(trib => testRebelde(trib));
   await Promise.allSettled(tasks);
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Robo 3 (Bright Data Paralelo)", debug: debugInfo });
+  return NextResponse.json({ 
+    success: true, 
+    robo: "Robo 3 (Bright Data Paralelo)", 
+    quantidade: mySlice.length,
+    testados: mySlice.map(t => t.name),
+    debug: debugInfo 
+  });
 }
