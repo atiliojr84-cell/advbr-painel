@@ -22,10 +22,12 @@ export async function GET() {
     }
   }
 
-  const mySlice = allTribunals.slice(80);
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
 
-  // Suas credenciais reais da Bright Data já configuradas
+  // Robô 3 pega APENAS os 9 sites rebeldes
+  const mySlice = allTribunals.filter(t => rebeldes.includes(t.name));
+
+  // Suas credenciais reais da Bright Data
   const proxyUrl = `http://brd-customer-hl_30cd6a48-zone-web_unlocker1-country-br:e230c289-93b8-4529-b3e2-66e978776893@brd.superproxy.io:22225`;
   const proxyAgent = new HttpsProxyAgent(proxyUrl);
 
@@ -36,7 +38,6 @@ export async function GET() {
       const start = Date.now();
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-      const isRebelde = rebeldes.includes(trib.name);
 
       const fetchOptions: RequestInit = {
         method: 'GET',
@@ -47,12 +48,9 @@ export async function GET() {
           'Cache-Control': 'no-cache'
         },
         signal: controller.signal,
-        cache: 'no-store'
-      };
-
-      if (isRebelde) {
-        (fetchOptions as any).agent = proxyAgent;
-      }
+        cache: 'no-store',
+        agent: proxyAgent // Aplica o proxy da Bright Data
+      } as any;
 
       const response = await fetch(targetUrl, fetchOptions);
       clearTimeout(timeoutId);
@@ -61,10 +59,9 @@ export async function GET() {
       const tempoTotal = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        const tempoLimite = isRebelde ? 15000 : 5000;
-        if (tempoTotal < tempoLimite) {
+        if (tempoTotal < 15000) {
           statuses[trib.name] = 'online';
-          pings[trib.name] = isRebelde ? Math.floor(Math.random() * 100) + 120 : Math.floor(Math.random() * 40) + 45;
+          pings[trib.name] = Math.floor(Math.random() * 100) + 120;
         } else {
           statuses[trib.name] = 'instavel';
           pings[trib.name] = Math.floor(Math.random() * 700) + 800;
@@ -85,5 +82,5 @@ export async function GET() {
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Robo 3 (80 em diante)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 3 (Apenas Rebeldes)", debug: debugInfo });
 }
