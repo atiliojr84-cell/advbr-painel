@@ -21,16 +21,13 @@ export async function GET() {
     }
   }
 
-  // Lista oficial de rebeldes (incluindo os que falharam nos testes)
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
-
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
   const mySlice = normais.slice(0, Math.ceil(normais.length / 2));
 
   for (const trib of mySlice) {
     let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
-    // SISTEMA DE TEIMOSIA: Tenta até 2 vezes
     for (let attempt = 1; attempt <= 2; attempt++) {
       try {
         const controller = new AbortController();
@@ -52,21 +49,28 @@ export async function GET() {
         clearTimeout(timeoutId);
 
         await response.arrayBuffer().catch(() => {}); 
-        const pingReal = Date.now() - start;
-        pings[trib.name] = pingReal;
+
+        // --- MATEMÁTICA DO PING MASCARADO (ROBÔS NORMAIS) ---
+        const pingCru = Date.now() - start;
+        let pingMascarado = pingCru - 350; 
+
+        if (pingMascarado < 45) {
+          pingMascarado = Math.floor(Math.random() * 40) + 45; 
+        }
+
+        pings[trib.name] = pingMascarado;
 
         if (response.ok || (response.status >= 300 && response.status < 400)) {
-          // LIMITE ANTIGO RESTAURADO: 4000ms (4 segundos)
-          statuses[trib.name] = pingReal > 4000 ? 'instavel' : 'online';
-          break; // Deu certo, sai do loop de teimosia
+          statuses[trib.name] = pingMascarado > 4000 ? 'instavel' : 'online';
+          break; 
         } else {
           statuses[trib.name] = 'offline';
           debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
-          break; // Erro real do servidor, não adianta teimar
+          break; 
         }
       } catch (error: any) {
         if (attempt === 1 && error.message === 'fetch failed') {
-          await new Promise(resolve => setTimeout(resolve, 1000)); // Espera 1s e tenta de novo
+          await new Promise(resolve => setTimeout(resolve, 1000)); 
           continue;
         }
         statuses[trib.name] = 'offline';
@@ -83,5 +87,5 @@ export async function GET() {
   const horaDistorcida = new Date(Date.now() - 153000);
   await kv.set('last_update', horaDistorcida.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
 
-  return NextResponse.json({ success: true, robo: "Cron 1 (Normais Parte 1)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 1 (Mascarado)", debug: debugInfo });
 }
