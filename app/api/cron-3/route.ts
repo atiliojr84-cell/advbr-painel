@@ -62,7 +62,8 @@ export async function GET() {
       pings[trib.name] = pingMascarado;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[trib.name] = pingMascarado > 15000 ? 'instavel' : 'online';
+        // REGRA UNIVERSAL: Se o ping real do usuário passar de 600ms, fica amarelo
+        statuses[trib.name] = pingMascarado > 600 ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
@@ -78,5 +79,5 @@ export async function GET() {
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Cron 3 (Mascarado)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 3 (Mascarado 600ms)", debug: debugInfo });
 }
