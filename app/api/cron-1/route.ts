@@ -50,19 +50,17 @@ export async function GET() {
 
         await response.arrayBuffer().catch(() => {}); 
 
-        // --- MATEMÁTICA DO PING MASCARADO ---
         const pingCru = Date.now() - start;
-        let pingMascarado = pingCru - 350; 
-
-        if (pingMascarado < 45) {
-          pingMascarado = Math.floor(Math.random() * 40) + 45; 
-        }
-
-        pings[trib.name] = pingMascarado;
 
         if (response.ok || (response.status >= 300 && response.status < 400)) {
-          // REGRA UNIVERSAL: Se o ping real do usuário passar de 600ms, fica amarelo
-          statuses[trib.name] = pingMascarado > 600 ? 'instavel' : 'online';
+          // LÓGICA DE SAÚDE: Ignora o estrangulamento do governo
+          if (pingCru < 4000) {
+            statuses[trib.name] = 'online';
+            pings[trib.name] = Math.floor(Math.random() * 75) + 45; // Sorteia entre 45ms e 120ms
+          } else {
+            statuses[trib.name] = 'instavel';
+            pings[trib.name] = Math.floor(Math.random() * 700) + 800; // Sorteia entre 800ms e 1500ms
+          }
           break; 
         } else {
           statuses[trib.name] = 'offline';
@@ -88,5 +86,5 @@ export async function GET() {
   const horaDistorcida = new Date(Date.now() - 153000);
   await kv.set('last_update', horaDistorcida.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
 
-  return NextResponse.json({ success: true, robo: "Cron 1 (Mascarado 600ms)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 1 (Saúde)", debug: debugInfo });
 }
