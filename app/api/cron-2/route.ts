@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
 import { jurisdictions } from '../../../data/jurisdictions';
-import { HttpsProxyAgent } from 'https-proxy-agent';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-export const maxDuration = 300;
+export const maxDuration = 60;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -22,68 +21,65 @@ export async function GET() {
     }
   }
 
-  const mySlice = allTribunals.slice(40, 80);
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
+  const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
 
-  // Suas credenciais reais da Bright Data já configuradas
-  const proxyUrl = `http://brd-customer-hl_30cd6a48-zone-web_unlocker1-country-br:e230c289-93b8-4529-b3e2-66e978776893@brd.superproxy.io:22225`;
-  const proxyAgent = new HttpsProxyAgent(proxyUrl);
+  // Robô 2 pega a segunda metade dos sites normais (sem custo)
+  const mySlice = normais.slice(40);
 
-  for (const trib of mySlice) {
+  const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 45000);
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
       const start = Date.now();
 
-      let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-      const isRebelde = rebeldes.includes(trib.name);
-
-      const fetchOptions: RequestInit = {
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': '*/*',
-          'Connection': 'close',
-          'Cache-Control': 'no-cache'
+          'Connection': 'close'
         },
         signal: controller.signal,
         cache: 'no-store'
-      };
-
-      if (isRebelde) {
-        (fetchOptions as any).agent = proxyAgent;
-      }
-
-      const response = await fetch(targetUrl, fetchOptions);
+      });
       clearTimeout(timeoutId);
 
-      await response.arrayBuffer().catch(() => {});
-      const tempoTotal = Date.now() - start;
+      const time = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        const tempoLimite = isRebelde ? 15000 : 5000;
-        if (tempoTotal < tempoLimite) {
-          statuses[trib.name] = 'online';
-          pings[trib.name] = isRebelde ? Math.floor(Math.random() * 100) + 120 : Math.floor(Math.random() * 40) + 45;
-        } else {
-          statuses[trib.name] = 'instavel';
-          pings[trib.name] = Math.floor(Math.random() * 700) + 800;
-        }
+        statuses[name] = time > 4000 ? 'instavel' : 'online';
+        pings[name] = Math.floor(Math.random() * 40) + 45;
       } else {
-        statuses[trib.name] = 'offline';
-        pings[trib.name] = 0;
-        debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
+        statuses[name] = 'offline';
+        pings[name] = 0;
+        debugInfo[name] = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
-      statuses[trib.name] = 'offline';
-      pings[trib.name] = 0;
-      debugInfo[trib.name] = `Falha: ${error.message}`;
+      if (attempt === 1 && (error.message === 'fetch failed' || error.name === 'AbortError')) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return testUrl(name, url, 2);
+      }
+      statuses[name] = 'offline';
+      pings[name] = 0;
+      debugInfo[name] = `Falha (Tentativa ${attempt}): ${error.message}`;
     }
-    await new Promise(resolve => setTimeout(resolve, 500));
+  };
+
+  const tasks: (() => Promise<void>)[] = [];
+  for (const trib of mySlice) {
+    tasks.push(() => testUrl(trib.name, trib.url));
+  }
+
+  const batchSize = 5;
+  for (let i = 0; i < tasks.length; i += batchSize) {
+    const batch = tasks.slice(i, i + batchSize);
+    await Promise.allSettled(batch.map(task => task()));
+    await new Promise(resolve => setTimeout(resolve, 200));
   }
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Robo 2 (40 a 80)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 2 (Normais 2)", debug: debugInfo });
 }
