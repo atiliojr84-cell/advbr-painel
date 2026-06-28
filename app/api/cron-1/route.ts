@@ -89,8 +89,10 @@ export async function GET() {
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  // Salva a data e hora da última atualização
-  await kv.set('last_update', new Date().toISOString());
+  // Camuflagem de Segurança: Atrasa a hora registrada entre 60 e 120 segundos
+  const atrasoFake = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; 
+  const horaCamuflada = new Date(Date.now() - atrasoFake).toISOString();
+  await kv.set('last_update', horaCamuflada);
 
   const resumo = {
     total_testados: relatorio.length,
