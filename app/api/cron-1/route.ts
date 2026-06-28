@@ -21,7 +21,8 @@ export async function GET() {
     }
   }
 
-  const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
+  // LISTA ATUALIZADA COM TRT11 E PJE NACIONAL
+  const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
 
   const mySlice = normais.slice(0, 40);
@@ -29,7 +30,6 @@ export async function GET() {
   const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
-      // AUMENTADO PARA 15 SEGUNDOS
       const timeoutId = setTimeout(() => controller.abort(), 15000); 
       const start = Date.now();
 
