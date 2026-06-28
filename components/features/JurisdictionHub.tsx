@@ -33,7 +33,7 @@ export default function JurisdictionHub({
     setIsOpen(true);
   };
 
-  // --- LÓGICA NOVA: Descobre se a região ou estado tem problema ---
+  // --- LÓGICA: Descobre se a região ou estado tem problema ---
   const getGroupStatus = (tribunals: any[]) => {
     if (!tribunals) return 'online';
     let hasOffline = false;
@@ -58,7 +58,6 @@ export default function JurisdictionHub({
     Object.values(regionData).forEach((stateTribs: any) => allTribs.push(...stateTribs));
     return allTribs;
   };
-  // ----------------------------------------------------------------
 
   // Mantém as luzinhas originais intactas
   const getStatusColor = (nomeTribunal: string) => {
@@ -69,18 +68,24 @@ export default function JurisdictionHub({
     return "bg-slate-600 animate-pulse"; 
   };
 
-  // --- ESTILOS NOVOS: Cores suaves para os botões ---
+  // --- ESTILOS NOVOS: Cores suaves para os botões (Amarelo corrigido) ---
   const getRegionBtnStyle = (status: string) => {
     const base = "px-6 py-3 text-slate-300 capitalize font-medium rounded-xl transition-colors shadow-lg border";
     if (status === 'offline') return `${base} bg-red-950/40 border-red-900/50 hover:bg-red-900/50`;
-    if (status === 'instavel') return `${base} bg-yellow-950/40 border-yellow-900/50 hover:bg-yellow-900/50`;
+
+    // Amarelo puro com transparência (sem o tom marrom/avermelhado)
+    if (status === 'instavel') return `${base} bg-yellow-500/10 border-yellow-500/30 hover:bg-yellow-500/20`;
+
     return `${base} bg-slate-900 border-slate-800 hover:bg-slate-800`;
   };
 
   const getStateBtnStyle = (status: string) => {
     const base = "p-4 text-white font-medium text-sm text-left rounded-xl transition-colors border";
     if (status === 'offline') return `${base} bg-red-950/30 border-red-900/50 hover:bg-red-900/50`;
-    if (status === 'instavel') return `${base} bg-yellow-950/30 border-yellow-900/50 hover:bg-yellow-900/50`;
+
+    // Amarelo puro com transparência para os botões de estado
+    if (status === 'instavel') return `${base} bg-yellow-500/5 border-yellow-500/20 hover:bg-yellow-500/15`;
+
     return `${base} bg-slate-950 border-slate-800 hover:bg-slate-900`;
   };
   // --------------------------------------------------
