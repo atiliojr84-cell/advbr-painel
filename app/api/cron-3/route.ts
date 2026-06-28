@@ -80,7 +80,12 @@ export async function GET() {
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
-  await kv.set('last_update', new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
+
+  // CAMUFLAGEM DE HORÁRIO: Subtrai exatamente 2 minutos e 33 segundos (153.000 ms)
+  const agora = new Date();
+  const atrasoFixo = 153000; 
+  const horaDistorcida = new Date(agora.getTime() - atrasoFixo);
+  await kv.set('last_update', horaDistorcida.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
 
   return NextResponse.json({ success: true, robo: "Robo 3 (80 em diante)", debug: debugInfo });
 }
