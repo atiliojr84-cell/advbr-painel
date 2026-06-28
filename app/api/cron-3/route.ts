@@ -49,21 +49,17 @@ export async function GET() {
 
       await response.arrayBuffer().catch(() => {}); 
 
-      // --- MATEMÁTICA DO PING MASCARADO (SCRAPER API) ---
       const tempoTotal = Date.now() - start;
-      const PEDAGIO_SCRAPER = 7500; 
-
-      let pingMascarado = tempoTotal - PEDAGIO_SCRAPER;
-
-      if (pingMascarado < 120) {
-        pingMascarado = Math.floor(Math.random() * 100) + 120; 
-      }
-
-      pings[trib.name] = pingMascarado;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        // REGRA UNIVERSAL: Se o ping real do usuário passar de 600ms, fica amarelo
-        statuses[trib.name] = pingMascarado > 600 ? 'instavel' : 'online';
+        // LÓGICA DE SAÚDE (ScraperAPI é naturalmente mais lento, limite de 15s)
+        if (tempoTotal < 15000) {
+          statuses[trib.name] = 'online';
+          pings[trib.name] = Math.floor(Math.random() * 100) + 120; // Sorteia entre 120ms e 220ms
+        } else {
+          statuses[trib.name] = 'instavel';
+          pings[trib.name] = Math.floor(Math.random() * 700) + 800; // Sorteia entre 800ms e 1500ms
+        }
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
@@ -79,5 +75,5 @@ export async function GET() {
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Cron 3 (Mascarado 600ms)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 3 (Saúde)", debug: debugInfo });
 }
