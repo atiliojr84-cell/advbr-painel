@@ -40,7 +40,8 @@ export default function JurisdictionHub() {
   };
 
   useEffect(() => {
-    if (!isOpen) return;
+    // Este useEffect agora busca os dados sempre que o componente é montado ou 'isOpen' muda
+    // e não apenas quando o modal está aberto. Isso garante que 'lastUpdate' esteja sempre atualizado.
     const fetchStatuses = async () => {
       try {
         const res = await fetch(`/api/get-status?t=${Date.now()}`, { cache: 'no-store' });
@@ -58,7 +59,10 @@ export default function JurisdictionHub() {
       }
     };
     fetchStatuses();
-  }, [isOpen]);
+    // Opcional: Adicionar um intervalo para atualizar a cada X segundos, se desejar que a hora atualize sem recarregar a página
+    // const intervalId = setInterval(fetchStatuses, 60000); // Atualiza a cada 60 segundos
+    // return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar o componente
+  }, []); // Array de dependências vazio para rodar apenas uma vez na montagem
 
   const mainBtnStyle = "bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg";
   const modalBtnStyle = "bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800";
