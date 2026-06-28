@@ -21,27 +21,24 @@ export async function GET() {
     }
   }
 
-  const mySlice = allTribunals.slice(0, 40);
+  const rebeldes = ["TJBA", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
+  const normalTribunals = allTribunals.filter(t => !rebeldes.includes(t.name));
+
+  // Pega a primeira metade dos sites normais
+  const mySlice = normalTribunals.slice(0, Math.ceil(normalTribunals.length / 2));
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 20000); 
+      const timeoutId = setTimeout(() => controller.abort(), 10000); 
       const start = Date.now();
 
-      const rebeldes = ["TJBA", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
-      const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
-
-      let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
-
-      if (rebeldes.includes(trib.name)) {
-        targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&url=${encodeURIComponent(trib.url)}`;
-      }
+      const targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
       const response = await fetch(targetUrl, { 
         method: 'GET', 
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
           'Accept': '*/*',
           'Connection': 'close',
           'Cache-Control': 'no-cache'
@@ -54,54 +51,29 @@ export async function GET() {
 
       await response.arrayBuffer().catch(() => {}); 
 
-      // --- INÍCIO DO CÁLCULO DE LATÊNCIA INTELIGENTE ---
-      const tempoTotal = Date.now() - start;
-      const isRebelde = rebeldes.includes(trib.name);
-      const PEDAGIO_SCRAPER = 7000; // 7 segundos que o robô gasta no Captcha
-      const LIMITE_AMARELO = 500;   // Acima de 500ms fica amarelo
-
-      let pingRealEstimado = tempoTotal;
-
-      if (isRebelde) {
-        pingRealEstimado = tempoTotal - PEDAGIO_SCRAPER;
-
-        if (pingRealEstimado < 150) {
-          pingRealEstimado = Math.floor(Math.random() * 200) + 150; 
-        }
-      }
-
-      pings[trib.name] = pingRealEstimado;
+      const pingReal = Date.now() - start;
+      pings[trib.name] = pingReal;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[trib.name] = pingRealEstimado > LIMITE_AMARELO ? 'instavel' : 'online';
+        statuses[trib.name] = pingReal > 500 ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
       }
-      // --- FIM DO CÁLCULO DE LATÊNCIA INTELIGENTE ---
-
     } catch (error: any) {
       statuses[trib.name] = 'offline';
       pings[trib.name] = 0;
-
-      let cause = 'Desconhecida';
-      if (error.cause) {
-        cause = error.cause.code || error.cause.message || JSON.stringify(error.cause);
-      }
-      debugInfo[trib.name] = `Falha: ${error.message} | Causa: ${cause}`;
+      debugInfo[trib.name] = `Falha: ${error.message}`;
     }
-
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  // CAMUFLAGEM DE HORÁRIO: Subtrai exatamente 2 minutos e 33 segundos (153.000 ms)
-  const agora = new Date();
-  const atrasoFixo = 153000; 
-  const horaDistorcida = new Date(agora.getTime() - atrasoFixo);
+  // Atualiza o relógio do site com a camuflagem
+  const horaDistorcida = new Date(Date.now() - 153000);
   await kv.set('last_update', horaDistorcida.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
 
-  return NextResponse.json({ success: true, robo: "Robo 1 (0 a 40)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 1 (Normais Parte 1)", debug: debugInfo });
 }
