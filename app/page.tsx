@@ -48,7 +48,11 @@ export default async function Home() {
           />
         </section>
 
-        <JurisdictionHub />
+        {/* AQUI ESTÁ A CORREÇÃO: Enviando os dados para os botões das regiões */}
+        <JurisdictionHub 
+          statuses={statuses as Record<string, string>} 
+          pings={pings as Record<string, number>} 
+        />
 
         <DynamicPdfToolHub /> 
 
