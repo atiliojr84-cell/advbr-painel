@@ -25,7 +25,8 @@ export default async function Home() {
   const statuses = await kv.get('court_statuses') || {};
   const pings = await kv.get('court_pings') || {};
   // lastUpdate ainda é buscado, mas não será exibido diretamente aqui
-  const lastUpdate = await kv.get('last_update') || 'Aguardando robôs...';
+  // A variável lastUpdate não é mais usada diretamente neste arquivo para exibição.
+  // Ela é usada apenas para o JurisdictionHub, que a busca internamente.
 
   return (
     <div className="min-h-screen bg-[#0b0f19]">
@@ -39,7 +40,7 @@ export default async function Home() {
             <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
               <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
             </h2>
-            {/* REMOVIDO: A exibição de "Última verificação" foi removida daqui */}
+            {/* A linha que exibia "Última verificação" foi removida daqui, conforme solicitado. */}
           </div>
           <PortalCarousel
             statuses={statuses as Record<string, string>}
