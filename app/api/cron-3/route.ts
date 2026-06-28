@@ -25,14 +25,12 @@ export async function GET() {
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
   const mySlice = allTribunals.filter(t => rebeldes.includes(t.name));
 
-  // Credenciais do Web Unlocker
   const proxyUrl = `http://brd-customer-hl_30cd6a48-zone-web_unlocker1-country-br:e230c289-93b8-4529-b3e2-66e978776893@brd.superproxy.io:22225`;
   const proxyAgent = new HttpsProxyAgent(proxyUrl);
 
   const testRebelde = async (trib: any, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
-      // Tempo máximo de 60s para dar tempo da Bright Data quebrar o Cloudflare
       const timeoutId = setTimeout(() => controller.abort(), 60000); 
       const start = Date.now();
 
@@ -41,7 +39,6 @@ export async function GET() {
       const response = await fetch(targetUrl, {
         method: 'GET',
         headers: {
-          // Headers mínimos para a Bright Data fazer a mágica dela
           'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
           'Connection': 'keep-alive'
@@ -60,7 +57,6 @@ export async function GET() {
         statuses[trib.name] = 'online';
         pings[trib.name] = Math.floor(Math.random() * 100) + 120;
       } else {
-        // Se der 403 na primeira tentativa, tenta de novo!
         if (attempt === 1 && response.status === 403) {
           await new Promise(resolve => setTimeout(resolve, 2000));
           return testRebelde(trib, 2);
@@ -70,7 +66,6 @@ export async function GET() {
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
-      // Se a conexão cair na primeira tentativa, tenta de novo!
       if (attempt === 1 && (error.message === 'fetch failed' || error.name === 'AbortError')) {
         await new Promise(resolve => setTimeout(resolve, 2000));
         return testRebelde(trib, 2);
@@ -83,7 +78,7 @@ export async function GET() {
 
   for (const trib of mySlice) {
     await testRebelde(trib);
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Pausa entre os sites
+    await new Promise(resolve => setTimeout(resolve, 1000));
   }
 
   await kv.set('court_statuses', statuses);
