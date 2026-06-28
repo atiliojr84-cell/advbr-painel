@@ -6,8 +6,6 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const maxDuration = 60;
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
@@ -21,7 +19,6 @@ export async function GET() {
     }
   }
 
-  // Lista dos 11 rebeldes
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
   const mySlice = allTribunals.filter(t => rebeldes.includes(t.name));
 
