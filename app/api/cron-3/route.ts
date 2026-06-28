@@ -38,7 +38,6 @@ export async function GET() {
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
-      // Usando a API Direta (Rápida e sem erros na Vercel)
       const response = await fetch('https://api.brightdata.com/request', {
         method: 'POST',
         headers: {
@@ -48,7 +47,8 @@ export async function GET() {
         body: JSON.stringify({
           zone: 'web_unlocker1',
           url: targetUrl,
-          format: 'raw'
+          format: 'raw',
+          country: 'br' // Força o uso de IP Brasileiro
         }),
         signal: controller.signal,
         cache: 'no-store'
@@ -61,7 +61,7 @@ export async function GET() {
       if (response.ok) {
         statusFinal = 'online';
         pingFinal = Math.floor(Math.random() * 100) + 120;
-        detalheFinal = 'Sucesso (Bright Data API)';
+        detalheFinal = 'Sucesso (Bright Data API - IP BR)';
       } else {
         if (attempt === 1 && response.status === 403) {
           await new Promise(resolve => setTimeout(resolve, 2000));
@@ -95,6 +95,7 @@ export async function GET() {
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
+  // Não salvamos o last_update aqui para não sobrescrever a data dos robôs principais
 
   const resumo = {
     total_testados: relatorio.length,
@@ -105,7 +106,7 @@ export async function GET() {
 
   return NextResponse.json({ 
     success: true, 
-    robo: "Robo 3 (Bright Data API + Relatorio)", 
+    robo: "Robo 3 (Bright Data API + IP BR)", 
     resumo,
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
