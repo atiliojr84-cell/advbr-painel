@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
 import { jurisdictions } from '../../../data/jurisdictions';
-import { HttpsProxyAgent } from 'https-proxy-agent';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -27,9 +26,6 @@ export async function GET() {
   const mySlice = allTribunals.filter(t => uniqueRebeldes.includes(t.name));
   const uniqueSlice = Array.from(new Map(mySlice.map(item => [item.name, item])).values());
 
-  const proxyUrl = `http://brd-customer-hl_30cd6a48-zone-web_unlocker1-country-br:e230c289-93b8-4529-b3e2-66e978776893@brd.superproxy.io:22225`;
-  const proxyAgent = new HttpsProxyAgent(proxyUrl);
-
   const testRebelde = async (trib: any, attempt = 1): Promise<void> => {
     let statusFinal = 'offline';
     let pingFinal = 0;
@@ -38,28 +34,34 @@ export async function GET() {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 45000);
+      const start = Date.now();
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
-      const response = await fetch(targetUrl, {
-        method: 'GET',
+      // Usando a API Direta (Rápida e sem erros na Vercel)
+      const response = await fetch('https://api.brightdata.com/request', {
+        method: 'POST',
         headers: {
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-          'Connection': 'keep-alive'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer e230c289-93b8-4529-b3e2-66e978776893'
         },
-        agent: proxyAgent,
+        body: JSON.stringify({
+          zone: 'web_unlocker1',
+          url: targetUrl,
+          format: 'raw'
+        }),
         signal: controller.signal,
         cache: 'no-store'
-      } as any);
+      });
 
       clearTimeout(timeoutId);
       await response.arrayBuffer().catch(() => {});
+      const time = Date.now() - start;
 
-      if (response.ok || (response.status >= 300 && response.status < 400)) {
+      if (response.ok) {
         statusFinal = 'online';
         pingFinal = Math.floor(Math.random() * 100) + 120;
-        detalheFinal = 'Sucesso (Cloudflare Bypassed)';
+        detalheFinal = 'Sucesso (Bright Data API)';
       } else {
         if (attempt === 1 && response.status === 403) {
           await new Promise(resolve => setTimeout(resolve, 2000));
@@ -69,7 +71,7 @@ export async function GET() {
         detalheFinal = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
-      if (attempt === 1 && (error.message === 'fetch failed' || error.name === 'AbortError')) {
+      if (attempt === 1) {
         await new Promise(resolve => setTimeout(resolve, 2000));
         return testRebelde(trib, 2);
       }
@@ -103,7 +105,7 @@ export async function GET() {
 
   return NextResponse.json({ 
     success: true, 
-    robo: "Robo 3 (Proxy Real Paralelo)", 
+    robo: "Robo 3 (Bright Data API + Relatorio)", 
     resumo,
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
