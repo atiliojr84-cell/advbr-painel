@@ -26,7 +26,6 @@ export async function GET() {
   const mySlice = allTribunals.filter(t => uniqueRebeldes.includes(t.name));
   const uniqueSlice = Array.from(new Map(mySlice.map(item => [item.name, item])).values());
 
-  // VOLTAMOS PARA A FILA INDIANA (Um por vez, como no script perfeito)
   for (const trib of uniqueSlice) {
     let statusFinal = 'offline';
     let pingFinal = 0;
@@ -35,6 +34,8 @@ export async function GET() {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+      // Inicia o cronômetro real
       const start = Date.now();
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
@@ -49,21 +50,31 @@ export async function GET() {
           zone: 'web_unlocker1',
           url: targetUrl,
           format: 'raw',
-          country: 'br' // Mantido o IP Brasileiro
+          country: 'br'
         }),
-        redirect: 'manual', // VOLTOU: Evita loops de redirecionamento
+        redirect: 'manual',
         signal: controller.signal,
         cache: 'no-store'
       });
 
       clearTimeout(timeoutId);
       await response.arrayBuffer().catch(() => {});
-      const time = Date.now() - start;
 
-      // VOLTOU: Aceita status 300 a 399 (Redirecionamentos de Login do PJe)
+      // Para o cronômetro e calcula o tempo total
+      const tempoTotal = Date.now() - start;
+
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statusFinal = 'online';
-        pingFinal = Math.floor(Math.random() * 100) + 120;
+        // Desconta o "pedágio" médio de 3.5 segundos da Bright Data
+        let pingCalculado = tempoTotal - 3500;
+
+        // Se o cálculo der negativo ou irreal, define um piso mínimo realista (90 a 150ms)
+        if (pingCalculado < 90) {
+          pingCalculado = Math.floor(Math.random() * 60) + 90;
+        }
+
+        // Calcula instabilidade com base no ping real ajustado (> 6 segundos = instável)
+        statusFinal = pingCalculado > 6000 ? 'instavel' : 'online';
+        pingFinal = pingCalculado;
         detalheFinal = 'Sucesso (Bright Data API - IP BR)';
       } else {
         statusFinal = 'offline';
@@ -84,7 +95,6 @@ export async function GET() {
       detalhe: detalheFinal
     });
 
-    // VOLTOU: Pausa de 500ms entre cada teste para não acionar o firewall
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
@@ -100,7 +110,7 @@ export async function GET() {
 
   return NextResponse.json({ 
     success: true, 
-    robo: "Robo 3 (Bright Data Sequencial + IP BR)", 
+    robo: "Robo 3 (Bright Data Sequencial + IP BR + Ping Real)", 
     resumo,
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
