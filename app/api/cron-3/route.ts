@@ -27,8 +27,7 @@ export async function GET() {
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
 
   // --- CREDENCIAIS DA BRIGHT DATA ---
-  // Substitua o "SEU_ID_AQUI" pelo seu ID de cliente real. 
-  // Note o "-country-br" no final, é ele que garante o IP do Brasil!
+  // ATENÇÃO: Substitua "SEU_ID_AQUI" pelo seu Customer ID real da Bright Data
   const brdUsername = "brd-customer-SEU_ID_AQUI-zone-web_unlocker1-country-br";
   const brdPassword = "e230c289-93b8-4529-b3e2-66e978776893";
   const proxyUrl = `http://${brdUsername}:${brdPassword}@brd.superproxy.io:22225`;
@@ -43,7 +42,6 @@ export async function GET() {
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
       const isRebelde = rebeldes.includes(trib.name);
 
-      // Configuração do acesso
       const fetchOptions: RequestInit = {
         method: 'GET',
         headers: {
@@ -65,22 +63,16 @@ export async function GET() {
       clearTimeout(timeoutId);
 
       await response.arrayBuffer().catch(() => {});
-
       const tempoTotal = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        // LÓGICA DE SAÚDE E PING SIMULADO
         const tempoLimite = isRebelde ? 15000 : 5000;
-
         if (tempoTotal < tempoLimite) {
           statuses[trib.name] = 'online';
-          // Ping realista: normais (45-85ms), rebeldes via proxy (120-220ms)
-          pings[trib.name] = isRebelde
-            ? Math.floor(Math.random() * 100) + 120
-            : Math.floor(Math.random() * 40) + 45;
+          pings[trib.name] = isRebelde ? Math.floor(Math.random() * 100) + 120 : Math.floor(Math.random() * 40) + 45;
         } else {
           statuses[trib.name] = 'instavel';
-          pings[trib.name] = Math.floor(Math.random() * 700) + 800; // 800-1500ms
+          pings[trib.name] = Math.floor(Math.random() * 700) + 800;
         }
       } else {
         statuses[trib.name] = 'offline';
@@ -92,12 +84,11 @@ export async function GET() {
       pings[trib.name] = 0;
       debugInfo[trib.name] = `Falha: ${error.message}`;
     }
-
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Robo 3 (Bright Data)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 3 (80 em diante)", debug: debugInfo });
 }
