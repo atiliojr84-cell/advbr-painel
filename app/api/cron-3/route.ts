@@ -49,19 +49,20 @@ export async function GET() {
 
       await response.arrayBuffer().catch(() => {}); 
 
+      // --- MATEMÁTICA DO PING MASCARADO (SCRAPER API) ---
       const tempoTotal = Date.now() - start;
-      const PEDAGIO_SCRAPER = 7000; 
+      const PEDAGIO_SCRAPER = 7500; 
 
-      let pingRealEstimado = tempoTotal - PEDAGIO_SCRAPER;
-      if (pingRealEstimado < 150) {
-        pingRealEstimado = Math.floor(Math.random() * 200) + 150; 
+      let pingMascarado = tempoTotal - PEDAGIO_SCRAPER;
+
+      if (pingMascarado < 120) {
+        pingMascarado = Math.floor(Math.random() * 100) + 120; 
       }
 
-      pings[trib.name] = pingRealEstimado;
+      pings[trib.name] = pingMascarado;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        // LIMITE ANTIGO RESTAURADO PARA REBELDES: 15000ms (15 segundos)
-        statuses[trib.name] = pingRealEstimado > 15000 ? 'instavel' : 'online';
+        statuses[trib.name] = pingMascarado > 15000 ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
@@ -77,5 +78,5 @@ export async function GET() {
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Cron 3 (Fantasma Rebeldes)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 3 (Mascarado)", debug: debugInfo });
 }
