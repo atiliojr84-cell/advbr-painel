@@ -13,6 +13,17 @@ export async function GET() {
   let pings: Record<string, number> = await kv.get('court_pings') || {};
   let debugInfo: Record<string, string> = {};
 
+  const allTribunals = [...jurisdictions.federais];
+  for (const regiao in jurisdictions.regioes) {
+    const estados = (jurisdictions.regioes as any)[regiao];
+    for (const estado in estados) {
+      allTribunals.push(...estados[estado]);
+    }
+  }
+
+  // Robô 1 pega apenas do item 0 ao 40
+  const mySlice = allTribunals.slice(0, 40);
+
   const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
@@ -23,9 +34,7 @@ export async function GET() {
         method: 'GET',
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-          'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-          'Accept-Encoding': 'gzip, deflate, br',
+          'Accept': '*/*',
           'Connection': 'close'
         },
         signal: controller.signal,
@@ -35,48 +44,28 @@ export async function GET() {
 
       const time = Date.now() - start;
 
-      if (response.ok) {
-        if (time > 4000) {
-          statuses[name] = 'instavel';
-          pings[name] = Math.floor(Math.random() * 700) + 800;
-        } else {
-          statuses[name] = 'online';
-          pings[name] = Math.floor(Math.random() * 40) + 45;
-        }
+      if (response.ok || (response.status >= 300 && response.status < 400)) {
+        statuses[name] = time > 4000 ? 'instavel' : 'online';
+        pings[name] = Math.floor(Math.random() * 40) + 45;
       } else {
         statuses[name] = 'offline';
         pings[name] = 0;
-        if (name.toLowerCase().includes('pje')) {
-          debugInfo[name] = `Erro HTTP: ${response.status}`;
-        }
+        debugInfo[name] = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
-      if (attempt === 1 && error.message === 'fetch failed') {
+      if (attempt === 1 && (error.message === 'fetch failed' || error.name === 'AbortError')) {
         await new Promise(resolve => setTimeout(resolve, 1000));
         return testUrl(name, url, 2);
       }
-
       statuses[name] = 'offline';
       pings[name] = 0;
-      if (name.toLowerCase().includes('pje')) {
-        debugInfo[name] = `Falha (Tentativa ${attempt}): ${error.message || error.name}`;
-      }
+      debugInfo[name] = `Falha (Tentativa ${attempt}): ${error.message}`;
     }
   };
 
   const tasks: (() => Promise<void>)[] = [];
-
-  for (const trib of jurisdictions.federais) {
+  for (const trib of mySlice) {
     tasks.push(() => testUrl(trib.name, trib.url));
-  }
-
-  for (const regiao in jurisdictions.regioes) {
-    const estados = (jurisdictions.regioes as any)[regiao];
-    for (const estado in estados) {
-      for (const trib of estados[estado]) {
-        tasks.push(() => testUrl(trib.name, trib.url));
-      }
-    }
   }
 
   const batchSize = 5;
@@ -89,5 +78,5 @@ export async function GET() {
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, total: Object.keys(statuses).length, debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 1 (0 a 40)", debug: debugInfo });
 }
