@@ -63,6 +63,38 @@ export default function JurisdictionHub() {
   const mainBtnStyle = "bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg";
   const modalBtnStyle = "bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800";
 
+  // Função para formatar a data e hora no formato brasileiro
+  const formatDateTimeBrazil = (isoString: string | null) => {
+    if (!isoString) return 'Carregando...';
+    try {
+      const dateObject = new Date(isoString);
+      if (isNaN(dateObject.getTime())) {
+        return 'Data inválida';
+      }
+
+      const optionsDate: Intl.DateTimeFormatOptions = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        timeZone: 'America/Sao_Paulo'
+      };
+      const optionsTime: Intl.DateTimeFormatOptions = {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false, // Formato 24 horas
+        timeZone: 'America/Sao_Paulo'
+      };
+
+      const formattedDate = dateObject.toLocaleDateString('pt-BR', optionsDate);
+      const formattedTime = dateObject.toLocaleTimeString('pt-BR', optionsTime);
+
+      return `${formattedDate} ${formattedTime}`;
+    } catch (e) {
+      console.error("Erro ao formatar data e hora:", e);
+      return 'Erro na data';
+    }
+  };
+
   return (
     <>
       <section className="py-8 px-4 text-center">
@@ -81,15 +113,7 @@ export default function JurisdictionHub() {
             <div className="mt-6 inline-block bg-slate-800/50 border border-slate-700 px-4 py-2 rounded-full">
               <span className="text-xs text-slate-400">
                 Última verificação de rotina: <strong className="text-slate-200">
-                  {/* Verifica se lastUpdate é uma string de data válida antes de criar o objeto Date */}
-                  {lastUpdate && !isNaN(new Date(lastUpdate).getTime())
-                    ? new Date(lastUpdate).toLocaleTimeString('pt-BR', {
-                        timeZone: 'America/Sao_Paulo',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false
-                      })
-                    : 'Carregando...'}
+                  {formatDateTimeBrazil(lastUpdate)}
                 </strong>
               </span>
             </div>
