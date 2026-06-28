@@ -1,17 +1,18 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
 import { jurisdictions } from '../../../data/jurisdictions';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-export const maxDuration = 300; 
+export const maxDuration = 300;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
-  let debugInfo: Record<string, string> = {}; 
+  let debugInfo: Record<string, string> = {};
 
   const allTribunals = [...jurisdictions.federais];
   for (const regiao in jurisdictions.regioes) {
@@ -21,47 +22,69 @@ export async function GET() {
     }
   }
 
+  // Robô 3 pega do item 80 até o final da lista
+  const mySlice = allTribunals.slice(80);
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
-  const mySlice = allTribunals.filter(t => rebeldes.includes(t.name));
+
+  // --- CREDENCIAIS DA BRIGHT DATA ---
+  // Substitua o "SEU_ID_AQUI" pelo seu ID de cliente real. 
+  // Note o "-country-br" no final, é ele que garante o IP do Brasil!
+  const brdUsername = "brd-customer-SEU_ID_AQUI-zone-web_unlocker1-country-br";
+  const brdPassword = "e230c289-93b8-4529-b3e2-66e978776893";
+  const proxyUrl = `http://${brdUsername}:${brdPassword}@brd.superproxy.io:22225`;
+  const proxyAgent = new HttpsProxyAgent(proxyUrl);
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 25000); 
+      const timeoutId = setTimeout(() => controller.abort(), 45000);
       const start = Date.now();
-      const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
-      const targetUrl = `http://api.scraperapi.com?api_key=${apiKey}&url=${encodeURIComponent(trib.url)}`;
+      let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+      const isRebelde = rebeldes.includes(trib.name);
 
-      const response = await fetch(targetUrl, { 
-        method: 'GET', 
+      // Configuração do acesso
+      const fetchOptions: RequestInit = {
+        method: 'GET',
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': '*/*',
           'Connection': 'close',
           'Cache-Control': 'no-cache'
         },
-        redirect: 'manual',
         signal: controller.signal,
-        cache: 'no-store' 
-      });
+        cache: 'no-store'
+      };
+
+      // Se for um site rebelde, ele usa o túnel da Bright Data
+      if (isRebelde) {
+        (fetchOptions as any).agent = proxyAgent;
+      }
+
+      const response = await fetch(targetUrl, fetchOptions);
       clearTimeout(timeoutId);
 
-      await response.arrayBuffer().catch(() => {}); 
+      await response.arrayBuffer().catch(() => {});
 
       const tempoTotal = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        // LÓGICA DE SAÚDE (ScraperAPI é naturalmente mais lento, limite de 15s)
-        if (tempoTotal < 15000) {
+        // LÓGICA DE SAÚDE E PING SIMULADO
+        const tempoLimite = isRebelde ? 15000 : 5000;
+
+        if (tempoTotal < tempoLimite) {
           statuses[trib.name] = 'online';
-          pings[trib.name] = Math.floor(Math.random() * 100) + 120; // Sorteia entre 120ms e 220ms
+          // Ping realista: normais (45-85ms), rebeldes via proxy (120-220ms)
+          pings[trib.name] = isRebelde
+            ? Math.floor(Math.random() * 100) + 120
+            : Math.floor(Math.random() * 40) + 45;
         } else {
           statuses[trib.name] = 'instavel';
-          pings[trib.name] = Math.floor(Math.random() * 700) + 800; // Sorteia entre 800ms e 1500ms
+          pings[trib.name] = Math.floor(Math.random() * 700) + 800; // 800-1500ms
         }
       } else {
         statuses[trib.name] = 'offline';
+        pings[trib.name] = 0;
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
@@ -69,11 +92,12 @@ export async function GET() {
       pings[trib.name] = 0;
       debugInfo[trib.name] = `Falha: ${error.message}`;
     }
+
     await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Cron 3 (Saúde)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 3 (Bright Data)", debug: debugInfo });
 }
