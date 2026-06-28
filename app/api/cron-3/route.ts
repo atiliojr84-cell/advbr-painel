@@ -21,15 +21,13 @@ export async function GET() {
     }
   }
 
-  const rebeldes = ["TJBA", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES"];
-
-  // Pega APENAS os sites rebeldes
+  const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
   const mySlice = allTribunals.filter(t => rebeldes.includes(t.name));
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 20000); 
+      const timeoutId = setTimeout(() => controller.abort(), 25000); 
       const start = Date.now();
       const apiKey = "5ca76d0bb31b21b469c22ec3c8dc94f4";
 
@@ -38,7 +36,7 @@ export async function GET() {
       const response = await fetch(targetUrl, { 
         method: 'GET', 
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
           'Accept': '*/*',
           'Connection': 'close',
           'Cache-Control': 'no-cache'
@@ -62,7 +60,8 @@ export async function GET() {
       pings[trib.name] = pingRealEstimado;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[trib.name] = pingRealEstimado > 500 ? 'instavel' : 'online';
+        // LIMITE ANTIGO RESTAURADO PARA REBELDES: 15000ms (15 segundos)
+        statuses[trib.name] = pingRealEstimado > 15000 ? 'instavel' : 'online';
       } else {
         statuses[trib.name] = 'offline';
         debugInfo[trib.name] = `Erro HTTP: ${response.status}`;
@@ -77,9 +76,6 @@ export async function GET() {
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
-
-  // ATENÇÃO: Este robô NÃO atualiza o 'last_update'. 
-  // Ele age como um fantasma para não revelar o horário do ScraperAPI.
 
   return NextResponse.json({ success: true, robo: "Cron 3 (Fantasma Rebeldes)", debug: debugInfo });
 }
