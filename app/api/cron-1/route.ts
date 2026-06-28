@@ -50,7 +50,7 @@ export async function GET() {
 
         await response.arrayBuffer().catch(() => {}); 
 
-        // --- MATEMÁTICA DO PING MASCARADO (ROBÔS NORMAIS) ---
+        // --- MATEMÁTICA DO PING MASCARADO ---
         const pingCru = Date.now() - start;
         let pingMascarado = pingCru - 350; 
 
@@ -61,7 +61,8 @@ export async function GET() {
         pings[trib.name] = pingMascarado;
 
         if (response.ok || (response.status >= 300 && response.status < 400)) {
-          statuses[trib.name] = pingMascarado > 4000 ? 'instavel' : 'online';
+          // REGRA UNIVERSAL: Se o ping real do usuário passar de 600ms, fica amarelo
+          statuses[trib.name] = pingMascarado > 600 ? 'instavel' : 'online';
           break; 
         } else {
           statuses[trib.name] = 'offline';
@@ -87,5 +88,5 @@ export async function GET() {
   const horaDistorcida = new Date(Date.now() - 153000);
   await kv.set('last_update', horaDistorcida.toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' }));
 
-  return NextResponse.json({ success: true, robo: "Cron 1 (Mascarado)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Cron 1 (Mascarado 600ms)", debug: debugInfo });
 }
