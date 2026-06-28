@@ -80,7 +80,12 @@ export default function JurisdictionHub() {
           {lastUpdate && (
             <div className="mt-6 inline-block bg-slate-800/50 border border-slate-700 px-4 py-2 rounded-full">
               <span className="text-xs text-slate-400">
-                Última verificação de rotina: <strong className="text-slate-200">{new Date(lastUpdate).toLocaleString('pt-BR')}</strong>
+                Última verificação de rotina: <strong className="text-slate-200">
+                  {new Date(lastUpdate).toLocaleTimeString('pt-BR', { 
+                    timeZone: 'America/Sao_Paulo', 
+                    hour12: false 
+                  })}
+                </strong>
               </span>
             </div>
           )}
