@@ -24,13 +24,13 @@ export async function GET() {
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
 
-  // Robô 1 pega a primeira metade dos sites normais (sem custo)
   const mySlice = normais.slice(0, 40);
 
   const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      // AUMENTADO PARA 15 SEGUNDOS
+      const timeoutId = setTimeout(() => controller.abort(), 15000); 
       const start = Date.now();
 
       const response = await fetch(url, {
@@ -48,7 +48,7 @@ export async function GET() {
       const time = Date.now() - start;
 
       if (response.ok || (response.status >= 300 && response.status < 400)) {
-        statuses[name] = time > 4000 ? 'instavel' : 'online';
+        statuses[name] = time > 6000 ? 'instavel' : 'online';
         pings[name] = Math.floor(Math.random() * 40) + 45;
       } else {
         statuses[name] = 'offline';
