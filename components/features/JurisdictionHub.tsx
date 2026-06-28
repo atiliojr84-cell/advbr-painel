@@ -13,6 +13,7 @@ export default function JurisdictionHub() {
 
   const [liveStatus, setLiveStatus] = useState<Record<string, string>>({});
   const [livePings, setLivePings] = useState<Record<string, number>>({});
+  const [lastUpdate, setLastUpdate] = useState<string | null>(null);
 
   const regiaoMap: { [key: string]: string } = {
     federais: "federais",
@@ -48,6 +49,7 @@ export default function JurisdictionHub() {
         if (data.statuses) {
           setLiveStatus(data.statuses);
           setLivePings(data.pings || {});
+          if (data.lastUpdate) setLastUpdate(data.lastUpdate);
         } else {
           setLiveStatus(data);
         }
@@ -74,6 +76,14 @@ export default function JurisdictionHub() {
           <p className="text-slate-400 leading-relaxed text-sm">
             Centralizamos o acesso aos principais sistemas de peticionamento do país. Realizamos o monitoramento proativo de cada portal, identificando instabilidades em tempo real.
           </p>
+
+          {lastUpdate && (
+            <div className="mt-6 inline-block bg-slate-800/50 border border-slate-700 px-4 py-2 rounded-full">
+              <span className="text-xs text-slate-400">
+                Última verificação de rotina: <strong className="text-slate-200">{new Date(lastUpdate).toLocaleString('pt-BR')}</strong>
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-wrap justify-center gap-4">
