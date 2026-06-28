@@ -24,7 +24,6 @@ export async function GET() {
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
 
-  // Robô 1 pega os primeiros 40 normais
   const mySlice = normais.slice(0, 40);
 
   const testUrl = async (trib: any, attempt = 1): Promise<void> => {
@@ -89,6 +88,9 @@ export async function GET() {
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
+
+  // Salva a data e hora da última atualização
+  await kv.set('last_update', new Date().toISOString());
 
   const resumo = {
     total_testados: relatorio.length,
