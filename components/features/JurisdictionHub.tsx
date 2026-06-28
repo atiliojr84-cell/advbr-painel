@@ -40,8 +40,6 @@ export default function JurisdictionHub() {
   };
 
   useEffect(() => {
-    // Este useEffect agora busca os dados sempre que o componente é montado ou 'isOpen' muda
-    // e não apenas quando o modal está aberto. Isso garante que 'lastUpdate' esteja sempre atualizado.
     const fetchStatuses = async () => {
       try {
         const res = await fetch(`/api/get-status?t=${Date.now()}`, { cache: 'no-store' });
@@ -59,10 +57,7 @@ export default function JurisdictionHub() {
       }
     };
     fetchStatuses();
-    // Opcional: Adicionar um intervalo para atualizar a cada X segundos, se desejar que a hora atualize sem recarregar a página
-    // const intervalId = setInterval(fetchStatuses, 60000); // Atualiza a cada 60 segundos
-    // return () => clearInterval(intervalId); // Limpa o intervalo ao desmontar o componente
-  }, []); // Array de dependências vazio para rodar apenas uma vez na montagem
+  }, []);
 
   const mainBtnStyle = "bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg";
   const modalBtnStyle = "bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800";
@@ -116,7 +111,8 @@ export default function JurisdictionHub() {
           {lastUpdate && (
             <div className="mt-6 inline-block bg-slate-800/50 border border-slate-700 px-4 py-2 rounded-full">
               <span className="text-xs text-slate-400">
-                Última verificação de rotina: <strong className="text-slate-200">
+                {/* Texto alterado aqui */}
+                Status dos portais atualizado em: <strong className="text-slate-200">
                   {formatDateTimeBrazil(lastUpdate)}
                 </strong>
               </span>
