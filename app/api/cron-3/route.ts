@@ -4,7 +4,9 @@ import { jurisdictions } from '../../../data/jurisdictions';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-export const maxDuration = 60;
+export const maxDuration = 300;
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
@@ -25,12 +27,12 @@ export async function GET() {
   const testRebelde = async (trib: any, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 55000);
+      // Timeout individual de 45s para cada site
+      const timeoutId = setTimeout(() => controller.abort(), 45000);
       const start = Date.now();
 
       let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
-      // Usando a API Direta da Bright Data (Não dá erro 407 de IP)
       const response = await fetch('https://api.brightdata.com/request', {
         method: 'POST',
         headers: {
@@ -74,13 +76,12 @@ export async function GET() {
     }
   };
 
-  for (const trib of mySlice) {
-    await testRebelde(trib);
-    await new Promise(resolve => setTimeout(resolve, 1000)); // Pausa de 1s
-  }
+  // MÁGICA AQUI: Dispara todos os 11 testes ao mesmo tempo (Paralelo)
+  const tasks = mySlice.map(trib => testRebelde(trib));
+  await Promise.allSettled(tasks);
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  return NextResponse.json({ success: true, robo: "Robo 3 (Bright Data API Direta)", debug: debugInfo });
+  return NextResponse.json({ success: true, robo: "Robo 3 (Bright Data Paralelo)", debug: debugInfo });
 }
