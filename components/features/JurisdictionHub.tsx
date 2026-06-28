@@ -63,18 +63,18 @@ export default function JurisdictionHub({
   const getStatusColor = (nomeTribunal: string) => {
     const status = statuses[nomeTribunal];
     if (status === 'online') return "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]";
-    if (status === 'instavel') return "bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]";
+    if (status === 'instavel') return "bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.6)]";
     if (status === 'offline') return "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]";
     return "bg-slate-600 animate-pulse"; 
   };
 
-  // --- ESTILOS NOVOS: Cores suaves para os botões (Amarelo corrigido) ---
+  // --- ESTILOS NOVOS: Cores suaves para os botões (Amarelo limão puro) ---
   const getRegionBtnStyle = (status: string) => {
     const base = "px-6 py-3 text-slate-300 capitalize font-medium rounded-xl transition-colors shadow-lg border";
     if (status === 'offline') return `${base} bg-red-950/40 border-red-900/50 hover:bg-red-900/50`;
 
-    // Amarelo puro com transparência (sem o tom marrom/avermelhado)
-    if (status === 'instavel') return `${base} bg-yellow-500/10 border-yellow-500/30 hover:bg-yellow-500/20`;
+    // Amarelo limão (yellow-400) para afastar bem do vermelho
+    if (status === 'instavel') return `${base} bg-yellow-400/10 border-yellow-400/50 hover:bg-yellow-400/20`;
 
     return `${base} bg-slate-900 border-slate-800 hover:bg-slate-800`;
   };
@@ -83,8 +83,8 @@ export default function JurisdictionHub({
     const base = "p-4 text-white font-medium text-sm text-left rounded-xl transition-colors border";
     if (status === 'offline') return `${base} bg-red-950/30 border-red-900/50 hover:bg-red-900/50`;
 
-    // Amarelo puro com transparência para os botões de estado
-    if (status === 'instavel') return `${base} bg-yellow-500/5 border-yellow-500/20 hover:bg-yellow-500/15`;
+    // Amarelo limão (yellow-400) para os botões de estado
+    if (status === 'instavel') return `${base} bg-yellow-400/10 border-yellow-400/40 hover:bg-yellow-400/20`;
 
     return `${base} bg-slate-950 border-slate-800 hover:bg-slate-900`;
   };
