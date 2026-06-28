@@ -1,150 +1,135 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ArrowLeft, Activity } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { jurisdictions } from "../../data/jurisdictions";
+import { ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 
-export default function JurisdictionHub() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [view, setView] = useState<'estado' | 'tribunal'>('estado');
-  const [activeRegiao, setActiveRegiao] = useState<string>('');
-  const [selectedEstado, setSelectedEstado] = useState<string>('');
+export default function JurisdictionHub({ statuses = {} }: { statuses?: Record<string, string> }) {
+  const [activeRegion, setActiveRegion] = useState<string | null>(null);
 
-  const [liveStatus, setLiveStatus] = useState<Record<string, string>>({});
+  // Descobre o pior status de um grupo (Região ou Estado)
+  const getGroupStatus = (tribunals: any[]) => {
+    let hasOffline = false;
+    let hasInstavel = false;
 
-  const regiaoMap: { [key: string]: string } = {
-    federais: "federais",
-    sul: "Sul",
-    sudeste: "Sudeste",
-    centrooeste: "CentroOeste",
-    nordeste: "Nordeste",
-    norte: "Norte"
+    tribunals.forEach(trib => {
+      const status = statuses[trib.name];
+      if (status === 'offline') hasOffline = true;
+      if (status === 'instavel') hasInstavel = true;
+    });
+
+    if (hasOffline) return 'offline';
+    if (hasInstavel) return 'instavel';
+    return 'online';
   };
 
-  const handleOpen = (regiaoSlug: string) => {
-    const key = regiaoMap[regiaoSlug];
-    setActiveRegiao(key);
-    setView(key === 'federais' ? 'tribunal' : 'estado');
-    setIsOpen(true);
+  // Pega todos os tribunais de uma região inteira
+  const getRegionTribunals = (regionName: string) => {
+    if (regionName === 'Federais') return jurisdictions.federais;
+    const regionData = jurisdictions.regioes[regionName as keyof typeof jurisdictions.regioes];
+    const allTribs: any[] = [];
+    Object.values(regionData).forEach(stateTribs => allTribs.push(...stateTribs));
+    return allTribs;
   };
 
-  const getStatusColor = (nomeTribunal: string) => {
-    const status = liveStatus[nomeTribunal];
-    if (status === 'online') return "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]";
-    if (status === 'instavel') return "bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]";
-    if (status === 'offline') return "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]";
-    return "bg-slate-600 animate-pulse"; 
+  // Mantém as luzinhas originais intactas
+  const getStatusColor = (status: string) => {
+    if (status === 'offline') return 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]';
+    if (status === 'instavel') return 'bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.8)]';
+    if (status === 'online') return 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)]';
+    return 'bg-slate-500'; 
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const fetchStatuses = async () => {
-      try {
-        // O parâmetro ?t= e o cache: 'no-store' forçam o navegador a pegar dados novos
-        const res = await fetch(`/api/get-status?t=${Date.now()}`, { cache: 'no-store' });
-        const data = await res.json();
-        setLiveStatus(data);
-      } catch (error) {
-        console.error("Erro ao buscar status", error);
-      }
-    };
-    fetchStatuses();
-  }, [isOpen]);
+  // Cores BEM SUAVES para o botão principal da Região/Federais
+  const getRegionButtonClass = (status: string, isActive: boolean) => {
+    if (status === 'offline') return `border-red-900/50 ${isActive ? 'bg-red-950/40' : 'bg-red-950/20 hover:bg-red-950/40'}`;
+    if (status === 'instavel') return `border-yellow-900/50 ${isActive ? 'bg-yellow-950/40' : 'bg-yellow-950/20 hover:bg-yellow-950/40'}`;
+    return `border-slate-700 ${isActive ? 'bg-slate-800' : 'bg-slate-800/50 hover:bg-slate-800'}`;
+  };
 
-  const mainBtnStyle = "bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg";
-  const modalBtnStyle = "bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800";
+  // Cores BEM SUAVES para o bloco do Estado lá dentro
+  const getStateContainerClass = (status: string) => {
+    if (status === 'offline') return 'border-l-2 border-red-800/50 bg-red-950/10 p-3 rounded-r-lg';
+    if (status === 'instavel') return 'border-l-2 border-yellow-800/50 bg-yellow-950/10 p-3 rounded-r-lg';
+    return 'border-l-2 border-slate-700/50 p-3'; // Normal
+  };
+
+  const regions = ['Federais', ...Object.keys(jurisdictions.regioes)];
 
   return (
-    <>
-      <section className="py-8 px-4 text-center">
-        <div className="max-w-3xl mx-auto mb-12 bg-slate-900/50 border border-slate-800 p-8 rounded-3xl shadow-xl">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="p-3 bg-blue-900/20 rounded-2xl">
-              <Activity className="w-8 h-8 text-blue-500" />
-            </div>
-            <h2 className="text-2xl font-bold text-white">Monitoramento de Tribunais em Tempo Real</h2>
-          </div>
-          <p className="text-slate-400 leading-relaxed text-sm">
-            Centralizamos o acesso aos principais sistemas de peticionamento do país. Realizamos o monitoramento proativo de cada portal, identificando instabilidades em tempo real.
-          </p>
-        </div>
+    <section className="space-y-6">
+      <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+        <i className="fa-solid fa-map-location-dot text-blue-500"></i> Status por Região
+      </h2>
 
-        <div className="flex flex-wrap justify-center gap-4">
-          {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
-            <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 text-slate-300 capitalize font-medium ${mainBtnStyle}`}>
-              {r === "CentroOeste" ? "Centro-Oeste" : r}
-            </button>
-          ))}
-        </div>
-      </section>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {regions.map(region => {
+          const tribs = getRegionTribunals(region);
+          const groupStatus = getGroupStatus(tribs);
+          const isActive = activeRegion === region;
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
-          >
-            <motion.div
-              key="modal-content"
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
-            >
-              <div className="flex items-center justify-between mb-6 shrink-0">
+          return (
+            <div key={region} className="flex flex-col gap-2">
+              {/* BOTÃO DA REGIÃO (Cor suave) */}
+              <button 
+                onClick={() => setActiveRegion(isActive ? null : region)}
+                className={`flex items-center justify-between p-4 rounded-xl border transition-all duration-300 ${getRegionButtonClass(groupStatus, isActive)}`}
+              >
                 <div className="flex items-center gap-3">
-                  {view === 'tribunal' && activeRegiao !== 'federais' && (
-                    <button onClick={() => setView('estado')} className="text-slate-400 hover:text-white transition-colors">
-                      <ArrowLeft size={24} />
-                    </button>
-                  )}
-                  <h3 className="text-white text-xl font-bold">
-                    {activeRegiao === 'federais' ? 'Tribunais Federais' : (view === 'estado' ? activeRegiao : selectedEstado)}
-                  </h3>
+                  <span className={`w-3 h-3 rounded-full ${getStatusColor(groupStatus)}`} />
+                  <span className="font-bold text-white text-lg">{region}</span>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-white">Fechar</button>
-              </div>
+                {isActive ? <ChevronUp size={20} className="text-slate-400" /> : <ChevronDown size={20} className="text-slate-400" />}
+              </button>
 
-              <div className="overflow-y-auto overscroll-contain max-h-[60vh] pr-2 -mr-2 custom-scrollbar scroll-smooth">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={view + activeRegiao + selectedEstado}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {view === 'estado' ? (
-                      <div className="grid grid-cols-2 gap-3 pb-4">
-                        {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
-                          <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className={`p-4 text-white font-medium text-sm text-left ${modalBtnStyle}`}>
-                            {e}
-                          </button>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="space-y-3 pb-4">
-                        {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
-                          <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${modalBtnStyle}`}>
-                            <span className="text-white text-sm font-medium">{t.name}</span>
-                            <div className={`w-3 h-3 rounded-full shrink-0 transition-colors duration-500 ${getStatusColor(t.name)}`} />
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+              {/* CONTEÚDO EXPANDIDO */}
+              {isActive && (
+                <div className="p-4 bg-slate-900/80 border border-slate-800 rounded-xl space-y-4 animate-in fade-in slide-in-from-top-2">
+
+                  {region === 'Federais' ? (
+                    // FEDERAIS (Não tem estados, lista direto)
+                    <div className="grid grid-cols-1 gap-2">
+                      {jurisdictions.federais.map(trib => (
+                        <a key={trib.name} href={trib.url} target="_blank" rel="noopener noreferrer" 
+                           className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50 hover:bg-slate-700 transition-colors group">
+                          <span className="text-slate-200 text-sm font-medium">{trib.name}</span>
+                          <div className="flex items-center gap-3">
+                            <span className={`w-2.5 h-2.5 rounded-full ${getStatusColor(statuses[trib.name])}`} />
+                            <ExternalLink size={14} className="text-slate-500 group-hover:text-blue-400" />
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    // REGIÕES (Agrupado por Estados com cor suave no estado problemático)
+                    Object.entries(jurisdictions.regioes[region as keyof typeof jurisdictions.regioes]).map(([estado, tribunais]) => {
+                      const stateStatus = getGroupStatus(tribunals);
+
+                      return (
+                        <div key={estado} className={`space-y-2 transition-colors ${getStateContainerClass(stateStatus)}`}>
+                          <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2">{estado}</h3>
+                          <div className="grid grid-cols-1 gap-2">
+                            {tribunais.map(trib => (
+                              <a key={trib.name} href={trib.url} target="_blank" rel="noopener noreferrer" 
+                                 className="flex items-center justify-between p-2.5 rounded-lg bg-slate-800/40 hover:bg-slate-700 transition-colors group">
+                                <span className="text-slate-200 text-sm font-medium">{trib.name}</span>
+                                <div className="flex items-center gap-3">
+                                  <span className={`w-2.5 h-2.5 rounded-full ${getStatusColor(statuses[trib.name])}`} />
+                                  <ExternalLink size={14} className="text-slate-500 group-hover:text-blue-400" />
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
