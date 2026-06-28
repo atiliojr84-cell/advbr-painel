@@ -6,15 +6,12 @@ import JurisdictionHub from "../components/features/JurisdictionHub";
 import DiagnosticHub from "../components/features/DiagnosticHub";
 import { kv } from '@vercel/kv'; 
 
-// 1. MUDAMOS O NOME AQUI PARA 'nextDynamic' PARA EVITAR CONFLITO
 import nextDynamic from 'next/dynamic'; 
 import { Loader2 } from 'lucide-react'; 
 
-// 2. A REGRA DE CACHE CONTINUA INTACTA
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-// 3. USAMOS O NOVO NOME 'nextDynamic' AQUI
 const DynamicPdfToolHub = nextDynamic(() => import('../components/features/PdfToolHub'), {
   ssr: false, 
   loading: () => (
@@ -26,6 +23,8 @@ const DynamicPdfToolHub = nextDynamic(() => import('../components/features/PdfTo
 
 export default async function Home() {
   const statuses = await kv.get('court_statuses') || {};
+  const pings = await kv.get('court_pings') || {};
+  const lastUpdate = await kv.get('last_update') || 'Aguardando robôs...';
 
   return (
     <div className="min-h-screen bg-[#0b0f19]">
@@ -35,10 +34,18 @@ export default async function Home() {
         <Header />
 
         <section>
-          <h2 className="text-lg font-semibold mb-4 text-gray-300 flex items-center gap-2">
-            <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
-          </h2>
-          <PortalCarousel statuses={statuses as Record<string, string>} />
+          <div className="flex justify-between items-end mb-4">
+            <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+              <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
+            </h2>
+            <p className="text-xs text-slate-400 bg-slate-800/50 px-3 py-1 rounded-full border border-slate-700">
+              Última verificação: {lastUpdate as string}
+            </p>
+          </div>
+          <PortalCarousel 
+            statuses={statuses as Record<string, string>} 
+            pings={pings as Record<string, number>} 
+          />
         </section>
 
         <JurisdictionHub />
