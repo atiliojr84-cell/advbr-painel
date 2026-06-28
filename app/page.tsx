@@ -24,29 +24,8 @@ const DynamicPdfToolHub = nextDynamic(() => import('../components/features/PdfTo
 export default async function Home() {
   const statuses = await kv.get('court_statuses') || {};
   const pings = await kv.get('court_pings') || {};
+  // lastUpdate ainda é buscado, mas não será exibido diretamente aqui
   const lastUpdate = await kv.get('last_update') || 'Aguardando robôs...';
-
-  // Lógica para formatar a data para exibir apenas a hora
-  let formattedTime = 'Aguardando robôs...';
-  if (lastUpdate && lastUpdate !== 'Aguardando robôs...') {
-    try {
-      const dateObject = new Date(lastUpdate as string);
-      // Verifica se a data é válida antes de formatar
-      if (!isNaN(dateObject.getTime())) {
-        formattedTime = dateObject.toLocaleTimeString('pt-BR', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false, // Para formato 24 horas
-          timeZone: 'America/Sao_Paulo' // Garante que a hora seja exibida no fuso horário correto
-        });
-      } else {
-        formattedTime = 'Data inválida';
-      }
-    } catch (e) {
-      console.error("Erro ao formatar lastUpdate em page.tsx:", e);
-      formattedTime = 'Erro na data';
-    }
-  }
 
   return (
     <div className="min-h-screen bg-[#0b0f19]">
@@ -60,9 +39,7 @@ export default async function Home() {
             <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
               <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
             </h2>
-            <p className="text-xs text-slate-400 bg-slate-800/50 px-3 py-1 rounded-full border border-slate-700">
-              Última verificação: {formattedTime}
-            </p>
+            {/* REMOVIDO: A exibição de "Última verificação" foi removida daqui */}
           </div>
           <PortalCarousel
             statuses={statuses as Record<string, string>}
@@ -70,7 +47,7 @@ export default async function Home() {
           />
         </section>
 
-        {/* Componente atualizado: agora ele busca os dados sozinho */}
+        {/* Componente JurisdictionHub agora exibirá a data e hora completa */}
         <JurisdictionHub />
 
         <DynamicPdfToolHub />
