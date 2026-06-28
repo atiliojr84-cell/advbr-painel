@@ -22,15 +22,11 @@ export async function GET() {
     }
   }
 
-  // Robô 3 pega do item 80 até o final da lista
   const mySlice = allTribunals.slice(80);
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
 
-  // --- CREDENCIAIS DA BRIGHT DATA ---
-  // ATENÇÃO: Substitua "SEU_ID_AQUI" pelo seu Customer ID real da Bright Data
-  const brdUsername = "brd-customer-SEU_ID_AQUI-zone-web_unlocker1-country-br";
-  const brdPassword = "e230c289-93b8-4529-b3e2-66e978776893";
-  const proxyUrl = `http://${brdUsername}:${brdPassword}@brd.superproxy.io:22225`;
+  // Suas credenciais reais da Bright Data já configuradas
+  const proxyUrl = `http://brd-customer-hl_30cd6a48-zone-web_unlocker1-country-br:e230c289-93b8-4529-b3e2-66e978776893@brd.superproxy.io:22225`;
   const proxyAgent = new HttpsProxyAgent(proxyUrl);
 
   for (const trib of mySlice) {
@@ -54,7 +50,6 @@ export async function GET() {
         cache: 'no-store'
       };
 
-      // Se for um site rebelde, ele usa o túnel da Bright Data
       if (isRebelde) {
         (fetchOptions as any).agent = proxyAgent;
       }
