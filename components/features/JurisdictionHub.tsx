@@ -103,7 +103,7 @@ export default function JurisdictionHub({ statuses = {} }: { statuses?: Record<s
                   ) : (
                     // REGIÕES (Agrupado por Estados com cor suave no estado problemático)
                     Object.entries(jurisdictions.regioes[region as keyof typeof jurisdictions.regioes]).map(([estado, tribunais]) => {
-                      const stateStatus = getGroupStatus(tribunals);
+                      const stateStatus = getGroupStatus(tribunais); // <-- CORRIGIDO AQUI PARA 'tribunais'
 
                       return (
                         <div key={estado} className={`space-y-2 transition-colors ${getStateContainerClass(stateStatus)}`}>
