@@ -21,16 +21,16 @@ export async function GET() {
     }
   }
 
-  // LISTA ATUALIZADA COM TRT11 E PJE NACIONAL
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
 
+  // Pega do 40 em diante
   const mySlice = normais.slice(40);
 
   const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000); 
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
       const start = Date.now();
 
       const response = await fetch(url, {
