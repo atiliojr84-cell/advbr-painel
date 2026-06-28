@@ -6,6 +6,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const maxDuration = 300;
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
@@ -19,17 +21,17 @@ export async function GET() {
     }
   }
 
-  const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC"];
+  // LISTA ATUALIZADA COM TRT11 E PJE NACIONAL
+  const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
+
   const mySlice = allTribunals.filter(t => rebeldes.includes(t.name));
 
-  // Usando a API REST da Bright Data (conforme sua imagem)
-  const brightDataApiUrl = 'https://api.brightdata.com/request';
+  const brightDataApiUrl = 'https://api.brightdata.com/dca/trigger?zone=web_unlocker1';
   const apiKey = 'e230c289-93b8-4529-b3e2-66e978776893';
 
   for (const trib of mySlice) {
     try {
       const controller = new AbortController();
-      // 55 segundos de paciência, pois o Web Unlocker demora para quebrar o Cloudflare
       const timeoutId = setTimeout(() => controller.abort(), 55000); 
       const start = Date.now();
 
