@@ -21,10 +21,10 @@ export async function GET() {
     }
   }
 
-  // LISTA ATUALIZADA COM TRT11 E PJE NACIONAL
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
 
+  // Pega apenas os 40 primeiros normais
   const mySlice = normais.slice(0, 40);
 
   const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
