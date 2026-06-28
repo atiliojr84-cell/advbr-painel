@@ -3,22 +3,26 @@
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// Adicionamos o 'statusKey' com o nome EXATO que o robô usa para monitorar
 const portais = [
   { id: 1, name: "1. PJe Nacional", url: "https://www.pje.jus.br", statusKey: "PJe Nacional" },
   { id: 2, name: "2. TJPR E-Proc 1 Grau", url: "https://eproc1g.tjpr.jus.br/eproc/", statusKey: "E-proc TJPR" },
   { id: 3, name: "3. TJSP E-SAJ Peticionamento", url: "https://esaj.tjsp.jus.br/sajcas/login?service=https%3A%2F%2Fesaj.tjsp.jus.br%2Fpetpg%2Fj_spring_cas_security_check#aba-cpf", statusKey: "e-SAJ SP" },
-  { id: 4, name: "4. TJPR Projudi", url: "https://projudi.tjpr.jus.br", statusKey: "Projudi TJPR" }, // <-- NOME ATUALIZADO
+  { id: 4, name: "4. TJPR Projudi", url: "https://projudi.tjpr.jus.br", statusKey: "Projudi TJPR" }, 
   { id: 5, name: "5. STF Eletrônico", url: "https://portal.stf.jus.br", statusKey: "STF" },
   { id: 6, name: "6. STJ Processos", url: "https://scon.stj.jus.br", statusKey: "STJ" },
   { id: 7, name: "7. TRT9 PJe 1 Grau", url: "https://pje.trt9.jus.br/primeirograu/login.seam", statusKey: "TRT9" },
-  { id: 8, name: "8. TRT9 PJe 2 Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", statusKey: "TRT9 2º Grau" }, // <-- NOME ATUALIZADO
+  { id: 8, name: "8. TRT9 PJe 2 Grau", url: "https://pje.trt9.jus.br/segundograu/login.seam", statusKey: "TRT9 2º Grau" }, 
   { id: 9, name: "9. PJe TRF3 (SP/MS)", url: "https://pje1g.trf3.jus.br/pje/login.seam", statusKey: "TRF3" },
   { id: 10, name: "10. PJe TRF4 (PR/SC/RS)", url: "https://eproc.trf4.jus.br/eproc2trf4/externo_controlador.php?acao=acesso_externo_principal", statusKey: "TRF4" },
 ];
 
-// O componente agora recebe os 'statuses' da página principal
-export default function PortalCarousel({ statuses = {} }: { statuses?: Record<string, string> }) {
+export default function PortalCarousel({ 
+  statuses = {}, 
+  pings = {} 
+}: { 
+  statuses?: Record<string, string>,
+  pings?: Record<string, number>
+}) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: 'left' | 'right') => {
@@ -27,13 +31,12 @@ export default function PortalCarousel({ statuses = {} }: { statuses?: Record<st
     }
   };
 
-  // Função que define a cor da bolinha baseada no status real do robô
   const getStatusStyle = (statusKey: string) => {
     const status = statuses[statusKey];
     if (status === 'online') return 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]';
     if (status === 'instavel') return 'bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]';
     if (status === 'offline') return 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]';
-    return 'bg-slate-500 shadow-[0_0_8px_rgba(100,116,139,0.6)]'; // Cinza enquanto carrega
+    return 'bg-slate-500 shadow-[0_0_8px_rgba(100,116,139,0.6)]'; 
   };
 
   return (
@@ -43,17 +46,23 @@ export default function PortalCarousel({ statuses = {} }: { statuses?: Record<st
       </button>
 
       <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide py-4 px-2 overscroll-elastic">
-        {portais.map((p) => (
-          <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer"
-             className="flex-none w-64 p-4 bg-slate-900 rounded-xl glow-effect cursor-pointer flex justify-between items-center group">
-            <div className="overflow-hidden">
-              <p className="text-sm font-bold text-white truncate">{p.name}</p>
-              <p className="text-[10px] text-slate-400">Clique para acessar</p>
-            </div>
-            {/* A bolinha agora é dinâmica! */}
-            <span className={`w-2.5 h-2.5 rounded-full ${getStatusStyle(p.statusKey)}`} />
-          </a>
-        ))}
+        {portais.map((p) => {
+          const pingValue = pings[p.statusKey];
+          const pingText = pingValue ? `${pingValue}ms` : '--';
+
+          return (
+            <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer"
+               className="flex-none w-64 p-4 bg-slate-900 rounded-xl glow-effect cursor-pointer flex justify-between items-center group">
+              <div className="overflow-hidden">
+                <p className="text-sm font-bold text-white truncate">{p.name}</p>
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Ping: <span className="text-slate-300 font-mono">{pingText}</span>
+                </p>
+              </div>
+              <span className={`w-2.5 h-2.5 rounded-full ${getStatusStyle(p.statusKey)}`} />
+            </a>
+          );
+        })}
       </div>
 
       <button onClick={() => scroll('right')} className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-black/80 p-2 rounded-full border border-blue-600 text-white hover:bg-blue-900 transition-all">
