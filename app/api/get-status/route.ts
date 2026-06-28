@@ -7,6 +7,7 @@ export const revalidate = 0;
 export async function GET() {
   const statuses = await kv.get('court_statuses') || {};
   const pings = await kv.get('court_pings') || {};
+  const lastUpdate = await kv.get('last_update') || null;
 
-  return NextResponse.json({ statuses, pings });
+  return NextResponse.json({ statuses, pings, lastUpdate });
 }
