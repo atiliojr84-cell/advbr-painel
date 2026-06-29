@@ -4,7 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { amazonProducts } from "../../data/amazonProducts"; // Base de dados de produtos Amazon
+import { amazonProducts } from "../../data/amazonProducts";
 
 export default function ProductCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
