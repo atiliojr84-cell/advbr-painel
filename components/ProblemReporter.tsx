@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { AlertCircle } from "lucide-react";
-import Modal from "./ui/Modal"; // CORRIGIDO: Agora aponta corretamente para components/ui/Modal
-import { jurisdictions } from "../data/jurisdictions"; // CORRIGIDO: Assumindo que jurisdictions está em data/jurisdictions na raiz do projeto
+import Modal from "./ui/Modal"; // Importa o Modal atualizado
+import { jurisdictions } from "../data/jurisdictions";
 
 // Estrutura para os dados de jurisdições
 interface Tribunal {
@@ -50,8 +50,22 @@ export default function ProblemReporter() {
     setModalOpen(false);
   };
 
+  const getRegions = () => {
+    return ["Federais", ...Object.keys(allJurisdictions.regioes)];
+  };
+
+  const getStates = (region: string) => {
+    if (region === "Federais") return [];
+    return Object.keys(allJurisdictions.regioes[region] || {});
+  };
+
+  const getTribunals = (region: string, state: string) => {
+    if (region === "Federais") return allJurisdictions.federais;
+    return allJurisdictions.regioes[region]?.[state] || [];
+  };
+
   const handleReportSubmit = async () => {
-    if (!selectedTribunal && selectedRegion !== "Federais") { // Garante que um tribunal ou a opção federais foi selecionada
+    if (!selectedTribunal && selectedRegion !== "Federais") {
       setSubmitMessage("Por favor, selecione o tribunal.");
       return;
     }
@@ -64,14 +78,14 @@ export default function ProblemReporter() {
     setSubmitMessage("Enviando seu reporte...");
 
     try {
-      const response = await fetch('/api/report-problem', { // Novo endpoint de API
+      const response = await fetch('/api/report-problem', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          tribunalName: selectedTribunal?.name || selectedRegion, // Usa o nome do tribunal ou "Federais"
-          tribunalUrl: selectedTribunal?.url || "N/A", // URL do tribunal ou N/A para federais
+          tribunalName: selectedTribunal?.name || selectedRegion,
+          tribunalUrl: selectedTribunal?.url || "N/A",
           problemType: problemType,
           timestamp: new Date().toISOString(),
         }),
@@ -79,7 +93,7 @@ export default function ProblemReporter() {
 
       if (response.ok) {
         setSubmitMessage("Reporte enviado com sucesso! Agradecemos sua colaboração.");
-        setTimeout(resetModal, 3000); // Fecha o modal após 3 segundos
+        setTimeout(resetModal, 3000);
       } else {
         const errorData = await response.json();
         setSubmitMessage(`Erro ao enviar reporte: ${errorData.error || response.statusText}`);
@@ -91,55 +105,24 @@ export default function ProblemReporter() {
     }
   };
 
-  // Funções para obter regiões, estados e tribunais
-  const getRegions = () => {
-    return ["Federais", ...Object.keys(allJurisdictions.regioes)];
-  };
-
-  const getStates = (region: string) => {
-    if (region === "Federais") return [];
-    return Object.keys(allJurisdictions.regioes[region]);
-  };
-
-  const getTribunals = (region: string, state: string | null) => {
-    if (region === "Federais") {
-      return allJurisdictions.federais;
-    }
-    if (state && allJurisdictions.regioes[region] && allJurisdictions.regioes[region][state]) {
-      return allJurisdictions.regioes[region][state];
-    }
-    return [];
-  };
-
   return (
     <>
-      <div className="flex flex-col gap-2">
-        <button
-          onClick={() => setModalOpen(true)}
-          className="flex items-center justify-center gap-2 bg-black border border-red-500/50 text-red-500 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-all font-bold text-sm"
-        >
-          <AlertCircle className="w-4 h-4" />
-          Reportar Falha de Acesso
-        </button>
-        {/* O link para o relatório de falhas */}
-        <a
-          href="/reports" // Este é o link para a nova página de relatórios
-          className="text-blue-400 hover:text-blue-600 text-sm underline text-center"
-        >
-          Ver Relatório de Falhas
-        </a>
-      </div>
+      <button
+        onClick={() => setModalOpen(true)}
+        className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg transition-all duration-300 hover:bg-red-700"
+      >
+        <AlertCircle size={18} />
+        Reportar Falha
+      </button>
 
-      <Modal isOpen={modalOpen} onClose={resetModal} title="Reportar Falha de Acesso"> {/* CORRIGIDO: Adicionado o prop title */}
-        <h2 className="text-xl font-bold text-white mb-4">Reportar Falha de Acesso</h2>
-
+      <Modal isOpen={modalOpen} onClose={resetModal} title="Reportar Falha de Acesso">
         {submitMessage && (
           <div className={`p-3 rounded mb-4 ${submitMessage.includes("sucesso") ? "bg-green-500" : "bg-red-500"} text-white`}>
             {submitMessage}
           </div>
         )}
 
-        {!submitMessage && step === 1 && ( // Seleção de Região
+        {!submitMessage && step === 1 && (
           <div className="space-y-3">
             <p className="text-white">Em qual **Região** o problema está ocorrendo?</p>
             {getRegions().map(region => (
@@ -148,8 +131,8 @@ export default function ProblemReporter() {
                 onClick={() => {
                   setSelectedRegion(region);
                   if (region === "Federais") {
-                    setSelectedTribunal(null); // Reseta tribunal se for federais
-                    setStep(4); // Vai direto para seleção de problema para federais
+                    setSelectedTribunal(null);
+                    setStep(4);
                   } else {
                     setStep(2);
                   }
@@ -162,7 +145,7 @@ export default function ProblemReporter() {
           </div>
         )}
 
-        {!submitMessage && step === 2 && selectedRegion && selectedRegion !== "Federais" && ( // Seleção de Estado
+        {!submitMessage && step === 2 && selectedRegion && selectedRegion !== "Federais" && (
           <div className="space-y-3">
             <p className="text-white">Selecione o **Estado** em {selectedRegion}:</p>
             {getStates(selectedRegion).map(state => (
@@ -178,7 +161,7 @@ export default function ProblemReporter() {
           </div>
         )}
 
-        {!submitMessage && step === 3 && selectedRegion && selectedState && ( // Seleção de Tribunal
+        {!submitMessage && step === 3 && selectedRegion && selectedState && (
           <div className="space-y-3">
             <p className="text-white">Selecione o **Tribunal** em {selectedState}:</p>
             {getTribunals(selectedRegion, selectedState).map(trib => (
@@ -194,13 +177,13 @@ export default function ProblemReporter() {
           </div>
         )}
 
-        {!submitMessage && step === 4 && (selectedTribunal || selectedRegion === "Federais") && ( // Seleção de Tipo de Problema
+        {!submitMessage && step === 4 && (selectedTribunal || selectedRegion === "Federais") && (
           <div className="space-y-3">
             <p className="text-white">Qual é a natureza do problema no **{selectedTribunal?.name || selectedRegion}**?</p>
             {problemas.map(prob => (
               <button
                 key={prob}
-                onClick={() => { setProblemType(prob); setStep(5); }} // Próximo passo é a confirmação
+                onClick={() => { setProblemType(prob); setStep(5); }}
                 className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:hover:bg-slate-800 text-left"
               >
                 {prob}
@@ -208,13 +191,13 @@ export default function ProblemReporter() {
             ))}
             <button onClick={() => {
               if (selectedRegion === "Federais") {
-                setStep(1); // Volta para seleção de região
+                setStep(1);
                 setSelectedRegion(null);
               } else if (selectedTribunal) {
-                setStep(3); // Volta para seleção de tribunal
+                setStep(3);
                 setSelectedTribunal(null);
               } else {
-                setStep(2); // Volta para seleção de estado
+                setStep(2);
                 setSelectedState(null);
               }
               setProblemType(null);
@@ -222,7 +205,7 @@ export default function ProblemReporter() {
           </div>
         )}
 
-        {!submitMessage && step === 5 && (selectedTribunal || selectedRegion === "Federais") && problemType && ( // Confirmação e Envio
+        {!submitMessage && step === 5 && (selectedTribunal || selectedRegion === "Federais") && problemType && (
           <div className="space-y-3 text-white">
             <p>Você está reportando um problema em:</p>
             <p className="font-bold">Tribunal: {selectedTribunal?.name || selectedRegion}</p>
@@ -240,4 +223,4 @@ export default function ProblemReporter() {
       </Modal>
     </>
   );
-}
+          }
