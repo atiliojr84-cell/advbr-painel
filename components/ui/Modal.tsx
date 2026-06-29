@@ -1,54 +1,44 @@
 "use client";
 
-import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: React.ReactNode;
-  children: React.ReactNode;
+  title: string; // Mantemos o title, pois é útil para o cabeçalho
+  children: ReactNode;
 }
 
 export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", handleEsc);
-    return () => window.removeEventListener("keydown", handleEsc);
-  }, [onClose]);
-
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          key="modal-backdrop"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose} // O clique fora fecha tudo
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={onClose} // Fecha o modal ao clicar no backdrop
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
         >
-          {/* JANELA: stopPropagation garante que o clique aqui não feche o modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-slate-950 border border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.3)] rounded-xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col cursor-default"
+            key="modal-content"
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            onClick={(e) => e.stopPropagation()} // Impede que o clique no conteúdo feche o modal
+            className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
           >
-            <div className="flex justify-between items-center p-6 border-b border-blue-900/50">
-              <h2 className="text-xl font-bold text-white flex items-center">
-                {title}
-              </h2>
-              <button 
-                onClick={onClose}
-                className="p-1 hover:bg-blue-900/30 rounded-full transition-colors text-white"
-              >
-                <X className="w-5 h-5" />
+            <div className="flex items-center justify-between mb-6 shrink-0">
+              <h3 className="text-white text-xl font-bold">{title}</h3>
+              <button onClick={onClose} className="text-slate-500 hover:text-white">
+                <X size={24} />
               </button>
             </div>
-            
-            <div className="p-6 overflow-y-auto text-slate-300">
+
+            <div className="overflow-y-auto overscroll-contain max-h-[60vh] pr-2 -mr-2 custom-scrollbar scroll-smooth">
               {children}
             </div>
           </motion.div>
