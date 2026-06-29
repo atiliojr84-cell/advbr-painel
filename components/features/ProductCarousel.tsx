@@ -4,7 +4,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { amazonProducts } from "../../data/amazonProducts";
+import { amazonProducts } from "../../data/amazonProducts"; // Base de dados de produtos Amazon
 
 export default function ProductCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,7 +28,9 @@ export default function ProductCarousel() {
     if (amazonProducts.length === 0) return [];
 
     for (let i = 0; i < 3; i++) {
-      products.push(amazonProducts[(currentIndex + i) % amazonProducts.length]);
+      products.push(
+        amazonProducts[(currentIndex + i) % amazonProducts.length]
+      );
     }
 
     return products;
@@ -50,7 +52,6 @@ export default function ProductCarousel() {
             className="absolute left-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Produto anterior"
           >
-            {/* Seta para a esquerda */}
             <span aria-hidden="true">‹</span>
           </button>
 
@@ -100,7 +101,6 @@ export default function ProductCarousel() {
             className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Próximo produto"
           >
-            {/* Seta para a direita */}
             <span aria-hidden="true">›</span>
           </button>
         </div>
