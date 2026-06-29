@@ -1,4 +1,21 @@
-export const jurisdictions = {
+export interface Tribunal {
+  name: string;
+  url: string;
+  alerta: string | null;
+}
+
+export interface Regiao {
+  [key: string]: Tribunal[];
+}
+
+export interface JurisdictionData {
+  federais: Tribunal[];
+  regioes: {
+    [key: string]: Regiao;
+  };
+}
+
+export const jurisdictions: JurisdictionData = {
   federais: [
     { name: "STF", url: "https://portal.stf.jus.br/", alerta: null },
     { name: "STJ", url: "https://www.stj.jus.br/", alerta: null },
