@@ -25,19 +25,25 @@ interface Jurisdictions {
 }
 
 // Carrega as jurisdições (ajuste o caminho se necessário)
-const allJurisdictions: Jurisdictions = jurisdictions as Jurisdictions;
+const allJurisdictions: Jurisdictions = jurisdictions;
+
+const problemas = [
+  "Lentidão",
+  "Indisponibilidade",
+  "Erro ao protocolar",
+  "Erro ao consultar",
+  "Outro"
+];
 
 export default function ProblemReporter() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1); // 1: Região, 2: Estado/Federais, 3: Tribunal, 4: Tipo de Problema, 5: Confirmação
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [selectedState, setSelectedState] = useState<string | null>(null);
   const [selectedTribunal, setSelectedTribunal] = useState<Tribunal | null>(null);
   const [problemType, setProblemType] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
-
-  const problemas = ["Instabilidade/Lentidão", "Offline", "Problema de Login", "Outro"];
 
   const resetModal = () => {
     setStep(1);
@@ -51,12 +57,13 @@ export default function ProblemReporter() {
   };
 
   const handleReportSubmit = async () => {
-    if (!selectedTribunal) {
-      setSubmitMessage("Por favor, selecione um tribunal antes de enviar.");
-      return;
-    }
-    if (!problemType) {
-      setSubmitMessage("Por favor, selecione o tipo de problema.");
+    // --- DEBUG: Log dos valores antes da validação ---
+    console.log("handleReportSubmit: selectedTribunal antes da validação:", selectedTribunal);
+    console.log("handleReportSubmit: problemType antes da validação:", problemType);
+
+    if (!selectedTribunal || !problemType) {
+      setSubmitMessage("Erro: Dados incompletos para o reporte.");
+      console.error("handleReportSubmit: Validação falhou. selectedTribunal ou problemType estão ausentes.");
       return;
     }
 
@@ -125,15 +132,22 @@ export default function ProblemReporter() {
             {Object.keys(allJurisdictions.regioes).map(regiao => (
               <button
                 key={regiao}
-                onClick={() => { setSelectedRegion(regiao); setStep(2); }}
+                onClick={() => {
+                  console.log("Step 1: Selecionou Região:", regiao); // DEBUG
+                  setSelectedRegion(regiao);
+                  setStep(2);
+                }}
                 className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
               >
                 {regiao}
               </button>
             ))}
-            {/* Botão para Federais - Agora vai para o passo 2 para listar os federais */}
             <button
-              onClick={() => { setSelectedRegion("Federais"); setStep(2); }}
+              onClick={() => {
+                console.log("Step 1: Selecionou Federais"); // DEBUG
+                setSelectedRegion("Federais");
+                setStep(2);
+              }}
               className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
             >
               Federais
@@ -147,29 +161,43 @@ export default function ProblemReporter() {
             {getStates(selectedRegion).map(state => (
               <button
                 key={state}
-                onClick={() => { setSelectedState(state); setStep(3); }}
+                onClick={() => {
+                  console.log("Step 2: Selecionou Estado:", state); // DEBUG
+                  setSelectedState(state);
+                  setStep(3);
+                }}
                 className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
               >
                 {state}
               </button>
             ))}
-            <button onClick={() => { setStep(1); setSelectedRegion(null); }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
+            <button onClick={() => {
+              console.log("Step 2: Voltar para Região"); // DEBUG
+              setStep(1); setSelectedRegion(null);
+            }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
 
-        {!submitMessage && step === 2 && selectedRegion === "Federais" && ( // NOVO PASSO: Seleção de Tribunais Federais
+        {!submitMessage && step === 2 && selectedRegion === "Federais" && ( // Seleção de Tribunais Federais
           <div className="space-y-3">
             <p className="text-white">Selecione o **Tribunal Federal**:</p>
             {allJurisdictions.federais.map(trib => (
               <button
                 key={trib.name}
-                onClick={() => { setSelectedTribunal(trib); setStep(4); }}
+                onClick={() => {
+                  console.log("Step 2 (Federais): Selecionou Tribunal:", trib.name); // DEBUG
+                  setSelectedTribunal(trib);
+                  setStep(4);
+                }}
                 className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
               >
                 {trib.name}
               </button>
             ))}
-            <button onClick={() => { setStep(1); setSelectedRegion(null); setSelectedTribunal(null); }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
+            <button onClick={() => {
+              console.log("Step 2 (Federais): Voltar para Região"); // DEBUG
+              setStep(1); setSelectedRegion(null); setSelectedTribunal(null);
+            }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
 
@@ -179,13 +207,20 @@ export default function ProblemReporter() {
             {getTribunals(selectedRegion, selectedState).map(trib => (
               <button
                 key={trib.name}
-                onClick={() => { setSelectedTribunal(trib); setStep(4); }}
+                onClick={() => {
+                  console.log("Step 3: Selecionou Tribunal:", trib.name); // DEBUG
+                  setSelectedTribunal(trib);
+                  setStep(4);
+                }}
                 className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
               >
                 {trib.name}
               </button>
             ))}
-            <button onClick={() => { setStep(2); setSelectedState(null); setSelectedTribunal(null); }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
+            <button onClick={() => {
+              console.log("Step 3: Voltar para Estado"); // DEBUG
+              setStep(2); setSelectedState(null); setSelectedTribunal(null);
+            }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
 
@@ -195,20 +230,24 @@ export default function ProblemReporter() {
             {problemas.map(prob => (
               <button
                 key={prob}
-                onClick={() => { setProblemType(prob); setStep(5); }}
+                onClick={() => {
+                  console.log("Step 4: Selecionou Tipo de Problema:", prob); // DEBUG
+                  setProblemType(prob);
+                  setStep(5);
+                }}
                 className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:hover:bg-slate-800 text-left"
               >
                 {prob}
               </button>
             ))}
             <button onClick={() => {
+              console.log("Step 4: Voltar para Seleção de Tribunal"); // DEBUG
               if (selectedRegion === "Federais") {
-                setStep(2); // Volta para seleção de federais
-                setSelectedTribunal(null);
+                setStep(2);
               } else {
-                setStep(3); // Volta para seleção de tribunal por estado
-                setProblemType(null);
+                setStep(3);
               }
+              setProblemType(null);
             }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
@@ -225,7 +264,10 @@ export default function ProblemReporter() {
             >
               {isSubmitting ? "Enviando..." : "Confirmar e Enviar Reporte"}
             </button>
-            <button onClick={() => setStep(4)} className="text-sm text-blue-400 underline mt-4">Voltar</button>
+            <button onClick={() => {
+              console.log("Step 5: Voltar para Tipo de Problema"); // DEBUG
+              setStep(4);
+            }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
       </Modal>
