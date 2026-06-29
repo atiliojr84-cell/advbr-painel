@@ -44,11 +44,11 @@ export default function ProductCarousel() {
 
         <div className="relative flex items-center justify-center">
           <button 
-            onClick={handlePrev} 
+            onClick={handlePrev} // Este é o botão "Anterior"
             className="absolute left-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Produto anterior"
           >
-            <
+            < // <-- CORRETO para o botão "Anterior"
           </button>
 
           <div className="flex space-x-4 overflow-hidden">
@@ -86,10 +86,12 @@ export default function ProductCarousel() {
           </div>
 
           <button 
-            onClick={handleNext} 
+            onClick={handleNext} // Este é o botão "Próximo"
             className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Próximo produto"
           >
+            > // <-- CORRETO para o botão "Próximo"
+          </button>
             &lt;
           </button>
         </div>
