@@ -21,11 +21,16 @@ export default function ProductCarousel() {
     );
   };
 
-  const visibleProducts = [
-    amazonProducts[currentIndex],
-    amazonProducts[(currentIndex + 1) % amazonProducts.length],
-    amazonProducts[(currentIndex + 2) % amazonProducts.length],
-  ].filter(Boolean); // Filtra para garantir que não haja undefined se a lista for pequena
+  // Garante que sempre haja 3 produtos visíveis, mesmo se a lista for menor
+  const getVisibleProducts = () => {
+    const products = [];
+    for (let i = 0; i < 3; i++) {
+      products.push(amazonProducts[(currentIndex + i) % amazonProducts.length]);
+    }
+    return products;
+  };
+
+  const visibleProducts = getVisibleProducts();
 
   return (
     <section className="py-12 px-4 bg-slate-900">
@@ -40,7 +45,7 @@ export default function ProductCarousel() {
             className="absolute left-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Produto anterior"
           >
-            <
+            < {/* CORRIGIDO AQUI */}
           </button>
 
           <div className="flex space-x-4 overflow-hidden">
@@ -82,7 +87,7 @@ export default function ProductCarousel() {
             className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Próximo produto"
           >
-            >
+            > {/* CORRIGIDO AQUI */}
           </button>
         </div>
       </div>
