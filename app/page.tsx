@@ -12,7 +12,7 @@ import { Loader2 } from "lucide-react";
 
 // Página sempre dinâmica (sem cache)
 export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// A linha 'export const revalidate = 0;' foi removida, pois 'force-dynamic' já desabilita o cache.
 
 // Import dinâmico do PdfToolHub (sem SSR)
 const DynamicPdfToolHub = nextDynamic(
@@ -20,22 +20,24 @@ const DynamicPdfToolHub = nextDynamic(
   {
     loading: () => (
       <div className="flex justify-center items-center py-10">
-        <Loader2 className="animate-spin text-slate-400" />
+        <Loader2 className="animate-spin" />
       </div>
     ),
     ssr: false,
   }
 );
 
-export default function Page() {
+export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-6xl mx-auto px-4 py-6 space-y-6">
-        {/* Header com botões de relatório e reportar falha */}
-        <header className="flex items-center justify-between gap-4">
-          <div>
-            <h1 className="text-xl font-bold">Painel ADVBR</h1>
-            <p className="text-xs text-slate-400">
+    <main className="min-h-screen bg-slate-950 text-white p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Cabeçalho com título e botões de ação */}
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div className="flex flex-col">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-400">
+              ADVBR Painel
+            </h1>
+            <p className="text-slate-400 text-sm sm:text-base mt-1">
               Monitoramento de portais, diagnóstico e ferramentas de apoio.
             </p>
           </div>
