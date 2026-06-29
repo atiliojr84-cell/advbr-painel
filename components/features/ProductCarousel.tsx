@@ -90,7 +90,7 @@ export default function ProductCarousel() {
             className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Próximo produto"
           >
-            >
+            &lt;
           </button>
         </div>
       </div>
