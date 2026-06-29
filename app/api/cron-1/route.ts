@@ -1,17 +1,43 @@
 import { NextResponse } from 'next/server';
 import { kv } from '@vercel/kv';
-import { jurisdictions } from '../../../data/jurisdictions';
+import { jurisdictions } from '../../../data/jurisdictions'; // Assumindo que jurisdictions é um objeto
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const maxDuration = 300;
+
+// Função auxiliar para achatar o objeto jurisdictions em um único array de tribunais
+const flattenJurisdictions = (data: any): any[] => {
+  let allTribunals: any[] = [];
+
+  // Adiciona os tribunais federais
+  if (data.federais && Array.isArray(data.federais)) {
+    allTribunals = allTribunals.concat(data.federais);
+  }
+
+  // Adiciona os tribunais regionais/estaduais
+  if (data.regioes) {
+    for (const regionKey in data.regioes) {
+      const region = data.regioes[regionKey];
+      for (const stateKey in region) {
+        const stateTribunals = region[stateKey];
+        if (Array.isArray(stateTribunals)) {
+          allTribunals = allTribunals.concat(stateTribunals);
+        }
+      }
+    }
+  }
+  return allTribunals;
+};
 
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
   const relatorio: any[] = [];
 
-  const mySlice = jurisdictions.slice(0, 40); // Pega os primeiros 40 tribunais
+  // Achata o objeto jurisdictions e pega os primeiros 40 tribunais
+  const allTribunals = flattenJurisdictions(jurisdictions);
+  const mySlice = allTribunals.slice(0, 40); // Pega os primeiros 40 tribunais
 
   const testUrl = async (trib: any, attempt = 1): Promise<void> => {
     let statusFinal = 'offline';
