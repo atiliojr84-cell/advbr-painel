@@ -1,13 +1,13 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+// import { X } from "lucide-react"; // Não precisamos mais do ícone X
 import { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string; // Mantemos o title, pois é útil para o cabeçalho
+  title: string;
   children: ReactNode;
 }
 
@@ -33,8 +33,8 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
           >
             <div className="flex items-center justify-between mb-6 shrink-0">
               <h3 className="text-white text-xl font-bold">{title}</h3>
-              <button onClick={onClose} className="text-slate-500 hover:text-white">
-                <X size={24} />
+              <button onClick={onClose} className="text-slate-500 hover:text-white text-sm">
+                Fechar {/* Alterado de ícone X para texto "Fechar" */}
               </button>
             </div>
 
