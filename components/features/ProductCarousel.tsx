@@ -48,12 +48,12 @@ export default function ProductCarousel() {
             className="absolute left-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Produto anterior"
           >
-            < {/* CORRIGIDO AQUI: Usando entidade HTML para o sinal de "menor que" */}
+            <
           </button>
 
           <div className="flex space-x-4 overflow-hidden">
             <AnimatePresence initial={false}>
-              {visibleProducts.map((product) => ( // Removido 'index' pois 'key' já é único
+              {visibleProducts.map((product) => (
                 <motion.a
                   key={product.id}
                   href={product.amazonLink}
@@ -64,7 +64,7 @@ export default function ProductCarousel() {
                   exit={{ opacity: 0, x: -50 }}
                   transition={{ duration: 0.5 }}
                   className="flex-none w-72 bg-slate-800 rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
-                  style={{ flexShrink: 0 }} // Garante que os itens não encolham
+                  style={{ flexShrink: 0 }}
                 >
                   <div className="relative w-full h-48 bg-slate-700 flex items-center justify-center">
                     <Image 
@@ -90,7 +90,7 @@ export default function ProductCarousel() {
             className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Próximo produto"
           >
-            > {/* CORRIGIDO AQUI: Usando entidade HTML para o sinal de "maior que" */}
+            >
           </button>
         </div>
       </div>
