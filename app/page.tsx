@@ -30,8 +30,6 @@ export default async function Home() {
   const statuses = (await kv.get("court_statuses")) || {};
   const pings = (await kv.get("court_pings")) || {};
 
-  // lastUpdate é usado internamente pelo JurisdictionHub; não exibido diretamente aqui.
-
   return (
     <div className="min-h-screen bg-[#0b0f19]">
       <Ticker />
@@ -45,7 +43,7 @@ export default async function Home() {
               <i className="fa-solid fa-star text-blue-500"></i>{" "}
               Principais Portais de Peticionamento
             </h2>
-            {/* "Última verificação" foi removido daqui, como no relatório. */}
+            {/* "Última verificação" removido, conforme relatório */}
           </div>
           <PortalCarousel
             statuses={statuses as Record<string, string>}
@@ -53,7 +51,7 @@ export default async function Home() {
           />
         </section>
 
-        {/* JurisdictionHub mostra data/hora completa internamente */}
+        {/* Componente JurisdictionHub agora exibe data/hora completa internamente */}
         <JurisdictionHub />
 
         <DynamicPdfToolHub />
@@ -62,7 +60,7 @@ export default async function Home() {
 
         <ServiceGrid />
 
-        {/* Módulo 08: Produtos de Informática Afiliados (carrossel lá embaixo) */}
+        {/* Módulo 08: Produtos de Informática Afiliados – carrossel lá embaixo */}
         <ProductCarousel />
 
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
