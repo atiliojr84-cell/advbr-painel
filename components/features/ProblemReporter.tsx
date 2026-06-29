@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { AlertCircle, FileText } from "lucide-react";
+import { useState, useEffect } from "react";
+import { AlertCircle, FileText, ArrowLeft } from "lucide-react";
 import Modal from "../ui/Modal";
 import { jurisdictions } from "../../data/jurisdictions";
 
@@ -13,102 +13,91 @@ type Report = {
   createdAt: string;
 };
 
-type PortalOption = {
-  id: string;
-  label: string;
-  region: string;
-  state?: string;
-  tribunalName: string;
-  url: string;
-};
+type ViewStep = "regiao" | "estado" | "tribunal" | "problema" | "confirm";
 
 export default function ProblemReporter() {
   const [modalOpen, setModalOpen] = useState(false);
   const [reportListOpen, setReportListOpen] = useState(false);
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [selectedPortal, setSelectedPortal] = useState<PortalOption | null>(
-    null
-  );
+
+  const [view, setView] = useState<ViewStep>("regiao");
+  const [activeRegiao, setActiveRegiao] = useState<string>("");
+  const [selectedEstado, setSelectedEstado] = useState<string>("");
+  const [selectedTribunal, setSelectedTribunal] = useState<any | null>(null);
+
   const [data, setData] = useState<{ portal: string; problema: string }>({
     portal: "",
     problema: "",
   });
+
   const [reports, setReports] = useState<Report[]>([]);
   const [loadingReports, setLoadingReports] = useState(false);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const reset = () => {
-    setStep(1);
-    setSelectedPortal(null);
+    setView("regiao");
+    setActiveRegiao("");
+    setSelectedEstado("");
+    setSelectedTribunal(null);
     setData({ portal: "", problema: "" });
     setModalOpen(false);
     setErrorMsg(null);
   };
 
-  // Deriva a lista de portais a partir das mesmas informações do JurisdictionHub
-  const portalOptions = useMemo<PortalOption[]>(() => {
-    const result: PortalOption[] = [];
-
-    // Federais
-    if (jurisdictions.federais && Array.isArray(jurisdictions.federais)) {
-      jurisdictions.federais.forEach((t: any, index: number) => {
-        if (!t || !t.name || !t.url) return;
-        result.push({
-          id: `federais-${index}`,
-          label: `[Federais] ${t.name}`,
-          region: "federais",
-          tribunalName: t.name,
-          url: t.url,
-        });
-      });
-    }
-
-    // Regiões (Sul, Sudeste, etc.)
-    if (jurisdictions.regioes) {
-      Object.keys(jurisdictions.regioes).forEach((regiaoKey) => {
-        const estadosObj = (jurisdictions.regioes as any)[regiaoKey];
-        if (!estadosObj) return;
-
-        Object.keys(estadosObj).forEach((estadoNome) => {
-          const tribunais = estadosObj[estadoNome];
-          if (!Array.isArray(tribunais)) return;
-
-          tribunais.forEach((t: any, index: number) => {
-            if (!t || !t.name || !t.url) return;
-            result.push({
-              id: `regiao-${regiaoKey}-${estadoNome}-${index}`,
-              label: `[${regiaoKey}] ${estadoNome} – ${t.name}`,
-              region: regiaoKey,
-              state: estadoNome,
-              tribunalName: t.name,
-              url: t.url,
-            });
-          });
-        });
-      });
-    }
-
-    // Ordena alfabeticamente pelo label
-    return result.sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
-  }, []);
-
-  const handleSelectPortal = (portal: PortalOption) => {
-    setSelectedPortal(portal);
-    setData((prev) => ({ ...prev, portal: portal.label }));
-    setStep(2);
-    setErrorMsg(null);
+  // Abertura do modal principal
+  const openReporterModal = () => {
+    reset();
+    setModalOpen(true);
   };
 
+  // Etapa: selecionar região
+  const handleSelectRegiao = (regiaoSlug: string) => {
+    const regiaoKey =
+      regiaoSlug.toLowerCase() === "federais" ? "federais" : regiaoSlug;
+    setActiveRegiao(regiaoKey);
+
+    if (regiaoKey === "federais") {
+      // Vai direto para lista de tribunais federais
+      setView("tribunal");
+    } else {
+      // Primeiro mostra estados da região
+      setView("estado");
+    }
+  };
+
+  // Etapa: selecionar estado
+  const handleSelectEstado = (estado: string) => {
+    setSelectedEstado(estado);
+    setView("tribunal");
+  };
+
+  // Etapa: selecionar tribunal
+  const handleSelectTribunal = (tribunal: any) => {
+    setSelectedTribunal(tribunal);
+    const regiaoLabel =
+      activeRegiao === "federais"
+        ? "Tribunais Federais"
+        : activeRegiao || "Região";
+
+    const estadoLabel =
+      activeRegiao === "federais" ? "" : selectedEstado ? ` - ${selectedEstado}` : "";
+
+    const portalLabel = `[${regiaoLabel}${estadoLabel}] ${tribunal.name}`;
+
+    setData((prev) => ({ ...prev, portal: portalLabel }));
+    setView("problema");
+  };
+
+  // Etapa: escolher tipo de problema e enviar para API
   const handleSelectProblema = async (problema: string) => {
-    if (!selectedPortal) return;
+    if (!data.portal) return;
 
     setLoadingSubmit(true);
     setErrorMsg(null);
 
     try {
       const payload = {
-        portal: selectedPortal.label,
+        portal: data.portal,
         problema,
       };
 
@@ -125,7 +114,7 @@ export default function ProblemReporter() {
       }
 
       setData((prev) => ({ ...prev, problema }));
-      setStep(3);
+      setView("confirm");
     } catch (err) {
       console.error(err);
       setErrorMsg(
@@ -140,6 +129,7 @@ export default function ProblemReporter() {
     reset();
   };
 
+  // Abrir relatório de falhas (KV)
   const openReportList = async () => {
     setReportListOpen(true);
     setLoadingReports(true);
@@ -170,12 +160,30 @@ export default function ProblemReporter() {
     }
   }, [reportListOpen]);
 
+  // Helpers para montar estados/tribunais a partir de jurisdictions
+  const getEstadosDaRegiao = (regiaoKey: string): string[] => {
+    const estadosObj = (jurisdictions.regioes as any)?.[regiaoKey];
+    if (!estadosObj) return [];
+    return Object.keys(estadosObj);
+  };
+
+  const getTribunaisDaSelecao = (): any[] => {
+    if (activeRegiao === "federais") {
+      return jurisdictions.federais || [];
+    }
+    const estadosObj = (jurisdictions.regioes as any)?.[activeRegiao];
+    if (!estadosObj) return [];
+    const tribunais = estadosObj[selectedEstado];
+    if (!Array.isArray(tribunais)) return [];
+    return tribunais;
+  };
+
   return (
     <>
       <div className="flex flex-col gap-2">
         {/* Botão: Reportar Falha */}
         <button
-          onClick={() => setModalOpen(true)}
+          onClick={openReporterModal}
           className="flex items-center justify-center gap-2 bg-black border border-red-500/50 text-red-500 px-4 py-2 rounded hover:bg-red-600 hover:text-white transition-all font-bold text-sm"
         >
           <AlertCircle className="w-4 h-4" />
@@ -194,39 +202,118 @@ export default function ProblemReporter() {
 
       {/* Modal principal: fluxo de reporte */}
       <Modal isOpen={modalOpen} onClose={reset} title="Comunicar Instabilidade">
-        {step === 1 && (
-          <div className="space-y-3">
-            <p className="text-white">
-              Doutor, selecione o portal onde o senhor está enfrentando
-              dificuldades:
-            </p>
-
-            {portalOptions.length === 0 ? (
-              <p className="text-slate-400 text-sm">
-                Nenhum portal disponível para seleção. Verifique a configuração
-                de jurisdições.
-              </p>
-            ) : (
-              <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
-                {portalOptions.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => handleSelectPortal(p)}
-                    className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left text-sm"
-                  >
-                    {p.label}
-                  </button>
-                ))}
-              </div>
+        {/* Barra de título dinâmica, com "Voltar" igual ao JurisdictionHub */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            {(view === "estado" || view === "tribunal" || view === "problema") && (
+              <button
+                onClick={() => {
+                  if (view === "estado") {
+                    setView("regiao");
+                    setActiveRegiao("");
+                  } else if (view === "tribunal") {
+                    if (activeRegiao === "federais") {
+                      setView("regiao");
+                      setActiveRegiao("");
+                    } else {
+                      setView("estado");
+                      setSelectedEstado("");
+                    }
+                  } else if (view === "problema") {
+                    setView("tribunal");
+                    setData((prev) => ({ ...prev, problema: "" }));
+                  }
+                }}
+                className="text-slate-400 hover:text-white transition-colors"
+              >
+                <ArrowLeft size={18} />
+              </button>
             )}
+            <h3 className="text-white text-sm font-bold">
+              {view === "regiao" && "Selecione a região ou tribunais federais"}
+              {view === "estado" && `Região: ${activeRegiao}`}
+              {view === "tribunal" &&
+                (activeRegiao === "federais"
+                  ? "Tribunais Federais"
+                  : `Estado: ${selectedEstado}`)}
+              {view === "problema" && data.portal}
+              {view === "confirm" && "Relato registrado"}
+            </h3>
+          </div>
+        </div>
+
+        {/* Conteúdo por etapa, imitando JurisdictionHub */}
+        {view === "regiao" && (
+          <div className="space-y-3">
+            <p className="text-white text-sm">
+              Doutor, selecione a região ou os tribunais federais onde o senhor
+              está enfrentando dificuldades:
+            </p>
+            <div className="flex flex-wrap justify-center gap-3 mt-3">
+              {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map(
+                (r) => (
+                  <button
+                    key={r}
+                    onClick={() => handleSelectRegiao(r.toLowerCase())}
+                    className="px-4 py-2 text-slate-300 capitalize font-medium bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg text-xs"
+                  >
+                    {r === "CentroOeste" ? "Centro-Oeste" : r}
+                  </button>
+                )
+              )}
+            </div>
           </div>
         )}
 
-        {step === 2 && (
+        {view === "estado" && (
           <div className="space-y-3">
-            <p className="text-white">
+            <p className="text-white text-sm">
+              Agora selecione o estado dentro da região{" "}
+              <strong>{activeRegiao}</strong>:
+            </p>
+            <div className="grid grid-cols-2 gap-3 mt-3">
+              {getEstadosDaRegiao(activeRegiao).map((estado) => (
+                <button
+                  key={estado}
+                  onClick={() => handleSelectEstado(estado)}
+                  className="p-3 text-white font-medium text-xs text-left bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800"
+                >
+                  {estado}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {view === "tribunal" && (
+          <div className="space-y-3">
+            <p className="text-white text-sm">
+              Selecione o tribunal ou portal em que o senhor está enfrentando
+              dificuldades:
+            </p>
+            <div className="space-y-2 max-h-72 overflow-y-auto pr-1 mt-2">
+              {getTribunaisDaSelecao().map((t: any) => (
+                <button
+                  key={t.name}
+                  onClick={() => handleSelectTribunal(t)}
+                  className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left text-xs flex justify-between items-center"
+                >
+                  <span>{t.name}</span>
+                  {/* opcional: mostrar URL resumida */}
+                  <span className="text-[10px] text-slate-400 ml-2 truncate max-w-[50%]">
+                    {t.url.replace(/^https?:\/\/(www\.)?/, "")}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {view === "problema" && (
+          <div className="space-y-3">
+            <p className="text-white text-sm">
               Qual é a natureza do problema em{" "}
-              <strong>{selectedPortal?.label}</strong>?
+              <strong>{data.portal}</strong>?
             </p>
             {problemas.map((prob) => (
               <button
@@ -240,30 +327,20 @@ export default function ProblemReporter() {
                   : prob}
               </button>
             ))}
-            <button
-              onClick={() => {
-                setStep(1);
-                setSelectedPortal(null);
-                setData((prev) => ({ ...prev, portal: "" }));
-              }}
-              className="text-sm text-blue-400 underline mt-4"
-            >
-              Voltar
-            </button>
             {errorMsg && (
               <p className="text-xs text-red-400 mt-2">{errorMsg}</p>
             )}
           </div>
         )}
 
-        {step === 3 && (
+        {view === "confirm" && (
           <div className="space-y-4">
-            <p className="text-white">
+            <p className="text-white text-sm">
               Obrigado, doutor. Seu relato sobre{" "}
               <strong>{data.portal}</strong> foi registrado como{" "}
               <strong>{data.problema}</strong>.
             </p>
-            <p className="text-sm text-slate-400">
+            <p className="text-xs text-slate-400">
               Esses registros contribuem para o diagnóstico automático de
               instabilidades e ajudam outros colegas a saberem quando um portal
               está com problemas.
