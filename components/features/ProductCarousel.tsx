@@ -1,109 +1,93 @@
 // components/features/ProductCarousel.tsx
 "use client";
 
-import { useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { amazonProducts } from "../../data/amazonProducts";
 
 export default function ProductCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? amazonProducts.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === amazonProducts.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  // Garante que sempre haja 3 produtos visíveis, mesmo se a lista for pequena
-  const getVisibleProducts = () => {
-    const products = [];
-
-    if (amazonProducts.length === 0) return [];
-
-    for (let i = 0; i < 3; i++) {
-      products.push(
-        amazonProducts[(currentIndex + i) % amazonProducts.length]
-      );
+  const scroll = (dir: "left" | "right") => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({
+        left: dir === "left" ? -250 : 250,
+        behavior: "smooth",
+      });
     }
-
-    return products;
   };
 
-  const visibleProducts = getVisibleProducts();
+  // Se não houver produtos, não renderiza nada
+  if (!amazonProducts || amazonProducts.length === 0) {
+    return null;
+  }
 
   return (
-    <section className="py-12 px-4 bg-slate-900">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-white mb-8 text-center border-b border-slate-700 pb-4">
-          Produtos de Informática Selecionados
-        </h2>
+    <section className="my-12">
+      <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2 mb-4">
+        <i className="fa-solid fa-computer text-blue-500"></i>
+        Produtos de Informática Selecionados (Amazon Afiliados)
+      </h2>
 
-        <div className="relative flex items-center justify-center">
-          {/* Botão anterior */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
-            aria-label="Produto anterior"
-          >
-            <span aria-hidden="true">‹</span>
-          </button>
+      <div className="relative group my-4">
+        {/* Botão esquerda */}
+        <button
+          onClick={() => scroll("left")}
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 bg-black/80 p-2 rounded-full border border-blue-600 text-white hover:bg-blue-900 transition-all"
+          aria-label="Anterior"
+        >
+          <ChevronLeft size={18} />
+        </button>
 
-          <div className="flex space-x-4 overflow-hidden">
-            <AnimatePresence initial={false}>
-              {visibleProducts.map((product) => (
-                <motion.a
-                  key={product.id}
-                  href={product.amazonLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.5 }}
-                  className="flex-none w-72 bg-slate-800 rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
-                  style={{ flexShrink: 0 }}
-                >
-                  <div className="relative w-full h-48 bg-slate-700 flex items-center justify-center">
-                    <Image
-                      src={product.imageUrl}
-                      alt={product.title}
-                      fill
-                      style={{ objectFit: "contain" }}
-                      className="p-2"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-white truncate">
-                      {product.title}
-                    </h3>
-                    <p className="text-blue-400 text-xl font-bold mt-2">
-                      {product.price}
-                    </p>
-                    <p className="text-slate-400 text-sm mt-1">
-                      Compre na Amazon
-                    </p>
-                  </div>
-                </motion.a>
-              ))}
-            </AnimatePresence>
-          </div>
+        {/* Área rolável com os produtos */}
+        <div
+          ref={scrollRef}
+          className="flex gap-4 overflow-x-auto scrollbar-hide py-4 px-2 overscroll-elastic"
+        >
+          {amazonProducts.map((product) => (
+            <a
+              key={product.id}
+              href={product.amazonLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-none w-64 bg-slate-900 rounded-xl glow-effect cursor-pointer flex flex-col overflow-hidden"
+            >
+              {/* Miniatura do produto */}
+              <div className="relative w-full h-40 bg-slate-800 flex items-center justify-center">
+                <Image
+                  src={product.imageUrl}
+                  alt={product.title}
+                  fill
+                  style={{ objectFit: "contain" }}
+                  className="p-2"
+                />
+              </div>
 
-          {/* Botão próximo */}
-          <button
-            onClick={handleNext}
-            className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
-            aria-label="Próximo produto"
-          >
-            <span aria-hidden="true">›</span>
-          </button>
+              {/* Texto: título e preço */}
+              <div className="p-4 flex flex-col gap-1">
+                <p className="text-sm font-bold text-white line-clamp-2">
+                  {product.title}
+                </p>
+                <p className="text-sm text-blue-400 font-semibold">
+                  {product.price}
+                </p>
+                <p className="text-[11px] text-slate-400">
+                  Compre na Amazon (link de afiliado)
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
+
+        {/* Botão direita */}
+        <button
+          onClick={() => scroll("right")}
+          className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 bg-black/80 p-2 rounded-full border border-blue-600 text-white hover:bg-blue-900 transition-all"
+          aria-label="Próximo"
+        >
+          <ChevronRight size={18} />
+        </button>
       </div>
     </section>
   );
