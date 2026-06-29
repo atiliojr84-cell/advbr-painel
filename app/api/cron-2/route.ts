@@ -6,10 +6,11 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const maxDuration = 300;
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
-  let pingsPreviousExecution: Record<string, number> = await kv.get('court_pings_previous_chrome2') || {};
   const relatorio: any[] = [];
 
   const allTribunals = [...jurisdictions.federais];
@@ -22,12 +23,12 @@ export async function GET() {
 
   const rebeldes = ["TRF3", "TJPB", "TJRN", "TJGO", "TRT13", "TJDFT", "TJRS", "PJe TJES", "E-proc TJSC", "TRT11", "PJe Nacional"];
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
+
   const mySlice = normais.slice(40);
 
   const testUrl = async (trib: any, attempt = 1): Promise<void> => {
     let statusFinal = 'offline';
     let pingFinal = 0;
-    let realLatency = 0;
     let detalheFinal = '';
 
     try {
@@ -47,37 +48,15 @@ export async function GET() {
       });
       clearTimeout(timeoutId);
 
-      const totalTime = Date.now() - start;
+      const time = Date.now() - start;
 
-      // Valida se o conteúdo é real
-      const content = await response.text();
-      const isValidContent = 
-        content.length > 200 && 
-        !content.includes('403') && 
-        !content.includes('404') &&
-        !content.includes('captcha') &&
-        !content.toLowerCase().includes('blocked') &&
-        !content.toLowerCase().includes('access denied');
-
-      if ((response.ok || (response.status >= 300 && response.status < 400)) && isValidContent) {
-        // Calcula compensação dinâmica usando execução anterior
-        const previousPing = pingsPreviousExecution[trib.name];
-        
-        if (previousPing && previousPing > 0) {
-          // Tem execução anterior: calcula overhead dinamicamente
-          const overhead = Math.max(totalTime - previousPing, 0);
-          realLatency = Math.max(previousPing - overhead, 10);
-        } else {
-          // Primeira execução: usa overhead fixo de 30ms
-          realLatency = Math.max(totalTime - 30, 10);
-        }
-
-        statusFinal = realLatency > 6000 ? 'instavel' : 'online';
-        pingFinal = realLatency;
+      if (response.ok || (response.status >= 300 && response.status < 400)) {
+        statusFinal = time > 6000 ? 'instavel' : 'online';
+        pingFinal = time;
         detalheFinal = 'Sucesso';
       } else {
         statusFinal = 'offline';
-        detalheFinal = isValidContent ? `Erro HTTP: ${response.status}` : 'Conteúdo inválido (página de erro)';
+        detalheFinal = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
       if (attempt === 1 && (error.message === 'fetch failed' || error.name === 'AbortError')) {
@@ -107,8 +86,6 @@ export async function GET() {
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  // Salva os pings atuais para próxima execução
-  await kv.set('court_pings_previous_chrome2', pings);
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
@@ -126,7 +103,7 @@ export async function GET() {
 
   return NextResponse.json({
     success: true,
-    robo: "Robo 2 (Normais 41+ - Com Compensação Dinâmica)",
+    robo: "Robo 2 (Normais 41+)",
     resumo,
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
