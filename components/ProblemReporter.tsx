@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { AlertCircle } from "lucide-react";
-import Modal from "../ui/Modal"; // Seu componente Modal
-import { jurisdictions } from "../../data/jurisdictions"; // Assumindo que jurisdictions está em ../../data/jurisdictions
+import Modal from "./ui/Modal"; // CORRIGIDO: Agora aponta corretamente para components/ui/Modal
+import { jurisdictions } from "../data/jurisdictions"; // CORRIGIDO: Assumindo que jurisdictions está em data/jurisdictions na raiz do projeto
 
 // Estrutura para os dados de jurisdições
 interface Tribunal {
@@ -141,7 +141,15 @@ export default function ProblemReporter() {
             {getRegions().map(region => (
               <button
                 key={region}
-                onClick={() => { setSelectedRegion(region); setStep(2); }}
+                onClick={() => {
+                  setSelectedRegion(region);
+                  if (region === "Federais") {
+                    setSelectedTribunal(null); // Reseta tribunal se for federais
+                    setStep(4); // Vai direto para seleção de problema para federais
+                  } else {
+                    setStep(2);
+                  }
+                }}
                 className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
               >
                 {region}
@@ -150,73 +158,70 @@ export default function ProblemReporter() {
           </div>
         )}
 
-        {!submitMessage && step === 2 && selectedRegion && ( // Seleção de Estado ou Tribunais Federais
+        {!submitMessage && step === 2 && selectedRegion && selectedRegion !== "Federais" && ( // Seleção de Estado
           <div className="space-y-3">
-            <p className="text-white">Selecione o **Estado** ou o **Tribunal** (se for Federal):</p>
-            {selectedRegion === "Federais" ? (
-              getTribunals(selectedRegion, null).map(trib => (
-                <button
-                  key={trib.name}
-                  onClick={() => { setSelectedTribunal(trib); setStep(3); }}
-                  className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
-                >
-                  {trib.name}
-                </button>
-              ))
-            ) : (
-              getStates(selectedRegion).map(state => (
-                <button
-                  key={state}
-                  onClick={() => { setSelectedState(state); setStep(3); }}
-                  className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
-                >
-                  {state}
-                </button>
-              ))
-            )}
+            <p className="text-white">Selecione o **Estado** em {selectedRegion}:</p>
+            {getStates(selectedRegion).map(state => (
+              <button
+                key={state}
+                onClick={() => { setSelectedState(state); setStep(3); }}
+                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
+              >
+                {state}
+              </button>
+            ))}
             <button onClick={() => { setStep(1); setSelectedRegion(null); }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
 
-        {!submitMessage && step === 3 && selectedRegion && (selectedState || selectedRegion === "Federais") && ( // Seleção de Tribunal (se não for federal) ou Tipo de Problema
+        {!submitMessage && step === 3 && selectedRegion && selectedState && ( // Seleção de Tribunal
           <div className="space-y-3">
-            {selectedRegion !== "Federais" && !selectedTribunal && ( // Se ainda não selecionou tribunal e não é federal
-              <>
-                <p className="text-white">Selecione o **Tribunal** em {selectedState}:</p>
-                {getTribunals(selectedRegion, selectedState).map(trib => (
-                  <button
-                    key={trib.name}
-                    onClick={() => { setSelectedTribunal(trib); setStep(4); }}
-                    className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
-                  >
-                    {trib.name}
-                  </button>
-                ))}
-                <button onClick={() => { setStep(2); setSelectedState(null); setSelectedTribunal(null); }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
-              </>
-            )}
-            {(selectedTribunal || selectedRegion === "Federais") && ( // Se já selecionou tribunal ou é federal e já passou pelo passo 2
-              <>
-                <p className="text-white">Qual é a natureza do problema no **{selectedTribunal?.name || selectedRegion}**?</p>
-                {problemas.map(prob => (
-                  <button
-                    key={prob}
-                    onClick={() => { setProblemType(prob); setStep(4); }}
-                    className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:hover:bg-slate-800 text-left"
-                  >
-                    {prob}
-                  </button>
-                ))}
-                <button onClick={() => { setStep(selectedRegion === "Federais" ? 2 : 3); setProblemType(null); setSelectedTribunal(null); }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
-              </>
-            )}
+            <p className="text-white">Selecione o **Tribunal** em {selectedState}:</p>
+            {getTribunals(selectedRegion, selectedState).map(trib => (
+              <button
+                key={trib.name}
+                onClick={() => { setSelectedTribunal(trib); setStep(4); }}
+                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
+              >
+                {trib.name}
+              </button>
+            ))}
+            <button onClick={() => { setStep(2); setSelectedState(null); setSelectedTribunal(null); }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
 
-        {!submitMessage && step === 4 && selectedTribunal && problemType && ( // Confirmação e Envio
+        {!submitMessage && step === 4 && (selectedTribunal || selectedRegion === "Federais") && ( // Seleção de Tipo de Problema
+          <div className="space-y-3">
+            <p className="text-white">Qual é a natureza do problema no **{selectedTribunal?.name || selectedRegion}**?</p>
+            {problemas.map(prob => (
+              <button
+                key={prob}
+                onClick={() => { setProblemType(prob); setStep(5); }} // Próximo passo é a confirmação
+                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:hover:bg-slate-800 text-left"
+              >
+                {prob}
+              </button>
+            ))}
+            <button onClick={() => {
+              if (selectedRegion === "Federais") {
+                setStep(1); // Volta para seleção de região
+                setSelectedRegion(null);
+              } else if (selectedTribunal) {
+                setStep(3); // Volta para seleção de tribunal
+                setSelectedTribunal(null);
+              } else {
+                setStep(2); // Volta para seleção de estado
+                setSelectedState(null);
+              }
+              setProblemType(null);
+            }} className="text-sm text-blue-400 underline mt-4">Voltar</button>
+          </div>
+        )}
+
+        {!submitMessage && step === 5 && (selectedTribunal || selectedRegion === "Federais") && problemType && ( // Confirmação e Envio
           <div className="space-y-3 text-white">
             <p>Você está reportando um problema em:</p>
-            <p className="font-bold">Tribunal: {selectedTribunal.name}</p>
+            <p className="font-bold">Tribunal: {selectedTribunal?.name || selectedRegion}</p>
             <p className="font-bold">Problema: {problemType}</p>
             <button
               onClick={handleReportSubmit}
@@ -225,7 +230,7 @@ export default function ProblemReporter() {
             >
               {isSubmitting ? "Enviando..." : "Confirmar e Enviar Reporte"}
             </button>
-            <button onClick={() => setStep(3)} className="text-sm text-blue-400 underline mt-4">Voltar</button>
+            <button onClick={() => setStep(4)} className="text-sm text-blue-400 underline mt-4">Voltar</button>
           </div>
         )}
       </Modal>
