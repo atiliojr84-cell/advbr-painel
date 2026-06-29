@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AlertCircle, FileText } from "lucide-react";
 import Modal from "../ui/Modal";
+import { jurisdictions } from "../../data/jurisdictions";
 
-const portais = ["PJe", "e-Proc", "Projudi", "e-SAJ", "PJe Office", "Certisign"];
 const problemas = ["Instabilidade/Lentidão", "Offline", "Problema de Login"];
 
 type Report = {
@@ -13,10 +13,22 @@ type Report = {
   createdAt: string;
 };
 
+type PortalOption = {
+  id: string;
+  label: string;
+  region: string;
+  state?: string;
+  tribunalName: string;
+  url: string;
+};
+
 export default function ProblemReporter() {
   const [modalOpen, setModalOpen] = useState(false);
   const [reportListOpen, setReportListOpen] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [selectedPortal, setSelectedPortal] = useState<PortalOption | null>(
+    null
+  );
   const [data, setData] = useState<{ portal: string; problema: string }>({
     portal: "",
     problema: "",
@@ -28,24 +40,75 @@ export default function ProblemReporter() {
 
   const reset = () => {
     setStep(1);
+    setSelectedPortal(null);
     setData({ portal: "", problema: "" });
     setModalOpen(false);
     setErrorMsg(null);
   };
 
-  const handleSelectPortal = (portal: string) => {
-    setData((prev) => ({ ...prev, portal }));
+  // Deriva a lista de portais a partir das mesmas informações do JurisdictionHub
+  const portalOptions = useMemo<PortalOption[]>(() => {
+    const result: PortalOption[] = [];
+
+    // Federais
+    if (jurisdictions.federais && Array.isArray(jurisdictions.federais)) {
+      jurisdictions.federais.forEach((t: any, index: number) => {
+        if (!t || !t.name || !t.url) return;
+        result.push({
+          id: `federais-${index}`,
+          label: `[Federais] ${t.name}`,
+          region: "federais",
+          tribunalName: t.name,
+          url: t.url,
+        });
+      });
+    }
+
+    // Regiões (Sul, Sudeste, etc.)
+    if (jurisdictions.regioes) {
+      Object.keys(jurisdictions.regioes).forEach((regiaoKey) => {
+        const estadosObj = (jurisdictions.regioes as any)[regiaoKey];
+        if (!estadosObj) return;
+
+        Object.keys(estadosObj).forEach((estadoNome) => {
+          const tribunais = estadosObj[estadoNome];
+          if (!Array.isArray(tribunais)) return;
+
+          tribunais.forEach((t: any, index: number) => {
+            if (!t || !t.name || !t.url) return;
+            result.push({
+              id: `regiao-${regiaoKey}-${estadoNome}-${index}`,
+              label: `[${regiaoKey}] ${estadoNome} – ${t.name}`,
+              region: regiaoKey,
+              state: estadoNome,
+              tribunalName: t.name,
+              url: t.url,
+            });
+          });
+        });
+      });
+    }
+
+    // Ordena alfabeticamente pelo label
+    return result.sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
+  }, []);
+
+  const handleSelectPortal = (portal: PortalOption) => {
+    setSelectedPortal(portal);
+    setData((prev) => ({ ...prev, portal: portal.label }));
     setStep(2);
     setErrorMsg(null);
   };
 
   const handleSelectProblema = async (problema: string) => {
+    if (!selectedPortal) return;
+
     setLoadingSubmit(true);
     setErrorMsg(null);
 
     try {
       const payload = {
-        portal: data.portal,
+        portal: selectedPortal.label,
         problema,
       };
 
@@ -61,7 +124,6 @@ export default function ProblemReporter() {
         throw new Error("Falha ao registrar o problema.");
       }
 
-      // Se deu certo, vamos para o passo 3 (confirmação)
       setData((prev) => ({ ...prev, problema }));
       setStep(3);
     } catch (err) {
@@ -96,15 +158,12 @@ export default function ProblemReporter() {
       setReports(json.reports || []);
     } catch (err) {
       console.error(err);
-      setErrorMsg(
-        "Não foi possível carregar o relatório de falhas agora."
-      );
+      setErrorMsg("Não foi possível carregar o relatório de falhas agora.");
     } finally {
       setLoadingReports(false);
     }
   };
 
-  // Quando fechar o modal de relatório, limpamos mensagem de erro
   useEffect(() => {
     if (!reportListOpen) {
       setErrorMsg(null);
@@ -141,30 +200,40 @@ export default function ProblemReporter() {
               Doutor, selecione o portal onde o senhor está enfrentando
               dificuldades:
             </p>
-            {portais.map((p) => (
-              <button
-                key={p}
-                onClick={() => handleSelectPortal(p)}
-                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left"
-              >
-                {p}
-              </button>
-            ))}
+
+            {portalOptions.length === 0 ? (
+              <p className="text-slate-400 text-sm">
+                Nenhum portal disponível para seleção. Verifique a configuração
+                de jurisdições.
+              </p>
+            ) : (
+              <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                {portalOptions.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => handleSelectPortal(p)}
+                    className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left text-sm"
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
         {step === 2 && (
           <div className="space-y-3">
             <p className="text-white">
-              Qual é a natureza do problema no{" "}
-              <strong>{data.portal}</strong>?
+              Qual é a natureza do problema em{" "}
+              <strong>{selectedPortal?.label}</strong>?
             </p>
             {problemas.map((prob) => (
               <button
                 key={prob}
                 onClick={() => handleSelectProblema(prob)}
                 disabled={loadingSubmit}
-                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left disabled:opacity-50 disabled:cursor-not-allowed text-sm"
               >
                 {loadingSubmit && data.problema === prob
                   ? "Enviando..."
@@ -172,7 +241,11 @@ export default function ProblemReporter() {
               </button>
             ))}
             <button
-              onClick={() => setStep(1)}
+              onClick={() => {
+                setStep(1);
+                setSelectedPortal(null);
+                setData((prev) => ({ ...prev, portal: "" }));
+              }}
               className="text-sm text-blue-400 underline mt-4"
             >
               Voltar
