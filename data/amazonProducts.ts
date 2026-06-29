@@ -14,7 +14,7 @@ export const amazonProducts: Product[] = [
     imageUrl: '/images/ssd-nvme-1tb.jpg',
     title: 'SSD NVMe Kingston NV2 1TB, M.2 2280 PCIe 4.0 NVMe',
     price: 'R$ 399,90',
-    amazonLink: 'https://www.amazon.com.br/dp/B0B25TCHW5?tag=SEU_ID_AFILIADO_AQUI', // SUBSTITUA SEU_ID_AFILIADO_AQUI PELO SEU ID REAL
+    amazonLink: 'https://www.amazon.com.br/dp/B0B25TCHW5?tag=SEU_ID_AFILIADO_AQUI',
   },
   {
     id: 'monitor-dell-24',
