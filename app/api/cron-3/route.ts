@@ -42,7 +42,7 @@ export async function GET() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer e230c289-93b8-4529-b3e2-66e978776893'
+          'Authorization': `Bearer ${process.env.BRIGHTDATA_API_KEY}`
         },
         body: JSON.stringify({
           zone: 'web_unlocker1',
@@ -99,9 +99,9 @@ export async function GET() {
     offline: relatorio.filter(r => r.status === 'offline').length,
   };
 
-  return NextResponse.json({ 
-    success: true, 
-    robo: "Robo 3 (Bright Data Paralelo + Ping Realista)", 
+  return NextResponse.json({
+    success: true,
+    robo: "Robo 3 (Bright Data Paralelo + Ping Realista)",
     resumo,
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
