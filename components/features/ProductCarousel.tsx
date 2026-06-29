@@ -1,47 +1,91 @@
-// data/amazonProducts.ts
+// components/features/ProductCarousel.tsx
+"use client";
 
-export interface Product {
-  id: string;
-  imageUrl: string; // Caminho para a imagem do produto na pasta public/images
-  title: string;
-  price: string;
-  amazonLink: string; // Link de afiliado da Amazon
+import { useState } from 'react';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { amazonProducts } from '../../data/amazonProducts'; // Importa os dados dos produtos
+
+export default function ProductCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === 0 ? amazonProducts.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => 
+      prevIndex === amazonProducts.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const visibleProducts = [
+    amazonProducts[currentIndex],
+    amazonProducts[(currentIndex + 1) % amazonProducts.length],
+    amazonProducts[(currentIndex + 2) % amazonProducts.length],
+  ].filter(Boolean); // Filtra para garantir que não haja undefined se a lista for pequena
+
+  return (
+    <section className="py-12 px-4 bg-slate-900">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold text-white mb-8 text-center border-b border-slate-700 pb-4">
+          Produtos de Informática Selecionados
+        </h2>
+
+        <div className="relative flex items-center justify-center">
+          <button 
+            onClick={handlePrev} 
+            className="absolute left-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
+            aria-label="Produto anterior"
+          >
+            <
+          </button>
+
+          <div className="flex space-x-4 overflow-hidden">
+            <AnimatePresence initial={false}>
+              {visibleProducts.map((product, index) => (
+                <motion.a
+                  key={product.id}
+                  href={product.amazonLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.5 }}
+                  className="flex-none w-72 bg-slate-800 rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
+                  style={{ flexShrink: 0 }} // Garante que os itens não encolham
+                >
+                  <div className="relative w-full h-48 bg-slate-700 flex items-center justify-center">
+                    <Image 
+                      src={product.imageUrl} 
+                      alt={product.title} 
+                      layout="fill" 
+                      objectFit="contain" 
+                      className="p-2"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-white truncate">{product.title}</h3>
+                    <p className="text-blue-400 text-xl font-bold mt-2">{product.price}</p>
+                    <p className="text-slate-400 text-sm mt-1">Compre na Amazon</p>
+                  </div>
+                </motion.a>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          <button 
+            onClick={handleNext} 
+            className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
+            aria-label="Próximo produto"
+          >
+            >
+          </button>
+        </div>
+      </div>
+    </section>
+  );
 }
-
-export const amazonProducts: Product[] = [
-  {
-    id: 'ssd-nvme-1tb',
-    imageUrl: '/images/ssd-nvme-1tb.jpg',
-    title: 'SSD NVMe Kingston NV2 1TB, M.2 2280 PCIe 4.0 NVMe',
-    price: 'R$ 399,90',
-    amazonLink: 'https://www.amazon.com.br/dp/B0B25TCHW5?tag=SEU_ID_AFILIADO_AQUI', // SUBSTITUA SEU_ID_AFILIADO_AQUI PELO SEU ID REAL
-  },
-  {
-    id: 'monitor-dell-24',
-    imageUrl: '/images/monitor-dell-24.jpg',
-    title: 'Monitor Dell 24" Full HD, IPS, HDMI, DisplayPort',
-    price: 'R$ 899,00',
-    amazonLink: 'https://www.amazon.com.br/dp/B08J82X93L?tag=SEU_ID_AFILIADO_AQUI',
-  },
-  {
-    id: 'webcam-logitech-c920',
-    imageUrl: '/images/webcam-logitech-c920.jpg',
-    title: 'Webcam Logitech C920s Pro HD, 1080p, com tampa de privacidade',
-    price: 'R$ 329,90',
-    amazonLink: 'https://www.amazon.com.br/dp/B07P2CH95P?tag=SEU_ID_AFILIADO_AQUI',
-  },
-  {
-    id: 'mouse-logitech-mxmaster3s',
-    imageUrl: '/images/mouse-logitech-mxmaster3s.jpg',
-    title: 'Mouse Logitech MX Master 3S, Sem Fio, Ergonômico',
-    price: 'R$ 599,00',
-    amazonLink: 'https://www.amazon.com.br/dp/B09V22V2QG?tag=SEU_ID_AFILIADO_AQUI',
-  },
-  {
-    id: 'teclado-mecanico-redragon',
-    imageUrl: '/images/teclado-mecanico-redragon.jpg',
-    title: 'Teclado Mecânico Redragon Kumara K552, Switch Outemu Red',
-    price: 'R$ 249,90',
-    amazonLink: 'https://www.amazon.com.br/dp/B072FMZ2JB?tag=SEU_ID_AFILIADO_AQUI',
-  },
-];
