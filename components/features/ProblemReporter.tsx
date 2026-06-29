@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AlertCircle, FileText } from "lucide-react";
 import Modal from "../ui/Modal";
 
@@ -22,38 +22,94 @@ export default function ProblemReporter() {
     problema: "",
   });
   const [reports, setReports] = useState<Report[]>([]);
+  const [loadingReports, setLoadingReports] = useState(false);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const reset = () => {
     setStep(1);
     setData({ portal: "", problema: "" });
     setModalOpen(false);
+    setErrorMsg(null);
   };
 
   const handleSelectPortal = (portal: string) => {
     setData((prev) => ({ ...prev, portal }));
     setStep(2);
+    setErrorMsg(null);
   };
 
   const handleSelectProblema = async (problema: string) => {
-    const newReport: Report = {
-      portal: data.portal,
-      problema,
-      createdAt: new Date().toISOString(),
-    };
+    setLoadingSubmit(true);
+    setErrorMsg(null);
 
-    // Aqui você pode futuramente enviar para uma API / KV:
-    // await fetch("/api/report-falha", { method: "POST", body: JSON.stringify(newReport) });
+    try {
+      const payload = {
+        portal: data.portal,
+        problema,
+      };
 
-    // Por enquanto, guardamos localmente (em memória) só para UX:
-    setReports((prev) => [...prev, newReport]);
+      const res = await fetch("/api/report-falha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    setData((prev) => ({ ...prev, problema }));
-    setStep(3);
+      if (!res.ok) {
+        throw new Error("Falha ao registrar o problema.");
+      }
+
+      // Se deu certo, vamos para o passo 3 (confirmação)
+      setData((prev) => ({ ...prev, problema }));
+      setStep(3);
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(
+        "Não foi possível registrar a falha agora. Tente novamente em alguns instantes."
+      );
+    } finally {
+      setLoadingSubmit(false);
+    }
   };
 
   const handleCloseAfterConfirm = () => {
     reset();
   };
+
+  const openReportList = async () => {
+    setReportListOpen(true);
+    setLoadingReports(true);
+    setErrorMsg(null);
+
+    try {
+      const res = await fetch("/api/report-falha/list", {
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        throw new Error("Falha ao carregar relatório.");
+      }
+
+      const json = (await res.json()) as { reports: Report[] };
+      setReports(json.reports || []);
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(
+        "Não foi possível carregar o relatório de falhas agora."
+      );
+    } finally {
+      setLoadingReports(false);
+    }
+  };
+
+  // Quando fechar o modal de relatório, limpamos mensagem de erro
+  useEffect(() => {
+    if (!reportListOpen) {
+      setErrorMsg(null);
+    }
+  }, [reportListOpen]);
 
   return (
     <>
@@ -69,7 +125,7 @@ export default function ProblemReporter() {
 
         {/* Botão: Ver Relatório de Falhas */}
         <button
-          onClick={() => setReportListOpen(true)}
+          onClick={openReportList}
           className="flex items-center justify-end gap-1 text-xs text-slate-400 hover:text-white underline transition-colors"
         >
           <FileText className="w-3 h-3" />
@@ -107,9 +163,12 @@ export default function ProblemReporter() {
               <button
                 key={prob}
                 onClick={() => handleSelectProblema(prob)}
-                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left"
+                disabled={loadingSubmit}
+                className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {prob}
+                {loadingSubmit && data.problema === prob
+                  ? "Enviando..."
+                  : prob}
               </button>
             ))}
             <button
@@ -118,6 +177,9 @@ export default function ProblemReporter() {
             >
               Voltar
             </button>
+            {errorMsg && (
+              <p className="text-xs text-red-400 mt-2">{errorMsg}</p>
+            )}
           </div>
         )}
 
@@ -145,40 +207,41 @@ export default function ProblemReporter() {
         )}
       </Modal>
 
-      {/* Modal secundária: Relatório de falhas (local) */}
+      {/* Modal secundária: Relatório de falhas (dados do KV) */}
       <Modal
         isOpen={reportListOpen}
         onClose={() => setReportListOpen(false)}
-        title="Relatório de Falhas Registradas (Sessão Atual)"
+        title="Relatório de Falhas Registradas"
       >
-        {reports.length === 0 ? (
+        {loadingReports ? (
+          <p className="text-slate-300 text-sm">Carregando relatório...</p>
+        ) : errorMsg ? (
+          <p className="text-red-400 text-sm">{errorMsg}</p>
+        ) : reports.length === 0 ? (
           <p className="text-slate-300 text-sm">
-            Ainda não há falhas registradas nesta sessão.
+            Ainda não há falhas registradas.
           </p>
         ) : (
-          <div className="space-y-3 text-sm text-slate-200">
-            {reports
-              .slice()
-              .reverse()
-              .map((r, idx) => (
-                <div
-                  key={idx}
-                  className="border border-slate-700 rounded-lg p-3 bg-slate-900"
-                >
-                  <p>
-                    <span className="font-semibold">Portal:</span>{" "}
-                    {r.portal}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Problema:</span>{" "}
-                    {r.problema}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-1">
-                    Registrado em:{" "}
-                    {new Date(r.createdAt).toLocaleString("pt-BR")}
-                  </p>
-                </div>
-              ))}
+          <div className="space-y-3 text-sm text-slate-200 max-h-80 overflow-y-auto pr-1">
+            {reports.map((r, idx) => (
+              <div
+                key={`${r.portal}-${r.createdAt}-${idx}`}
+                className="border border-slate-700 rounded-lg p-3 bg-slate-900"
+              >
+                <p>
+                  <span className="font-semibold">Portal:</span>{" "}
+                  {r.portal}
+                </p>
+                <p>
+                  <span className="font-semibold">Problema:</span>{" "}
+                  {r.problema}
+                </p>
+                <p className="text-xs text-slate-400 mt-1">
+                  Registrado em:{" "}
+                  {new Date(r.createdAt).toLocaleString("pt-BR")}
+                </p>
+              </div>
+            ))}
           </div>
         )}
       </Modal>
