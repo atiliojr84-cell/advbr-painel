@@ -51,8 +51,12 @@ export default function ProblemReporter() {
   };
 
   const handleReportSubmit = async () => {
-    if (!selectedTribunal || !problemType) {
-      setSubmitMessage("Por favor, selecione o tribunal e o tipo de problema.");
+    if (!selectedTribunal && selectedRegion !== "Federais") { // Garante que um tribunal ou a opção federais foi selecionada
+      setSubmitMessage("Por favor, selecione o tribunal.");
+      return;
+    }
+    if (!problemType) {
+      setSubmitMessage("Por favor, selecione o tipo de problema.");
       return;
     }
 
@@ -66,8 +70,8 @@ export default function ProblemReporter() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          tribunalName: selectedTribunal.name,
-          tribunalUrl: selectedTribunal.url,
+          tribunalName: selectedTribunal?.name || selectedRegion, // Usa o nome do tribunal ou "Federais"
+          tribunalUrl: selectedTribunal?.url || "N/A", // URL do tribunal ou N/A para federais
           problemType: problemType,
           timestamp: new Date().toISOString(),
         }),
@@ -87,13 +91,13 @@ export default function ProblemReporter() {
     }
   };
 
-  // Funções para obter listas dinâmicas
+  // Funções para obter regiões, estados e tribunais
   const getRegions = () => {
     return ["Federais", ...Object.keys(allJurisdictions.regioes)];
   };
 
   const getStates = (region: string) => {
-    if (region === "Federais") return []; // Federais não têm estados
+    if (region === "Federais") return [];
     return Object.keys(allJurisdictions.regioes[region]);
   };
 
@@ -126,7 +130,7 @@ export default function ProblemReporter() {
         </a>
       </div>
 
-      <Modal isOpen={modalOpen} onClose={resetModal}>
+      <Modal isOpen={modalOpen} onClose={resetModal} title="Reportar Falha de Acesso"> {/* CORRIGIDO: Adicionado o prop title */}
         <h2 className="text-xl font-bold text-white mb-4">Reportar Falha de Acesso</h2>
 
         {submitMessage && (
