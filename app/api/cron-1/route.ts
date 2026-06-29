@@ -9,7 +9,6 @@ export const maxDuration = 300;
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
-  // Mantido para não quebrar a estrutura do seu banco KV, mesmo com a nova matemática
   let pingsPreviousExecution: Record<string, number> = await kv.get('court_pings_previous') || {};
   const relatorio: any[] = [];
 
@@ -56,18 +55,14 @@ export async function GET() {
       const contentLower = content.toLowerCase();
 
       // Check de veracidade inteligente:
-      // Procura apenas por telas reais de bloqueio de firewall (Cloudflare/WAF)
       const isCloudflareChallenge = contentLower.includes('<title>just a moment...</title>') || contentLower.includes('cloudflare-nginx');
       const isWafBlock = contentLower.includes('access denied') && contentLower.includes('reference #');
       
-      // Se tem mais de 500 caracteres e não é tela de bloqueio, consideramos válido
       const isValidContent = content.length > 500 && !isCloudflareChallenge && !isWafBlock;
 
       if (response.ok && isValidContent) {
-        // Compensação de latência corrigida:
-        // Descontamos 150ms fixos que é a média de tempo gasto pelo Vercel com DNS e Handshake TLS
         const VERCEL_OVERHEAD = 150;
-        realLatency = Math.max(totalTime - VERCEL_OVERHEAD, 15); // Mínimo de 15ms para ser realista
+        realLatency = Math.max(totalTime - VERCEL_OVERHEAD, 15);
 
         statusFinal = realLatency > 6000 ? 'instavel' : 'online';
         pingFinal = realLatency;
@@ -80,6 +75,9 @@ export async function GET() {
           detalheFinal = 'Bloqueado por Firewall/WAF';
         } else {
           detalheFinal = 'Conteúdo inválido ou muito curto';
+          // --- LINHA DE DEBUG ADICIONADA ---
+          console.log(`DEBUG: Tribunal ${trib.name} (${trib.url}) - Conteúdo recebido (primeiros 500 chars): ${content.substring(0, 500)}`);
+          // ----------------------------------
         }
       }
     } catch (error: any) {
@@ -110,12 +108,10 @@ export async function GET() {
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  // Salva os pings atuais para próxima execução
   await kv.set('court_pings_previous', pings);
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
 
-  // Camuflagem de Segurança: Atrasa a hora registrada entre 60 e 120 segundos
   const atrasoFake = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
   const horaCamuflada = new Date(Date.now() - atrasoFake).toISOString();
   await kv.set('last_update', horaCamuflada);
