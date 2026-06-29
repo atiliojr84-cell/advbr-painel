@@ -90,7 +90,7 @@ export async function GET() {
   await kv.set('court_pings', pings);
 
   // Camuflagem de Segurança: Atrasa a hora registrada entre 60 e 120 segundos
-  const atrasoFake = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000;
+  const atrasoFake = Math.floor(Math.random() * (120000 - 60000 + 1)) + 60000; 
   const horaCamuflada = new Date(Date.now() - atrasoFake).toISOString();
   await kv.set('last_update', horaCamuflada);
 
@@ -101,9 +101,9 @@ export async function GET() {
     offline: relatorio.filter(r => r.status === 'offline').length,
   };
 
-  return NextResponse.json({
-    success: true,
-    robo: "Robo 2 (Normais 41+)",
+  return NextResponse.json({ 
+    success: true, 
+    robo: "Robo 2 (Normais 41+)", 
     resumo,
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
