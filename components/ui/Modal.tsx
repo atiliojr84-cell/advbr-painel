@@ -27,14 +27,14 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             key="modal-content"
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -50, opacity: 0 }}
+              exit={{ y: -50, opacity: 0 }}
             onClick={(e) => e.stopPropagation()} // Impede que o clique no conteúdo feche o modal
             className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
           >
             <div className="flex items-center justify-between mb-6 shrink-0">
               <h3 className="text-white text-xl font-bold">{title}</h3>
-              <button onClick={onClose} className="text-slate-500 hover:text-white text-sm">
-                Fechar {/* Alterado de ícone X para texto "Fechar" */}
+              <button onClick={onClose} className="text-slate-500 hover:text-white"> {/* REMOVIDO: text-sm */}
+                Fechar
               </button>
             </div>
 
