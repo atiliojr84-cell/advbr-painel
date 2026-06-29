@@ -6,8 +6,6 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const maxDuration = 300;
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 export async function GET() {
   let statuses: Record<string, string> = await kv.get('court_statuses') || {};
   let pings: Record<string, number> = await kv.get('court_pings') || {};
