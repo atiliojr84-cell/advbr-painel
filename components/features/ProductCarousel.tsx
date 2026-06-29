@@ -21,9 +21,12 @@ export default function ProductCarousel() {
     );
   };
 
-  // Garante que sempre haja 3 produtos visíveis, mesmo se a lista for menor
+  // Garante que sempre haja 3 produtos visíveis, mesmo se a lista for pequena
   const getVisibleProducts = () => {
     const products = [];
+    // Garante que a lista de produtos não seja vazia para evitar erros
+    if (amazonProducts.length === 0) return [];
+
     for (let i = 0; i < 3; i++) {
       products.push(amazonProducts[(currentIndex + i) % amazonProducts.length]);
     }
@@ -50,7 +53,7 @@ export default function ProductCarousel() {
 
           <div className="flex space-x-4 overflow-hidden">
             <AnimatePresence initial={false}>
-              {visibleProducts.map((product, index) => (
+              {visibleProducts.map((product) => ( // Removido 'index' pois 'key' já é único
                 <motion.a
                   key={product.id}
                   href={product.amazonLink}
