@@ -3,14 +3,12 @@ import Header from "../components/ui/Header";
 import DiagnosticHub from "../components/features/DiagnosticHub";
 import { kv } from '@vercel/kv';
 
-// Renomeia o import 'dynamic' para 'dynamicComponent' para evitar conflito
 import dynamicComponent from 'next/dynamic';
 import { Loader2 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-// Usa 'dynamicComponent' para o import dinâmico
 const DynamicPdfToolHub = dynamicComponent(() => import('../components/features/PdfToolHub'), {
   loading: () => <Loader2 className="h-8 w-8 animate-spin text-blue-500" />,
   ssr: false,
