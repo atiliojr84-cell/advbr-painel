@@ -1,69 +1,83 @@
-import Header from "../components/ui/Header";
-import Ticker from "../components/ui/Ticker";
-import ServiceGrid from "../components/ServiceGrid";
-import PortalCarousel from "../components/features/PortalCarousel";
-import JurisdictionHub from "../components/features/JurisdictionHub";
-import DiagnosticHub from "../components/features/DiagnosticHub";
-import { kv } from '@vercel/kv';
+// data/amazonProducts.ts
 
-import nextDynamic from 'next/dynamic';
-import { Loader2 } from 'lucide-react';
+export type Product = {
+  id: string;
+  imageUrl: string;
+  title: string;
+  price: string;
+  amazonLink: string;
+};
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
-const DynamicPdfToolHub = nextDynamic(() => import('../components/features/PdfToolHub'), {
-  ssr: false,
-  loading: () => (
-    <div className="flex justify-center items-center h-40 text-white">
-      <Loader2 className="animate-spin text-blue-500" size={32} /> Carregando Ferramentas PDF...
-    </div>
-  ),
-});
-
-export default async function Home() {
-  const statuses = await kv.get('court_statuses') || {};
-  const pings = await kv.get('court_pings') || {};
-  // lastUpdate ainda é buscado, mas não será exibido diretamente aqui
-  // A variável lastUpdate não é mais usada diretamente neste arquivo para exibição.
-  // Ela é usada apenas para o JurisdictionHub, que a busca internamente.
-
-  return (
-    <div className="min-h-screen bg-[#0b0f19]">
-      <Ticker />
-
-      <main className="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
-        <Header />
-
-        <section>
-          <div className="flex justify-between items-end mb-4">
-            <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
-              <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
-            </h2>
-            {/* A linha que exibia "Última verificação" foi removida daqui, conforme solicitado. */}
-          </div>
-          <PortalCarousel
-            statuses={statuses as Record<string, string>}
-            pings={pings as Record<string, number>}
-          />
-        </section>
-
-        {/* Componente JurisdictionHub agora exibirá a data e hora completa */}
-        <JurisdictionHub />
-
-        <DynamicPdfToolHub />
-
-        <DiagnosticHub />
-
-        <ServiceGrid />
-
-        <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
-          <h2 className="text-xl font-bold text-white mb-4">Mais de 20 anos de excelência em TI Jurídica</h2>
-          <p className="leading-relaxed">
-            A advBR.info possui mais de 20 anos de excelência no mercado de tecnologia e segurança digital...
-          </p>
-        </section>
-      </main>
-    </div>
-  );
-}
+// Lista de produtos afiliados da Amazon exibidos no carrossel (Módulo 08)
+export const amazonProducts: Product[] = [
+  {
+    id: "monitor-dell-24",
+    imageUrl: "/images/monitor-dell-24.jpg",
+    title: "Monitor Dell 24'' Full HD",
+    price: "R$ 899,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_MONITOR"
+  },
+  {
+    id: "mouse-logitech-mxmaster3s",
+    imageUrl: "/images/mouse-logitech-mxmaster3s.jpg",
+    title: "Mouse Logitech MX Master 3S Sem Fio",
+    price: "R$ 549,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_MOUSE"
+  },
+  {
+    id: "ssd-nvme-1tb",
+    imageUrl: "/images/ssd-nvme-1tb.jpg",
+    title: "SSD NVMe 1TB Alta Velocidade",
+    price: "R$ 499,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_SSD"
+  },
+  {
+    id: "teclado-mecanico-redragon",
+    imageUrl: "/images/teclado-mecanico-redragon.jpg",
+    title: "Teclado Mecânico Redragon RGB ABNT2",
+    price: "R$ 329,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_TECLADO"
+  },
+  {
+    id: "webcam-logitech-c920",
+    imageUrl: "/images/webcam-logitech-c920.jpg",
+    title: "Webcam Logitech C920 Full HD 1080p",
+    price: "R$ 399,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_WEBCAM"
+  },
+  {
+    id: "headset-usb-profissional",
+    imageUrl: "/images/headset-usb-profissional.jpg",
+    title: "Headset USB Profissional com Microfone",
+    price: "R$ 249,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_HEADSET"
+  },
+  {
+    id: "hub-usb-c-6-em-1",
+    imageUrl: "/images/hub-usb-c-6em1.jpg",
+    title: "Hub USB-C 6 em 1 para Notebook",
+    price: "R$ 289,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_HUB"
+  },
+  {
+    id: "base-refrigerada-notebook",
+    imageUrl: "/images/base-refrigerada-notebook.jpg",
+    title: "Base Refrigerada para Notebook",
+    price: "R$ 149,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_BASE"
+  },
+  {
+    id: "nobreak-escritorio",
+    imageUrl: "/images/nobreak-escritorio.jpg",
+    title: "Nobreak para Escritório 1200VA",
+    price: "R$ 799,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_NOBREAK"
+  },
+  {
+    id: "cadeira-ergonomica-office",
+    imageUrl: "/images/cadeira-ergonomica-office.jpg",
+    title: "Cadeira Ergonômica Office para Escritório",
+    price: "R$ 1.299,00",
+    amazonLink: "https://www.amazon.com.br/dp/SEU_ID_AFILIADO_CADEIRA"
+  }
+];
