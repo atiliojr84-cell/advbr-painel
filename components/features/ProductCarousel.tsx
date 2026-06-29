@@ -48,7 +48,7 @@ export default function ProductCarousel() {
             className="absolute left-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Produto anterior"
           >
-            <
+            < {/* CORRIGIDO AQUI: Usando entidade HTML para o sinal de "menor que" */}
           </button>
 
           <div className="flex space-x-4 overflow-hidden">
@@ -90,7 +90,7 @@ export default function ProductCarousel() {
             className="absolute right-0 z-10 p-2 bg-slate-800 hover:bg-slate-700 rounded-full text-white text-2xl"
             aria-label="Próximo produto"
           >
-            >
+            > {/* CORRIGIDO AQUI: Usando entidade HTML para o sinal de "maior que" */}
           </button>
         </div>
       </div>
