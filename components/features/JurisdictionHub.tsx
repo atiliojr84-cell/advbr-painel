@@ -222,7 +222,9 @@ export default function JurisdictionHub() {
                             <div className="flex items-center gap-3">
                               {/* Ícone de reporte de falha */}
                               {hasActiveReport(t.name) && (
-                                <AlertCircle size={18} className="text-red-500 animate-pulse" title="Problema reportado recentemente!" />
+                                <span title="Problema reportado recentemente!"> {/* Adicionado span com title */}
+                                  <AlertCircle size={18} className="text-red-500 animate-pulse" />
+                                </span>
                               )}
 
                               {livePings[t.name] ? (
