@@ -9,7 +9,7 @@ import ProductCarousel from "../components/features/ProductCarousel";
 import { kv } from "@vercel/kv";
 
 import nextDynamic from "next/dynamic";
-import { Loader2 } from "lucide-react";
+import { Loader2, Briefcase } from "lucide-react"; // Importado Briefcase
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -64,14 +64,18 @@ export default async function Home() {
           <ProductCarousel />
         </section>
 
+        {/* Seção "Nossa Expertise" - Antigo "Mais de 20 anos de excelência em TI Jurídica" */}
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
-          <h2 className="text-xl font-bold text-white mb-4">
-            Mais de 20 anos de excelência em TI Jurídica
+          <h2 className="text-2xl font-bold text-white mb-4 text-center flex items-center justify-center gap-2">
+            <Briefcase className="w-7 h-7 text-blue-500" /> {/* Ícone de maleta */}
+            Nossa Expertise: Mais de Duas Décadas Dedicadas à Tecnologia
           </h2>
-          <p className="leading-relaxed">
-            A advBR.info possui mais de 20 anos de excelência no mercado de
-            tecnologia e segurança digital, dedicados a transformar a rotina
-            dos profissionais do Direito.
+          <p className="leading-relaxed text-center max-w-3xl mx-auto">
+            Com uma trajetória de **mais de 20 anos ininterruptos na área de Tecnologia da Informação**, nossa paixão e foco sempre foram a excelência. Ao longo dessas duas décadas, construímos uma sólida especialização no **atendimento empresarial**, compreendendo as dinâmicas e exigências de diversos setores.
+            <br /><br />
+            Nos últimos **15 anos**, direcionamos nossa expertise de forma aprofundada para o **segmento jurídico**. Essa especialização nasceu da nossa atuação contínua como **responsáveis pela infraestrutura de TI de uma renomada instituição ligada à advocacia**, onde desenvolvemos um conhecimento ímpar sobre as necessidades tecnológicas de advogados e escritórios.
+            <br /><br />
+            Essa experiência nos permitiu dominar os desafios específicos do ambiente jurídico, desde a segurança de dados sensíveis até a otimização de sistemas para prazos e processos. Nosso compromisso é oferecer soluções de TI que não apenas funcionem, mas que impulsionem a produtividade, garantam a segurança e simplifiquem o dia a dia dos profissionais do direito.
           </p>
         </section>
       </main>
