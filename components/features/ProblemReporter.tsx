@@ -37,6 +37,7 @@ export default function ProblemReporter() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const resetFlow = () => {
+    console.log("Resetando fluxo..."); // Log de depuração
     setView("regiao");
     setActiveRegiao("");
     setSelectedEstado("");
@@ -46,6 +47,7 @@ export default function ProblemReporter() {
   };
 
   const openReporterModal = () => {
+    console.log("Abrindo modal de reporte..."); // Log de depuração
     resetFlow();
     setIsOpen(true);
   };
@@ -53,6 +55,7 @@ export default function ProblemReporter() {
   // --- seleção região / estado / tribunal ---
 
   const handleSelectRegiao = (regiaoSlug: string) => {
+    console.log("Região selecionada:", regiaoSlug); // Log de depuração
     const regiaoKey =
       regiaoSlug.toLowerCase() === "federais" ? "federais" : regiaoSlug;
     setActiveRegiao(regiaoKey);
@@ -65,11 +68,13 @@ export default function ProblemReporter() {
   };
 
   const handleSelectEstado = (estado: string) => {
+    console.log("Estado selecionado:", estado); // Log de depuração
     setSelectedEstado(estado);
     setView("tribunal");
   };
 
   const handleSelectTribunal = (tribunal: any) => {
+    console.log("Tribunal selecionado:", tribunal.name); // Log de depuração
     setSelectedTribunal(tribunal);
 
     const regiaoLabel =
@@ -122,6 +127,7 @@ export default function ProblemReporter() {
   };
 
   const handleBack = () => {
+    console.log("Voltando passo..."); // Log de depuração
     if (view === "estado") {
       setView("regiao");
       setActiveRegiao("");
@@ -145,7 +151,11 @@ export default function ProblemReporter() {
   // --- envio do relato ---
 
   const handleSelectProblema = async (problema: string) => {
-    if (!data.portal) return;
+    console.log("handleSelectProblema chamado com problema:", problema); // Log de depuração
+    if (!data.portal) {
+      console.log("data.portal está vazio, retornando."); // Log de depuração
+      return;
+    }
 
     setLoadingSubmit(true);
     setErrorMsg(null);
@@ -156,6 +166,8 @@ export default function ProblemReporter() {
         problema,
       };
 
+      console.log("Enviando POST para /api/report-falha com payload:", payload); // Log de depuração
+
       const res = await fetch("/api/report-falha", {
         method: "POST",
         headers: {
@@ -164,16 +176,19 @@ export default function ProblemReporter() {
         body: JSON.stringify(payload),
       });
 
+      console.log("Resposta da API recebida:", res); // Log de depuração
+
       if (!res.ok) {
         const text = await res.text();
         console.error("Erro na API /api/report-falha:", text);
         throw new Error("Falha ao registrar o problema.");
       }
 
+      console.log("Relato registrado com sucesso!"); // Log de depuração
       setData((prev) => ({ ...prev, problema }));
       setView("confirm");
     } catch (err) {
-      console.error(err);
+      console.error("Erro ao registrar relato:", err); // Log de depuração
       setErrorMsg(
         "Não foi possível registrar a falha agora. Tente novamente em alguns instantes."
       );
@@ -183,6 +198,7 @@ export default function ProblemReporter() {
   };
 
   const handleCloseAfterConfirm = () => {
+    console.log("Fechando modal após confirmação..."); // Log de depuração
     setIsOpen(false);
     resetFlow();
   };
@@ -190,6 +206,7 @@ export default function ProblemReporter() {
   // --- relatório ---
 
   const openReportList = async () => {
+    console.log("Abrindo lista de relatórios..."); // Log de depuração
     setReportListOpen(true);
     setLoadingReports(true);
     setErrorMsg(null);
@@ -205,8 +222,9 @@ export default function ProblemReporter() {
 
       const json = (await res.json()) as { reports: Report[] };
       setReports(json.reports || []);
+      console.log("Relatórios carregados:", json.reports); // Log de depuração
     } catch (err) {
-      console.error(err);
+      console.error("Erro ao carregar relatórios:", err); // Log de depuração
       setErrorMsg(
         "Não foi possível carregar o relatório neste momento. Tente novamente mais tarde."
       );
@@ -258,7 +276,11 @@ export default function ProblemReporter() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              console.log("Clicou no backdrop, fechando modal."); // Log de depuração
+              setIsOpen(false);
+              resetFlow(); // Adicionado para resetar o fluxo ao fechar pelo backdrop
+            }}
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
           >
             <motion.div
@@ -286,6 +308,7 @@ export default function ProblemReporter() {
                 </div>
                 <button
                   onClick={() => {
+                    console.log("Clicou no botão Fechar, fechando modal."); // Log de depuração
                     setIsOpen(false);
                     resetFlow();
                   }}
@@ -465,7 +488,10 @@ export default function ProblemReporter() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setReportListOpen(false)}
+            onClick={() => {
+              console.log("Clicou no backdrop do relatório, fechando."); // Log de depuração
+              setReportListOpen(false);
+            }}
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
           >
             <motion.div
@@ -481,48 +507,10 @@ export default function ProblemReporter() {
                   Relatório de Falhas Registradas
                 </h3>
                 <button
-                  onClick={() => setReportListOpen(false)}
+                  onClick={() => {
+                    console.log("Clicou no botão Fechar do relatório."); // Log de depuração
+                    setReportListOpen(false);
+                  }}
                   className="text-slate-500 hover:text-white"
                 >
-                  Fechar
-                </button>
-              </div>
-
-              {loadingReports ? (
-                <p className="text-slate-300 text-sm">Carregando relatório...</p>
-              ) : errorMsg ? (
-                <p className="text-red-400 text-sm">{errorMsg}</p>
-              ) : reports.length === 0 ? (
-                <p className="text-slate-300 text-sm">
-                  Ainda não há falhas registradas.
-                </p>
-              ) : (
-                <div className="space-y-3 text-sm text-slate-200 max-h-80 overflow-y-auto pr-1">
-                  {reports.map((r, idx) => (
-                    <div
-                      key={`${r.portal}-${r.createdAt}-${idx}`}
-                      className="border border-slate-700 rounded-lg p-3 bg-slate-900"
-                    >
-                      <p>
-                        <span className="font-semibold">Portal:</span>{" "}
-                        {r.portal}
-                      </p>
-                      <p>
-                        <span className="font-semibold">Problema:</span>{" "}
-                        {r.problema}
-                      </p>
-                      <p className="text-xs text-slate-400 mt-1">
-                        Registrado em:{" "}
-                        {new Date(r.createdAt).toLocaleString("pt-BR")}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
+           
