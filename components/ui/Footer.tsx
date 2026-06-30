@@ -1,4 +1,6 @@
 // components/ui/Footer.tsx
+"use client"; // ADICIONE ESTA LINHA AQUI
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -12,11 +14,12 @@ export default function Footer() {
           {/* <Image src="/path/to/your/logo.png" alt="advbr.info Logo" width={30} height={30} /> */}
           advbr.<span className="text-blue-500">info</span>
         </Link>
-    {/* Texto de Registro */}
-    &lt;p className="text-sm text-center md:text-right"&gt;
-      Site registrado para &lt;strong className="text-white"&gt;advbr.info&lt;/strong&gt;. Todos os direitos reservados.
-    &lt;/p&gt;
-  &lt;/div&gt;
-&lt;/footer&gt;
+
+        {/* Texto de Registro */}
+        <p className="text-sm text-center md:text-right">
+          Site registrado para <strong className="text-white">advbr.info</strong>. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
   );
 }
