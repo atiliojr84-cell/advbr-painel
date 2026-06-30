@@ -36,61 +36,60 @@ export async function GET() {
     let status = 'offline';
     let ping = 0;
     let detalhe = '';
+try {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() =&gt; controller.abort(), BRIGHTDATA_TIMEOUT_VERMELHO_MS); // Timeout geral para Bright Data
+  const start = Date.now();
 
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), BRIGHTDATA_TIMEOUT_VERMELHO_MS); // Timeout geral para Bright Data
-      const start = Date.now();
+  let targetUrl = trib.url + (trib.url.includes('?') ? '&amp;' : '?') + 'v=' + Date.now();
 
-      let targetUrl = trib.url + (trib.url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+  const response = await fetch('https://api.brightdata.com/request', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${process.env.BRIGHTDATA_API_KEY}`
+    },
+    body: JSON.stringify({
+      zone: 'web_unlocker1',
+      url: targetUrl,
+      format: 'raw',
+      country: 'br'
+    }),
+    redirect: 'manual',
+    signal: controller.signal,
+    cache: 'no-store'
+  });
 
-      const response = await fetch('https://api.brightdata.com/request', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.BRIGHTDATA_API_KEY}`
-        },
-        body: JSON.stringify({
-          zone: 'web_unlocker1',
-          url: targetUrl,
-          format: 'raw',
-          country: 'br'
-        }),
-        redirect: 'manual',
-        signal: controller.signal,
-        cache: 'no-store'
-      });
+  clearTimeout(timeoutId);
+  await response.arrayBuffer().catch(() =&gt; {}); // Consome o corpo da resposta para liberar a conexão
 
-      clearTimeout(timeoutId);
-      await response.arrayBuffer().catch(() => {}); // Consome o corpo da resposta para liberar a conexão
+  const time = Date.now() - start; // Tempo total da requisição Bright Data
 
-      const time = Date.now() - start; // Tempo total da requisição Bright Data
-
-      // Se a Bright Data conseguiu passar pelo bloqueio (Sucesso)
-      if (response.ok || (response.status >= 300 && response.status < 400)) {
-        if (time > BRIGHTDATA_TIMEOUT_AMARELO_MS) {
-          status = 'instavel'; // Bright Data OK, mas demorou mais que o esperado
-          detalhe = `Sucesso (Bright Data Instável - ${time}ms)`;
-        } else {
-          status = 'online'; // Bright Data OK e dentro do tempo
-          detalhe = 'Sucesso (Bright Data API - IP BR)';
-        }
-        // Ignora o tempo do proxy e gera um ping realista de tráfego BR (120ms a 280ms)
-        ping = Math.floor(Math.random() * (280 - 120 + 1)) + 120;
-      } else {
-        status = 'offline';
-        detalhe = `Erro HTTP Bright Data: ${response.status}`;
-      }
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
-        detalhe = `Falha (Timeout Bright Data de ${BRIGHTDATA_TIMEOUT_VERMELHO_MS}ms)`;
-      } else {
-        detalhe = `Falha Bright Data: ${error.message}`;
-      }
-      status = 'offline';
+  // Se a Bright Data conseguiu passar pelo bloqueio (Sucesso)
+  if (response.ok || (response.status &gt;= 300 &amp;&amp; response.status &lt; 400)) {
+    if (time &gt; BRIGHTDATA_TIMEOUT_AMARELO_MS) {
+      status = 'instavel'; // Bright Data OK, mas demorou mais que o esperado
+      detalhe = `Sucesso (Bright Data Instável - ${time}ms)`;
+    } else {
+      status = 'online'; // Bright Data OK e dentro do tempo
+      detalhe = 'Sucesso (Bright Data API - IP BR)';
     }
+    // Ignora o tempo do proxy e gera um ping realista de tráfego BR (120ms a 280ms)
+    ping = Math.floor(Math.random() * (280 - 120 + 1)) + 120;
+  } else {
+    status = 'offline';
+    detalhe = `Erro HTTP Bright Data: ${response.status}`;
+  }
+} catch (error: any) {
+  if (error.name === 'AbortError') {
+    detalhe = `Falha (Timeout Bright Data de ${BRIGHTDATA_TIMEOUT_VERMELHO_MS}ms)`;
+  } else {
+    detalhe = `Falha Bright Data: ${error.message}`;
+  }
+  status = 'offline';
+}
 
-    return { status, ping, detalhe };
+return { status, ping, detalhe };
   }
 
   // Função principal de teste com a lógica de retentativas para Bright Data
@@ -98,57 +97,56 @@ export async function GET() {
     let statusFinal = 'offline';
     let pingFinal = 0;
     let detalheFinal = '';
+// Primeira tentativa
+let res1 = await fazerRequisicaoBrightDataUnica(trib, 1);
+statusFinal = res1.status;
+pingFinal = res1.ping;
+detalheFinal = res1.detalhe;
 
-    // Primeira tentativa
-    let res1 = await fazerRequisicaoBrightDataUnica(trib, 1);
-    statusFinal = res1.status;
-    pingFinal = res1.ping;
-    detalheFinal = res1.detalhe;
+if (statusFinal === 'online') {
+  // Verde de primeira, não precisa de mais testes
+  // console.log(`[${trib.name}] Verde de primeira.`);
+} else if (statusFinal === 'instavel') {
+  // Amarelo de primeira, faz mais uma tentativa
+  // console.log(`[${trib.name}] Instável na primeira, tentando novamente...`);
+  await new Promise(resolve =&gt; setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+  let res2 = await fazerRequisicaoBrightDataUnica(trib, 2);
+  statusFinal = res2.status;
+  pingFinal = res2.ping;
+  detalheFinal = res2.detalhe;
+  // console.log(`[${trib.name}] Resultado da segunda tentativa (instável): ${statusFinal}`);
+} else { // statusFinal === 'offline'
+  // Vermelho de primeira, faz mais duas tentativas (total de 3)
+  // console.log(`[${trib.name}] Offline na primeira, tentando mais duas vezes...`);
+  await new Promise(resolve =&gt; setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+  let res2 = await fazerRequisicaoBrightDataUnica(trib, 2);
+  statusFinal = res2.status;
+  pingFinal = res2.ping;
+  detalheFinal = res2.detalhe;
 
-    if (statusFinal === 'online') {
-      // Verde de primeira, não precisa de mais testes
-      // console.log(`[${trib.name}] Verde de primeira.`);
-    } else if (statusFinal === 'instavel') {
-      // Amarelo de primeira, faz mais uma tentativa
-      // console.log(`[${trib.name}] Instável na primeira, tentando novamente...`);
-      await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-      let res2 = await fazerRequisicaoBrightDataUnica(trib, 2);
-      statusFinal = res2.status;
-      pingFinal = res2.ping;
-      detalheFinal = res2.detalhe;
-      // console.log(`[${trib.name}] Resultado da segunda tentativa (instável): ${statusFinal}`);
-    } else { // statusFinal === 'offline'
-      // Vermelho de primeira, faz mais duas tentativas (total de 3)
-      // console.log(`[${trib.name}] Offline na primeira, tentando mais duas vezes...`);
-      await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-      let res2 = await fazerRequisicaoBrightDataUnica(trib, 2);
-      statusFinal = res2.status;
-      pingFinal = res2.ping;
-      detalheFinal = res2.detalhe;
+  if (statusFinal === 'offline') {
+    // Ainda offline na segunda, faz a terceira
+    await new Promise(resolve =&gt; setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+    let res3 = await fazerRequisicaoBrightDataUnica(trib, 3);
+    statusFinal = res3.status;
+    pingFinal = res3.ping;
+    detalheFinal = res3.detalhe;
+    // console.log(`[${trib.name}] Resultado da terceira tentativa (offline): ${statusFinal}`);
+  } else {
+    // Voltou para online/instavel na segunda tentativa
+    // console.log(`[${trib.name}] Voltou para ${statusFinal} na segunda tentativa.`);
+  }
+}
 
-      if (statusFinal === 'offline') {
-        // Ainda offline na segunda, faz a terceira
-        await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-        let res3 = await fazerRequisicaoBrightDataUnica(trib, 3);
-        statusFinal = res3.status;
-        pingFinal = res3.ping;
-        detalheFinal = res3.detalhe;
-        // console.log(`[${trib.name}] Resultado da terceira tentativa (offline): ${statusFinal}`);
-      } else {
-        // Voltou para online/instavel na segunda tentativa
-        // console.log(`[${trib.name}] Voltou para ${statusFinal} na segunda tentativa.`);
-      }
-    }
-
-    statuses[trib.name] = statusFinal;
-    pings[trib.name] = pingFinal;
-    relatorio.push({
-      tribunal: trib.name,
-      url: trib.url,
-      status: statusFinal,
-      ping_ms: pingFinal,
-      detalhe: detalheFinal
-    });
+statuses[trib.name] = statusFinal;
+pings[trib.name] = pingFinal;
+relatorio.push({
+  tribunal: trib.name,
+  url: trib.url,
+  status: statusFinal,
+  ping_ms: pingFinal,
+  detalhe: detalheFinal
+});
   };
 
   // Executa todos os testes SIMULTANEAMENTE (Modo Turbo)
