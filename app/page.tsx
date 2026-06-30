@@ -5,6 +5,7 @@ import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
 import DiagnosticHub from "../components/features/DiagnosticHub";
 import ProductCarousel from "../components/features/ProductCarousel";
+import Footer from "../components/ui/Footer"; // Importado o novo componente Footer
 // import ProblemReporter from "../components/features/ProblemReporter"; // Removido, pois já está no Header
 import { kv } from "@vercel/kv";
 
@@ -79,6 +80,8 @@ export default async function Home() {
           </p>
         </section>
       </main>
+
+      <Footer /> {/* Renderizado o novo componente Footer aqui */}
     </div>
   );
 }
