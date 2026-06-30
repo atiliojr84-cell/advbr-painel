@@ -48,9 +48,13 @@ export default function ProblemReporter() {
     setIsOpen(true);
   };
 
+  // --- seleção região / estado / tribunal ---
+
   const handleSelectRegiao = (regiaoSlug: string) => {
-    const regiaoKey = regiaoSlug.toLowerCase() === "federais" ? "federais" : regiaoSlug;
+    const regiaoKey =
+      regiaoSlug.toLowerCase() === "federais" ? "federais" : regiaoSlug;
     setActiveRegiao(regiaoKey);
+
     if (regiaoKey === "federais") {
       setView("tribunal");
     } else {
@@ -65,113 +69,184 @@ export default function ProblemReporter() {
 
   const handleSelectTribunal = (tribunal: any) => {
     setSelectedTribunal(tribunal);
-    const regiaoLabel = activeRegiao === "federais" ? "Tribunais Federais" : activeRegiao || "Região";
-    const estadoLabel = activeRegiao === "federais" ? "" : selectedEstado ? ` - ${selectedEstado}` : "";
+
+    const regiaoLabel =
+      activeRegiao === "federais"
+        ? "Tribunais Federais"
+        : activeRegiao || "Região";
+
+    const estadoLabel =
+      activeRegiao === "federais"
+        ? ""
+        : selectedEstado
+        ? ` - ${selectedEstado}`
+        : "";
+
     const portalLabel = `[${regiaoLabel}${estadoLabel}] ${tribunal.name}`;
+
     setData((prev) => ({ ...prev, portal: portalLabel }));
     setView("problema");
   };
 
   const getEstadosDaRegiao = (regiaoKey: string): string[] => {
-    if (!jurisdictions.regioes || !regiaoKey || !(jurisdictions.regioes as any)[regiaoKey]) return [];
+    if (
+      !jurisdictions.regioes ||
+      !regiaoKey ||
+      !(jurisdictions.regioes as any)[regiaoKey]
+    ) {
+      return [];
+    }
     return Object.keys((jurisdictions.regioes as any)[regiaoKey] || {});
   };
 
   const getTribunaisDaSelecao = (): any[] => {
     if (!jurisdictions) return [];
-    if (activeRegiao === "federais") return jurisdictions.federais || [];
-    if (jurisdictions.regioes && (jurisdictions.regioes as any)[activeRegiao] && (jurisdictions.regioes as any)[activeRegiao][selectedEstado]) {
-      return (jurisdictions.regioes as any)[activeRegiao][selectedEstado] as any[];
+
+    if (activeRegiao === "federais") {
+      return jurisdictions.federais || [];
     }
+
+    if (
+      jurisdictions.regioes &&
+      (jurisdictions.regioes as any)[activeRegiao] &&
+      (jurisdictions.regioes as any)[activeRegiao][selectedEstado]
+    ) {
+      return (jurisdictions.regioes as any)[activeRegiao][
+        selectedEstado
+      ] as any[];
+    }
+
     return [];
   };
 
   const handleBack = () => {
-    if (view === "estado") { setView("regiao"); setActiveRegiao(""); }
-    else if (view === "tribunal") {
-      if (activeRegiao === "federais") { setView("regiao"); setActiveRegiao(""); }
-      else { setView("estado"); setSelectedTribunal(null); }
-    } else if (view === "problema") { setView("tribunal"); setData((prev) => ({ ...prev, problema: "" })); }
-    else if (view === "confirm") { resetFlow(); setIsOpen(false); }
+    if (view === "estado") {
+      setView("regiao");
+      setActiveRegiao("");
+    } else if (view === "tribunal") {
+      if (activeRegiao === "federais") {
+        setView("regiao");
+        setActiveRegiao("");
+      } else {
+        setView("estado");
+        setSelectedTribunal(null);
+      }
+    } else if (view === "problema") {
+      setView("tribunal");
+      setData((prev) => ({ ...prev, problema: "" }));
+    } else if (view === "confirm") {
+      resetFlow();
+      setIsOpen(false);
+    }
   };
+
+  // --- envio do relato ---
 
   const handleSelectProblema = async (problema: string) => {
     if (!data.portal) return;
+
     setLoadingSubmit(true);
     setErrorMsg(null);
+
     try {
+      const payload = {
+        portal: data.portal,
+        problema,
+      };
+
       const res = await fetch("/api/report-falha", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ portal: data.portal, problema }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error("Falha ao registrar.");
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Erro na API /api/report-falha:", text);
+        throw new Error("Falha ao registrar o problema.");
+      }
+
       setData((prev) => ({ ...prev, problema }));
       setView("confirm");
-    } catch {
-      setErrorMsg("Erro ao registrar a falha. Tente novamente.");
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(
+        "Não foi possível registrar a falha agora. Tente novamente em alguns instantes."
+      );
     } finally {
       setLoadingSubmit(false);
     }
   };
 
-  const handleCloseAfterConfirm = () => { setIsOpen(false); resetFlow(); };
+  const handleCloseAfterConfirm = () => {
+    setIsOpen(false);
+    resetFlow();
+  };
+
+  // --- relatório ---
 
   const openReportList = async () => {
     setReportListOpen(true);
     setLoadingReports(true);
+    setErrorMsg(null);
+
     try {
       const res = await fetch("/api/report-falha/list", { cache: "no-store" });
-      const json = await res.json();
+
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Erro na API /api/report-falha/list:", text);
+        throw new Error("Falha ao carregar relatório.");
+      }
+
+      const json = (await res.json()) as { reports: Report[] };
       setReports(json.reports || []);
-    } catch {
-      setErrorMsg("Erro ao carregar relatório.");
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(
+        "Não foi possível carregar o relatório neste momento. Tente novamente mais tarde."
+      );
     } finally {
       setLoadingReports(false);
     }
   };
 
+  // --- título dinâmico da janela ---
+
   const getModalTitle = () => {
     if (view === "regiao") return "Reportar Falha de Acesso";
-    if (view === "tribunal") return activeRegiao === "federais" ? "Tribunais Federais" : selectedEstado || "Tribunais";
-    return view === "problema" ? "Natureza da Falha" : "Relato registrado";
+    if (view === "estado") return `Região: ${activeRegiao}`;
+    if (view === "tribunal") {
+      if (activeRegiao === "federais") return "Tribunais Federais";
+      return selectedEstado || "Tribunais";
+    }
+    if (view === "problema") return "Natureza da Falha";
+    if (view === "confirm") return "Relato registrado";
+    return "Reportar Falha";
   };
 
-  return (
+    return (
     <>
+      {/* Botões principais - A classe justify-end empurrará tudo para a direita */}
       <div className="flex flex-wrap gap-2 justify-end w-full">
-        <button onClick={openReporterModal} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-900/40 border border-red-700/60 text-red-100 text-xs hover:bg-red-900/70">
-          <AlertCircle size={16} /> <span>Reportar Falha de Acesso</span>
-        </button>
-        <button onClick={openReportList} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 text-xs hover:bg-slate-800">
-          <FileText size={16} /> <span>Ver Relatório de Falhas</span>
-        </button>
-      </div>
+  <button
+    onClick={openReporterModal}
+    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-900/40 border border-red-700/60 text-red-100 text-xs hover:bg-red-900/70 hover:border-red-500 transition-colors"
+  >
+    <AlertCircle size={16} />
+    <span>Reportar Falha de Acesso</span>
+  </button>
 
-      {/* O restante do código (Modais AnimatePresence...) permanece identico ao original */}
-      {/* (Mantive aqui a estrutura, copie o bloco completo para o arquivo) */}
-    </>
-  );
-}
-
-      <AnimatePresence>
-        {isOpen && (
-          // ... (seu código de modal que você já tem no arquivo)
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {reportListOpen && (
-          // ... (seu código de modal que você já tem no arquivo)
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
-      
-      {/* Modal principal: fluxo de reporte */}
-      <AnimatePresence>
-        {/* O restante do seu arquivo continua inalterado a partir daqui... */}
+  <button
+    onClick={openReportList}
+    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 text-xs hover:bg-slate-800 hover:border-slate-500 transition-colors"
+  >
+    <FileText size={16} />
+    <span>Ver Relatório de Falhas</span>
+  </button>
+</div>/div>
 
       {/* ... restante do código ... */}>
 
