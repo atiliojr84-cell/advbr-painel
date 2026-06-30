@@ -248,7 +248,6 @@ export default function ProblemReporter() {
   </button>
 </div>
 
-      {/* ... restante do código ... */}>
 
       {/* Modal principal: fluxo de reporte */}
       <AnimatePresence>
