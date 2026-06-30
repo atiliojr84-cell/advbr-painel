@@ -513,4 +513,45 @@ export default function ProblemReporter() {
                   }}
                   className="text-slate-500 hover:text-white"
                 >
-           
+                  Fechar
+                </button>
+              </div>
+
+              {loadingReports ? (
+                <p className="text-slate-300 text-sm">Carregando relatório...</p>
+              ) : errorMsg ? (
+                <p className="text-red-400 text-sm">{errorMsg}</p>
+              ) : reports.length === 0 ? (
+                <p className="text-slate-300 text-sm">
+                  Ainda não há falhas registradas.
+                </p>
+              ) : (
+                <div className="space-y-3 text-sm text-slate-200 max-h-80 overflow-y-auto pr-1">
+                  {reports.map((r, idx) => (
+                    <div
+                      key={`${r.portal}-${r.createdAt}-${idx}`}
+                      className="border border-slate-700 rounded-lg p-3 bg-slate-900"
+                    >
+                      <p>
+                        <span className="font-semibold">Portal:</span>{" "}
+                        {r.portal}
+                      </p>
+                      <p>
+                        <span className="font-semibold">Problema:</span>{" "}
+                        {r.problema}
+                      </p>
+                      <p className="text-xs text-slate-400 mt-1">
+                        Registrado em:{" "}
+                        {new Date(r.createdAt).toLocaleString("pt-BR")}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
