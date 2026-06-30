@@ -7,7 +7,6 @@ const services = [
   { id: 1, title: "Adequação LGPD", desc: "Proteção estrutural e criptografia para dados sensíveis de clientes." },
   { id: 2, title: "Segurança Digital e Backup", desc: "Antivírus corporativo, blindagem de rede e rotinas de backup seguras." },
   { id: 3, title: "Suporte TI Jurídico", desc: "Resolução rápida de problemas: PJe, eproc, tokens e certificados." },
-  // SERVIÇO id: 4 "Gestão e Infraestrutura" REMOVIDO E ABSORVIDO PELO id: 5
   { 
     id: 5, 
     title: "Consultoria e Suporte Remoto Nacional", 
@@ -24,6 +23,8 @@ export default function ServiceGrid() {
     // Mensagem específica para o serviço de Consultoria e Suporte Remoto Nacional
     if (serviceTitle === "Consultoria e Suporte Remoto Nacional") {
       msgText = `Olá, Tenho interesse em saber mais sobre a Consultoria e Suporte Remoto Nacional para meu escritório de advocacia (atendimento recorrente ou pontual).`;
+    } else if (serviceTitle === "Adequação LGPD") { // Mensagem específica para LGPD
+      msgText = `Olá, Tenho interesse em saber mais sobre a Adequação LGPD (Infraestrutura e Processos de TI) para meu escritório de advocacia.`;
     }
 
     const msg = encodeURIComponent(msgText);
@@ -64,7 +65,6 @@ export default function ServiceGrid() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
             >
@@ -73,8 +73,12 @@ export default function ServiceGrid() {
                 <button onClick={() => setSelectedService(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
-              {/* Descrição dinâmica para o novo serviço */}
-              {selectedService.id === 5 ? (
+              {/* Descrição dinâmica para os serviços */}
+              {selectedService.id === 1 ? ( // Adequação LGPD
+                <p className="text-slate-300 leading-relaxed mb-6">
+                  Nossa Adequação LGPD foca na **infraestrutura e nos processos de TI** do seu escritório. Garantimos que seus sistemas, redes e fluxos de dados estejam em conformidade com a Lei Geral de Proteção de Dados, implementando medidas de segurança, controle de acesso e governança de dados. Nosso trabalho abrange a proteção estrutural e a criptografia para dados sensíveis de clientes, minimizando riscos e fortalecendo a segurança digital do seu ambiente jurídico.
+                </p>
+              ) : selectedService.id === 5 ? ( // Consultoria e Suporte Remoto Nacional
                 <p className="text-slate-300 leading-relaxed mb-6">
                   Nosso serviço de <strong>Consultoria e Suporte Remoto Nacional</strong> oferece uma gestão de TI completa e proativa para advogados e escritórios em qualquer lugar do Brasil. Atuamos ativamente na configuração de redes, otimização de sistemas, implementação de segurança digital, rotinas de backup e gerenciamento de servidores, tudo por acesso remoto. Resolvemos os problemas do dia a dia e implementamos melhorias contínuas, garantindo que sua infraestrutura tecnológica esteja sempre alinhada aos seus prazos e necessidades.
                   <br /><br />
@@ -86,7 +90,7 @@ export default function ServiceGrid() {
                   <br /><br />
                   Este modelo de atendimento cobre todas as suas demandas de TI, excluindo apenas intervenções físicas de hardware que exijam deslocamento.
                 </p>
-              ) : (
+              ) : ( // Outros serviços
                 <p className="text-slate-300 leading-relaxed mb-6">
                   O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
                   Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
