@@ -246,7 +246,7 @@ export default function ProblemReporter() {
     <FileText size={16} />
     <span>Ver Relatório de Falhas</span>
   </button>
-</div>/div>
+</div>
 
       {/* ... restante do código ... */}>
 
