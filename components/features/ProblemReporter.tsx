@@ -267,7 +267,7 @@ export default function ProblemReporter() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-6 rounded-2xl shadow-2xl max-w-xl w-full flex flex-col max-h-[90vh] border border-slate-800"
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-xl w-full flex flex-col max-h-[90vh] border border-slate-800" // Padding ajustado para p-8
             >
               {/* Cabeçalho da modal */}
               <div className="flex items-center justify-between mb-4">
@@ -280,7 +280,7 @@ export default function ProblemReporter() {
                       <ArrowLeft size={20} />
                     </button>
                   )}
-                  <h3 className="text-white text-sm font-bold">
+                  <h3 className="text-white text-xl font-bold"> {/* Tamanho do título ajustado para text-xl */}
                     {getModalTitle()}
                   </h3>
                 </div>
@@ -309,44 +309,44 @@ export default function ProblemReporter() {
                     {/* Step 1: Região */}
                     {view === "regiao" && (
                       <div className="space-y-3">
-                        <p className="text-slate-300 text-sm">
+                        <p className="text-slate-300 text-sm"> {/* Mantido text-sm */}
                           Doutor, selecione a região ou os tribunais federais onde
                           o senhor está enfrentando dificuldades:
                         </p>
                         <div className="grid grid-cols-2 gap-3">
                           <button
                             onClick={() => handleSelectRegiao("federais")}
-                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-sm text-white" // Ajustado para text-sm
                           >
                             Tribunais Federais
                           </button>
                           <button
                             onClick={() => handleSelectRegiao("Sul")}
-                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-sm text-white" // Ajustado para text-sm
                           >
                             Região Sul
                           </button>
                           <button
                             onClick={() => handleSelectRegiao("Sudeste")}
-                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-sm text-white" // Ajustado para text-sm
                           >
                             Região Sudeste
                           </button>
                           <button
                             onClick={() => handleSelectRegiao("CentroOeste")}
-                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-sm text-white" // Ajustado para text-sm
                           >
                             Região Centro-Oeste
                           </button>
                           <button
                             onClick={() => handleSelectRegiao("Nordeste")}
-                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-sm text-white" // Ajustado para text-sm
                           >
                             Região Nordeste
                           </button>
                           <button
                             onClick={() => handleSelectRegiao("Norte")}
-                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-sm text-white" // Ajustado para text-sm
                           >
                             Região Norte
                           </button>
@@ -357,7 +357,7 @@ export default function ProblemReporter() {
                     {/* Step 2: Estado */}
                     {view === "estado" && (
                       <div className="space-y-3">
-                        <p className="text-slate-300 text-sm">
+                        <p className="text-slate-300 text-sm"> {/* Mantido text-sm */}
                           Agora, escolha o Estado:
                         </p>
                         <div className="grid grid-cols-2 gap-3">
@@ -365,7 +365,7 @@ export default function ProblemReporter() {
                             <button
                               key={estado}
                               onClick={() => handleSelectEstado(estado)}
-                              className="p-3 text-white font-medium text-xs text-left bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800"
+                              className="p-3 text-white font-medium text-sm text-left bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800" // Ajustado para text-sm
                             >
                               {estado}
                             </button>
@@ -377,7 +377,7 @@ export default function ProblemReporter() {
                     {/* Step 3: Tribunal */}
                     {view === "tribunal" && (
                       <div className="space-y-3">
-                        <p className="text-slate-300 text-sm">
+                        <p className="text-slate-300 text-sm"> {/* Mantido text-sm */}
                           Selecione o tribunal ou portal em que o senhor está
                           enfrentando dificuldades:
                         </p>
@@ -386,10 +386,10 @@ export default function ProblemReporter() {
                             <button
                               key={t.name}
                               onClick={() => handleSelectTribunal(t)}
-                              className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left text-xs flex justify-between items-center"
+                              className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left text-sm flex justify-between items-center" // Ajustado para text-sm
                             >
                               <span>{t.name}</span>
-                              <span className="text-[10px] text-slate-400 ml-2 truncate max-w-[50%]">
+                              <span className="text-xs text-slate-400 ml-2 truncate max-w-[50%]"> {/* Mantido text-xs para a URL */}
                                 {t.url.replace(/^https?:\/\/(www\.)?/, "")}
                               </span>
                             </button>
@@ -401,7 +401,7 @@ export default function ProblemReporter() {
                     {/* Step 4: Tipo de problema */}
                     {view === "problema" && (
                       <div className="space-y-3">
-                        <p className="text-white text-sm">
+                        <p className="text-white text-sm"> {/* Mantido text-sm */}
                           Qual é a natureza do problema em{" "}
                           <strong>{data.portal}</strong>?
                         </p>
@@ -410,7 +410,7 @@ export default function ProblemReporter() {
                             key={prob}
                             onClick={() => handleSelectProblema(prob)}
                             disabled={loadingSubmit}
-                            className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                            className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left disabled:opacity-50 disabled:cursor-not-allowed text-sm" // Mantido text-sm
                           >
                             {loadingSubmit && data.problema === prob
                               ? "Enviando..."
@@ -426,7 +426,7 @@ export default function ProblemReporter() {
                     {/* Step 5: Confirmação */}
                     {view === "confirm" && (
                       <div className="space-y-4">
-                        <p className="text-white text-sm">
+                        <p className="text-white text-sm"> {/* Mantido text-sm */}
                           Obrigado, doutor. Seu relato sobre{" "}
                           <strong>{data.portal}</strong> foi registrado como{" "}
                           <strong>{data.problema}</strong>.
@@ -471,10 +471,10 @@ export default function ProblemReporter() {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-6 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800" // Padding ajustado para p-8
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-white text-sm font-bold">
+                <h3 className="text-white text-xl font-bold"> {/* Tamanho do título ajustado para text-xl */}
                   Relatório de Falhas Registradas
                 </h3>
                 <button
