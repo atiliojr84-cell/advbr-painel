@@ -7,8 +7,7 @@ const services = [
   { id: 1, title: "Adequação LGPD", desc: "Proteção estrutural e criptografia para dados sensíveis de clientes." },
   { id: 2, title: "Segurança Digital e Backup", desc: "Antivírus corporativo, blindagem de rede e rotinas de backup seguras." },
   { id: 3, title: "Suporte TI Jurídico", desc: "Resolução rápida de problemas: PJe, eproc, tokens e certificados." },
-  { id: 4, title: "Gestão e Infraestrutura", desc: "Planejamento estratégico de TI com suporte remoto e presencial." },
-  // NOVO SERVIÇO ADICIONADO
+  // SERVIÇO id: 4 "Gestão e Infraestrutura" REMOVIDO E ABSORVIDO PELO id: 5
   { 
     id: 5, 
     title: "Consultoria e Suporte Remoto Nacional", 
@@ -22,9 +21,9 @@ export default function ServiceGrid() {
   const handleWhatsApp = (serviceTitle: string) => {
     let msgText = `Olá, Como podemos ajudar a estruturar a TI do seu escritório? Vi no Painel ADVBR sobre o serviço de ${serviceTitle}.`;
 
-    // Mensagem específica para o novo serviço
+    // Mensagem específica para o serviço de Consultoria e Suporte Remoto Nacional
     if (serviceTitle === "Consultoria e Suporte Remoto Nacional") {
-      msgText = `Olá, Tenho interesse em saber mais sobre a Consultoria e Suporte Remoto Nacional para meu escritório de advocacia.`;
+      msgText = `Olá, Tenho interesse em saber mais sobre a Consultoria e Suporte Remoto Nacional para meu escritório de advocacia (atendimento recorrente ou pontual).`;
     }
 
     const msg = encodeURIComponent(msgText);
@@ -77,7 +76,15 @@ export default function ServiceGrid() {
               {/* Descrição dinâmica para o novo serviço */}
               {selectedService.id === 5 ? (
                 <p className="text-slate-300 leading-relaxed mb-6">
-                  Nosso serviço de <strong>Consultoria e Suporte Remoto Nacional</strong> oferece uma gestão de TI completa e proativa para advogados e escritórios em qualquer lugar do Brasil. Atuamos ativamente na configuração de redes, otimização de sistemas, implementação de segurança digital, rotinas de backup e gerenciamento de servidores, tudo por acesso remoto. Resolvemos os problemas do dia a dia e implementamos melhorias contínuas, garantindo que sua infraestrutura tecnológica esteja sempre alinhada aos seus prazos e necessidades. Este modelo de atendimento por mensalidade cobre todas as suas demandas de TI, excluindo apenas intervenções físicas de hardware que exijam deslocamento.
+                  Nosso serviço de <strong>Consultoria e Suporte Remoto Nacional</strong> oferece uma gestão de TI completa e proativa para advogados e escritórios em qualquer lugar do Brasil. Atuamos ativamente na configuração de redes, otimização de sistemas, implementação de segurança digital, rotinas de backup e gerenciamento de servidores, tudo por acesso remoto. Resolvemos os problemas do dia a dia e implementamos melhorias contínuas, garantindo que sua infraestrutura tecnológica esteja sempre alinhada aos seus prazos e necessidades.
+                  <br /><br />
+                  Trabalhamos com duas modalidades flexíveis:
+                  <br />
+                  <strong>1. Atendimento Recorrente (Mensalidade):</strong> Ideal para quem busca uma parceria contínua, com acompanhamento constante e suporte ilimitado para manter o escritório sempre produtivo e seguro.
+                  <br />
+                  <strong>2. Atendimento Pontual:</strong> Perfeito para resolver problemas específicos ou realizar configurações sob demanda, com pagamento por serviço prestado.
+                  <br /><br />
+                  Este modelo de atendimento cobre todas as suas demandas de TI, excluindo apenas intervenções físicas de hardware que exijam deslocamento.
                 </p>
               ) : (
                 <p className="text-slate-300 leading-relaxed mb-6">
