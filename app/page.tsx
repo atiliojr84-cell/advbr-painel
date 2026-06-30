@@ -65,7 +65,7 @@ export default async function Home() {
           <ProductCarousel />
         </section>
 
-        {/* Seção "Nossa Expertise" - Antigo "Mais de 20 anos de excelência em TI Jurídica" */}
+        {/* Seção "Nossa Expertise" - Texto atualizado */}
         <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
           <h2 className="text-2xl font-bold text-white mb-4 text-center flex items-center justify-center gap-2">
             <Briefcase className="w-7 h-7 text-blue-500" /> {/* Ícone de maleta */}
@@ -74,7 +74,7 @@ export default async function Home() {
           <p className="leading-relaxed text-center max-w-3xl mx-auto">
             Com uma trajetória de **mais de 20 anos ininterruptos na área de Tecnologia da Informação**, nossa paixão e foco sempre foram a excelência. Ao longo dessas duas décadas, construímos uma sólida especialização no **atendimento empresarial**, compreendendo as dinâmicas e exigências de diversos setores.
             <br /><br />
-            Nos últimos **15 anos**, direcionamos nossa expertise de forma aprofundada para o **segmento jurídico**. Essa especialização nasceu da nossa atuação contínua como **responsáveis pela infraestrutura de TI de uma renomada instituição ligada à advocacia**, onde desenvolvemos um conhecimento ímpar sobre as necessidades tecnológicas de advogados e escritórios.
+            Nos últimos **15 anos**, direcionamos nossa expertise de forma aprofundada para o **segmento jurídico**. Essa especialização nasceu da nossa **experiência direta e contínua com diversos clientes advogados e escritórios de advocacia**, onde desenvolvemos um conhecimento ímpar sobre as necessidades tecnológicas e operacionais desses profissionais.
             <br /><br />
             Essa experiência nos permitiu dominar os desafios específicos do ambiente jurídico, desde a segurança de dados sensíveis até a otimização de sistemas para prazos e processos. Nosso compromisso é oferecer soluções de TI que não apenas funcionem, mas que impulsionem a produtividade, garantam a segurança e simplifiquem o dia a dia dos profissionais do direito.
           </p>
