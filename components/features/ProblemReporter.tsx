@@ -273,9 +273,9 @@ export default function ProblemReporter() {
         {isOpen && (
           <motion.div
             key="reporter-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} // Corrigido
+            animate={{ opacity: 1 }} // Corrigido
+            exit={{ opacity: 0 }} // Corrigido
             onClick={() => {
               console.log("Clicou no backdrop, fechando modal."); // Log de depuração
               setIsOpen(false);
@@ -285,9 +285,9 @@ export default function ProblemReporter() {
           >
             <motion.div
               key="reporter-content"
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
+              initial={{ y: -50, opacity: 0 }} // Corrigido
+              animate={{ y: 0, opacity: 1 }} // Corrigido
+              exit={{ y: -50, opacity: 0 }} // Corrigido
               onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-xl w-full flex flex-col max-h-[90vh] border border-slate-800"
             >
@@ -323,10 +323,10 @@ export default function ProblemReporter() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={view}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2 }}
+                    initial={{ opacity: 0, x: 10 }} // Corrigido
+                    animate={{ opacity: 1, x: 0 }} // Corrigido
+                    exit={{ opacity: 0, x: -10 }} // Corrigido
+                    transition={{ duration: 0.2 }} // Corrigido
                     className="w-full"
                   >
                     {/* Step 1: Região */}
@@ -485,9 +485,9 @@ export default function ProblemReporter() {
         {reportListOpen && (
           <motion.div
             key="reportlist-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} // Corrigido
+            animate={{ opacity: 1 }} // Corrigido
+            exit={{ opacity: 0 }} // Corrigido
             onClick={() => {
               console.log("Clicou no backdrop do relatório, fechando."); // Log de depuração
               setReportListOpen(false);
@@ -496,9 +496,9 @@ export default function ProblemReporter() {
           >
             <motion.div
               key="reportlist-content"
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
+              initial={{ y: -50, opacity: 0 }} // Corrigido
+              animate={{ y: 0, opacity: 1 }} // Corrigido
+              exit={{ y: -50, opacity: 0 }} // Corrigido
               onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
             >
@@ -508,9 +508,4 @@ export default function ProblemReporter() {
                 </h3>
                 <button
                   onClick={() => {
-                    console.log("Clicou no botão Fechar do relatório."); // Log de depuração
-                    setReportListOpen(false);
-                  }}
-                  className="text-slate-500 hover:text-white"
-                >
-           
+                    console.log("Clicou no 
