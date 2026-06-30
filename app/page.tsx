@@ -1,66 +1,79 @@
-"use client";
-
-// Importações principais
-import DiagnosticHub from "../components/features/DiagnosticHub";
+import Header from "../components/ui/Header";
+import Ticker from "../components/ui/Ticker";
+import ServiceGrid from "../components/ServiceGrid";
+import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
-import ProblemReporter from "../components/features/ProblemReporter";
+import DiagnosticHub from "../components/features/DiagnosticHub";
+import ProductCarousel from "../components/features/ProductCarousel";
+import ProblemReporter from "../components/features/ProblemReporter"; // Integrado
 import { kv } from "@vercel/kv";
 
-// CORREÇÃO AQUI: Renomeamos o import dinâmico para evitar conflito com `export const dynamic`
 import nextDynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
 
-// Página sempre dinâmica (sem cache)
 export const dynamic = "force-dynamic";
-// A linha 'export const revalidate = 0;' foi removida, pois 'force-dynamic' já desabilita o cache.
+export const revalidate = 0;
 
-// CORREÇÃO AQUI: Usamos 'nextDynamic' no lugar de 'dynamic'
 const DynamicPdfToolHub = nextDynamic(
   () => import("../components/features/PdfToolHub"),
   {
+    ssr: false,
     loading: () => (
-      <div className="flex justify-center items-center py-10">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      <div className="flex justify-center items-center h-40 text-white">
+        <Loader2 className="animate-spin text-blue-500" size={32} />{" "}
+        Carregando Ferramentas PDF...
       </div>
     ),
-    ssr: false,
   }
 );
 
-export default function Home() {
-  return (
-    <main className="min-h-screen bg-slate-950 text-white p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0 mb-8">
-          <div className="flex flex-col">
-            <h1 className="text-3xl sm:text-4xl font-extrabold text-blue-400">
-              ADVBR Painel
-            </h1>
-            <p className="text-slate-400 text-sm sm:text-base mt-1">
-              Monitoramento de portais, diagnóstico e ferramentas de apoio.
-            </p>
-          </div>
+export default async function Home() {
+  const statuses = (await kv.get("court_statuses")) || {};
+  const pings = (await kv.get("court_pings")) || {};
 
-          {/* Botões de topo: Reportar Falha e Ver Relatório de Falhas */}
-          <div className="flex items-center gap-2">
-            <ProblemReporter />
-          </div>
+  return (
+    <div className="min-h-screen bg-[#0b0f19]">
+      <Ticker />
+
+      <main className="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
+        {/* Header agora com o botão de Report integrado */}
+        <header className="flex justify-between items-center">
+          <Header />
+          <ProblemReporter />
         </header>
 
-        {/* Seções principais do painel */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Hub de diagnóstico / status */}
-          <div className="space-y-4">
-            <DiagnosticHub />
-            <JurisdictionHub />
+        <section>
+          <div className="flex justify-between items-end mb-4">
+            <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2">
+              <i className="fa-solid fa-star text-blue-500"></i> Principais Portais de Peticionamento
+            </h2>
           </div>
-
-          {/* Ferramentas de PDF */}
-          <div className="space-y-4">
-            <DynamicPdfToolHub />
-          </div>
+          <PortalCarousel
+            statuses={statuses as Record<string, string>}
+            pings={pings as Record<string, number>}
+          />
         </section>
-      </div>
-    </main>
+
+        <JurisdictionHub />
+        <DynamicPdfToolHub />
+        <DiagnosticHub />
+        <ServiceGrid />
+
+        <section>
+            <h2 className="text-xl font-bold text-white mb-4">Produtos de Informática</h2>
+            <ProductCarousel />
+        </section>
+
+        <section className="bg-slate-900/50 border border-slate-800 p-8 rounded-2xl text-slate-300">
+          <h2 className="text-xl font-bold text-white mb-4">
+            Mais de 20 anos de excelência em TI Jurídica
+          </h2>
+          <p className="leading-relaxed">
+            A advBR.info possui mais de 20 anos de excelência no mercado de
+            tecnologia e segurança digital, dedicados a transformar a rotina dos profissionais do Direito.
+          </p>
+        </section>
+      </main>
+    </div>
   );
 }
