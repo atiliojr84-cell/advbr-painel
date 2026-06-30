@@ -59,8 +59,9 @@ export default function JurisdictionHub() {
     fetchStatuses();
   }, []);
 
-  const mainBtnStyle = "bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors border border-slate-800 shadow-lg";
-  const modalBtnStyle = "bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800";
+  // Removi as classes mainBtnStyle e modalBtnStyle para aplicar o glow-effect diretamente
+  // e evitar conflitos ou sobreposições.
+  // Se você quiser manter a base desses estilos, podemos integrá-los ao glow-effect.
 
   // Função para formatar a data e hora no formato brasileiro
   const formatDateTimeBrazil = (isoString: string | null) => {
@@ -122,7 +123,11 @@ export default function JurisdictionHub() {
 
         <div className="flex flex-wrap justify-center gap-4">
           {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
-            <button key={r} onClick={() => handleOpen(r.toLowerCase())} className={`px-6 py-3 text-slate-300 capitalize font-medium ${mainBtnStyle}`}>
+            <button 
+              key={r} 
+              onClick={() => handleOpen(r.toLowerCase())} 
+              className={`px-6 py-3 text-slate-300 capitalize font-medium bg-slate-900 rounded-xl border border-slate-800 shadow-lg glow-effect`} // Adicionado glow-effect
+            >
               {r === "CentroOeste" ? "Centro-Oeste" : r}
             </button>
           ))}
@@ -173,7 +178,11 @@ export default function JurisdictionHub() {
                     {view === 'estado' ? (
                       <div className="grid grid-cols-2 gap-3 pb-4">
                         {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
-                          <button key={e} onClick={() => { setSelectedEstado(e); setView('tribunal'); }} className={`p-4 text-white font-medium text-sm text-left ${modalBtnStyle}`}>
+                          <button 
+                            key={e} 
+                            onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
+                            className={`p-4 text-white font-medium text-sm text-left bg-slate-950 rounded-xl border border-slate-800 glow-effect`} // Adicionado glow-effect
+                          >
                             {e}
                           </button>
                         ))}
@@ -181,7 +190,11 @@ export default function JurisdictionHub() {
                     ) : (
                       <div className="space-y-3 pb-4">
                         {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
-                          <button key={t.name} onClick={() => window.open(t.url, "_blank")} className={`w-full p-4 flex items-center justify-between ${modalBtnStyle}`}>
+                          <button 
+                            key={t.name} 
+                            onClick={() => window.open(t.url, "_blank")} 
+                            className={`w-full p-4 flex items-center justify-between bg-slate-950 rounded-xl border border-slate-800 glow-effect`} // Adicionado glow-effect
+                          >
                             <span className="text-white text-sm font-medium">{t.name}</span>
 
                             <div className="flex items-center gap-3">
