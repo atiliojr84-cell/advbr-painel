@@ -1,9 +1,8 @@
-// components/features/ProductCarousel.tsx
 "use client";
 
 import { useRef } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ShieldCheck } from "lucide-react"; // Importado ShieldCheck
 import { amazonProducts } from "../../data/amazonProducts";
 
 export default function ProductCarousel() {
@@ -24,11 +23,23 @@ export default function ProductCarousel() {
   }
 
   return (
-    <section className="my-12">
-      <h2 className="text-lg font-semibold text-gray-300 flex items-center gap-2 mb-4">
-        <i className="fa-solid fa-computer text-blue-500"></i>
-        Produtos de Informática Selecionados (Amazon Afiliados)
+    <section className="my-12 px-4"> {/* Adicionado px-4 para padding lateral */}
+      {/* Novo Título e Selo de Segurança */}
+      <h2 className="text-2xl font-bold text-white mb-4 text-center">
+        <span className="flex items-center justify-center gap-2">
+          <ShieldCheck className="w-7 h-7 text-emerald-500" /> {/* Escudinho verde */}
+          Equipamentos e Soluções de TI Selecionados e Testados para Advogados e Profissionais da Justiça
+        </span>
       </h2>
+
+      {/* Novo Corpo do Texto Explicativo */}
+      <p className="max-w-4xl mx-auto text-slate-300 leading-relaxed mb-8 text-center">
+        No dia a dia do ambiente jurídico, a tecnologia é uma aliada essencial. Por isso, nossa equipe de especialistas se dedica a uma <strong>seleção e validação rigorosa</strong> de equipamentos e soluções de TI, focando nas necessidades exclusivas de advogados e demais profissionais da justiça.
+        <br /><br />
+        Cada produto é <strong>cuidadosamente testado e avaliado</strong> por sua qualidade, desempenho, compatibilidade com as ferramentas jurídicas e, principalmente, pela <strong>segurança e confiabilidade</strong>. Verificamos a procedência, a reputação da marca e a integridade dos links, garantindo que você tenha acesso a recomendações seguras e sem riscos de fraudes.
+        <br /><br />
+        Com a nossa expertise, você investe em tecnologia que realmente impulsiona sua produtividade e protege seus dados, sem perder tempo pesquisando ou se preocupando com a escolha certa. Asseguramos que as recomendações são sempre atualizadas e alinhadas com as melhores práticas do mercado, pensadas para otimizar o seu trabalho.
+      </p>
 
       <div className="relative group my-4">
         {/* Botão esquerda */}
@@ -72,9 +83,10 @@ export default function ProductCarousel() {
                 <p className="text-sm text-blue-400 font-semibold">
                   {product.price}
                 </p>
-                <p className="text-[11px] text-slate-400">
+                {/* Removida a menção a "Amazon Afiliados" */}
+                {/* <p className="text-[11px] text-slate-400">
                   Compre na Amazon (link de afiliado)
-                </p>
+                </p> */}
               </div>
             </a>
           ))}
