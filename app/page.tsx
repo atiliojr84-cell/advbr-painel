@@ -5,7 +5,6 @@ import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
 import DiagnosticHub from "../components/features/DiagnosticHub";
 import ProductCarousel from "../components/features/ProductCarousel";
-import ProblemReporter from "../components/features/ProblemReporter"; // Integrado
 import { kv } from "@vercel/kv";
 
 import nextDynamic from "next/dynamic";
