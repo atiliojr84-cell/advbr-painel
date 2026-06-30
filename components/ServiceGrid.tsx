@@ -14,7 +14,8 @@ export default function ServiceGrid() {
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
 
   const handleWhatsApp = (service: string) => {
-    const msg = encodeURIComponent(`Olá, Doutor(a). Como podemos ajudar a estruturar a TI do seu escritório? Vi no Painel ADVBR sobre o serviço de ${service}.`);
+    // Alterado "Olá, Doutor(a)." para "Olá,"
+    const msg = encodeURIComponent(`Olá, Como podemos ajudar a estruturar a TI do seu escritório? Vi no Painel ADVBR sobre o serviço de ${service}.`);
     window.open(`https://wa.me/5544984416101?text=${msg}`, "_blank");
   };
 
@@ -24,7 +25,7 @@ export default function ServiceGrid() {
         <h2 className="text-2xl font-bold text-white mb-8 text-center border-b border-slate-800 pb-4">
           Soluções Corporativas em TI Jurídica
         </h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {services.map((s) => (
             <button 
@@ -65,14 +66,15 @@ export default function ServiceGrid() {
                 O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
                 Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
               </p>
-              
+
               <div className="flex gap-4">
                 <button onClick={() => setSelectedService(null)} className="flex-1 py-3 text-slate-400 font-medium">Cancelar</button>
                 <button 
                   onClick={() => handleWhatsApp(selectedService.title)}
-                  className="flex-[2] py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg"
+                  // Estilo do botão alterado para verde WhatsApp
+                  className="flex-[2] py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/50"
                 >
-                  Falar no WhatsApp
+                  Consultar Especialista por WhatsApp
                 </button>
               </div>
             </motion.div>
