@@ -62,46 +62,50 @@ export default function ServiceGrid() {
             className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              // Transição do modal ajustada para ser igual ao DiagnosticHub
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-3xl border border-slate-700 w-full max-w-md shadow-2xl"
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col" // rounded-2xl para consistência com DiagnosticHub, max-h-[90vh] e flex flex-col para scroll
             >
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-6 shrink-0"> {/* shrink-0 para cabeçalho não encolher */}
                 <h3 className="text-white text-xl font-bold">{selectedService.title}</h3>
                 <button onClick={() => setSelectedService(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
-              {/* Descrição dinâmica para os serviços */}
-              {selectedService.id === 1 ? ( // Adequação LGPD
-                <p className="text-slate-300 leading-relaxed mb-6">
-                  Nossa Adequação LGPD foca na **infraestrutura e nos processos de TI** do seu escritório. Garantimos que seus sistemas, redes e fluxos de dados estejam em conformidade com a Lei Geral de Proteção de Dados, implementando medidas de segurança, controle de acesso e governança de dados. Nosso trabalho abrange a proteção estrutural e a criptografia para dados sensíveis de clientes, minimizando riscos e fortalecendo a segurança digital do seu ambiente jurídico.
-                </p>
-              ) : selectedService.id === 5 ? ( // Consultoria e Suporte Remoto Nacional
-                <p className="text-slate-300 leading-relaxed mb-6">
-                  Nosso serviço de <strong>Consultoria e Suporte Remoto Nacional</strong> oferece uma gestão de TI completa e proativa para advogados e escritórios em qualquer lugar do Brasil. Atuamos ativamente na configuração de redes, otimização de sistemas, implementação de segurança digital, rotinas de backup e gerenciamento de servidores, tudo por acesso remoto. Resolvemos os problemas do dia a dia e implementamos melhorias contínuas, garantindo que sua infraestrutura tecnológica esteja sempre alinhada aos seus prazos e necessidades.
-                  <br /><br />
-                  Trabalhamos com duas modalidades flexíveis:
-                  <br />
-                  <strong>1. Atendimento Recorrente (Mensalidade):</strong> Ideal para quem busca uma parceria contínua, com acompanhamento constante e suporte ilimitado para manter o escritório sempre produtivo e seguro.
-                  <br />
-                  <strong>2. Atendimento Pontual:</strong> Perfeito para resolver problemas específicos ou realizar configurações sob demanda, com pagamento por serviço prestado.
-                  <br /><br />
-                  Este modelo de atendimento cobre todas as suas demandas de TI, excluindo apenas intervenções físicas de hardware que exijam deslocamento.
-                </p>
-              ) : ( // Outros serviços
-                <p className="text-slate-300 leading-relaxed mb-6">
-                  O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
-                  Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
-                </p>
-              )}
+              {/* Conteúdo do modal com scroll vertical */}
+              <div className="overflow-y-auto pr-2"> {/* pr-2 para espaço do scrollbar */}
+                {selectedService.id === 1 ? ( // Adequação LGPD
+                  <p className="text-slate-300 leading-relaxed mb-6">
+                    Nossa Adequação LGPD foca na **infraestrutura e nos processos de TI** do seu escritório. Garantimos que seus sistemas, redes e fluxos de dados estejam em conformidade com a Lei Geral de Proteção de Dados, implementando medidas de segurança, controle de acesso e governança de dados. Nosso trabalho abrange a proteção estrutural e a criptografia para dados sensíveis de clientes, minimizando riscos e fortalecendo a segurança digital do seu ambiente jurídico.
+                  </p>
+                ) : selectedService.id === 5 ? ( // Consultoria e Suporte Remoto Nacional
+                  <p className="text-slate-300 leading-relaxed mb-6">
+                    Nosso serviço de <strong>Consultoria e Suporte Remoto Nacional</strong> oferece uma gestão de TI completa e proativa para advogados e escritórios em qualquer lugar do Brasil. Atuamos ativamente na configuração de redes, otimização de sistemas, implementação de segurança digital, rotinas de backup e gerenciamento de servidores, tudo por acesso remoto. Resolvemos os problemas do dia a dia e implementamos melhorias contínuas, garantindo que sua infraestrutura tecnológica esteja sempre alinhada aos seus prazos e necessidades.
+                    <br /><br />
+                    Trabalhamos com duas modalidades flexíveis:
+                    <br />
+                    <strong>1. Atendimento Recorrente (Mensalidade):</strong> Ideal para quem busca uma parceria contínua, com acompanhamento constante e suporte ilimitado para manter o escritório sempre produtivo e seguro.
+                    <br />
+                    <strong>2. Atendimento Pontual:</strong> Perfeito para resolver problemas específicos ou realizar configurações sob demanda, com pagamento por serviço prestado.
+                    <br /><br />
+                    Este modelo de atendimento cobre todas as suas demandas de TI, excluindo apenas intervenções físicas de hardware que exijam deslocamento.
+                  </p>
+                ) : ( // Outros serviços
+                  <p className="text-slate-300 leading-relaxed mb-6">
+                    O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
+                    Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
+                  </p>
+                )}
+              </div> {/* Fim do div com overflow-y-auto */}
 
-              <div className="flex gap-4">
+              <div className="flex gap-4 mt-6 shrink-0"> {/* mt-6 para espaçamento, shrink-0 para rodapé não encolher */}
                 <button onClick={() => setSelectedService(null)} className="flex-1 py-3 text-slate-400 font-medium">Cancelar</button>
                 <button 
                   onClick={() => handleWhatsApp(selectedService.title)}
-                  className="flex-[2] py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/50"
+                  // Estilo do botão do WhatsApp ajustado para ser igual ao DiagnosticHub
+                  className="flex-[2] py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/50"
                 >
                   Consultar Especialista por WhatsApp
                 </button>
