@@ -5,6 +5,7 @@ import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
 import DiagnosticHub from "../components/features/DiagnosticHub";
 import ProductCarousel from "../components/features/ProductCarousel";
+import ProblemReporter from "../components/features/ProblemReporter"; // <-- Import adicionado
 import { kv } from "@vercel/kv";
 
 import nextDynamic from "next/dynamic";
@@ -19,7 +20,7 @@ const DynamicPdfToolHub = nextDynamic(
     ssr: false,
     loading: () => (
       <div className="flex justify-center items-center h-40 text-white">
-        <Loader2 className="animate-spin text-blue-500" size={32} />{" "}
+        <Loader2 className="animate-spin text-blue-500" size={32} />
         Carregando Ferramentas PDF...
       </div>
     ),
@@ -35,10 +36,9 @@ export default async function Home() {
       <Ticker />
 
       <main className="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
-        {/* Header agora com o botão de Report integrado */}
+        {/* Usamos apenas o <Header /> aqui. O botão de reporte deve estar dentro dele */}
         <header className="flex justify-between items-center">
           <Header />
-          <ProblemReporter />
         </header>
 
         <section>
