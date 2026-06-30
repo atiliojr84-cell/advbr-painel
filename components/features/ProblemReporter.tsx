@@ -24,10 +24,12 @@ export default function ProblemReporter() {
   const [selectedEstado, setSelectedEstado] = useState<string>("");
   const [selectedTribunal, setSelectedTribunal] = useState<any | null>(null);
 
-  const [data, setData] = useState<{ portal: string; problema: string }>({
-    portal: "",
-    problema: "",
-  });
+  const [data, setData] = useState<{ portal: string; problema: string }>(
+    {
+      portal: "",
+      problema: "",
+    }
+  );
 
   const [reports, setReports] = useState<Report[]>([]);
   const [loadingReports, setLoadingReports] = useState(false);
@@ -293,148 +295,159 @@ export default function ProblemReporter() {
                 </button>
               </div>
 
-              {/* Conteúdo da modal */}
+              {/* Conteúdo da modal com AnimatePresence e motion.div para transições */}
               <div className="overflow-y-auto max-h-[70vh] pr-2 space-y-4">
-                {/* Step 1: Região */}
-                {view === "regiao" && (
-                  <div className="space-y-3">
-                    <p className="text-slate-300 text-sm">
-                      Doutor, selecione a região ou os tribunais federais onde
-                      o senhor está enfrentando dificuldades:
-                    </p>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        onClick={() => handleSelectRegiao("federais")}
-                        className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
-                      >
-                        Tribunais Federais
-                      </button>
-                      <button
-                        onClick={() => handleSelectRegiao("Sul")}
-                        className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
-                      >
-                        Região Sul
-                      </button>
-                      <button
-                        onClick={() => handleSelectRegiao("Sudeste")}
-                        className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
-                      >
-                        Região Sudeste
-                      </button>
-                      <button
-                        onClick={() => handleSelectRegiao("CentroOeste")}
-                        className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
-                      >
-                        Região Centro-Oeste
-                      </button>
-                      <button
-                        onClick={() => handleSelectRegiao("Nordeste")}
-                        className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
-                      >
-                        Região Nordeste
-                      </button>
-                      <button
-                        onClick={() => handleSelectRegiao("Norte")}
-                        className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
-                      >
-                        Região Norte
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 2: Estado */}
-                {view === "estado" && (
-                  <div className="space-y-3">
-                    <p className="text-slate-300 text-sm">
-                      Agora, escolha o Estado:
-                    </p>
-                    <div className="grid grid-cols-2 gap-3">
-                      {getEstadosDaRegiao(activeRegiao).map((estado) => (
-                        <button
-                          key={estado}
-                          onClick={() => handleSelectEstado(estado)}
-                          className="p-3 text-white font-medium text-xs text-left bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800"
-                        >
-                          {estado}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 3: Tribunal */}
-                {view === "tribunal" && (
-                  <div className="space-y-3">
-                    <p className="text-slate-300 text-sm">
-                      Selecione o tribunal ou portal em que o senhor está
-                      enfrentando dificuldades:
-                    </p>
-                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1 mt-2">
-                      {getTribunaisDaSelecao().map((t: any) => (
-                        <button
-                          key={t.name}
-                          onClick={() => handleSelectTribunal(t)}
-                          className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left text-xs flex justify-between items-center"
-                        >
-                          <span>{t.name}</span>
-                          <span className="text-[10px] text-slate-400 ml-2 truncate max-w-[50%]">
-                            {t.url.replace(/^https?:\/\/(www\.)?/, "")}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 4: Tipo de problema */}
-                {view === "problema" && (
-                  <div className="space-y-3">
-                    <p className="text-white text-sm">
-                      Qual é a natureza do problema em{" "}
-                      <strong>{data.portal}</strong>?
-                    </p>
-                    {problemas.map((prob) => (
-                      <button
-                        key={prob}
-                        onClick={() => handleSelectProblema(prob)}
-                        disabled={loadingSubmit}
-                        className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-                      >
-                        {loadingSubmit && data.problema === prob
-                          ? "Enviando..."
-                          : prob}
-                      </button>
-                    ))}
-                    {errorMsg && (
-                      <p className="text-xs text-red-400 mt-2">{errorMsg}</p>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={view} // A chave dinâmica é crucial para as transições entre as views
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-full" // Garante que o motion.div ocupe o espaço
+                  >
+                    {/* Step 1: Região */}
+                    {view === "regiao" && (
+                      <div className="space-y-3">
+                        <p className="text-slate-300 text-sm">
+                          Doutor, selecione a região ou os tribunais federais onde
+                          o senhor está enfrentando dificuldades:
+                        </p>
+                        <div className="grid grid-cols-2 gap-3">
+                          <button
+                            onClick={() => handleSelectRegiao("federais")}
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                          >
+                            Tribunais Federais
+                          </button>
+                          <button
+                            onClick={() => handleSelectRegiao("Sul")}
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                          >
+                            Região Sul
+                          </button>
+                          <button
+                            onClick={() => handleSelectRegiao("Sudeste")}
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                          >
+                            Região Sudeste
+                          </button>
+                          <button
+                            onClick={() => handleSelectRegiao("CentroOeste")}
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                          >
+                            Região Centro-Oeste
+                          </button>
+                          <button
+                            onClick={() => handleSelectRegiao("Nordeste")}
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                          >
+                            Região Nordeste
+                          </button>
+                          <button
+                            onClick={() => handleSelectRegiao("Norte")}
+                            className="p-3 bg-slate-950 hover:bg-slate-900 rounded-xl border border-slate-800 text-left text-xs text-white"
+                          >
+                            Região Norte
+                          </button>
+                        </div>
+                      </div>
                     )}
-                  </div>
-                )}
 
-                {/* Step 5: Confirmação */}
-                {view === "confirm" && (
-                  <div className="space-y-4">
-                    <p className="text-white text-sm">
-                      Obrigado, doutor. Seu relato sobre{" "}
-                      <strong>{data.portal}</strong> foi registrado como{" "}
-                      <strong>{data.problema}</strong>.
-                    </p>
-                    <p className="text-xs text-slate-400">
-                      Esses registros contribuem para o diagnóstico automático
-                      de instabilidades e ajudam outros colegas a saberem quando
-                      um portal está com problemas.
-                    </p>
-                    <div className="flex justify-end">
-                      <button
-                        onClick={handleCloseAfterConfirm}
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-semibold"
-                      >
-                        Fechar
-                      </button>
-                    </div>
-                  </div>
-                )}
+                    {/* Step 2: Estado */}
+                    {view === "estado" && (
+                      <div className="space-y-3">
+                        <p className="text-slate-300 text-sm">
+                          Agora, escolha o Estado:
+                        </p>
+                        <div className="grid grid-cols-2 gap-3">
+                          {getEstadosDaRegiao(activeRegiao).map((estado) => (
+                            <button
+                              key={estado}
+                              onClick={() => handleSelectEstado(estado)}
+                              className="p-3 text-white font-medium text-xs text-left bg-slate-950 hover:bg-slate-900 rounded-xl transition-colors border border-slate-800"
+                            >
+                              {estado}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Step 3: Tribunal */}
+                    {view === "tribunal" && (
+                      <div className="space-y-3">
+                        <p className="text-slate-300 text-sm">
+                          Selecione o tribunal ou portal em que o senhor está
+                          enfrentando dificuldades:
+                        </p>
+                        <div className="space-y-2 max-h-72 overflow-y-auto pr-1 mt-2">
+                          {getTribunaisDaSelecao().map((t: any) => (
+                            <button
+                              key={t.name}
+                              onClick={() => handleSelectTribunal(t)}
+                              className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-blue-500 hover:shadow-[0_0_10px_rgba(37,99,235,0.5)] hover:bg-slate-800 text-left text-xs flex justify-between items-center"
+                            >
+                              <span>{t.name}</span>
+                              <span className="text-[10px] text-slate-400 ml-2 truncate max-w-[50%]">
+                                {t.url.replace(/^https?:\/\/(www\.)?/, "")}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Step 4: Tipo de problema */}
+                    {view === "problema" && (
+                      <div className="space-y-3">
+                        <p className="text-white text-sm">
+                          Qual é a natureza do problema em{" "}
+                          <strong>{data.portal}</strong>?
+                        </p>
+                        {problemas.map((prob) => (
+                          <button
+                            key={prob}
+                            onClick={() => handleSelectProblema(prob)}
+                            disabled={loadingSubmit}
+                            className="w-full p-3 border border-slate-700 bg-slate-900 text-white rounded transition-all duration-300 hover:border-red-500 hover:shadow-[0_0_10px_rgba(239,68,68,0.5)] hover:bg-slate-800 text-left disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                          >
+                            {loadingSubmit && data.problema === prob
+                              ? "Enviando..."
+                              : prob}
+                          </button>
+                        ))}
+                        {errorMsg && (
+                          <p className="text-xs text-red-400 mt-2">{errorMsg}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Step 5: Confirmação */}
+                    {view === "confirm" && (
+                      <div className="space-y-4">
+                        <p className="text-white text-sm">
+                          Obrigado, doutor. Seu relato sobre{" "}
+                          <strong>{data.portal}</strong> foi registrado como{" "}
+                          <strong>{data.problema}</strong>.
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          Esses registros contribuem para o diagnóstico automático
+                          de instabilidades e ajudam outros colegas a saberem quando
+                          um portal está com problemas.
+                        </p>
+                        <div className="flex justify-end">
+                          <button
+                            onClick={handleCloseAfterConfirm}
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm font-semibold"
+                          >
+                            Fechar
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </motion.div>
           </motion.div>
