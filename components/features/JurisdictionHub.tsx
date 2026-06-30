@@ -1,9 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Activity } from "lucide-react";
+import { ArrowLeft, Activity, AlertCircle } from "lucide-react"; // Importado AlertCircle
 import { motion, AnimatePresence } from "framer-motion";
 import { jurisdictions } from "../../data/jurisdictions";
+
+// Definindo o tipo para o reporte ativo
+type ActiveReport = {
+  portal: string;
+  problema: string;
+  createdAt: string;
+};
 
 export default function JurisdictionHub() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +21,7 @@ export default function JurisdictionHub() {
   const [liveStatus, setLiveStatus] = useState<Record<string, string>>({});
   const [livePings, setLivePings] = useState<Record<string, number>>({});
   const [lastUpdate, setLastUpdate] = useState<string | null>(null);
+  const [activeReports, setActiveReports] = useState<ActiveReport[]>([]); // Novo estado para reportes ativos
 
   const regiaoMap: { [key: string]: string } = {
     federais: "federais",
@@ -40,28 +48,43 @@ export default function JurisdictionHub() {
   };
 
   useEffect(() => {
-    const fetchStatuses = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch(`/api/get-status?t=${Date.now()}`, { cache: 'no-store' });
-        const data = await res.json();
-
-        if (data.statuses) {
-          setLiveStatus(data.statuses);
-          setLivePings(data.pings || {});
-          if (data.lastUpdate) setLastUpdate(data.lastUpdate);
+        // Busca de Status e Pings
+        const statusRes = await fetch(`/api/get-status?t=${Date.now()}`, { cache: 'no-store' });
+        const statusData = await statusRes.json();
+        if (statusData.statuses) {
+          setLiveStatus(statusData.statuses);
+          setLivePings(statusData.pings || {});
+          if (statusData.lastUpdate) setLastUpdate(statusData.lastUpdate);
         } else {
-          setLiveStatus(data);
+          setLiveStatus(statusData);
+        }
+
+        // Busca de Reportes Ativos
+        const reportsRes = await fetch(`/api/report-falha/active?t=${Date.now()}`, { cache: 'no-store' });
+        const reportsData = await reportsRes.json();
+        if (reportsData.activeReports) {
+          setActiveReports(reportsData.activeReports);
         }
       } catch (error) {
-        console.error("Erro ao buscar status", error);
+        console.error("Erro ao buscar dados", error);
       }
     };
-    fetchStatuses();
+    fetchData();
+
+    // Opcional: Atualizar a cada X minutos para manter os reportes recentes
+    const intervalId = setInterval(fetchData, 5 * 60 * 1000); // A cada 5 minutos
+    return () => clearInterval(intervalId);
+
   }, []);
 
-  // Removi as classes mainBtnStyle e modalBtnStyle para aplicar o glow-effect diretamente
-  // e evitar conflitos ou sobreposições.
-  // Se você quiser manter a base desses estilos, podemos integrá-los ao glow-effect.
+  // Função para verificar se um tribunal tem reportes ativos
+  const hasActiveReport = (tribunalName: string): boolean => {
+    // O formato do portal no reporte é "[Região - Estado] Nome do Tribunal"
+    // Precisamos verificar se o nome do tribunal está contido no campo 'portal' do reporte
+    return activeReports.some(report => report.portal.includes(tribunalName));
+  };
 
   // Função para formatar a data e hora no formato brasileiro
   const formatDateTimeBrazil = (isoString: string | null) => {
@@ -112,7 +135,6 @@ export default function JurisdictionHub() {
           {lastUpdate && (
             <div className="mt-6 inline-block bg-slate-800/50 border border-slate-700 px-4 py-2 rounded-full">
               <span className="text-xs text-slate-400">
-                {/* Texto alterado aqui */}
                 Status dos portais atualizado em: <strong className="text-slate-200">
                   {formatDateTimeBrazil(lastUpdate)}
                 </strong>
@@ -198,6 +220,11 @@ export default function JurisdictionHub() {
                             <span className="text-white text-sm font-medium">{t.name}</span>
 
                             <div className="flex items-center gap-3">
+                              {/* Ícone de reporte de falha */}
+                              {hasActiveReport(t.name) && (
+                                <AlertCircle size={18} className="text-red-500 animate-pulse" title="Problema reportado recentemente!" />
+                              )}
+
                               {livePings[t.name] ? (
                                 <span className="text-xs text-slate-400 font-mono">
                                   {livePings[t.name]}ms
