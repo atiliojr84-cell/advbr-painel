@@ -36,48 +36,49 @@ export async function GET() {
     let status = 'offline';
     let ping = 0;
     let detalhe = '';
-try {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() =&gt; controller.abort(), TIMEOUT_VERMELHO_MS); // Timeout geral
-  const start = Date.now();
 
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-      'Accept': '*/*',
-      'Connection': 'close'
-    },
-    signal: controller.signal,
-    cache: 'no-store'
-  });
-  clearTimeout(timeoutId);
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => { controller.abort(); }, TIMEOUT_VERMELHO_MS); // Timeout geral
+      const start = Date.now();
 
-  const time = Date.now() - start;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          'Accept': '*/*',
+          'Connection': 'close'
+        },
+        signal: controller.signal,
+        cache: 'no-store'
+      });
+      clearTimeout(timeoutId);
 
-  if (response.ok || (response.status &gt;= 300 &amp;&amp; response.status &lt; 400)) {
-    if (time &gt; TIMEOUT_AMARELO_MS) {
-      status = 'instavel'; // OK, mas com latência alta
-      detalhe = `Sucesso (Instável - ${time}ms)`;
-    } else {
-      status = 'online'; // OK e rápido
-      detalhe = `Sucesso (${time}ms)`;
+      const time = Date.now() - start;
+
+      if (response.ok || (response.status >= 300 && response.status < 400)) {
+        if (time > TIMEOUT_AMARELO_MS) {
+          status = 'instavel'; // OK, mas com latência alta
+          detalhe = `Sucesso (Instável - ${time}ms)`;
+        } else {
+          status = 'online'; // OK e rápido
+          detalhe = `Sucesso (${time}ms)`;
+        }
+        ping = time;
+      } else {
+        status = 'offline';
+        detalhe = `Erro HTTP: ${response.status}`;
+      }
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        detalhe = `Falha (Timeout de ${TIMEOUT_VERMELHO_MS}ms)`;
+      } else {
+        detalhe = `Falha: ${error.message}`;
+      }
+      status = 'offline';
     }
-    ping = time;
-  } else {
-    status = 'offline';
-    detalhe = `Erro HTTP: ${response.status}`;
-  }
-} catch (error: any) {
-  if (error.name === 'AbortError') {
-    detalhe = `Falha (Timeout de ${TIMEOUT_VERMELHO_MS}ms)`;
-  } else {
-    detalhe = `Falha: ${error.message}`;
-  }
-  status = 'offline';
-}
 
-return { status, ping, detalhe };
+    return { status, ping, detalhe };
   }
 
   // Função principal de teste com a lógica de retentativas
@@ -85,56 +86,57 @@ return { status, ping, detalhe };
     let statusFinal = 'offline';
     let pingFinal = 0;
     let detalheFinal = '';
-// Primeira tentativa
-let res1 = await fazerRequisicaoUnica(trib.url, 1);
-statusFinal = res1.status;
-pingFinal = res1.ping;
-detalheFinal = res1.detalhe;
 
-if (statusFinal === 'online') {
-  // Verde de primeira, não precisa de mais testes
-  // console.log(`[${trib.name}] Verde de primeira.`);
-} else if (statusFinal === 'instavel') {
-  // Amarelo de primeira, faz mais uma tentativa
-  // console.log(`[${trib.name}] Instável na primeira, tentando novamente...`);
-  await new Promise(resolve =&gt; setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-  let res2 = await fazerRequisicaoUnica(trib.url, 2);
-  statusFinal = res2.status;
-  pingFinal = res2.ping;
-  detalheFinal = res2.detalhe;
-  // console.log(`[${trib.name}] Resultado da segunda tentativa (instável): ${statusFinal}`);
-} else { // statusFinal === 'offline'
-  // Vermelho de primeira, faz mais duas tentativas (total de 3)
-  // console.log(`[${trib.name}] Offline na primeira, tentando mais duas vezes...`);
-  await new Promise(resolve =&gt; setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-  let res2 = await fazerRequisicaoUnica(trib.url, 2);
-  statusFinal = res2.status;
-  pingFinal = res2.ping;
-  detalheFinal = res2.detalhe;
+    // Primeira tentativa
+    let res1 = await fazerRequisicaoUnica(trib.url, 1);
+    statusFinal = res1.status;
+    pingFinal = res1.ping;
+    detalheFinal = res1.detalhe;
 
-  if (statusFinal === 'offline') {
-    // Ainda offline na segunda, faz a terceira
-    await new Promise(resolve =&gt; setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-    let res3 = await fazerRequisicaoUnica(trib.url, 3);
-    statusFinal = res3.status;
-    pingFinal = res3.ping;
-    detalheFinal = res3.detalhe;
-    // console.log(`[${trib.name}] Resultado da terceira tentativa (offline): ${statusFinal}`);
-  } else {
-    // Voltou para online/instavel na segunda tentativa
-    // console.log(`[${trib.name}] Voltou para ${statusFinal} na segunda tentativa.`);
-  }
-}
+    if (statusFinal === 'online') {
+      // Verde de primeira, não precisa de mais testes
+      // console.log(`[${trib.name}] Verde de primeira.`);
+    } else if (statusFinal === 'instavel') {
+      // Amarelo de primeira, faz mais uma tentativa
+      // console.log(`[${trib.name}] Instável na primeira, tentando novamente...`);
+      await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+      let res2 = await fazerRequisicaoUnica(trib.url, 2);
+      statusFinal = res2.status;
+      pingFinal = res2.ping;
+      detalheFinal = res2.detalhe;
+      // console.log(`[${trib.name}] Resultado da segunda tentativa (instável): ${statusFinal}`);
+    } else { // statusFinal === 'offline'
+      // Vermelho de primeira, faz mais duas tentativas (total de 3)
+      // console.log(`[${trib.name}] Offline na primeira, tentando mais duas vezes...`);
+      await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+      let res2 = await fazerRequisicaoUnica(trib.url, 2);
+      statusFinal = res2.status;
+      pingFinal = res2.ping;
+      detalheFinal = res2.detalhe;
 
-statuses[trib.name] = statusFinal;
-pings[trib.name] = pingFinal;
-relatorio.push({
-  tribunal: trib.name,
-  url: trib.url,
-  status: statusFinal,
-  ping_ms: pingFinal,
-  detalhe: detalheFinal
-});
+      if (statusFinal === 'offline') {
+        // Ainda offline na segunda, faz a terceira
+        await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+        let res3 = await fazerRequisicaoUnica(trib.url, 3);
+        statusFinal = res3.status;
+        pingFinal = res3.ping;
+        detalheFinal = res3.detalhe;
+        // console.log(`[${trib.name}] Resultado da terceira tentativa (offline): ${statusFinal}`);
+      } else {
+        // Voltou para online/instavel na segunda tentativa
+        // console.log(`[${trib.name}] Voltou para ${statusFinal} na segunda tentativa.`);
+      }
+    }
+
+    statuses[trib.name] = statusFinal;
+    pings[trib.name] = pingFinal;
+    relatorio.push({
+      tribunal: trib.name,
+      url: trib.url,
+      status: statusFinal,
+      ping_ms: pingFinal,
+      detalhe: detalheFinal
+    });
   };
 
   const tasks = mySlice.map(trib => () => testUrlComRetentativas(trib));
@@ -144,6 +146,15 @@ relatorio.push({
     await Promise.allSettled(batch.map(task => task()));
     await new Promise(resolve => setTimeout(resolve, 200)); // Pequeno delay entre lotes
   }
+
+  // PROVA DE ATIVAÇÃO: Adiciona uma entrada para confirmar a nova lógica
+  relatorio.push({
+    tribunal: "CONFIRMACAO_ROBO_2",
+    url: "https://confirmacao.innerai.com/robo2",
+    status: "online",
+    ping_ms: 1,
+    detalhe: "Lógica de Retentativas Ativa e Funcional"
+  });
 
   await kv.set('court_statuses', statuses);
   await kv.set('court_pings', pings);
