@@ -227,10 +227,10 @@ export default function ProblemReporter() {
     return "Reportar Falha";
   };
 
-    return (
+      return (
     <>
       {/* Botões principais - A classe justify-end empurrará tudo para a direita */}
-      <div className="flex flex-wrap gap-2 justify-end w-full">
+      <div className="flex flex-wrap gap-2 justify-end w-full mb-6">
         <button
           onClick={openReporterModal}
           className="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-900/40 border border-red-700/60 text-red-100 text-xs hover:bg-red-900/70 hover:border-red-500 transition-colors"
@@ -247,6 +247,10 @@ export default function ProblemReporter() {
           <span>Ver Relatório de Falhas</span>
         </button>
       </div>
+      
+      {/* Modal principal: fluxo de reporte */}
+      <AnimatePresence>
+        {/* O restante do seu arquivo continua inalterado a partir daqui... */}
 
       {/* ... restante do código ... */}>
 
