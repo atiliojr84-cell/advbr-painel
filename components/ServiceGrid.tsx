@@ -8,14 +8,26 @@ const services = [
   { id: 2, title: "Segurança Digital e Backup", desc: "Antivírus corporativo, blindagem de rede e rotinas de backup seguras." },
   { id: 3, title: "Suporte TI Jurídico", desc: "Resolução rápida de problemas: PJe, eproc, tokens e certificados." },
   { id: 4, title: "Gestão e Infraestrutura", desc: "Planejamento estratégico de TI com suporte remoto e presencial." },
+  // NOVO SERVIÇO ADICIONADO
+  { 
+    id: 5, 
+    title: "Consultoria e Suporte Remoto Nacional", 
+    desc: "Gestão completa de TI para escritórios de advocacia em todo o Brasil, com atendimento especializado e ativo para otimização e resolução de problemas, tudo remotamente." 
+  },
 ];
 
 export default function ServiceGrid() {
   const [selectedService, setSelectedService] = useState<typeof services[0] | null>(null);
 
-  const handleWhatsApp = (service: string) => {
-    // Alterado "Olá, Doutor(a)." para "Olá,"
-    const msg = encodeURIComponent(`Olá, Como podemos ajudar a estruturar a TI do seu escritório? Vi no Painel ADVBR sobre o serviço de ${service}.`);
+  const handleWhatsApp = (serviceTitle: string) => {
+    let msgText = `Olá, Como podemos ajudar a estruturar a TI do seu escritório? Vi no Painel ADVBR sobre o serviço de ${serviceTitle}.`;
+
+    // Mensagem específica para o novo serviço
+    if (serviceTitle === "Consultoria e Suporte Remoto Nacional") {
+      msgText = `Olá, Tenho interesse em saber mais sobre a Consultoria e Suporte Remoto Nacional para meu escritório de advocacia.`;
+    }
+
+    const msg = encodeURIComponent(msgText);
     window.open(`https://wa.me/5544984416101?text=${msg}`, "_blank");
   };
 
@@ -62,16 +74,22 @@ export default function ServiceGrid() {
                 <button onClick={() => setSelectedService(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
-              <p className="text-slate-300 leading-relaxed mb-6">
-                O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
-                Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
-              </p>
+              {/* Descrição dinâmica para o novo serviço */}
+              {selectedService.id === 5 ? (
+                <p className="text-slate-300 leading-relaxed mb-6">
+                  Nosso serviço de <strong>Consultoria e Suporte Remoto Nacional</strong> oferece uma gestão de TI completa e proativa para advogados e escritórios em qualquer lugar do Brasil. Atuamos ativamente na configuração de redes, otimização de sistemas, implementação de segurança digital, rotinas de backup e gerenciamento de servidores, tudo por acesso remoto. Resolvemos os problemas do dia a dia e implementamos melhorias contínuas, garantindo que sua infraestrutura tecnológica esteja sempre alinhada aos seus prazos e necessidades. Este modelo de atendimento por mensalidade cobre todas as suas demandas de TI, excluindo apenas intervenções físicas de hardware que exijam deslocamento.
+                </p>
+              ) : (
+                <p className="text-slate-300 leading-relaxed mb-6">
+                  O serviço de <strong>{selectedService.title}</strong> é desenhado para eliminar gargalos tecnológicos do seu escritório. 
+                  Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
+                </p>
+              )}
 
               <div className="flex gap-4">
                 <button onClick={() => setSelectedService(null)} className="flex-1 py-3 text-slate-400 font-medium">Cancelar</button>
                 <button 
                   onClick={() => handleWhatsApp(selectedService.title)}
-                  // Estilo do botão alterado para verde WhatsApp
                   className="flex-[2] py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/50"
                 >
                   Consultar Especialista por WhatsApp
