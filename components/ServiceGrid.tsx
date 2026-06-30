@@ -62,20 +62,18 @@ export default function ServiceGrid() {
             className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
           >
             <motion.div
-              // Transição do modal ajustada para ser igual ao DiagnosticHub
               initial={{ y: -50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col" // rounded-2xl para consistência com DiagnosticHub, max-h-[90vh] e flex flex-col para scroll
+              className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] flex flex-col"
             >
-              <div className="flex items-center justify-between mb-6 shrink-0"> {/* shrink-0 para cabeçalho não encolher */}
+              <div className="flex items-center justify-between mb-6 shrink-0">
                 <h3 className="text-white text-xl font-bold">{selectedService.title}</h3>
                 <button onClick={() => setSelectedService(null)} className="text-slate-500 hover:text-white">Fechar</button>
               </div>
 
-              {/* Conteúdo do modal com scroll vertical */}
-              <div className="overflow-y-auto pr-2"> {/* pr-2 para espaço do scrollbar */}
+              <div className="overflow-y-auto pr-2">
                 {selectedService.id === 1 ? ( // Adequação LGPD
                   <p className="text-slate-300 leading-relaxed mb-6">
                     Nossa Adequação LGPD foca na **infraestrutura e nos processos de TI** do seu escritório. Garantimos que seus sistemas, redes e fluxos de dados estejam em conformidade com a Lei Geral de Proteção de Dados, implementando medidas de segurança, controle de acesso e governança de dados. Nosso trabalho abrange a proteção estrutural e a criptografia para dados sensíveis de clientes, minimizando riscos e fortalecendo a segurança digital do seu ambiente jurídico.
@@ -98,14 +96,14 @@ export default function ServiceGrid() {
                     Como especialistas com 15 anos de atuação no ambiente jurídico, garantimos que sua infraestrutura trabalhe a favor dos seus prazos e da segurança dos dados dos seus clientes.
                   </p>
                 )}
-              </div> {/* Fim do div com overflow-y-auto */}
+              </div>
 
-              <div className="flex gap-4 mt-6 shrink-0"> {/* mt-6 para espaçamento, shrink-0 para rodapé não encolher */}
+              <div className="flex gap-4 mt-6 shrink-0">
                 <button onClick={() => setSelectedService(null)} className="flex-1 py-3 text-slate-400 font-medium">Cancelar</button>
                 <button 
                   onClick={() => handleWhatsApp(selectedService.title)}
-                  // Estilo do botão do WhatsApp ajustado para ser igual ao DiagnosticHub
-                  className="flex-[2] py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/50"
+                  // Estilo do botão do WhatsApp ajustado para ser 100% igual ao DiagnosticHub
+                  className="flex-[2] py-3 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-xl transition-all shadow-lg" // Removido shadow-emerald-500/50
                 >
                   Consultar Especialista por WhatsApp
                 </button>
