@@ -1,15 +1,8 @@
-import Header from "../components/ui/Header";
-import Ticker from "../components/ui/Ticker";
-import ServiceGrid from "../components/ServiceGrid";
-import PortalCarousel from "../components/features/PortalCarousel";
-import JurisdictionHub from "../components/features/JurisdictionHub";
-import DiagnosticHub from "../components/features/DiagnosticHub";
-import ProductCarousel from "../components/features/ProductCarousel";
-import ProblemReporter from "../components/features/ProblemReporter"; // <-- Import adicionado
 import { kv } from "@vercel/kv";
 
 import nextDynamic from "next/dynamic";
 import { Loader2 } from "lucide-react";
+import Header from "./components/ui/Header"; // Importe o componente Header
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -36,10 +29,8 @@ export default async function Home() {
       <Ticker />
 
       <main className="p-4 md:p-8 max-w-7xl mx-auto space-y-12">
-        {/* Usamos apenas o <Header /> aqui. O botão de reporte deve estar dentro dele */}
-        <header className="flex justify-between items-center">
-          <Header />
-        </header>
+        {/* Renderize o componente Header diretamente aqui */}
+        <Header /> {/* <-- MODIFICADO AQUI */}
 
         <section>
           <div className="flex justify-between items-end mb-4">
