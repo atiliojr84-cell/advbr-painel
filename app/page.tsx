@@ -1,11 +1,11 @@
-import Header from "./components/ui/Header"; // Caminho corrigido para o Header
+import Header from "../components/ui/Header"; // Caminho de importação ajustado
 import Ticker from "../components/ui/Ticker";
 import ServiceGrid from "../components/ServiceGrid";
 import PortalCarousel from "../components/features/PortalCarousel";
 import JurisdictionHub from "../components/features/JurisdictionHub";
 import DiagnosticHub from "../components/features/DiagnosticHub";
 import ProductCarousel from "../components/features/ProductCarousel";
-// import ProblemReporter from "../components/features/ProblemReporter"; // Este import não é mais necessário aqui, pois ProblemReporter já está dentro de Header
+// import ProblemReporter from "../components/features/ProblemReporter"; // Removido, pois já está no Header
 import { kv } from "@vercel/kv";
 
 import nextDynamic from "next/dynamic";
