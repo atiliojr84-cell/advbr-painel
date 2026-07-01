@@ -12,6 +12,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "forceConsistentCasingInFileNames": true, // Adicionado para consistência de nomes de arquivo
+    "target": "es2022", // Adicionado um target explícito para modernidade
     "plugins": [
       {
         "name": "next"
