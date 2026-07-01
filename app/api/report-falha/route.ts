@@ -35,12 +35,13 @@ export async function POST(request: Request) {
 
     // Guardar no KV como lista (lista de relatos)
     // usamos uma chave única, por exemplo "reports:falhas"
-    await kv.lpush("reports:falhas", JSON.stringify(report));
-    console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 5
+    // ALTERAÇÃO AQUI: Mudando a chave para reports:falhas_TESTE
+    await kv.lpush("reports:falhas_TESTE", JSON.stringify(report));
+    console.log("Report successfully pushed to KV list 'reports:falhas_TESTE'."); // Log 5
 
     // Opcional: limitar tamanho da lista (ex: últimos 200 relatos)
-    await kv.ltrim("reports:falhas", 0, 199);
-    console.log("KV list 'reports:falhas' trimmed."); // Log 6
+    await kv.ltrim("reports:falhas_TESTE", 0, 199);
+    console.log("KV list 'reports:falhas_TESTE' trimmed."); // Log 6
 
     return NextResponse.json({ ok: true });
   } catch (error) {
