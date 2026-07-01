@@ -12,8 +12,8 @@ type IncomingReport = {
 };
 
 export async function POST(request: Request) {
-  console.log("--- INÍCIO DA FUNÇÃO POST /api/report-falha ---"); // NOVO LOG ADICIONADO AQUI
-  console.log("API /api/report-falha POST request received."); // Log 1
+  console.log("--- INÍCIO DA FUNÇÃO POST /api/report-falha ---"); // Log 1
+  console.log("API /api/report-falha POST request received."); // Log 2
 
   // NOVO LOG DE VERIFICAÇÃO DE VARIÁVEIS DE AMBIENTE
   console.log("KV_REST_API_URL:", process.env.KV_REST_API_URL ? "Configurado" : "NÃO CONFIGURADO");
@@ -21,10 +21,10 @@ export async function POST(request: Request) {
 
   try {
     const body = (await request.json()) as IncomingReport;
-    console.log("Request body:", body); // Log 2
+    console.log("Request body:", body); // Log 3
 
     if (!body.portal || !body.problema) {
-      console.error("Missing portal or problema in request body."); // Log 3
+      console.error("Missing portal or problema in request body."); // Log 4
       return NextResponse.json(
         { error: "Portal e problema são obrigatórios." },
         { status: 400 }
@@ -36,31 +36,32 @@ export async function POST(request: Request) {
       problema: body.problema,
       createdAt: body.createdAt || new Date().toISOString(),
     };
-    console.log("Report object to be saved:", report); // Log 4
+    console.log("Report object to be saved:", report); // Log 5
 
-    // Guardar no KV como lista (lista de relatos)
-    // usamos uma chave única, por exemplo "reports:falhas"
-    // Alterado para usar a chave "reports:falhas"
+    console.log("Attempting to push report to KV list 'reports:falhas'..."); // Log 6
 
-    console.log("Attempting to push report to KV list 'reports:falhas'..."); // Log 5
-    try { // NOVO TRY...CATCH ESPECÍFICO PARA O LPUSH
+    try {
+      // Adicionando um console.error antes e depois do lpush para garantir visibilidade
+      console.error("DEBUG: Executando kv.lpush..."); // NOVO LOG DE DEBUG
       await kv.lpush("reports:falhas", JSON.stringify(report));
-      console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 6 (agora mais confiável)
+      console.error("DEBUG: kv.lpush executado com sucesso."); // NOVO LOG DE DEBUG
+      console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 7
     } catch (lpushError) {
-      console.error("ERRO ESPECÍFICO NO KV.LPUSH:", lpushError); // NOVO LOG DE ERRO
-      // Se o lpush falhar, podemos decidir se queremos continuar ou retornar um erro.
-      // Por enquanto, vamos apenas logar e continuar para ver se o ltrim ainda é executado.
+      console.error("ERRO ESPECÍFICO NO KV.LPUSH:", lpushError); // Log 8
+      // Se o lpush falhar, vamos retornar um erro para o frontend para que a falha seja visível
+      return NextResponse.json(
+        { error: "Falha ao salvar o reporte no banco de dados." },
+        { status: 500 }
+      );
     }
 
-
     // Opcional: limitar tamanho da lista (ex: últimos 200 relatos)
-    // Alterado para usar a chave "reports:falhas"
     await kv.ltrim("reports:falhas", 0, 199);
-    console.log("KV list 'reports:falhas' trimmed."); // Log 7
+    console.log("KV list 'reports:falhas' trimmed."); // Log 9
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Erro geral ao registrar falha na API:", error); // Log 8 (modificado para "geral")
+    console.error("Erro geral ao registrar falha na API:", error); // Log 10
     console.error("Verifique se as variáveis de ambiente KV_REST_API_URL e KV_REST_API_TOKEN estão configuradas no Vercel.");
     return NextResponse.json(
       { error: "Erro ao registrar falha." },
