@@ -42,18 +42,25 @@ export async function POST(request: Request) {
     // usamos uma chave única, por exemplo "reports:falhas"
     // Alterado para usar a chave "reports:falhas"
 
-    console.log("Attempting to push report to KV list 'reports:falhas'..."); // NOVO LOG AQUI
-    await kv.lpush("reports:falhas", JSON.stringify(report));
-    console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 5 (agora mais confiável)
+    console.log("Attempting to push report to KV list 'reports:falhas'..."); // Log 5
+    try { // NOVO TRY...CATCH ESPECÍFICO PARA O LPUSH
+      await kv.lpush("reports:falhas", JSON.stringify(report));
+      console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 6 (agora mais confiável)
+    } catch (lpushError) {
+      console.error("ERRO ESPECÍFICO NO KV.LPUSH:", lpushError); // NOVO LOG DE ERRO
+      // Se o lpush falhar, podemos decidir se queremos continuar ou retornar um erro.
+      // Por enquanto, vamos apenas logar e continuar para ver se o ltrim ainda é executado.
+    }
+
 
     // Opcional: limitar tamanho da lista (ex: últimos 200 relatos)
     // Alterado para usar a chave "reports:falhas"
     await kv.ltrim("reports:falhas", 0, 199);
-    console.log("KV list 'reports:falhas' trimmed."); // Log 6
+    console.log("KV list 'reports:falhas' trimmed."); // Log 7
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Erro ao registrar falha na API:", error); // Log 7
+    console.error("Erro geral ao registrar falha na API:", error); // Log 8 (modificado para "geral")
     console.error("Verifique se as variáveis de ambiente KV_REST_API_URL e KV_REST_API_TOKEN estão configuradas no Vercel.");
     return NextResponse.json(
       { error: "Erro ao registrar falha." },
