@@ -1,5 +1,5 @@
 // lib/mongodb.ts
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { MongoClient, ServerApiVersion } from "mongodb/lib/mongo_client";
 
 const uri = process.env.MONGODB_URI;
 
