@@ -32,23 +32,21 @@ export async function GET() {
       })
       .filter(Boolean) as StoredReport[]; // Remove quaisquer itens nulos resultantes de erros de parse
 
-    const twelveHoursAgo = new Date(Date.now() - 12 * 60 * 60 * 1000); // 12 horas em milissegundos
+    // Aumentado para 7 dias para fins de depuração, conforme combinado
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000); // 7 dias em milissegundos
 
-    // Filtra os reportes que foram criados nas últimas 12 horas
+    // Filtra os reportes que foram criados nos últimos 7 dias
     const activeReports = allReports.filter((report) => {
       const reportDate = new Date(report.createdAt);
-      return reportDate > twelveHoursAgo;
+      return reportDate > sevenDaysAgo;
     });
 
     console.log("Filtered active reports:", activeReports); // Log para ver os relatórios ativos após o filtro
 
-    // Opcional: Para facilitar o consumo no frontend, podemos agrupar por portal
-    // ou retornar uma lista simples. Para o ícone, uma lista simples é suficiente.
     return NextResponse.json({ activeReports });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
     console.error("Erro ao buscar reportes ativos de falhas na API:", errorMessage);
-    // Adicionei este log para ver se o erro está relacionado às variáveis de ambiente do KV
     console.error("Verifique se as variáveis de ambiente KV_REST_API_URL e KV_REST_API_TOKEN estão configuradas no Vercel.");
     return NextResponse.json(
       { error: "Erro ao buscar reportes ativos de falhas.", details: errorMessage },
