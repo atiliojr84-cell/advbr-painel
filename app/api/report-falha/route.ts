@@ -14,6 +14,14 @@ type IncomingReport = {
 export async function POST(request: Request) {
   console.log("API /api/report-falha POST request received."); // Log 1
 
+  // NOVO LOG DE VERIFICAÇÃO DE VARIÁVEIS DE AMBIENTE
+  console.log("KV_REST_API_URL:", process.env.KV_REST_API_URL ? "Configurado" : "NÃO CONFIGURADO");
+  console.log("KV_REST_API_TOKEN:", process.env.KV_REST_API_TOKEN ? "Configurado" : "NÃO CONFIGURADO");
+  // Se você quiser ver os valores (APENAS PARA DEPURAR, REMOVA DEPOIS):
+  // console.log("KV_REST_API_URL VALUE:", process.env.KV_REST_API_URL);
+  // console.log("KV_REST_API_TOKEN VALUE:", process.env.KV_REST_API_TOKEN);
+
+
   try {
     const body = (await request.json()) as IncomingReport;
     console.log("Request body:", body); // Log 2
@@ -35,7 +43,7 @@ export async function POST(request: Request) {
 
     // Guardar no KV como lista (lista de relatos)
     // usamos uma chave única, por exemplo "reports:falhas"
-    // ALTERAÇÃO AQUI: Mudando a chave para reports:falhas_TESTE
+    // Mantendo a chave de TESTE para continuar a depuração
     await kv.lpush("reports:falhas_TESTE", JSON.stringify(report));
     console.log("Report successfully pushed to KV list 'reports:falhas_TESTE'."); // Log 5
 
@@ -46,7 +54,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Erro ao registrar falha na API:", error); // Log 7
-    // Adicionei este log para ver se o erro está relacionado às variáveis de ambiente do KV
     console.error("Verifique se as variáveis de ambiente KV_REST_API_URL e KV_REST_API_TOKEN estão configuradas no Vercel.");
     return NextResponse.json(
       { error: "Erro ao registrar falha." },
