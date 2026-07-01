@@ -1,6 +1,5 @@
 // app/api/report-falha/route.ts
 import { NextResponse } from "next/server";
-import { kv } from "@vercel/kv";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -12,19 +11,15 @@ type IncomingReport = {
 };
 
 export async function POST(request: Request) {
-  console.log("--- INÍCIO DA FUNÇÃO POST /api/report-falha ---"); // Log 1
-  console.log("API /api/report-falha POST request received."); // Log 2
-
-  // NOVO LOG DE VERIFICAÇÃO DE VARIÁVEIS DE AMBIENTE
-  console.log("KV_REST_API_URL:", process.env.KV_REST_API_URL ? "Configurado" : "NÃO CONFIGURADO");
-  console.log("KV_REST_API_TOKEN:", process.env.KV_REST_API_TOKEN ? "Configurado" : "NÃO CONFIGURADO");
+  console.log("--- INÍCIO DA FUNÇÃO POST /api/report-falha - TESTE SIMPLIFICADO ---"); // NOVO LOG CLARO
+  console.log("API /api/report-falha POST request received.");
 
   try {
     const body = (await request.json()) as IncomingReport;
-    console.log("Request body:", body); // Log 3
+    console.log("Request body received:", body);
 
     if (!body.portal || !body.problema) {
-      console.error("Missing portal or problema in request body."); // Log 4
+      console.error("Missing portal or problema in request body.");
       return NextResponse.json(
         { error: "Portal e problema são obrigatórios." },
         { status: 400 }
@@ -35,36 +30,23 @@ export async function POST(request: Request) {
       portal: body.portal,
       problema: body.problema,
       createdAt: body.createdAt || new Date().toISOString(),
+      status: "Reporte recebido com sucesso (KV desativado para teste)." // Mensagem de sucesso
     };
-    console.log("Report object to be saved:", report); // Log 5
+    console.log("Simplified report object:", report);
 
-    console.log("Attempting to push report to KV list 'reports:falhas'..."); // Log 6
+    // NESTA VERSÃO, NÃO HÁ CONEXÃO COM KV. APENAS RETORNA SUCESSO.
+    // console.log("Attempting to push report to KV list 'reports:falhas'...");
+    // await kv.lpush("reports:falhas", JSON.stringify(report));
+    // console.log("Report successfully pushed to KV list 'reports:falhas'.");
+    // await kv.ltrim("reports:falhas", 0, 199);
+    // console.log("KV list 'reports:falhas' trimmed.");
 
-    try {
-      // Adicionando um console.error antes e depois do lpush para garantir visibilidade
-      console.error("DEBUG: Executando kv.lpush..."); // NOVO LOG DE DEBUG
-      await kv.lpush("reports:falhas", JSON.stringify(report));
-      console.error("DEBUG: kv.lpush executado com sucesso."); // NOVO LOG DE DEBUG
-      console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 7
-    } catch (lpushError) {
-      console.error("ERRO ESPECÍFICO NO KV.LPUSH:", lpushError); // Log 8
-      // Se o lpush falhar, vamos retornar um erro para o frontend para que a falha seja visível
-      return NextResponse.json(
-        { error: "Falha ao salvar o reporte no banco de dados." },
-        { status: 500 }
-      );
-    }
-
-    // Opcional: limitar tamanho da lista (ex: últimos 200 relatos)
-    await kv.ltrim("reports:falhas", 0, 199);
-    console.log("KV list 'reports:falhas' trimmed."); // Log 9
-
-    return NextResponse.json({ ok: true });
+    console.log("--- FIM DA FUNÇÃO POST /api/report-falha - TESTE SIMPLIFICADO ---");
+    return NextResponse.json({ ok: true, receivedReport: report }); // Retorna o reporte recebido
   } catch (error) {
-    console.error("Erro geral ao registrar falha na API:", error); // Log 10
-    console.error("Verifique se as variáveis de ambiente KV_REST_API_URL e KV_REST_API_TOKEN estão configuradas no Vercel.");
+    console.error("Erro geral na API de reporte simplificada:", error);
     return NextResponse.json(
-      { error: "Erro ao registrar falha." },
+      { error: "Erro ao processar o reporte simplificado." },
       { status: 500 }
     );
   }
