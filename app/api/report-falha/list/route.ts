@@ -14,22 +14,34 @@ export async function GET() {
   try {
     // Pegamos até 200 registros (mesmo limite do ltrim)
     const raw = await kv.lrange("reports:falhas", 0, 199);
+    console.log("Raw data from KV lrange:", raw); // Log para ver o que vem do KV
 
     const reports: StoredReport[] = (raw || [])
       .map((item) => {
         try {
-          return JSON.parse(item as string);
-        } catch {
+          // Garante que o item é uma string antes de tentar o JSON.parse
+          if (typeof item === 'string') {
+            return JSON.parse(item);
+          }
+          console.warn("Item from KV is not a string, skipping:", item);
+          return null;
+        } catch (parseError) {
+          console.error("Erro ao fazer JSON.parse de item do KV:", item, parseError);
           return null;
         }
       })
-      .filter(Boolean) as StoredReport[];
+      .filter(Boolean) as StoredReport[]; // Remove quaisquer itens nulos resultantes de erros de parse
+
+    console.log("Parsed reports:", reports); // Log para ver os relatórios após o parse
 
     return NextResponse.json({ reports });
   } catch (error) {
-    console.error("Erro ao buscar relatório de falhas:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("Erro ao buscar relatório de falhas na API:", errorMessage);
+    // Adicionei este log para ver se o erro está relacionado às variáveis de ambiente do KV
+    console.error("Verifique se as variáveis de ambiente KV_REST_API_URL e KV_REST_API_TOKEN estão configuradas no Vercel.");
     return NextResponse.json(
-      { error: "Erro ao buscar relatório de falhas." },
+      { error: "Erro ao buscar relatório de falhas.", details: errorMessage },
       { status: 500 }
     );
   }
