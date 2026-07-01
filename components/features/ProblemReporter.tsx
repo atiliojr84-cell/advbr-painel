@@ -144,9 +144,8 @@ export default function ProblemReporter() {
       setView("tribunal");
       setData((prev) => ({ ...prev, problema: "" }));
     } else if (view === "confirm") {
-      // Se estiver na tela de confirmação, ao voltar, fecha o modal e reseta o fluxo
-      setIsOpen(false);
       resetFlow();
+      setIsOpen(false);
     }
   };
 
@@ -166,9 +165,11 @@ export default function ProblemReporter() {
       const payload = {
         portal: data.portal,
         problema,
+        createdAt: new Date().toISOString(), // Adicionei createdAt ao payload para log
       };
 
       console.log("Enviando POST para /api/report-falha com payload:", payload); // Log de depuração
+      console.log("Timestamp do report:", payload.createdAt); // NOVO LOG AQUI
 
       const res = await fetch("/api/report-falha", {
         method: "POST",
@@ -202,7 +203,7 @@ export default function ProblemReporter() {
   const handleCloseAfterConfirm = () => {
     console.log("Fechando modal após confirmação..."); // Log de depuração
     setIsOpen(false);
-    resetFlow(); // Garante que o estado seja resetado ao fechar após a confirmação
+    resetFlow();
   };
 
   // --- relatório ---
@@ -522,7 +523,7 @@ export default function ProblemReporter() {
 
               {loadingReports ? (
                 <p className="text-slate-300 text-sm">Carregando relatório...</p>
-              ) : errorMsg ? ( // Prioriza a exibição da mensagem de erro
+              ) : errorMsg ? (
                 <p className="text-red-400 text-sm">{errorMsg}</p>
               ) : reports.length === 0 ? (
                 <p className="text-slate-300 text-sm">
@@ -547,9 +548,9 @@ export default function ProblemReporter() {
                         Registrado em:{" "}
                         {new Date(r.createdAt).toLocaleString("pt-BR")}
                       </p>
-                    </div >
+                    </div>
                   ))}
-                </div >
+                </div>
               )}
             </motion.div>
           </motion.div>
