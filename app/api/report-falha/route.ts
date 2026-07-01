@@ -17,9 +17,6 @@ export async function POST(request: Request) {
   // NOVO LOG DE VERIFICAÇÃO DE VARIÁVEIS DE AMBIENTE
   console.log("KV_REST_API_URL:", process.env.KV_REST_API_URL ? "Configurado" : "NÃO CONFIGURADO");
   console.log("KV_REST_API_TOKEN:", process.env.KV_REST_API_TOKEN ? "Configurado" : "NÃO CONFIGURADO");
-  // Se você quiser ver os valores (APENAS PARA DEPURAR, REMOVA DEPOIS):
-  // console.log("KV_REST_API_URL VALUE:", process.env.KV_REST_API_URL);
-  // console.log("KV_REST_API_TOKEN VALUE:", process.env.KV_REST_API_TOKEN);
 
   try {
     const body = (await request.json()) as IncomingReport;
@@ -43,8 +40,10 @@ export async function POST(request: Request) {
     // Guardar no KV como lista (lista de relatos)
     // usamos uma chave única, por exemplo "reports:falhas"
     // Alterado para usar a chave "reports:falhas"
+
+    console.log("Attempting to push report to KV list 'reports:falhas'..."); // NOVO LOG AQUI
     await kv.lpush("reports:falhas", JSON.stringify(report));
-    console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 5
+    console.log("Report successfully pushed to KV list 'reports:falhas'."); // Log 5 (agora mais confiável)
 
     // Opcional: limitar tamanho da lista (ex: últimos 200 relatos)
     // Alterado para usar a chave "reports:falhas"
