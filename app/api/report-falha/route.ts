@@ -12,6 +12,7 @@ type IncomingReport = {
 };
 
 export async function POST(request: Request) {
+  console.log("--- INÍCIO DA FUNÇÃO POST /api/report-falha ---"); // NOVO LOG ADICIONADO AQUI
   console.log("API /api/report-falha POST request received."); // Log 1
 
   // NOVO LOG DE VERIFICAÇÃO DE VARIÁVEIS DE AMBIENTE
