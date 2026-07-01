@@ -1,45 +1,28 @@
 // app/api/report-falha/list/route.ts
 import { NextResponse } from "next/server";
-import { kv } from "@vercel/kv";
+import clientPromise from "@/lib/mongodb"; // Ajuste o caminho se seu arquivo mongodb.ts estiver em outro lugar
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-type StoredReport = {
-  portal: string;
-  problema: string;
-  createdAt: string;
-};
-
 export async function GET() {
+  console.log("--- INÍCIO DA FUNÇÃO GET /api/report-falha/list - MongoDB ---");
+
   try {
-    const raw = await kv.lrange("reports:falhas", 0, -1); // Pega todos os reportes
-    console.log("Raw data from KV lrange for list reports:", raw); // Log para ver o que vem do KV
+    const client = await clientPromise;
+    const db = client.db("advbr_reports_db"); // Nome do seu banco de dados no MongoDB Atlas
+    const collection = db.collection("falhas"); // Nome da coleção onde os reportes estão salvos
 
-    const allReports: StoredReport[] = (raw || [])
-      .map((item) => {
-        try {
-          if (typeof item === 'string') {
-            return JSON.parse(item);
-          }
-          console.warn("Item from KV for list reports is not a string, skipping:", item);
-          return null;
-        } catch (parseError) {
-          console.error("Erro ao fazer JSON.parse de item do KV para list reports:", item, parseError);
-          return null;
-        }
-      })
-      .filter(Boolean) as StoredReport[]; // Remove quaisquer itens nulos resultantes de erros de parse
+    console.log("Attempting to fetch reports from MongoDB...");
+    const reports = await collection.find({}).sort({ createdAt: -1 }).limit(200).toArray(); // Busca os 200 mais recentes
+    console.log(`Fetched ${reports.length} reports from MongoDB.`);
 
-    console.log("All reports from KV for list:", allReports); // NOVO LOG AQUI
-
-    return NextResponse.json({ reports: allReports });
+    console.log("--- FIM DA FUNÇÃO GET /api/report-falha/list - MongoDB ---");
+    return NextResponse.json(reports);
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    console.error("Erro ao buscar lista de reportes de falhas na API:", errorMessage);
-    console.error("Verifique se as variáveis de ambiente KV_REST_API_URL e KV_REST_API_TOKEN estão configuradas no Vercel.");
+    console.error("Erro ao listar reportes (MongoDB):", error);
     return NextResponse.json(
-      { error: "Erro ao buscar lista de reportes de falhas.", details: errorMessage },
+      { error: "Erro ao listar reportes com MongoDB." },
       { status: 500 }
     );
   }
