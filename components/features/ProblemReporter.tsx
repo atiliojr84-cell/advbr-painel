@@ -1,3 +1,4 @@
+// components/features/ProblemReporter.tsx
 "use client";
 
 import { useState } from "react";
@@ -143,8 +144,9 @@ export default function ProblemReporter() {
       setView("tribunal");
       setData((prev) => ({ ...prev, problema: "" }));
     } else if (view === "confirm") {
-      resetFlow();
+      // Se estiver na tela de confirmação, ao voltar, fecha o modal e reseta o fluxo
       setIsOpen(false);
+      resetFlow();
     }
   };
 
@@ -200,7 +202,7 @@ export default function ProblemReporter() {
   const handleCloseAfterConfirm = () => {
     console.log("Fechando modal após confirmação..."); // Log de depuração
     setIsOpen(false);
-    resetFlow();
+    resetFlow(); // Garante que o estado seja resetado ao fechar após a confirmação
   };
 
   // --- relatório ---
@@ -221,6 +223,7 @@ export default function ProblemReporter() {
       }
 
       const json = (await res.json()) as { reports: Report[] };
+      console.log("Dados recebidos da API /api/report-falha/list:", json); // NOVO LOG AQUI
       setReports(json.reports || []);
       console.log("Relatórios carregados:", json.reports); // Log de depuração
     } catch (err) {
@@ -519,7 +522,7 @@ export default function ProblemReporter() {
 
               {loadingReports ? (
                 <p className="text-slate-300 text-sm">Carregando relatório...</p>
-              ) : errorMsg ? (
+              ) : errorMsg ? ( // Prioriza a exibição da mensagem de erro
                 <p className="text-red-400 text-sm">{errorMsg}</p>
               ) : reports.length === 0 ? (
                 <p className="text-slate-300 text-sm">
@@ -544,9 +547,9 @@ export default function ProblemReporter() {
                         Registrado em:{" "}
                         {new Date(r.createdAt).toLocaleString("pt-BR")}
                       </p>
-                    </div>
+                    </div >
                   ))}
-                </div>
+                </div >
               )}
             </motion.div>
           </motion.div>
