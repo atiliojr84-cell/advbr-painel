@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vercel/kv": "^1.0.1",
+    "@upstash/redis": "^1.28.4",  <-- NOVA LINHA AQUI
     "framer-motion": "^11.0.0",
     "https-proxy-agent": "^7.0.4",
     "jszip": "^3.10.1",
