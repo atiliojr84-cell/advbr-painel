@@ -18,7 +18,6 @@ export async function GET() {
   const db = client.db("advbr_reports_db");
   const collection = db.collection("court_statuses");
 
-  // Correção de tipagem para o filtro do _id
   const doc = await collection.findOne({ _id: "current_statuses" } as Filter<any>);
   let statuses: Record<string, string> = doc?.data || {};
   let pings: Record<string, number> = doc?.pings || {};
@@ -102,7 +101,11 @@ export async function GET() {
   return NextResponse.json({
     success: true,
     robo: "Robo 1 - MongoDB",
-    resumo: { online: relatorio.filter(r => r.status === 'online').length, offline: relatorio.filter(r => r.status === 'offline').length },
+    resumo: { 
+      online: relatorio.filter(r => r.status === 'online').length, 
+      offline: relatorio.filter(r => r.status === 'offline').length,
+      instavel: relatorio.filter(r => r.status === 'instavel').length 
+    },
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
 }
