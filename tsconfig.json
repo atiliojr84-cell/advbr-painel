@@ -12,8 +12,8 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "forceConsistentCasingInFileNames": true, // Adicionado para consistência de nomes de arquivo
-    "target": "es2022", // Adicionado um target explícito para modernidade
+    "forceConsistentCasingInFileNames": true,
+    "target": "es2022",
     "plugins": [
       {
         "name": "next"
@@ -21,9 +21,11 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/components/*": ["./components/*"] // Alias para a pasta components
+      "@/components/*": ["./components/*"]
     },
-    "baseUrl": "." // Importante para que os aliases funcionem
+    "baseUrl": ".",
+    "typeRoots": ["./node_modules/@types"], // <--- Linha adicionada/ajustada
+    "types": ["node", "react", "react-dom"] // <--- Linha adicionada/ajustada
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
