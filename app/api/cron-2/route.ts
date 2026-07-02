@@ -53,4 +53,49 @@ export async function GET() {
       clearTimeout(timeoutId);
 
       const time = Date.now() - start;
-      if (response.ok || (response.status >= 300 && response.status <
+      if (response.ok || (response.status >= 300 && response.status < 400)) {
+        status = time > TIMEOUT_AMARELO_MS ? 'instavel' : 'online';
+        ping = time;
+        detalhe = response.ok ? `Sucesso (${time}ms)` : `Sucesso (${response.status})`;
+      } else {
+        status = 'offline';
+        detalhe = `Erro HTTP: ${response.status}`;
+      }
+    } catch (error: any) {
+      detalhe = error.name === 'AbortError' ? `Falha (Timeout)` : `Falha: ${error.message}`;
+      status = 'offline';
+    }
+    return { status, ping, detalhe };
+  }
+
+  const testUrlComRetentativas = async (trib: any): Promise<void> => {
+    let res = await fazerRequisicaoUnica(trib.url, 1);
+    if (res.status !== 'online') {
+      await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+      res = await fazerRequisicaoUnica(trib.url, 2);
+      if (res.status === 'offline') {
+        await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
+        res = await fazerRequisicaoUnica(trib.url, 3);
+      }
+    }
+
+    statuses[trib.name] = res.status;
+    pings[trib.name] = res.ping;
+    relatorio.push({ tribunal: trib.name, url: trib.url, status: res.status, ping_ms: res.ping, detalhe: res.detalhe });
+  };
+
+  const tasks = mySlice.map(trib => () => testUrlComRetentativas(trib));
+  const batchSize = 5;
+  for (let i = 0; i < tasks.length; i += batchSize) {
+    await Promise.allSettled(tasks.slice(i, i + batchSize).map(task => task()));
+    await new Promise(resolve => setTimeout(resolve, 200));
+  }
+
+  await collection.updateOne(
+    { _id: "current_statuses" },
+    { $set: { data: statuses, pings: pings, updatedAt: new Date() } },
+    { upsert: true }
+  );
+
+  return NextResponse.json({ success: true, robo: "Robo 2 - OK" });
+}
