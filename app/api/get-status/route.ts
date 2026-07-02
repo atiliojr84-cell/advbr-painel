@@ -12,13 +12,13 @@ export async function GET() {
     
     const collection = db.collection("status_do_tribunal");
 
-    // Buscamos o documento específico que contém "_eu ia": "status_atuais"
-    // Atenção ao nome do campo: "_eu ia" com o espaço.
-    const doc = await collection.findOne({ "_eu ia": "status_atuais" });
+    // Buscamos o documento mais recente na coleção, ordenando pelo campo 'atualiza...'
+    // e pegando apenas o primeiro resultado.
+    const doc = await collection.findOne({}, { sort: { 'atualiza...': -1 } });
 
     if (!doc) {
       // Se não encontrar o documento, retorna objetos vazios e lastUpdate nulo
-      console.warn("Documento de status não encontrado na coleção 'status_do_tribunal' com '_eu ia': 'status_atuais'.");
+      console.warn("Documento de status não encontrado na coleção 'status_do_tribunal'.");
       return NextResponse.json({ statuses: {}, pings: {}, lastUpdate: null });
     }
 
