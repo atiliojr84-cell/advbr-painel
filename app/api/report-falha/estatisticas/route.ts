@@ -7,25 +7,17 @@ export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("advbr_reports_db");
-    const collection = db.collection("falsas");
+    // Mudamos para a coleção correta que armazena o status
+    const collection = db.collection("status_do_tribunal");
 
-    // Buscamos sem filtro para ver se a API consegue ler a coleção
+    // Buscamos os status mais recentes de cada portal
     const statsResult = await collection.aggregate([
-      { $group: { _id: "$portal", count: { $sum: 1 } } },
-      { $sort: { count: -1 } }
+      { $sort: { criadoEm: -1 } },
+      { $group: { _id: "$portal", status: { $first: "$status" }, count: { $sum: 1 } } }
     ]).toArray();
 
-    return NextResponse.json({ 
-      success: true, 
-      stats: {
-        horas12: statsResult,
-        horas24: statsResult,
-        semana1: statsResult,
-        mes1: statsResult,
-        ano1: statsResult
-      }
-    });
+    return NextResponse.json({ success: true, stats: { statusGeral: statsResult } });
   } catch (error) {
-    return NextResponse.json({ success: false, error: "Erro ao carregar dados" }, { status: 500 });
+    return NextResponse.json({ success: false, error: "Erro ao carregar status" }, { status: 500 });
   }
 }
