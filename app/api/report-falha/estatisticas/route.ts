@@ -9,19 +9,11 @@ export async function GET() {
     const db = client.db("advbr_reports_db");
     const collection = db.collection("falsas");
 
-    // Subtraímos 365 dias para garantir que pegamos registros antigos também
-    // Isso evita que o filtro de data exclua acidentalmente seus dados
-    const dataLimite = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
-
-    const getStats = async () => {
-      return await collection.aggregate([
-        { $match: { criadoEm: { $gte: dataLimite } } },
-        { $group: { _id: "$portal", count: { $sum: 1 } } },
-        { $sort: { count: -1 } }
-      ]).toArray();
-    };
-
-    const statsResult = await getStats();
+    // Buscamos sem filtro para ver se a API consegue ler a coleção
+    const statsResult = await collection.aggregate([
+      { $group: { _id: "$portal", count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]).toArray();
 
     return NextResponse.json({ 
       success: true, 
@@ -34,6 +26,6 @@ export async function GET() {
       }
     });
   } catch (error) {
-    return NextResponse.json({ success: false, error: "Erro ao carregar" }, { status: 500 });
+    return NextResponse.json({ success: false, error: "Erro ao carregar dados" }, { status: 500 });
   }
 }
