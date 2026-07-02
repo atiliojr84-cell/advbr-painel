@@ -13,23 +13,26 @@ export async function GET() {
     const collection = db.collection("status_do_tribunal");
 
     // Buscamos o documento específico que contém "_eu ia": "status_atuais"
-    // Isso garante que estamos pegando o documento correto e atual.
+    // Atenção ao nome do campo: "_eu ia" com o espaço.
     const doc = await collection.findOne({ "_eu ia": "status_atuais" });
 
     if (!doc) {
-      // Se não encontrar o documento, retorna objetos vazios
+      // Se não encontrar o documento, retorna objetos vazios e lastUpdate nulo
+      console.warn("Documento de status não encontrado na coleção 'status_do_tribunal' com '_eu ia': 'status_atuais'.");
       return NextResponse.json({ statuses: {}, pings: {}, lastUpdate: null });
     }
 
     // Retorna os dados mapeados para o que o frontend espera
-    // Incluímos o campo 'atualiza...' como 'lastUpdate'
+    // Mapeamos o campo 'atualiza...' para 'lastUpdate'
+    const lastUpdateValue = doc['atualiza...'] ? new Date(doc['atualiza...']).toISOString() : null;
+
     return NextResponse.json({
       statuses: doc.dad || {},
       pings: doc.pings || {},
-      lastUpdate: doc['atualiza...'] ? new Date(doc['atualiza...']).toISOString() : null // Mapeia o campo 'atualiza...' para 'lastUpdate'
+      lastUpdate: lastUpdateValue
     });
   } catch (error) {
-    console.error("Erro ao buscar dados de status:", error); // Adicionado log para depuração
-    return NextResponse.json({ error: 'Erro ao buscar dados' }, { status: 500 });
+    console.error("Erro ao buscar dados de status:", error);
+    return NextResponse.json({ error: 'Erro interno ao buscar dados de status' }, { status: 500 });
   }
 }
