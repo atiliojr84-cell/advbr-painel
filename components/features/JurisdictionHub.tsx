@@ -160,17 +160,17 @@ export default function JurisdictionHub() {
         {isOpen && (
           <motion.div
             key="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
             onClick={() => setIsOpen(false)}
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
           >
             <motion.div
               key="modal-content"
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -50, opacity: 0 }}
+              initial={{ y: -50, opacity: 0 }} 
+              animate={{ y: 0, opacity: 1 }} 
+              exit={{ y: -50, opacity: 0 }} 
               onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
             >
@@ -192,17 +192,17 @@ export default function JurisdictionHub() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={view + activeRegiao + selectedEstado}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2 }}
+                    initial={{ opacity: 0, x: 10 }} 
+                    animate={{ opacity: 1, x: 0 }} 
+                    exit={{ opacity: 0, x: -10 }} 
+                    transition={{ duration: 0.2 }} 
                   >
                     {view === 'estado' ? (
                       <div className="grid grid-cols-2 gap-3 pb-4">
                         {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
                           <button 
                             key={e} 
-                            onClick={() => { setSelectedEstado(e); setView('tribunal'); }} 
+                            onClick={() => { setSelectedEstado(e); setView('tribunal'); }} // Fechado o onClick
                             className={`p-4 text-white font-medium text-sm text-left bg-slate-950 rounded-xl border border-slate-800 glow-effect`} // Adicionado glow-effect
                           >
                             {e}
@@ -237,6 +237,15 @@ export default function JurisdictionHub() {
 
                           </button>
                         ))}
+                        {/* NOVO: Disclaimer para o alerta de reporte */}
+                        {activeReports.length > 0 && ( // Só mostra o disclaimer se houver reportes ativos
+                          <div className="mt-4 p-3 bg-slate-800/50 border border-slate-700 rounded-lg flex items-center gap-2 text-xs text-slate-300">
+                            <AlertCircle size={16} className="text-red-500" />
+                            <span>
+                              **Atenção:** Portais com este ícone <AlertCircle size={12} className="inline-block text-red-500" /> indicam que foram citados em reportes manuais por advogados.
+                            </span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </motion.div>
