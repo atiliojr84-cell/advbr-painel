@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Activity, AlertCircle, RefreshCw } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion"; // <-- AnimatePresence importado corretamente aqui
 // Importe 'jurisdictions' e defina um tipo mais flexível para ele
 import { jurisdictions as rawJurisdictions } from "../../data/jurisdictions";
 
