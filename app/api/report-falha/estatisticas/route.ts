@@ -7,7 +7,7 @@ export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("advbr_reports_db");
-    const collection = db.collection("falhas");
+    const collection = db.collection("falsas");
 
     const agora = new Date();
     const periodos = {
@@ -20,7 +20,7 @@ export async function GET() {
 
     const getStats = async (dataInicio: Date) => {
       return await collection.aggregate([
-        { $match: { createdAt: { $gte: dataInicio } } },
+        { $match: { criadoEm: { $gte: dataInicio.toISOString() } } },
         { $group: { _id: "$portal", count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]).toArray();
