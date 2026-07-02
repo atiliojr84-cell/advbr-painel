@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Filter } from "mongodb";
 import clientPromise from "@/lib/mongodb";
 
 export const dynamic = "force-dynamic";
@@ -12,10 +13,13 @@ export async function GET() {
 
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     
-    // Busca os registros dos últimos 7 dias no MongoDB
+    // Busca tratando createdAt como objeto Date ou String no banco
     const activeReports = await collection.find({
-      createdAt: { $gte: sevenDaysAgo.toISOString() }
-    }).toArray();
+      $or: [
+        { createdAt: { $gte: sevenDaysAgo } },
+        { createdAt: { $gte: sevenDaysAgo.toISOString() } }
+      ]
+    } as Filter<any>).toArray();
 
     return NextResponse.json({ activeReports });
   } catch (error) {
