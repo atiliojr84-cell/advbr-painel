@@ -10,17 +10,20 @@ export async function GET() {
     const collection = db.collection("falsas");
 
     const agora = new Date();
+    
+    // Convertemos para ISO string para comparar com o formato texto do seu banco
     const periodos = {
-      horas12: new Date(agora.getTime() - 12 * 60 * 60 * 1000),
-      horas24: new Date(agora.getTime() - 24 * 60 * 60 * 1000),
-      semana1: new Date(agora.getTime() - 7 * 24 * 60 * 60 * 1000),
-      mes1: new Date(agora.getTime() - 30 * 24 * 60 * 60 * 1000),
-      ano1: new Date(agora.getTime() - 365 * 24 * 60 * 60 * 1000)
+      horas12: new Date(agora.getTime() - 12 * 60 * 60 * 1000).toISOString(),
+      horas24: new Date(agora.getTime() - 24 * 60 * 60 * 1000).toISOString(),
+      semana1: new Date(agora.getTime() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      mes1: new Date(agora.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      ano1: new Date(agora.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString()
     };
 
-    const getStats = async (dataInicio: Date) => {
+    const getStats = async (dataInicioIso: string) => {
       return await collection.aggregate([
-        { $match: { criadoEm: { $gte: dataInicio.toISOString() } } },
+        // Comparamos String com String, que é como está no seu banco
+        { $match: { criadoEm: { $gte: dataInicioIso } } },
         { $group: { _id: "$portal", count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]).toArray();
