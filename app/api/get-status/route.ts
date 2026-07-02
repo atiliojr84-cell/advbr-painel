@@ -10,24 +10,24 @@ export async function GET() {
     const client = await clientPromise;
     const db = client.db("advbr_reports_db");
     
-    const collection = db.collection("status_do_tribunal");
+    // A coleção correta é 'court_statuses'
+    const collection = db.collection("court_statuses");
 
-    // Buscamos o documento mais recente na coleção, ordenando pelo campo 'atualiza...'
-    // e pegando apenas o primeiro resultado.
-    const doc = await collection.findOne({}, { sort: { 'atualiza...': -1 } });
+    // Buscamos o documento específico com _id: "current_statuses"
+    // Este é o documento que contém os status atuais.
+    const doc = await collection.findOne({ _id: "current_statuses" });
 
     if (!doc) {
-      // Se não encontrar o documento, retorna objetos vazios e lastUpdate nulo
-      console.warn("Documento de status não encontrado na coleção 'status_do_tribunal'.");
+      console.warn("Documento de status não encontrado na coleção 'court_statuses' com _id: 'current_statuses'.");
       return NextResponse.json({ statuses: {}, pings: {}, lastUpdate: null });
     }
 
     // Retorna os dados mapeados para o que o frontend espera
-    // Mapeamos o campo 'atualiza...' para 'lastUpdate'
-    const lastUpdateValue = doc['atualiza...'] ? new Date(doc['atualiza...']).toISOString() : null;
+    // O campo de atualização é 'updatedAt'
+    const lastUpdateValue = doc.updatedAt ? new Date(doc.updatedAt).toISOString() : null;
 
     return NextResponse.json({
-      statuses: doc.dad || {},
+      statuses: doc.data || {}, // O campo de dados é 'data', não 'dad'
       pings: doc.pings || {},
       lastUpdate: lastUpdateValue
     });
