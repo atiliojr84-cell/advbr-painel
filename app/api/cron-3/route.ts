@@ -102,7 +102,11 @@ export async function GET() {
   return NextResponse.json({
     success: true,
     robo: "Robo 3 - MongoDB",
-    resumo: { online: relatorio.filter(r => r.status === 'online').length, offline: relatorio.filter(r => r.status === 'offline').length },
+    resumo: { 
+      online: relatorio.filter(r => r.status === 'online').length, 
+      offline: relatorio.filter(r => r.status === 'offline').length,
+      instavel: relatorio.filter(r => r.status === 'instavel').length 
+    },
     relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
   });
 }
