@@ -1,7 +1,7 @@
 // components/features/MonitoringReportButton.tsx
+/** @jsxImportSource react */ // <--- Linha adicionada para resolver o erro de build
 "use client";
 
-import React from 'react'; // <--- Linha adicionada para resolver o erro de build
 import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Activity, AlertCircle, RefreshCw, BarChart2 } from "lucide-react"; // Adicionado BarChart2 para o ícone do botão
 import { motion, AnimatePresence } from "framer-motion";
@@ -90,7 +90,7 @@ export default function MonitoringReportButton() {
       setRobotFailures(data.robotFailures);
     } catch (error) {
       console.error("Erro ao buscar falhas do robô:", error);
-      setRobotFailuresError("Não foi possível carregar o relatório de falhas do robô.");
+      setRobotFailuresError("Não foi possível carregar o relatório de falôs do robô.");
     } finally {
       setLoadingRobotFailures(false);
     }
@@ -316,4 +316,4 @@ export default function MonitoringReportButton() {
       </AnimatePresence>
     </>
   );
-                }
+}
