@@ -174,17 +174,17 @@ export default function MonitoringReportButton() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 50 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, y: 50 }} // Corrigido
+            animate={{ opacity: 1, y: 0 }} // Corrigido
+            exit={{ opacity: 0, y: 50 }} // Corrigido
+            transition={{ duration: 0.3 }} // Corrigido
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4" // Ajustado z-index para 50 para não conflitar com o JurisdictionHub
           >
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              initial={{ scale: 0.9, opacity: 0 }} // Corrigido
+              animate={{ scale: 1, opacity: 1 }} // Corrigido
+              exit={{ scale: 0.9, opacity: 0 }} // Corrigido
+              transition={{ duration: 0.2 }} // Corrigido
               onClick={(e) => e.stopPropagation()} // Impede que o clique no modal feche o backdrop
               className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto relative border border-slate-800"
             >
@@ -315,4 +315,4 @@ export default function MonitoringReportButton() {
       </AnimatePresence>
     </>
   );
-                        }
+              }
