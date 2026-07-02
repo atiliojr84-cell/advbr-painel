@@ -1,9 +1,8 @@
 // components/features/MonitoringReportButton.tsx
-/** @jsxImportSource react */ // <--- Linha adicionada para resolver o erro de build
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Activity, AlertCircle, RefreshCw, BarChart2 } from "lucide-react"; // Adicionado BarChart2 para o ícone do botão
+import React, { useState, useEffect, useCallback } from "react"; // Adicionado React aqui
+import { ArrowLeft, Activity, AlertCircle, RefreshCw, BarChart2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Definindo o tipo para o reporte ativo (manual)
@@ -133,13 +132,13 @@ export default function MonitoringReportButton() {
   const getStatusIndicator = (status: string) => {
     switch (status) {
       case 'online':
-        return <span className="h-2 w-2 rounded-full bg-green-500 mr-2"></span>;
+        return React.createElement('span', { className: "h-2 w-2 rounded-full bg-green-500 mr-2" });
       case 'instavel':
-        return <span className="h-2 w-2 rounded-full bg-yellow-500 mr-2"></span>;
+        return React.createElement('span', { className: "h-2 w-2 rounded-full bg-yellow-500 mr-2" });
       case 'offline':
-        return <span className="h-2 w-2 rounded-full bg-red-500 mr-2"></span>;
+        return React.createElement('span', { className: "h-2 w-2 rounded-full bg-red-500 mr-2" });
       default:
-        return <span className="h-2 w-2 rounded-full bg-gray-500 mr-2"></span>;
+        return React.createElement('span', { className: "h-2 w-2 rounded-full bg-gray-500 mr-2" });
     }
   };
 
@@ -316,4 +315,4 @@ export default function MonitoringReportButton() {
       </AnimatePresence>
     </>
   );
-}
+                        }
