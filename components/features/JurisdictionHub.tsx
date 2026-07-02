@@ -2,9 +2,9 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { ArrowLeft, Activity, AlertCircle, RefreshCw } from "lucide-react"; // Adicionado RefreshCw para o botão de recarregar
-import { motion, AnimatePresence } from "framer-motion";
-import { jurisdictions } from "../../data/jurisdictions"; // Certifique-se de que o caminho está correto
+import { ArrowLeft, Activity, AlertCircle, RefreshCw } from "lucide-react";
+// Importe 'jurisdictions' e defina um tipo mais flexível para ele
+import { jurisdictions as rawJurisdictions } from "../../data/jurisdictions";
 
 // Definindo o tipo para o reporte ativo (manual)
 type ActiveReport = {
@@ -18,6 +18,14 @@ type RobotFailure = {
   portalName: string;
   failureCount: number;
 };
+
+// Definindo um tipo mais flexível para o objeto jurisdictions
+// Isso permite que ele seja indexado por strings
+type FlexibleJurisdictions = {
+  [key: string]: any; // Permite acessar propriedades com qualquer string
+};
+
+const jurisdictions: FlexibleJurisdictions = rawJurisdictions;
 
 export default function JurisdictionHub() {
   const [isOpen, setIsOpen] = useState(false);
@@ -449,4 +457,4 @@ export default function JurisdictionHub() {
       </AnimatePresence>
     </>
   );
-                  }
+}
