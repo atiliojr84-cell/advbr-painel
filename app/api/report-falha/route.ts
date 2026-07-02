@@ -6,18 +6,15 @@ export const revalidate = 0;
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const json = await request.json();
 
-    if (!body.portal || !body.problema) {
-      return NextResponse.json(
-        { error: "Portal e problema são obrigatórios." },
-        { status: 400 }
-      );
+    if (!json.portal || !json.problema) {
+      return NextResponse.json({ error: "Dados incompletos" }, { status: 400 });
     }
 
     const report = {
-      portal: body.portal,
-      problema: body.problema,
+      portal: json.portal,
+      problema: json.problema,
       createdAt: new Date().toISOString(),
     };
 
@@ -25,14 +22,11 @@ export async function POST(request: Request) {
     const db = client.db("advbr_reports_db");
     const collection = db.collection("falhas");
 
-    const result = await collection.insertOne(report);
+    await collection.insertOne(report);
 
-    return NextResponse.json({ ok: true, insertedId: result.insertedId });
+    return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Erro no Reporte:", error);
-    return NextResponse.json(
-      { error: "Erro interno no servidor." },
-      { status: 500 }
-    );
+    console.error("Erro fatal ao salvar no MongoDB:", error);
+    return NextResponse.json({ error: "Erro interno no servidor" }, { status: 500 });
   }
 }
