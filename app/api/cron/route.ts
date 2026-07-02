@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
+import clientPromise from '../../../lib/mongodb';
 import { jurisdictions } from '../../../data/jurisdictions';
 
 export const dynamic = 'force-dynamic';
@@ -9,10 +9,13 @@ export const maxDuration = 60;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET() {
-  let statuses: Record<string, string> = await kv.get('court_statuses') || {};
+  const client = await clientPromise;
+  const db = client.db("advbr_reports_db");
+  const collection = db.collection("court_statuses");
+
+  let statuses: Record<string, string> = {};
   let debugInfo: Record<string, string> = {}; 
 
-  // Adicionamos o parâmetro "attempt" para contar as tentativas
   const testUrl = async (name: string, url: string, attempt = 1): Promise<void> => {
     try {
       const controller = new AbortController();
@@ -22,10 +25,8 @@ export async function GET() {
       const response = await fetch(url, { 
         method: 'GET', 
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-          'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
-          'Accept-Encoding': 'gzip, deflate, br',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/122.0.0.0',
+          'Accept': '*/*',
           'Connection': 'close'
         },
         signal: controller.signal,
@@ -39,51 +40,41 @@ export async function GET() {
         statuses[name] = time > 4000 ? 'instavel' : 'online';
       } else {
         statuses[name] = 'offline';
-        if (name.toLowerCase().includes('pje')) {
-          debugInfo[name] = `Erro HTTP: ${response.status} - ${response.statusText}`;
-        }
+        if (name.toLowerCase().includes('pje')) debugInfo[name] = `Erro HTTP: ${response.status}`;
       }
     } catch (error: any) {
-      // SISTEMA DE TEIMOSIA: Se a conexão cair na 1ª tentativa, tenta de novo!
       if (attempt === 1 && error.message === 'fetch failed') {
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Espera 1 segundo
-        return testUrl(name, url, 2); // Tenta a 2ª vez
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return testUrl(name, url, 2);
       }
-
       statuses[name] = 'offline';
-      if (name.toLowerCase().includes('pje')) {
-        debugInfo[name] = `Falha (Tentativa ${attempt}): ${error.message || error.name}`;
-      }
     }
   };
 
   const tasks: (() => Promise<void>)[] = [];
-
-  for (const trib of jurisdictions.federais) {
-    tasks.push(() => testUrl(trib.name, trib.url));
-  }
-
+  for (const trib of jurisdictions.federais) tasks.push(() => testUrl(trib.name, trib.url));
   for (const regiao in jurisdictions.regioes) {
     const estados = (jurisdictions.regioes as any)[regiao];
     for (const estado in estados) {
-      for (const trib of estados[estado]) {
-        tasks.push(() => testUrl(trib.name, trib.url));
-      }
+      for (const trib of estados[estado]) tasks.push(() => testUrl(trib.name, trib.url));
     }
   }
 
   const batchSize = 5;
   for (let i = 0; i < tasks.length; i += batchSize) {
-    const batch = tasks.slice(i, i + batchSize);
-    await Promise.allSettled(batch.map(task => task()));
+    await Promise.allSettled(tasks.slice(i, i + batchSize).map(task => task()));
     await new Promise(resolve => setTimeout(resolve, 200)); 
   }
 
-  await kv.set('court_statuses', statuses);
+  // Salva ou atualiza o documento no MongoDB
+  await collection.updateOne(
+    { _id: "current_statuses" },
+    { $set: { data: statuses, updatedAt: new Date() } },
+    { upsert: true }
+  );
 
   return NextResponse.json({ 
     success: true, 
-    total: Object.keys(statuses).length,
-    debug: debugInfo
+    total: Object.keys(statuses).length
   });
 }
