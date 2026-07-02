@@ -9,8 +9,8 @@ export const maxDuration = 300;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-const TIMEOUT_VERMELHO_MS = 5000;
-const TIMEOUT_AMARELO_MS = 2000;
+const TIMEOUT_VERMELHO_MS = 15000; // Aumentado para tolerar instabilidade
+const TIMEOUT_AMARELO_MS = 4000;
 const DELAY_ENTRE_TENTATIVAS_MS = 2000;
 
 export async function GET() {
@@ -35,7 +35,7 @@ export async function GET() {
   const normais = allTribunals.filter(t => !rebeldes.includes(t.name));
   const mySlice = normais.slice(40);
 
-  async function fazerRequisicaoUnica(url: string, attempt: number): Promise<{ status: string; ping: number; detalhe: string }> {
+  async function fazerRequisicaoUnica(url: string): Promise<{ status: string; ping: number; detalhe: string }> {
     let status = 'offline';
     let ping = 0;
     let detalhe = '';
@@ -47,7 +47,7 @@ export async function GET() {
 
       const response = await fetch(url, {
         method: 'GET',
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36', 'Accept': '*/*', 'Connection': 'close' },
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'Connection': 'close' },
         signal: controller.signal,
         cache: 'no-store'
       });
@@ -70,13 +70,13 @@ export async function GET() {
   }
 
   const testUrlComRetentativas = async (trib: any): Promise<void> => {
-    let res = await fazerRequisicaoUnica(trib.url, 1);
+    let res = await fazerRequisicaoUnica(trib.url);
     if (res.status !== 'online') {
       await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-      res = await fazerRequisicaoUnica(trib.url, 2);
+      res = await fazerRequisicaoUnica(trib.url);
       if (res.status === 'offline') {
         await new Promise(resolve => setTimeout(resolve, DELAY_ENTRE_TENTATIVAS_MS));
-        res = await fazerRequisicaoUnica(trib.url, 3);
+        res = await fazerRequisicaoUnica(trib.url);
       }
     }
 
@@ -89,7 +89,7 @@ export async function GET() {
   const batchSize = 5;
   for (let i = 0; i < tasks.length; i += batchSize) {
     await Promise.allSettled(tasks.slice(i, i + batchSize).map(task => task()));
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 300));
   }
 
   await collection.updateOne(
@@ -98,5 +98,14 @@ export async function GET() {
     { upsert: true }
   );
 
-  return NextResponse.json({ success: true, robo: "Robo 2 - MongoDB" });
+  return NextResponse.json({
+    success: true,
+    robo: "Robo 2 - MongoDB",
+    resumo: { 
+      online: relatorio.filter(r => r.status === 'online').length, 
+      offline: relatorio.filter(r => r.status === 'offline').length,
+      instavel: relatorio.filter(r => r.status === 'instavel').length 
+    },
+    relatorio: relatorio.sort((a, b) => a.tribunal.localeCompare(b.tribunal))
+  });
 }
