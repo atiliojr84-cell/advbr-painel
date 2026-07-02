@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Filter } from "mongodb";
 import clientPromise from '../../../lib/mongodb';
 import { jurisdictions } from '../../../data/jurisdictions';
 
@@ -66,9 +67,9 @@ export async function GET() {
     await new Promise(resolve => setTimeout(resolve, 200)); 
   }
 
-  // Salva ou atualiza o documento no MongoDB
+  // Salva ou atualiza o documento no MongoDB com tipagem corrigida
   await collection.updateOne(
-    { _id: "current_statuses" },
+    { _id: "current_statuses" } as Filter<any>,
     { $set: { data: statuses, updatedAt: new Date() } },
     { upsert: true }
   );
