@@ -7,22 +7,23 @@ export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("advbr_reports_db");
-    const collection = db.collection("falsas");
+    
+    // Buscamos o documento mais recente da coleção de status
+    const statusDoc = await db.collection("status_do_tribunal")
+      .find({})
+      .sort({ atualizadoEm: -1 })
+      .limit(1)
+      .toArray();
 
-    // Buscamos os últimos documentos e agrupamos por portal
-    const data = await collection.find({}).sort({ criadoEm: -1 }).toArray();
+    // Extraímos os dados de status e pings conforme o componente espera
+    const dad = statusDoc[0]?.dad || {};
+    const pings = statusDoc[0]?.pings || {};
 
     return NextResponse.json({ 
-      success: true, 
-      stats: {
-        horas12: data,
-        horas24: data,
-        semana1: data,
-        mes1: data,
-        ano1: data
-      }
+      statuses: dad, 
+      pings: pings 
     });
   } catch (error) {
-    return NextResponse.json({ success: false, error: "Erro ao ler a coleção" }, { status: 500 });
+    return NextResponse.json({ statuses: {}, pings: {} }, { status: 500 });
   }
 }
