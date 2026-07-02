@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Filter } from "mongodb";
 import clientPromise from '../../../lib/mongodb';
 
 export const dynamic = 'force-dynamic';
@@ -10,7 +11,7 @@ export async function GET() {
     const db = client.db("advbr_reports_db");
     const collection = db.collection("court_statuses");
 
-    const doc = await collection.findOne({ _id: "current_statuses" });
+    const doc = await collection.findOne({ _id: "current_statuses" } as Filter<any>);
 
     return NextResponse.json({
       statuses: doc?.data || {},
