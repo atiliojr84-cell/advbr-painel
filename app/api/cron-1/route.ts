@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Filter } from "mongodb";
 import clientPromise from '../../../lib/mongodb';
 import { jurisdictions } from '../../../data/jurisdictions';
 
@@ -17,8 +18,8 @@ export async function GET() {
   const db = client.db("advbr_reports_db");
   const collection = db.collection("court_statuses");
 
-  // Busca o estado atual no MongoDB
-  const doc = await collection.findOne({ _id: "current_statuses" });
+  // Correção de tipagem para o filtro do _id
+  const doc = await collection.findOne({ _id: "current_statuses" } as Filter<any>);
   let statuses: Record<string, string> = doc?.data || {};
   let pings: Record<string, number> = doc?.pings || {};
   const relatorio: any[] = [];
@@ -92,9 +93,8 @@ export async function GET() {
     await new Promise(resolve => setTimeout(resolve, 200));
   }
 
-  // Persiste tudo no MongoDB
   await collection.updateOne(
-    { _id: "current_statuses" },
+    { _id: "current_statuses" } as Filter<any>,
     { $set: { data: statuses, pings: pings, updatedAt: new Date() } },
     { upsert: true }
   );
