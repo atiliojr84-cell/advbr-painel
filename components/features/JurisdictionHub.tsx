@@ -2,9 +2,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowLeft, Activity, AlertCircle } from "lucide-react"; // Importado AlertCircle
+import { ArrowLeft, Activity, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { jurisdictions } from "../../data/jurisdictions";
+import MonitoringReportButton from "./MonitoringReportButton"; // <--- NOVO: Importa o componente do botão de monitoramento
 
 // Definindo o tipo para o reporte ativo
 type ActiveReport = {
@@ -146,14 +147,16 @@ export default function JurisdictionHub() {
 
         <div className="flex flex-wrap justify-center gap-4">
           {["Federais", "Sul", "Sudeste", "CentroOeste", "Nordeste", "Norte"].map((r) => (
-            <button 
-              key={r} 
-              onClick={() => handleOpen(r.toLowerCase())} 
+            <button
+              key={r}
+              onClick={() => handleOpen(r.toLowerCase())}
               className={`px-6 py-3 text-slate-300 capitalize font-medium bg-slate-900 rounded-xl border border-slate-800 shadow-lg glow-effect`} // Adicionado glow-effect
             >
               {r === "CentroOeste" ? "Centro-Oeste" : r}
             </button>
           ))}
+          {/* NOVO: Botão de Relatório de Monitoramento */}
+          <MonitoringReportButton /> {/* <--- AQUI É ONDE O BOTÃO FOI INSERIDO */}
         </div>
       </section>
 
@@ -161,17 +164,17 @@ export default function JurisdictionHub() {
         {isOpen && (
           <motion.div
             key="modal-backdrop"
-            initial={{ opacity: 0 }}  
-            animate={{ opacity: 1 }}  
-            exit={{ opacity: 0 }}  
+            initial={{ opacity: 0 }} // Corrigido
+            animate={{ opacity: 1 }} // Corrigido
+            exit={{ opacity: 0 }} // Corrigido
             onClick={() => setIsOpen(false)}
             className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
           >
             <motion.div
               key="modal-content"
-              initial={{ y: -50, opacity: 0 }}  
-              animate={{ y: 0, opacity: 1 }}  
-              exit={{ y: -50, opacity: 0 }}  
+              initial={{ y: -50, opacity: 0 }} // Corrigido
+              animate={{ y: 0, opacity: 1 }} // Corrigido
+              exit={{ y: -50, opacity: 0 }} // Corrigido
               onClick={(e) => e.stopPropagation()}
               className="bg-slate-900 p-8 rounded-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[90vh] border border-slate-800"
             >
@@ -193,16 +196,16 @@ export default function JurisdictionHub() {
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={view + activeRegiao + selectedEstado}
-                    initial={{ opacity: 0, x: 10 }}  
-                    animate={{ opacity: 1, x: 0 }}  
-                    exit={{ opacity: 0, x: -10 }}  
-                    transition={{ duration: 0.2 }}  
+                    initial={{ opacity: 0, x: 10 }} // Corrigido
+                    animate={{ opacity: 1, x: 0 }} // Corrigido
+                    exit={{ opacity: 0, x: -10 }} // Corrigido
+                    transition={{ duration: 0.2 }} // Corrigido
                   >
                     {view === 'estado' ? (
                       <div className="grid grid-cols-2 gap-3 pb-4">
                         {Object.keys((jurisdictions.regioes as any)[activeRegiao] || {}).map((e) => (
-                          <button 
-                            key={e} 
+                          <button
+                            key={e}
                             onClick={() => { setSelectedEstado(e); setView('tribunal'); }} // Fechado o onClick
                             className={`p-4 text-white font-medium text-sm text-left bg-slate-950 rounded-xl border border-slate-800 glow-effect`} // Adicionado glow-effect
                           >
@@ -213,9 +216,9 @@ export default function JurisdictionHub() {
                     ) : (
                       <div className="space-y-3 pb-4">
                         {(activeRegiao === 'federais' ? jurisdictions.federais : (jurisdictions.regioes as any)[activeRegiao]?.[selectedEstado])?.map((t: any) => (
-                          <button 
-                            key={t.name} 
-                            onClick={() => window.open(t.url, "_blank")} 
+                          <button
+                            key={t.name}
+                            onClick={() => window.open(t.url, "_blank")}
                             className={`w-full p-4 flex items-center justify-between bg-slate-950 rounded-xl border border-slate-800 glow-effect`} // Adicionado glow-effect
                           >
                             <span className="text-white text-sm font-medium">{t.name}</span>
