@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { Filter } from "mongodb";
 import clientPromise from '../../../lib/mongodb';
 
 export const dynamic = 'force-dynamic';
@@ -9,14 +8,20 @@ export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("advbr_reports_db");
-    const collection = db.collection("court_statuses");
+    // Corrigido para buscar na coleção que realmente existe no seu Atlas
+    const collection = db.collection("status_do_tribunal");
 
-    const doc = await collection.findOne({ _id: "current_statuses" } as Filter<any>);
+    // Busca o documento que contém os dados atuais
+    const doc = await collection.findOne({});
+
+    if (!doc) {
+      return NextResponse.json({ statuses: {}, pings: {} });
+    }
 
     return NextResponse.json({
-      statuses: doc?.data || {},
-      pings: doc?.pings || {},
-      lastUpdate: doc?.updatedAt || null
+      statuses: doc.dad || {},
+      pings: doc.pings || {},
+      lastUpdate: doc.atualizaEm || null
     });
   } catch (error) {
     return NextResponse.json({ error: 'Erro ao buscar dados no MongoDB' }, { status: 500 });
