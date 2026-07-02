@@ -1,6 +1,7 @@
 // components/features/MonitoringReportButton.tsx
 "use client";
 
+import React from 'react'; // <--- Linha adicionada para resolver o erro de build
 import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Activity, AlertCircle, RefreshCw, BarChart2 } from "lucide-react"; // Adicionado BarChart2 para o ícone do botão
 import { motion, AnimatePresence } from "framer-motion";
@@ -315,4 +316,4 @@ export default function MonitoringReportButton() {
       </AnimatePresence>
     </>
   );
-                  }
+                }
