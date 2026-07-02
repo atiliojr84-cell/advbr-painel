@@ -1,3 +1,4 @@
+// app/page.tsx
 import Header from "../components/ui/Header";
 import Ticker from "../components/ui/Ticker";
 import ServiceGrid from "../components/ServiceGrid";
@@ -25,8 +26,31 @@ const DynamicPdfToolHub = nextDynamic(
   }
 );
 
-export default function Home() {
-  // Ajuste para interface simples sem chamar banco de dados diretamente no render
+// Função para buscar os dados de status
+async function getStatusData() {
+  try {
+    // Chamada direta à API interna, como se fosse uma função local
+    // Isso é possível em Server Components no Next.js
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/get-status`, {
+      cache: 'no-store', // Garante que os dados sejam sempre frescos
+    });
+
+    if (!res.ok) {
+      console.error(`Erro ao buscar dados de status: ${res.status} ${res.statusText}`);
+      return { statuses: {}, pings: {}, lastUpdate: null };
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Falha ao buscar dados de status:", error);
+    return { statuses: {}, pings: {}, lastUpdate: null };
+  }
+}
+
+export default async function Home() { // Adicionado 'async' aqui
+  const { statuses, pings } = await getStatusData(); // Chama a função para obter os dados
+
   return (
     <div className="min-h-screen bg-[#0b0f19]">
       <Ticker />
@@ -40,8 +64,8 @@ export default function Home() {
             </h2>
           </div>
           <PortalCarousel
-            statuses={{}}
-            pings={{}}
+            statuses={statuses} // Agora passando os statuses da API
+            pings={pings}       // Agora passando os pings da API
           />
         </section>
 
